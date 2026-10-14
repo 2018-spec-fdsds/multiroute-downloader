@@ -1,0 +1,299 @@
+{
+  "application_version": "3.0",
+  "setup_refresh": "2026-10-14",
+  "status": "PASS",
+  "application_and_native_sources_changed": false,
+  "windows_checks": 34,
+  "posix_checks": 98,
+  "windows_fixture_results": [
+    {
+      "name": "PS5.1 scripts parse",
+      "passed": true
+    },
+    {
+      "name": "Source checkout rejects before download",
+      "passed": true
+    },
+    {
+      "name": "Path outside fixture rejected",
+      "passed": true
+    },
+    {
+      "name": "Safe child path accepted",
+      "passed": true
+    },
+    {
+      "name": "Real owned private Java full modules",
+      "passed": true
+    },
+    {
+      "name": "Pinned Npcap signature valid without execution",
+      "passed": true
+    },
+    {
+      "name": "Bad checksum rejects",
+      "passed": true
+    },
+    {
+      "name": "Unknown Npcap publisher rejected",
+      "passed": true
+    },
+    {
+      "name": "Invalid Npcap signature rejected",
+      "passed": true
+    },
+    {
+      "name": "Java16 rejects",
+      "passed": true
+    },
+    {
+      "name": "JavaARM rejects",
+      "passed": true
+    },
+    {
+      "name": "Trimmed Java missing desktop rejects",
+      "passed": true
+    },
+    {
+      "name": "Trimmed Java missing httpserver rejects",
+      "passed": true
+    },
+    {
+      "name": "FullJava17 accepts",
+      "passed": true
+    },
+    {
+      "name": "Offline prerequisites reuse and argument forwarding",
+      "passed": true
+    },
+    {
+      "name": "Missing prerequisites invoke installers before launch mocks only",
+      "passed": true
+    },
+    {
+      "name": "Cancelled Npcap cannot launch",
+      "passed": true
+    },
+    {
+      "name": "Stopped existing Npcap cannot silently change service",
+      "passed": true
+    },
+    {
+      "name": "Windows native argv quote roundtrip",
+      "passed": true
+    },
+    {
+      "name": "Native PE x64 validation without DLL loading",
+      "passed": true
+    },
+    {
+      "name": "Reparse junction inside fixture rejects",
+      "passed": true
+    },
+    {
+      "name": "Both actual CMD wrappers preserve CLI args owned stub only",
+      "passed": true
+    },
+    {
+      "name": "ZIP traversal rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP absolute path rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP ADS path rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP Windows backslash path rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP unexpected top level rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP reserved device rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP case insensitive collision rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP symbolic link rejects",
+      "passed": true
+    },
+    {
+      "name": "ZIP ordinary files extract exactly",
+      "passed": true
+    },
+    {
+      "name": "Atomic private Java commit preserves prior runtime",
+      "passed": true
+    },
+    {
+      "name": "Failed atomic commit rolls prior runtime back",
+      "passed": true
+    },
+    {
+      "name": "Bootstrap source never changes AV or routing",
+      "passed": true
+    }
+  ],
+  "windows_script_sha256": {
+    "windows/bootstrap-common.psm1": "ce0b7121d360f6a63cbe0f473964118dbeb4e4d44691537c27378cc17916dfab",
+    "windows/bootstrap.ps1": "9990b202d06b4b0aab0c25171705951a1dc8fdbcc9b00b6dd4595778ed270819",
+    "Start-Windows.cmd": "6eaedb769de1d7b036cb5fe94b4f8c0669e8bf42f50e2447a66ae48a108eee42",
+    "Deploy-Windows.cmd": "44910e909895b3237e1819c2dd610d51635d3251b4602be593e857507acc62ef"
+  },
+  "posix_script_sha256": {
+    "linux/deploy-common.sh": "52eb9beb05630ab8f19d9d43e0348d980f96908cd71cf383049523259bddece6",
+    "macOS/deploy-common.sh": "79bb5c2a8a37076225cb6c64a8d07b815bad2b19bc31cfc0c41cfc821587f46e",
+    "macOS/install-helper.sh": "89b2859bc6f540ec8e9f86dd8e031af9bb5675e376646d663e5bbc91366e42b7",
+    "Deploy-macOS.command": "cbb6408e5f92edba2c2a17f8b5f208deaf022ee33573f584914a6c8486593ccd",
+    "Start-macOS.command": "20d462f516fb9efdbf17a878c52d968774c156687371e4a62888024329ccd3fd"
+  },
+  "raw_posix_script_checks": [
+    {
+      "path": "Deploy-Linux.sh",
+      "sha256": "b4d0c90b6cef1fd0ab773809f47c220b625d741e0bf4d14f36a5e844bbc3f57f",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "Deploy-macOS.command",
+      "sha256": "cbb6408e5f92edba2c2a17f8b5f208deaf022ee33573f584914a6c8486593ccd",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "linux/deploy-common.sh",
+      "sha256": "52eb9beb05630ab8f19d9d43e0348d980f96908cd71cf383049523259bddece6",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "linux/install-helper.sh",
+      "sha256": "2ffcdcaa0709ae14ea59416884281197cb02d7661713770e44b375a0a0da2f97",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "linux/launch-app.sh",
+      "sha256": "7109aec3e0ad0ec4427ce113d9d7b9737a2c4fde47552c49cfdffe67ac07668d",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "macOS/deploy-common.sh",
+      "sha256": "79bb5c2a8a37076225cb6c64a8d07b815bad2b19bc31cfc0c41cfc821587f46e",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "macOS/install-helper.sh",
+      "sha256": "89b2859bc6f540ec8e9f86dd8e031af9bb5675e376646d663e5bbc91366e42b7",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "macOS/launch-app.sh",
+      "sha256": "babb29ae819b8d40e0c494c24aafa1a5b80098b0ef8d57b10673101591091bd7",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "native/source/build_linux.sh",
+      "sha256": "64570e666a58e8658a9f90f30467c5c777a150be031325c2bbb038d31780a49d",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "native/source/build_macos.sh",
+      "sha256": "b724a65ff5d6c7bd6df2d42aca58f6e5d760a1cc997335c995f1094fd39b1ae2",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "Start-Linux.sh",
+      "sha256": "857e61f8a29b6cbdc3d44e28da93e51df823e0d77668c84f2705079ad33e28dd",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "Start-macOS.command",
+      "sha256": "20d462f516fb9efdbf17a878c52d968774c156687371e4a62888024329ccd3fd",
+      "CRLF_count": 0,
+      "carriage_return_count": 0,
+      "status": "PASS"
+    }
+  ],
+  "syntax_and_inert_import_checks_use_saved_script_bytes": true,
+  "docs": {
+    "en": {
+      "sha256": "b7f28b3653a762ab90d676ed5193236d83dbeeb2a6b55514f8502220fd63c17c",
+      "bytes": 22913,
+      "valid_utf8": true,
+      "links_and_json": "PASS",
+      "separate_macos_security_instructions": true
+    },
+    "ru": {
+      "sha256": "8be3c0dad1391cf384cd4c51d432f29d4c8ff8aea50bf0985314e3709a84385a",
+      "bytes": 37525,
+      "valid_utf8": true,
+      "links_and_json": "PASS",
+      "separate_macos_security_instructions": true
+    },
+    "de": {
+      "sha256": "d93c3c331343e6c8244789fa87953a8afe27e3a1963e460c8543f510e85b41e8",
+      "bytes": 32607,
+      "valid_utf8": true,
+      "links_and_json": "PASS",
+      "separate_macos_security_instructions": true
+    },
+    "es": {
+      "sha256": "76a999ed74f43854cd8c9a7364035b3693df0d783cd848e3c3da9bc2ba38eb7b",
+      "bytes": 26276,
+      "valid_utf8": true,
+      "links_and_json": "PASS",
+      "separate_macos_security_instructions": true
+    },
+    "fr": {
+      "sha256": "31ab9ba8656508427b72e90df3a97711bcc4cb211e4f3a53d51821bbdb74a5cf",
+      "bytes": 33409,
+      "valid_utf8": true,
+      "links_and_json": "PASS",
+      "separate_macos_security_instructions": true
+    }
+  },
+  "source_build": {
+    "status": "PASS",
+    "classes": 142,
+    "same_production_class_bytes_as_released_3_0": true,
+    "jar_sha256": "01e7736fead85dadd3df46d726233f8cffb776d57892cb42f268e13ee8734259"
+  },
+  "real_windows_private_java_download_and_verification": true,
+  "real_npcap_download_hash_and_signature_verification_without_execution": true,
+  "not_performed": [
+    "Npcap installation or UAC",
+    "System package or Apple Command Line Tools installation",
+    "Physical gateway traffic or packet capture",
+    "Actual macOS hardware / BPF / Finder deployment",
+    "Developer ID signing or notarization",
+    "Operating system route or security changes"
+  ]
+}

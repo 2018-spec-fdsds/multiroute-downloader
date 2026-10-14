@@ -1,0 +1,32 @@
+# Runtime profiles, credentials, download state and application logs
+/data/
+/runtime/
+/runtime.previous-*/
+/.multiroute-*/
+/work/
+/outputs/
+/data-location.config
+**/source-auth/
+desktop-settings.config
+queue-settings.config
+.controller.instance
+*.log
+*.part
+*.part.*
+*.stop
+ready-*.json
+# Build outputs; third-party JARs in lib/ are intentionally versioned.
+/build/
+/dist/
+/target/
+**/build/
+*.class
+*.obj
+*.o
+*.pdb
+/MultiRoute-Resume.jar
+/MultiRoute-Resume.previous-*.jar
+/MultiRoute-Resume.previous-*.jar
+*.zip
+.DS_Store
+Thumbs.db

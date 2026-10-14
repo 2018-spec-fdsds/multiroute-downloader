@@ -1,0 +1,302 @@
+MultiRoute Resume: native component third-party notices
+
+lwIP 2.2.1 - https://github.com/lwip-tcpip/lwip
+Stable commit 77dcd25a72509eb83f72b033d219b1d40cd8eb95.
+Original per-file author/license notices are retained in native/source/lwip.
+The included Win32 sys_arch port is attributed to Adam Dunkels and Simon Goldschmidt.
+
+Source copyright notices:
+Copyright (C) 2009  Paul Bakker <polarssl_maintainer at polarssl dot org>
+Copyright (c) 1984-2000 Carnegie Mellon University. All rights reserved.
+Copyright (c) 1989 Regents of the University of California.
+Copyright (c) 1994-2002 Paul Mackerras. All rights reserved.
+Copyright (c) 1995 Eric Rosenquist.  All rights reserved.
+Copyright (c) 1995, 1996, 1997 Francis.Dupont@inria.fr, INRIA Rocquencourt,
+Copyright (c) 1998 Global Election Systems Inc.
+Copyright (c) 1998, 1999 Francis.Dupont@inria.fr, GIE DYADE,
+Copyright (c) 1999 Tommi Komulainen.  All rights reserved.
+Copyright (c) 2001 by Sun Microsystems, Inc.
+Copyright (c) 2001, 2002 Axon Digital Design B.V., The Netherlands.
+Copyright (c) 2001, 2002 Leon Woestenberg <leon.woestenberg@axon.tv>
+Copyright (c) 2001, Swedish Institute of Computer Science.
+Copyright (c) 2001-2003 Swedish Institute of Computer Science.
+Copyright (c) 2001-2004 Axon Digital Design B.V., The Netherlands.
+Copyright (c) 2001-2004 Leon Woestenberg <leon.woestenberg@gmx.net>
+Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+Copyright (c) 2002 CITEL Technologies Ltd.
+Copyright (c) 2002 Google, Inc.
+Copyright (c) 2002 The NetBSD Foundation, Inc.
+Copyright (c) 2003 Paul Mackerras. All rights reserved.
+Copyright (c) 2003 by Marc Boucher, Services Informatiques (MBSI) inc.
+Copyright (c) 2003-2004 Axon Digital Design B.V., The Netherlands.
+Copyright (c) 2003-2004 Leon Woestenberg <leon.woestenberg@axon.tv>
+Copyright (c) 2006 Axon Digital Design B.V., The Netherlands.
+Copyright (c) 2006 by Marc Boucher, Services Informatiques (MBSI) inc.
+Copyright (c) 2007 Dominik Spies <kontakt@dspies.de>
+Copyright (c) 2007-2009 FrГ©dГ©ric Bernon, Simon Goldschmidt
+Copyright (c) 2008 Paul Mackerras. All rights reserved.
+Copyright (c) 2010 Inico Technologies Ltd.
+Copyright (c) 2014 Simon Goldschmidt
+Copyright (c) 2015 Dirk Ziegelmeier
+Copyright (c) 2015 Inico Technologies Ltd.
+Copyright (c) 2015 Inico Technologies Ltd. , Author: Ivan Delamer <delamer@inicotech.com>
+Copyright (c) 2015 Verisure Innovation AB
+Copyright (c) 2016 Elias Oenal.
+Copyright (c) 2016 Erik Andersson
+Copyright (c) 2017 Benjamin Aigner
+Copyright (c) 2017 Dirk Ziegelmeier.
+Copyright (c) 2017 Joel Cunningham, Garmin International, Inc. <joel.cunningham@garmin.com>
+Copyright (c) 2017 Simon Goldschmidt
+Copyright (c) 2017 Simon Goldschmidt <goldsimon@gmx.de>
+Copyright (c) 2017 Simon Goldschmidt.
+Copyright (c) 2017 The MINIX 3 Project.
+Copyright (c) 2018 Jasper Verschueren <jasper.verschueren@apart-audio.com>
+Copyright (c) 2018 Simon Goldschmidt
+Copyright (c) 2018 Simon Goldschmidt <goldsimon@gmx.de>
+Copyright (c) 2018 Simon Goldschmidt.
+Copyright (c) 2018 Swedish Institute of Computer Science.
+Copyright (c) Deltatee Enterprises Ltd. 2013
+
+Source author notices:
+Author: Adam Dunkels <adam@sics.se>
+Author: Benjamin Aigner <aignerb@technikum-wien.at>
+Author: Christiaan Simons <christiaan.simons@axon.tv>
+Author: David van Moolenbroek <david@minix3.org>
+Author: Dirk Ziegelmeier
+Author: Dirk Ziegelmeier <dziegel@gmx.de>
+Author: Dominik Spies <kontakt@dspies.de>
+Author: Elias Oenal <lwip@eliasoenal.com>
+Author: Erik Andersson
+Author: Erik Ekman <erik@kryo.se>
+Author: FrГ©dГ©ric Bernon, Simon Goldschmidt
+Author: Ivan Delamer <delamer@inicotech.com>
+Author: Jani Monoses <jani@iv.ro>
+Author: Jasper Verschueren <jasper.verschueren@apart-audio.com>
+Author: Jim Pettinato
+Author: Joel Cunningham <joel.cunningham@me.com>
+Author: Leon Woestenberg <leon.woestenberg@axon.tv>
+Author: Leon Woestenberg <leon.woestenberg@gmx.net>
+Author: Logan Gunthorpe <logang@deltatee.com>
+Author: Martin Hentschel <info@cl-soft.de>
+Author: Simon Goldschmidt
+Author: Simon Goldschmidt <goldsimon@gmx.de>
+
+lwIP BSD license (official COPYING):
+
+Copyright (c) 2001, 2002 Swedish Institute of Computer Science.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+3. The name of the author may not be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGE.
+
+
+
+Npcap / libpcap API
+https://npcap.com/guide/
+The helper dynamically uses the separately installed Npcap runtime.
+No Npcap DLL, driver or installer is distributed in this application.
+Building uses SDK 1.16 headers and an import library fetched from the official site.
+This product includes software developed by the Computer Systems Engineering Group
+at Lawrence Berkeley Laboratory.
+
+Npcap SDK libpcap/WinPcap API header notices:
+
+Copyright (c) 1993, 1994, 1995, 1996, 1997
+	The Regents of the University of California.  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. All advertising materials mentioning features or use of this software
+   must display the following acknowledgement:
+	This product includes software developed by the Computer Systems
+	Engineering Group at Lawrence Berkeley Laboratory.
+4. Neither the name of the University nor of the Laboratory may be used
+   to endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+Remote packet capture mechanisms and extensions from WinPcap:
+
+Copyright (c) 2002 - 2003
+NetGroup, Politecnico di Torino (Italy)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+3. Neither the name of the Politecnico di Torino nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+Build tools
+Windows SDK and Microsoft compiler are build-time dependencies, licensed separately
+by Microsoft, and are not bundled in this application.
+
+
+BitTorrent engine: jlibtorrent 2.0.12.9 (MIT), libtorrent 2.0.12.0 (BSD 3-Clause).
+Official runtime artifacts: https://dl.frostwire.com/maven/com/frostwire/
+Native dependency and wrapper license texts: lib/licenses.
+https://github.com/frostwire/frostwire-jlibtorrent
+https://www.libtorrent.org/
+
+Bundled JNI runtime dependencies
+OpenSSL 3.6.0 is statically included in the five jlibtorrent platform binaries.
+Copyright (c) 1998-2025 The OpenSSL Project Authors
+Copyright (c) 1995-1998 Eric A. Young, Tim J. Hudson
+Apache License 2.0: lib/licenses/OPENSSL-3.6-LICENSE-APACHE-2.0.txt
+https://github.com/openssl/openssl/tree/openssl-3.6.0
+
+Boost: Boost Software License 1.0, lib/licenses/BOOST-LICENSE-1.0.txt.
+GCC compiler/C++ runtime included in Windows/Linux JNI: GPL version3 together
+with GCC Runtime Library Exception version3.1. Both full texts are retained in
+lib/licenses/GCC-COPYING-GPL-3.0.txt and
+lib/licenses/GCC-RUNTIME-LIBRARY-EXCEPTION-3.1.txt.
+MinGW-w64 winpthreads runtime notices: lib/licenses/MINGW-W64-WINPTHREADS-LICENSE.txt.
+
+Exact bundled-runtime evidence and official license/build sources are recorded
+in lib/licenses/LICENSE-SOURCES.txt. Platform system libraries and the SWIG
+wrapper-generation compiler are not redistributed in this application.
+JSch 2.28.8 — com.github.mwiede:jsch
+Official source: https://github.com/mwiede/jsch
+SHA256: 2afca1357d816028f2ac33f22407d2488a68406682973949cebb1b8ea6688a8b
+
+META-INF/LICENSE.JZlib.txt
+JZlib 0.0.* were released under the GNU LGPL license.  Later, we have switched 
+over to a BSD-style license. 
+
+------------------------------------------------------------------------------
+Copyright (c) 2000-2011 ymnk, JCraft,Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
+     the documentation and/or other materials provided with the distribution.
+
+  3. The names of the authors may not be used to endorse or promote products
+     derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JCRAFT,
+INC. OR ANY CONTRIBUTORS TO THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+META-INF/LICENSE.jBCrypt.txt
+jBCrypt is subject to the following license:
+
+/*
+ * Copyright (c) 2006 Damien Miller <djm@mindrot.org>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+
+
+META-INF/LICENSE.txt
+JSch 0.0.* was released under the GNU LGPL license.  Later, we have switched 
+over to a BSD-style license. 
+
+------------------------------------------------------------------------------
+Copyright (c) 2002-2015 Atsuhiko Yamanaka, JCraft,Inc. 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
+     the documentation and/or other materials provided with the distribution.
+
+  3. The names of the authors may not be used to endorse or promote products
+     derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JCRAFT,
+INC. OR ANY CONTRIBUTORS TO THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

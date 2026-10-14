@@ -1,0 +1,240 @@
+# MultiRoute Resume 3.0 — Guía en español
+
+[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md)
+
+MultiRoute Resume es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
+
+Descargue el paquete de su plataforma desde [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) y extraiga **todo** su contenido. Los lanzadores necesitan el JAR, las bibliotecas y los componentes nativos que acompañan al paquete. El archivo «Source code» de GitHub corresponde al código fuente: compílelo primero o use un paquete listo para ejecutar. Los instaladores comprueban los archivos de la aplicación antes de descargar dependencias.
+
+## 1. Entorno necesario
+
+| Plataforma | Sistema y arquitectura | Java y componentes adicionales |
+| --- | --- | --- |
+| Windows | Windows 11 de 64 bits, x86-64 nativo | Java 17 o posterior de 64 bits; controlador Npcap. El componente de red incluido es Windows x64; Windows ARM64 no está incluido. |
+| Linux | Distribución con glibc, x86-64 o ARM64/aarch64; **glibc 2.38+ para torrent/magnet** | Java 17 o posterior de la arquitectura nativa; `sudo`; compilador C, binutils, pkg-config y archivos de desarrollo de libpcap. Para la ventana: X11, o Wayland con XWayland, y bibliotecas X11/fuentes. Alpine/musl no está incluido. |
+| macOS | El instalador admite macOS 11+; Intel x86-64 o Apple Silicon ARM64. **Torrent/magnet: macOS 15+ en Intel, macOS 26+ en Apple Silicon** por el JNI incluido. | Java 17 o posterior de la arquitectura nativa; Apple Command Line Tools; libpcap del sistema y acceso BPF mediante el componente autorizado con `sudo`. No requiere Homebrew ni Xcode completo. |
+
+Use un **JRE/JDK completo**, con los módulos `java.desktop`, `java.net.http`, `jdk.httpserver` y `java.xml`. El modo `--headless` evita la ventana; sigue necesitando un entorno Java compatible, no una imagen mínima recortada que omita esos módulos. Los lanzadores comprueban módulos y arquitectura.
+
+La biblioteca nativa incluida para torrent impone requisitos adicionales al instalador Java: se comprobó sin ejecutarla que necesita glibc 2.38 en Linux y las versiones macOS indicadas en la tabla. El transporte HTTP, con su componente compilado localmente, tiene requisitos diferentes; no se ha certificado su compatibilidad con todas las distribuciones o versiones anteriores. El instalador advierte de bibliotecas torrent incompatibles, pero **no actualiza el sistema operativo ni sustituye glibc**. Para usar torrent en un equipo incompatible, actualice normalmente a un sistema admitido. No sustituya manualmente la libc para forzar la carga. La biblioteca JNI Linux incluida no exige dinámicamente `libstdc++.so.6` ni versiones `GLIBCXX`/`CXXABI`; otras dependencias de su distribución pueden necesitar sus propios paquetes.
+
+Requisitos comunes:
+
+- Adaptador **Ethernet por cable**, activo y conectado a la misma subred IPv4 que todas las puertas de enlace seleccionadas. Cada router debe tener una salida a Internet que funcione para esa dirección virtual. Para sumar capacidad se necesitan salidas WAN con ancho de banda independiente; compartir la misma conexión o los límites del servidor puede impedir aumentar la velocidad.
+- Una dirección IPv4 libre de esa subred para el tráfico de la aplicación. No utilice la dirección del propio ordenador, de otro dispositivo, de red ni de difusión.
+- Carpeta de programa y carpeta de descargas escribibles por su usuario.
+- El despliegue de Linux/macOS y la instalación de Java privado en Windows comprueban **512 MiB libres**, además del espacio de las descargas. Es una comprobación del instalador, no un límite de archivo. Las herramientas de desarrollo de Apple pueden necesitar bastante más espacio que esa comprobación.
+- Para torrent, espacio adicional para partes y almacenamiento temporal. Reserve varios tamaños del contenido seleccionado: la comprobación conservadora considera las piezas completas, que pueden incluir límites entre archivos, además del destino y los temporales. La cantidad necesaria no es un múltiplo exacto universal del tamaño de los archivos elegidos.
+- **Recomendación:** 4 GB de RAM o más para un uso cómodo; aumente la memoria disponible cuando use muchos routers o torrents simultáneos. No existe una comprobación de RAM mínima fija en este instalador. No necesita una GPU, CUDA ni modelos de IA para descargar.
+
+La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión disponible solamente por VPN y fuentes accesibles únicamente por IPv6 **no son configuraciones admitidas** para este transporte. Tampoco promete sumar el ancho de banda si varios routers comparten la misma conexión, o si el servidor limita la descarga.
+
+## 2. Instalación y primer inicio
+
+### Windows
+
+1. Extraiga el paquete Windows completo a una carpeta permanente y escribible, por ejemplo dentro de su carpeta de usuario.
+2. Haga doble clic en `Deploy-Windows.cmd`. Comprueba Windows/CPU, los archivos de la aplicación, Java y Npcap; abre la aplicación cuando están preparados.
+3. Si falta Java compatible, descarga una versión fijada del **JRE oficial Eclipse Temurin 21**, verifica su SHA-256 y la instala en `runtime/` de la aplicación. No sustituye Java del sistema. Puede reutilizar sin conexión una instalación válida de `JAVA_EXE`, `runtime/bin/java.exe`, `JAVA_HOME` o `PATH`.
+4. Si falta Npcap, descarga su instalador de **npcap.com**, verifica la firma Authenticode y el editor, y abre la instalación **interactiva**. Lea la licencia, elija opciones y confirme **UAC** si desea instalar el controlador. Npcap no se incluye en el ZIP ni se instala silenciosamente; no se da permiso de administrador a toda la aplicación Java.
+
+En los siguientes inicios use `Start-Windows.cmd`: hace las mismas comprobaciones y puede instalar componentes que falten. Se necesita Internet para descargar archivos o dependencias ausentes. Consulte la [instalación oficial de Temurin](https://adoptium.net/installation/) y la [guía de Npcap](https://npcap.com/guide/npcap-users-guide.html).
+
+El lanzador puede usar `JAVA_EXE`, un Java privado en `runtime/bin/java.exe`, `JAVA_HOME` o Java disponible en `PATH`. Para indicar un ejecutable concreto desde `cmd.exe`:
+
+```bat
+set "JAVA_EXE=C:\Program Files\Eclipse Adoptium\jdk-21\bin\java.exe"
+Start-Windows.cmd
+```
+
+Cambie esa ruta por la real. Si define explícitamente un `JAVA_EXE` incorrecto o incompatible, la instalación de Windows se detiene: corrija o quite esa variable y reintente. No ignora silenciosamente el ejecutable elegido. La instalación de Npcap requiere autorización administrativa. Si se instaló con **«Restrict Npcap driver's access to Administrators only»**, el proceso de captura necesita autorización y Npcap puede mostrar otro UAC al abrir el dispositivo. Una sesión sin esos permisos no puede utilizar el controlador. El instalador no cambia el antivirus ni añade excepciones.
+
+Para ejecutar solamente la API:
+
+```bat
+Start-Windows.cmd --headless
+```
+
+### Linux
+
+1. Extraiga el paquete a una carpeta permanente de su usuario.
+2. Abra `Deploy-Linux.desktop`. Si su gestor de archivos no admite este lanzador portátil, abra una terminal en la carpeta y ejecute:
+
+   ```bash
+   bash ./Deploy-Linux.sh
+   ```
+
+3. Introduzca su contraseña cuando `sudo` la solicite. Si faltan dependencias, el instalador usa paquetes concretos mediante `apt-get`, `dnf` o `pacman`; no hace una actualización completa de la distribución. Arch necesita sus repositorios actualizados mediante el mantenimiento normal de la distribución.
+4. El instalador compila el componente de red para su equipo, ejecuta su prueba sin tráfico de red e instala una copia protegida propiedad de `root`.
+5. La ventana Java se inicia con su usuario normal. **Mantenga abierta la terminal** mientras usa la aplicación: la autorización temporal del componente está ligada a esa sesión.
+
+Si encuentra un Java 17+ nativo adecuado, lo reutiliza. Si no, descarga una versión fijada del JRE oficial Temurin 21, comprueba su SHA-256 y la instala **solo para esta aplicación**, sin sustituir Java del sistema. Necesita Internet para descargar Java o paquetes que falten.
+
+Dependencias de compilación habituales:
+
+| Distribución | Paquetes de compilación/red |
+| --- | --- |
+| Debian/Ubuntu | `build-essential`, `binutils`, `libpcap-dev`, `pkg-config` |
+| Fedora | `gcc`, `glibc-devel`, `make`, `binutils`, `libpcap-devel`, `pkgconf-pkg-config` |
+| Arch | `gcc`, `make`, `binutils`, `pkgconf`, `libpcap` |
+
+El instalador también puede añadir `curl`, certificados CA, `tar`, `gzip` y las bibliotecas X11/fontconfig necesarias. Comprueba `libX11`, `libXext`, `libXi`, `libXrender`, `libXtst` y `libfontconfig` para la ventana Java.
+
+Para los siguientes inicios, use la entrada del menú de aplicaciones o:
+
+```bash
+bash ./Start-Linux.sh
+```
+
+Modo API sin escritorio, incluida la primera instalación:
+
+```bash
+bash ./Deploy-Linux.sh --headless
+# En los siguientes inicios:
+bash ./Start-Linux.sh --headless
+```
+
+Ejecute estos lanzadores como su usuario normal, **sin anteponer `sudo`**. Solo el componente de captura recibe autorización administrativa; después de abrir los dispositivos de captura, reduce permanentemente sus privilegios al usuario que lo lanzó.
+
+### macOS
+
+1. Extraiga el paquete macOS completo a una carpeta escribible. No ejecute el instalador dentro del ZIP.
+2. Abra `Deploy-macOS.command` con Terminal. Comprueba macOS, arquitectura nativa, espacio, Java y el componente de red.
+3. Si faltan Apple Command Line Tools, se abrirá el **instalador oficial de Apple**. Pulse **Instalar**, acepte la licencia si está de acuerdo y espere: el lanzador comprueba su disponibilidad durante **hasta 30 minutos** y continúa cuando estén listas. Mantenga Terminal abierta. Si cancela o agota el tiempo, complete la instalación y vuelva a abrir `Deploy-macOS.command`. No requiere Homebrew ni Xcode completo. Consulte la [guía de Apple](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/).
+4. Se reutiliza Java 17+ de la arquitectura nativa o se instala un JRE privado Temurin 21 con SHA-256 comprobada. En Apple Silicon se utiliza ARM64, incluso si Terminal se abrió bajo Rosetta.
+5. Introduzca su contraseña de administrador cuando se solicite para instalar y autorizar el componente de red. El diálogo `sudo` de Terminal normalmente **no muestra caracteres** al escribir: introduzca la contraseña y pulse Return. Autoriza el componente protegido, no toda la aplicación Java como root.
+6. Se crea `~/Applications/MultiRoute Resume.app` y se abre la aplicación.
+
+Después, abra esa aplicación o `Start-macOS.command`. **Mantenga abierta la sesión de Terminal** durante su funcionamiento. Java se ejecuta como su usuario, y el componente abre el dispositivo Ethernet BPF antes de reducir sus privilegios. No ejecute la aplicación completa con `sudo`.
+
+#### Confirmaciones de seguridad de macOS
+
+El paquete **no está firmado con Developer ID ni notarizado**. Tras intentar abrir el lanzador o la aplicación, un aviso de desarrollador no identificado puede requerir **Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente**, y después **Abrir**, si macOS ofrece esa opción. Confirme solo tras comprobar su procedencia. Consulte la [guía de Apple](https://support.apple.com/es-es/102445). En macOS anteriores se usa Preferencias del Sistema → Seguridad y privacidad. Un Mac administrado puede prohibir excepciones.
+
+Si se solicita acceso a la **Red local** para Terminal, Java o la aplicación, permita el acceso para utilizar los routers LAN. La contraseña de administrador y el permiso de red local son confirmaciones distintas del aviso del desarrollador. Al elegir una carpeta puede aparecer un permiso de archivos: autorice el destino que necesita.
+
+No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. Los diálogos reales de Finder/permisos y el funcionamiento en hardware Apple todavía no se han verificado para esta versión.
+
+Modo API, desde la carpeta extraída:
+
+```bash
+./Start-macOS.command --headless
+```
+
+## 3. Configurar la red
+
+La lista inicial contiene `192.168.1.1`, `192.168.1.2`, `192.168.1.3` y `192.168.1.4`, seleccionadas por defecto. La conexión habitual del ordenador **no se añade como una quinta puerta de enlace**.
+
+1. Abra los ajustes de red y cambie esas direcciones si su LAN es diferente.
+2. Configure la dirección virtual de la aplicación; el valor inicial es `192.168.1.70`.
+3. Use la comprobación de dirección y la comprobación de las puertas de enlace antes de descargar. Si otro dispositivo usa la dirección virtual, elija otra. Reserve esa dirección fuera del rango DHCP automático para evitar que el router la asigne posteriormente.
+4. Seleccione una, varias o todas las puertas de enlace que quiera utilizar.
+5. Use **«Añadir puerta de enlace»** para ampliar la lista: admite entre **1 y 32** direcciones distintas. Se pueden añadir o quitar perfiles mientras hay descargas, siempre que los trabajos afectados conserven al menos una puerta de enlace activa. Para que un trabajo activo use la nueva puerta de enlace, inclúyala también en la selección de ese trabajo.
+
+La dirección virtual pertenece al transporte interno de MultiRoute. **No se añade al adaptador del sistema operativo y no cambia sus rutas**, de modo que las demás aplicaciones conservan su conexión habitual. No escriba esa dirección en la configuración de red de Windows, Linux o macOS. El botón **?** junto a la dirección virtual y las ayudas al dejar el cursor sobre los controles explican esta función.
+
+La prueba de velocidad usa hasta **16 MiB o 5 segundos de transferencia**; la preparación de la conexión puede añadir tiempo. Estos límites solo afectan a la prueba. Una descarga normal no tiene ese límite. Sin un enlace HTTP directo adecuado, se utiliza un archivo de prueba de Selectel.
+
+## 4. Descargar, reanudar y gestionar
+
+1. Elija **Español** en el selector de idioma. Los nuevos perfiles comienzan en inglés; también hay ruso, alemán y francés. Se conserva el idioma guardado.
+2. Pegue la URL en el campo largo mediante **Ctrl+V**; en macOS también funciona **Cmd+V**. Existe además el botón de pegar. Puede introducir magnet o abrir un archivo `.torrent`.
+3. Elija la carpeta mediante el selector de su sistema. El destino inicial de nuevos perfiles es la carpeta `Downloads` de su usuario; confirme el destino antes de empezar.
+4. Seleccione las puertas de enlace y pulse el botón de iniciar junto a la URL. Para una página de Hugging Face, WebDAV o Metalink, revise la lista y seleccione los archivos que desee.
+5. Observe la velocidad total, velocidad y volumen de cada puerta de enlace, tiempo transcurrido, tiempo restante aproximado y gráfico opcional.
+
+Los segmentos HTTP son de **20 MiB por defecto**, ajustables entre 1 y 64 MiB. Los routers toman segmentos de una cola común: el más rápido puede descargar más partes. Si un segmento deja de recibir datos durante **60 segundos**, su transferencia se cancela y la parte vuelve al conjunto disponible para otro router. Las piezas torrent utilizan el tamaño definido por sus metadatos, independientemente del tamaño HTTP configurado.
+
+Puede pausar, continuar, cambiar las puertas de enlace de un trabajo activo, ajustar prioridad, límites o programación y cambiar la carpeta de un trabajo detenido. La cola permite dos trabajos activos por defecto. Las descargas que estaban ejecutándose se recuperan pausadas después de reiniciar; use continuar cuando corresponda.
+
+La importación masiva admite listas de enlaces y archivos de texto. También hay búsqueda, filtros, menú contextual y selección de archivos torrent. La distribución voluntaria de un torrent completado está desactivada por defecto; si la activa, configure sus límites de tiempo y proporción.
+
+Al eliminar un trabajo, la casilla para borrar sus archivos está **desmarcada por defecto**. Puede quitarlo del historial y conservar el archivo completo o incompleto; marque la casilla solo si desea borrar los datos de ese trabajo.
+
+## 5. Protocolos y comprobación
+
+| Fuente | Funcionamiento y condiciones |
+| --- | --- |
+| HTTP/HTTPS | Descarga por segmentos cuando el servidor permite rangos y ofrece identidad segura del archivo. Búsqueda de SHA-256 publicada y verificación final cuando está disponible. |
+| Hugging Face | Enlaces a archivos y selección desde repositorios; resoluciones del Hub/Xet utilizadas para la descarga. El acceso privado requiere credenciales del origen y sus permisos correspondientes. |
+| FTP | Modo pasivo EPSV/PASV. FTP sin TLS no cifra las credenciales ni los datos. |
+| FTPS | TLS explícito en la conexión FTP, incluido el canal de datos; no es FTPS implícito. |
+| SFTP | SSH con una huella **SHA256 de la clave del servidor verificada y fijada**. Configure las credenciales y la huella del servidor antes de conectar. No acepta silenciosamente claves desconocidas. |
+| WebDAV | Listado y descarga por HTTPS; seleccione los archivos del listado. |
+| Metalink | Archivos `.meta4`, SHA-256 de confianza, espejos y hashes de partes cuando los metadatos los incluyen. |
+| Torrent/magnet | Piezas verificadas frente a los metadatos torrent, selección/prioridad de archivos y transferencia por las puertas de enlace seleccionadas. |
+
+Configure usuarios, contraseñas, Bearer tokens, cookies o cabeceras permitidas en los ajustes de acceso **del origen** cuando la fuente lo necesite. Estos datos son distintos de las puertas de enlace; sus routers no requieren tokens para este programa. Las credenciales guardadas se cifran localmente y se restringen a su usuario; no coloque contraseñas dentro de la URL.
+
+Si un servidor HTTP ignora los rangos, se utiliza un flujo completo mediante **una** puerta de enlace: no hay distribución ni reanudación por segmentos, y una interrupción exige comenzar ese flujo desde cero. FTP/FTPS/SFTP sin una SHA-256 publicada o proporcionada de confianza también recurren al flujo completo.
+
+No todos los servidores publican SHA-256. El programa distingue entre calcular una suma local y **compararla con la publicada por el origen**. Una suma local por sí sola no confirma que el archivo coincida con el del editor. En torrent, la verificación corresponde a sus metadatos y no identifica por sí sola a su autor. Puede proporcionar una SHA-256 de confianza si dispone de ella.
+
+## 6. API para otras aplicaciones
+
+Mientras MultiRoute esté abierto, su API está en `http://127.0.0.1:8765/api/v1`. Los cuerpos y respuestas son JSON UTF-8. No se necesita un token para crear o gestionar trabajos. Solo admite conexiones locales: no publique este puerto como un servicio remoto.
+
+Comprobación:
+
+```http
+GET http://127.0.0.1:8765/api/v1/health
+```
+
+Crear una descarga mediante `POST http://127.0.0.1:8765/api/v1/jobs`, con `Content-Type: application/json`:
+
+```json
+{
+  "url": "https://example.org/large-file.bin",
+  "directory": "C:/Users/your-user/Downloads",
+  "chunk_mb": 20,
+  "routes": [
+    {"type": "gateway", "gateway": "192.168.1.1", "enabled": true},
+    {"type": "gateway", "gateway": "192.168.1.2", "enabled": true},
+    {"type": "gateway", "gateway": "192.168.1.3", "enabled": true},
+    {"type": "gateway", "gateway": "192.168.1.4", "enabled": true}
+  ]
+}
+```
+
+Sustituya la URL y la carpeta por las reales. En Linux, por ejemplo, use `/home/your-user/Downloads`; en macOS, `/Users/your-user/Downloads`. La carpeta pertenece al ordenador que ejecuta MultiRoute. Indique explícitamente las puertas de enlace en `routes`: las casillas de la ventana no se copian automáticamente al pedido API. No envíe direcciones de agentes ni tokens de router.
+
+`HTTP 201` indica creación del trabajo, no finalización. Conserve el `id` de la respuesta. Consulte `GET /jobs/{id}` hasta `status: "complete"`, o examine `error` si falla. Las velocidades API `speed_bps` están en **bytes por segundo**; para Mbit/s multiplique por 8 y divida entre 1 000 000. La API también permite pausa/continuación, rutas de trabajo, importación por lotes, cola y eventos SSE `/events`.
+
+La configuración inicial de red se establece en la ventana o con `POST /network`; consulte los esquemas en [openapi.yaml](../openapi.yaml) y la descripción detallada [API.ru.txt](../API.ru.txt) (en ruso). Las claves JSON y los valores de estado no cambian al elegir idioma.
+
+## 7. Datos, actualización y desinstalación
+
+| Plataforma | Ajustes, historial y registros | Java privado si se instala | Componente protegido |
+| --- | --- | --- | --- |
+| Windows | `data/` dentro de la carpeta de lanzamiento, salvo selección mediante `data-location.config` o `--data-dir` | `runtime/` en la carpeta de aplicación | `native/windows-x64/gateway-net.exe` dentro del paquete; Npcap es un controlador instalado por separado |
+| Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/runtime` | `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `~/Library/Application Support/MultiRoute Resume/runtime` | `/Library/PrivilegedHelperTools/MultiRouteResume/3.0/gateway-net` |
+
+Los archivos descargados se guardan en el destino elegido, que puede estar fuera de esas carpetas. En Linux el lanzador de menú está en `~/.local/share/applications/MultiRouteResume.desktop`; en macOS la aplicación está en `~/Applications/MultiRoute Resume.app`.
+
+Para actualizar, cierre la aplicación y despliegue el nuevo paquete completo con el lanzador de su plataforma. En Linux, vuelva a ejecutar el despliegue si mueve la carpeta del programa. Conserve el historial y las partes si quiere reanudar; no elimine la carpeta de descargas para desinstalar. Quitar la ventana/lanzador no elimina automáticamente el JRE privado, datos, componentes protegidos ni dependencias instaladas del sistema.
+
+## 8. Problemas frecuentes
+
+| Síntoma | Qué comprobar |
+| --- | --- |
+| Falla la descarga de dependencias | Acceso HTTPS a los lanzamientos oficiales de Temurin en GitHub, `npcap.com` o repositorios de su distribución; espacio libre. Reintente o instale manualmente el componente oficial. No utilice un ejecutable sin verificar. |
+| No encuentra Java, arquitectura incorrecta o no abre la ventana | Java 17+ de la arquitectura nativa; carpeta completa; `JAVA_EXE`/`JAVA_HOME`. En Linux compruebe escritorio/XWayland y bibliotecas; use `--headless` si necesita únicamente API. |
+| Torrent informa `GLIBC_2.38 not found` o rechaza su biblioteca en macOS | Compruebe los mínimos específicos de JNI de la tabla: glibc 2.38+, macOS 15+ Intel o 26+ Apple Silicon. El mínimo del instalador Java no reduce esos requisitos. No copie ni sustituya bibliotecas del sistema manualmente. |
+| Npcap no está disponible o acceso denegado | Instalación oficial del controlador x64 y permisos de captura; autorice el diálogo que requiera la instalación Admin-only. No copie DLL de procedencia desconocida. |
+| No encuentra un adaptador Ethernet | Ethernet activo, dirección virtual y routers en la misma subred; Wi-Fi/VPN-only no sirven como sustitutos. Si dos adaptadores coinciden con esa LAN, resuelva la ambigüedad antes de usarla. |
+| Dirección virtual ocupada | Elija una dirección libre y vuelva a comprobarla. No debe estar configurada en el propio adaptador de la OS. Evite el rango DHCP automático. |
+| Router no disponible o velocidad cero | El router debe responder en la LAN y proporcionar salida a Internet al IP virtual. Pruebe cada puerta de enlace; compruebe URL, permisos del origen, identidad del archivo y mensaje del trabajo. |
+| SFTP rechaza la conexión | Compare la huella SHA256 con un dato fiable del administrador del servidor y configure la misma huella; no desactive la comprobación. |
+| macOS/Linux pierde autorización | Cierre y vuelva a abrir el lanzador en una terminal para renovar `sudo`. Mantenga esa terminal abierta. No ejecute toda la aplicación como `root`. |
+| Carpeta inaccesible o disco lleno | Permisos del destino y espacio para archivo, partes y temporales torrent. Pause antes de cambiar la carpeta de un trabajo. |
+| Puerto 8765 ocupado | El inicio sustituye su instancia anterior. Si el puerto pertenece a otro programa, elija otro mediante `--port 8766`; no cierre procesos ajenos a MultiRoute. |
+| Descarga antigua repetida | Seleccione el trabajo compatible existente y use continuar. Si desea eliminarlo, decida en el diálogo si conserva sus archivos; compruebe el error del trabajo antes de repetirlo. |
+
+Para informar de un fallo, indique versión, plataforma/arquitectura, etapa y mensaje exacto. Oculte credenciales, cookies, URLs privadas y datos personales antes de compartir registros.
+
+## 9. Alcance de la verificación
+
+Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Las pruebas no demuestran el funcionamiento con sus routers físicos ni el comportamiento completo en un Mac real.
+
+macOS requiere compilar y comprobar el componente en el Mac de destino. Esta versión no es un binario universal firmado y probado en hardware Apple. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.

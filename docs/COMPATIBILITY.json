@@ -1,0 +1,401 @@
+{
+  "application": "MultiRoute Resume",
+  "version": "3.0",
+  "audit_date": "2026-10-14",
+  "scope": "Read-only saved release source and launcher review; no user data, logs, media, native execution, packet capture, production modifications, or OS network changes",
+  "source_root": ".",
+  "instruction": "docs/es.md",
+  "critical_claims": [
+    {
+      "claim": "Initial gateways .1/.2/.3/.4, virtual IP .70, maximum 32 profiles",
+      "evidence": [
+        "src/multiroute/GatewayNetwork.java:18-22",
+        "src/multiroute/GatewayNetwork.java:50-64"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Physical Ethernet adapter and one matching LAN required; virtual IP belongs to same subnet and cannot equal a host address",
+      "evidence": [
+        "native/source/gateway_native.c:139-168",
+        "native/source/gateway_posix.c:144-183"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Ethernet frame capture DLT_EN10MB required; macOS specifically checks IFM_ETHER; Wi-Fi not a supported configuration",
+      "evidence": [
+        "native/source/gateway_native.c:176",
+        "native/source/gateway_posix.c:144-158",
+        "native/source/gateway_posix.c:191",
+        "native/source/BUILD-README.txt:3-6"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Application private IPv4 stack, no OS route/address edits; IPv6-only sources and VPN-only transport unsupported",
+      "evidence": [
+        "native/source/BUILD-README.txt:3-6",
+        "src/multiroute/GatewayNetwork.java:16",
+        "native/source/gateway_native.c:1",
+        "native/source/gateway_posix.c:1"
+      ],
+      "status": "confirmed_design_scope"
+    },
+    {
+      "claim": "Windows native runtime is x64; Npcap driver is not bundled; DLL loaded from system Npcap directory",
+      "evidence": [
+        "native/source/BUILD-README.txt:8-13",
+        "native/source/gateway_native.c:557-559"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Npcap admin_only requires administrative capture access and may invoke its UAC helper",
+      "evidence": [
+        "https://npcap.com/guide/npcap-users-guide.html#npcap-installation"
+      ],
+      "status": "confirmed_official_reference",
+      "note": "The application's own EXE does not bundle an elevation installer; do not tell users that non-elevated capture is guaranteed."
+    },
+    {
+      "claim": "Windows Java 17+ x64 required; private runtime, JAVA_EXE, JAVA_HOME or PATH are supported; no automatic Windows Java installer in launcher",
+      "evidence": [
+        "Start-Windows.cmd:11-15",
+        "native/source/BUILD-README.txt:8-13"
+      ],
+      "status": "confirmed",
+      "note": "Launcher checks java -version success, not the major number itself; class target/release requires Java17+. It also retains one developer-specific PyCharm fallback which root should omit from public packaging if changing launchers."
+    },
+    {
+      "claim": "Linux supports glibc x86_64/aarch64, normal user, sudo, desktop or --headless",
+      "evidence": [
+        "linux/deploy-common.sh:13-35",
+        "README-Linux.en.txt:29-33"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Linux desktop uses X11 or Wayland with XWayland; checks X11/fontconfig runtime libraries",
+      "evidence": [
+        "README-Linux.en.txt:31-33",
+        "linux/deploy-common.sh:66-73",
+        "linux/deploy-common.sh:81-88"
+      ],
+      "status": "confirmed_documented_target",
+      "note": "Launcher tests DISPLAY/WAYLAND_DISPLAY presence and libraries; it does not prove XWayland usability."
+    },
+    {
+      "claim": "Linux installs explicit package sets with apt-get/dnf/pacman only when prerequisites missing; no full distro upgrade",
+      "evidence": [
+        "linux/deploy-common.sh:62-88"
+      ],
+      "status": "confirmed",
+      "note": "apt-get update refreshes indexes; pacman -S does not refresh Arch repository indexes. README advises normal distro maintenance."
+    },
+    {
+      "claim": "Linux native Java17+ architecture check, pinned verified private Temurin21 fallback, system Java retained",
+      "evidence": [
+        "linux/deploy-common.sh:38-60",
+        "linux/deploy-common.sh:90-132",
+        "README-Linux.en.txt:11-13"
+      ],
+      "status": "confirmed_source",
+      "note": "No external binary was downloaded or executed for this documentation audit."
+    },
+    {
+      "claim": "macOS installer accepts11+, Intelx86_64/AppleSiliconarm64; nativeJava17+; Rosettadetection. TorrentJNIrequiresnewerOS, detailed separately.",
+      "evidence": [
+        "macOS/deploy-common.sh:12-28",
+        "macOS/deploy-common.sh:42-50",
+        "README-macOS.en.txt:3-6"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "macOS missing AppleCLT prompts official installer, waits up to 30 minutes; no Homebrew/full Xcode requirement",
+      "evidence": [
+        "macOS/deploy-common.sh:140-159",
+        "macOS/deploy-common.sh:162-202",
+        "README-macOS.en.txt:20-29"
+      ],
+      "status": "confirmed_source",
+      "note": "Actual Apple SDK compilation and Finder flow remain unverified in the release."
+    },
+    {
+      "claim": "Deployment needs512MiB free on Linux/macOS; additional downloads space required",
+      "evidence": [
+        "linux/deploy-common.sh:23-28",
+        "macOS/deploy-common.sh:29-38"
+      ],
+      "status": "confirmed",
+      "note": "This is not a Windows enforced free-space preflight."
+    },
+    {
+      "claim": "No hard minimum RAM check or GPU/CUDA requirement;4GB RAM recommendation is guidance, not a measured minimum",
+      "evidence": [
+        "linux/deploy-common.sh:13-35",
+        "macOS/deploy-common.sh:12-40",
+        "Start-Windows.cmd",
+        "src/multiroute/Main.java",
+        "src/multiroute/TorrentEngine.java"
+      ],
+      "status": "review_inference",
+      "note": "Targeted source search found no memory sizing gate, Xmx setup, CUDA/GPU dependencies. 4GB is explicitly labeled a recommendation."
+    },
+    {
+      "claim": "POSIX helper alone receives sudo, opens capture, permanently drops supplementary groups/GID/UID; GUI remains normal user",
+      "evidence": [
+        "src/multiroute/GatewayNetwork.java:208-225",
+        "src/multiroute/GatewayNetwork.java:318-331",
+        "native/source/gateway_posix.c:556-574",
+        "native/source/gateway_posix.c:602-608",
+        "linux/deploy-common.sh:173-180"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Windows default data underlaunch/data; Linux/macOS per-user data/runtime/helper paths",
+      "evidence": [
+        "src/multiroute/Main.java:2192-2209",
+        "linux/deploy-common.sh:29-31",
+        "linux/deploy-common.sh:4",
+        "macOS/deploy-common.sh:22-26",
+        "macOS/deploy-common.sh:6"
+      ],
+      "status": "confirmed",
+      "note": "--data-dir and saved data-location.config can override application data location."
+    },
+    {
+      "claim": "Default new-download destination user.home/Downloads",
+      "evidence": [
+        "src/multiroute/DesktopUI.java:146"
+      ],
+      "status": "confirmed",
+      "note": "Saved desktop preferences can override it."
+    },
+    {
+      "claim": "Five UI languages, English default, Ctrl+V/nativeCmd+V paste",
+      "evidence": [
+        "src/multiroute/I18n.java:29-30",
+        "src/multiroute/DesktopUI.java:149",
+        "src/multiroute/ClipboardSupport.java:38-52"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "HTTP20MiB segments default,1..64MiB configuration;60sec no-data reclaim; torrentmetadata defines actual piece size",
+      "evidence": [
+        "src/multiroute/DesktopUI.java:161",
+        "src/multiroute/Main.java:32",
+        "src/multiroute/Main.java:1203",
+        "src/multiroute/Main.java:1441",
+        "src/multiroute/PieceScheduler.java:11",
+        "src/multiroute/TorrentEngine.java:181"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Speed test16MiB or5s transfer, preparation extra, not a download size limit",
+      "evidence": [
+        "src/multiroute/SpeedTest.java:23-27",
+        "src/multiroute/SpeedTest.java:38-40",
+        "src/multiroute/I18n.java:265"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "Torrent additional free-space guard uses3x neededpiecebytes same-volume/2x differentvolume plus16MiB allowance; destinationtotal plus16MiB",
+      "evidence": [
+        "src/multiroute/TorrentEngine.java:176-179"
+      ],
+      "status": "confirmed",
+      "note": "Conservative guard uses required piece bytes, including piece boundaries; it is not exactly three times selected file length in every torrent."
+    },
+    {
+      "claim": "HTTPnoRange fallback wholefile onegateway restarts0; FTP/FTPS/SFTP no trusted publishedSHA use wholefile",
+      "evidence": [
+        "src/multiroute/Main.java:389-418",
+        "src/multiroute/Main.java:471",
+        "src/multiroute/Main.java:983-992"
+      ],
+      "status": "confirmed_source",
+      "note": "API.ru section10 further explains whole-file behavior; publisherchecksum absence is disclosed."
+    },
+    {
+      "claim": "PassiveFTP, explicitFTPS, SFTPpinnedSHA256key; WebDAV/Metalink/HF preview andhash verification",
+      "evidence": [
+        "src/multiroute/SourceTransfer.java:12-23",
+        "src/multiroute/SourceTransfer.java:117",
+        "src/multiroute/SourceTransfer.java:135-147",
+        "src/multiroute/Main.java:1159-1183",
+        "src/multiroute/Main.java:1494-1495"
+      ],
+      "status": "confirmed_source"
+    },
+    {
+      "claim": "LocalAESGCM origin-scoped sourceauth, owner-restricted ACL; sourcecredentials differ from unnecessary gatewaytokens",
+      "evidence": [
+        "src/multiroute/SourceAuth.java:38-75",
+        "src/multiroute/SourceAuth.java:139-154",
+        "src/multiroute/SourceAuth.java:175",
+        "API.ru.txt:49-50"
+      ],
+      "status": "confirmed_source"
+    },
+    {
+      "claim": "Local-onlyAPI127.0.0.1:8765/api/v1, JSONUTF8, POST/jobs explicitroutes, stableJSONlanguage-independent",
+      "evidence": [
+        "src/multiroute/Main.java:2059-2064",
+        "src/multiroute/Main.java:2192-2201",
+        "API.ru.txt:1-160"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "claim": "RealMac, physicalLANrouter combination and unsignedmacOSrelease remain unverified",
+      "evidence": [
+        "README-macOS.en.txt:126-135",
+        "native/source/BUILD-README.txt:51-58",
+        "README-Linux.en.txt:65-71"
+      ],
+      "status": "confirmed_release_boundary"
+    },
+    {
+      "claim": "FullJava runtime needs java.desktop, java.net.http, jdk.httpserver, java.xml; headless mode does not exempt modules referenced by the application",
+      "evidence": [
+        "src/multiroute/Main.java:3-4",
+        "src/multiroute/Main.java:19-21",
+        "src/multiroute/Transport.java:10-12",
+        "src/multiroute/Metalink.java:8",
+        "src/multiroute/WebDav.java:6"
+      ],
+      "status": "confirmed_source"
+    },
+    {
+      "claim": "Both bundled LinuxJNIlibjlibtorrent2.0.12.9 .so require GLIBC_2.38. No DT_NEEDED libstdc++.so.6, no GLIBCXX/CXXABI verneed entries",
+      "evidence": [
+        "lib/jlibtorrent-linux-x86_64-2.0.12.9.jar!lib/x86_64/libjlibtorrent-2.0.12.9.so",
+        "lib/jlibtorrent-linux-arm64-2.0.12.9.jar!lib/arm64/libjlibtorrent-2.0.12.9.so"
+      ],
+      "status": "confirmed_static_ELF_parse",
+      "note": "Parsed ELF64 SHT_GNU_verneed and SHT_DYNAMIC without executing/extracting any JNI library. HTTP/private-stack compatibility is separate and not certified universally."
+    },
+    {
+      "claim": "Bundled macOSJNI ARM64 Mach-O LC_BUILD_VERSION minos26.0.0; Intelx86_64 minos15.0.0, more restrictive than installer11+",
+      "evidence": [
+        "lib/jlibtorrent-macosx-arm64-2.0.12.9.jar!lib/arm64/libjlibtorrent.arm64-2.0.12.9.dylib",
+        "lib/jlibtorrent-macosx-x86_64-2.0.12.9.jar!lib/x86_64/libjlibtorrent.x86_64-2.0.12.9.dylib"
+      ],
+      "status": "confirmed_static_MachO_parse",
+      "note": "Parsed64bitMachOloadcommands without executing/extracting JNI."
+    }
+  ],
+  "documentation_drift": [
+    {
+      "path": "README-macOS.en.txt",
+      "issue": "NETWORK SETUP says wiredEthernetrecommended and injection WiFi/VPNdriver-dependent; actual native adapter filter requires Ethernet",
+      "resolution_in_new_instruction": "Ethernetrequired; Wi-Fi and VPN-only unsupported",
+      "production_file_modified": false
+    },
+    {
+      "paths": [
+        "README-Linux.en.txt",
+        "README-macOS.en.txt"
+      ],
+      "issue": "Both mention API.en.txt, but no API.en.txt exists in saved release root",
+      "resolution_in_new_instruction": "Link only ../API.ru.txt and ../openapi.yaml",
+      "production_file_modified": false
+    },
+    {
+      "path": "Start-Windows.cmd",
+      "issue": "Java search contains developer-specific PyCharminstallationfallback",
+      "resolution_in_new_instruction": "Document portable JAVA_EXE/private runtime/JAVA_HOME/PATH. Parent may adjust public source launcher separately.",
+      "production_file_modified": false
+    },
+    {
+      "paths": [
+        "README-Linux.en.txt",
+        "README-macOS.en.txt",
+        "native/source/BUILD-README.txt"
+      ],
+      "issue": "Genericglibc/macOS11+ environments omit bundledtorrentJNI ABIminimum: GLIBC2.38 bothLinuxarchitectures; macOSARM26/Intel15",
+      "resolution_in_new_instruction": "Explicit separate installer/JavaHTTP target and fulltorrentJNI requirements, no unsupportedcompatibilitypromise",
+      "production_file_modified": false
+    }
+  ],
+  "external_sources_read": [
+    "https://npcap.com/guide/npcap-users-guide.html",
+    "https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/",
+    "https://adoptium.net/installation/"
+  ],
+  "checks_performed": [
+    "Saved release filenames/read-only source requirements review",
+    "Primary vendor pages reviewed",
+    "Spanishguide APIexample names reviewed against saved API.ru and Main",
+    "JSON audit syntactic parse and markdown relative link structure checks performed before handoff",
+    "StaticELF64DT_NEEDED+GNUverneed andMachO64LC_BUILD_VERSION ABIinspection"
+  ],
+  "not_performed": [
+    "Running production UI or downloads",
+    "Reading user settings, logs or media",
+    "Physicalgateway transfers",
+    "Npcap driver installation",
+    "APT/DNF/Pacman changes",
+    "Apple SDK/Finder/runtime test",
+    "GPU/RAMbenchmark",
+    "GitHub publication by this subagent"
+  ],
+  "native_abi_inspection": {
+    "method": "Pythonstdlibzipfile+struct parsing of production bundled ELF/MachO bytes, no library loading/execution",
+    "linux": [
+      {
+        "architecture": "x86_64",
+        "jar": "jlibtorrent-linux-x86_64-2.0.12.9.jar",
+        "jar_sha256": "588f70db3f2131f7c9a8133cba7883319c29a5434f2ad092ff4e1fb51dc2f088",
+        "elf_machine": 62,
+        "highest_required_glibc": "2.38",
+        "dt_needed": [
+          "libm.so.6",
+          "libc.so.6",
+          "ld-linux-x86-64.so.2"
+        ],
+        "highest_required_glibcxx": null,
+        "highest_required_cxxabi": null
+      },
+      {
+        "architecture": "aarch64",
+        "jar": "jlibtorrent-linux-arm64-2.0.12.9.jar",
+        "jar_sha256": "1e6996c4677b20fb0b5f0ef3a100a03ac9b72eed5c5bb107fc97c9d727c01e2b",
+        "elf_machine": 183,
+        "highest_required_glibc": "2.38",
+        "dt_needed": [
+          "libm.so.6",
+          "libc.so.6",
+          "ld-linux-aarch64.so.1"
+        ],
+        "highest_required_glibcxx": null,
+        "highest_required_cxxabi": null
+      }
+    ],
+    "macos": [
+      {
+        "architecture": "arm64",
+        "jar": "jlibtorrent-macosx-arm64-2.0.12.9.jar",
+        "jar_sha256": "d5d58e81491cae4483aa2a8a2fac2c79d422132a3afa310dff48581fdacca196",
+        "cputype": 16777228,
+        "command": "LC_BUILD_VERSION",
+        "minos": "26.0.0"
+      },
+      {
+        "architecture": "x86_64",
+        "jar": "jlibtorrent-macosx-x86_64-2.0.12.9.jar",
+        "jar_sha256": "cbe2ff76ca7f5aa56b516a9244c26c6ec40b59d6a78abeea85b78d4a73ed076b",
+        "cputype": 16777223,
+        "command": "LC_BUILD_VERSION",
+        "minos": "15.0.0"
+      }
+    ]
+  },
+  "publication_note": "Original 3.0 application/native/dependency bytes retained; setup scripts separately reverified on 2026-10-14."
+}

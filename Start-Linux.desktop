@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=MultiRoute Resume
+Comment=Resumable downloads through selected gateways
+Exec=/bin/bash -c "exec /bin/bash \\"\\$(dirname -- \\"\\$1\\")/Start-Linux.sh\\"" multiroute %k
+Terminal=true
+Icon=folder-download
+Categories=Network;FileTransfer;
