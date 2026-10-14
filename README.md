@@ -53,8 +53,8 @@ Batch import: one URL per line, preview before submission.
 
 ### Native Windows and macOS installers (3.1)
 
-Choose a single installer file from [Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases),
-when it is attached to the release. The application, full Java runtime and compiled
+Choose a single installer file from [release 3.1](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.1).
+The application, full Java runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
@@ -161,10 +161,20 @@ built Java JAR before it downloads prerequisites.
 ## API, verification and limitations
 
 - [API reference and examples](API.ru.txt); [OpenAPI schema](openapi.yaml).
-- [Application checks](CHECKS.ru.md); [application report](TEST-REPORT.json);
+- [Native installer checks for 3.1](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
+  package hashes, Windows native startup and both macOS architectures.
+- Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
+  [application report](TEST-REPORT.json) and
   [deployment and documentation checks](DEPLOYMENT-TEST-REPORT.json).
-- Physical gateways and an actual Mac/Apple SDK/BPF have not been validated in
-  this release cycle. The macOS app is not Developer ID signed or notarised.
+- Both macOS packages were built and their native launcher/API, JNI and protected
+  helper fixtures were checked on real GitHub Mac runners. Windows native
+  startup, instance replacement and profile retention were checked separately.
+  End-user installation/security dialogs, BPF capture and physical gateway WAN
+  transfers remain unverified. Version 3.1 is a prerelease. The packages are
+  unsigned with a publisher identity; macOS packages are not notarised.
+- Installer payloads contain the instructions as saved at the package source
+  commit recorded in the 3.1 report. Current verification results are published
+  in that report and the release notes.
 - The native gateway transport supports public IPv4. Wi-Fi-only/VPN-only
   adapters, IPv6-only sources and local LAN torrent peers are outside this mode.
 - HTTP without Range uses one selected gateway and restarts from zero on a

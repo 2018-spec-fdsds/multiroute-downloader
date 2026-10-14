@@ -72,6 +72,8 @@ Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-s
 | Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
 | Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
 
+Las cinco guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md` o `fr.md` con un editor de texto o visor Markdown.
+
 ### Windows: instalar y abrir
 
 1. Descargue el `.exe` y compare su SHA-256 con la publicada. Abra el archivo y siga el asistente. La aplicación se instala para su cuenta; elija las opciones de accesos directos ofrecidas.
@@ -179,7 +181,7 @@ El paquete **no está firmado con Developer ID ni notarizado**. Tras intentar ab
 
 Si se solicita acceso a la **Red local** para Terminal, Java o la aplicación, permita el acceso para utilizar los routers LAN. La contraseña de administrador y el permiso de red local son confirmaciones distintas del aviso del desarrollador. Al elegir una carpeta puede aparecer un permiso de archivos: autorice el destino que necesita.
 
-No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. Los diálogos reales de Finder/permisos y el funcionamiento en hardware Apple todavía no se han verificado para esta versión.
+No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. El flujo de Finder/permisos del paquete portátil 3.0 sigue sin verificarse en un Mac del usuario. Las compilaciones nativas 3.1 y el inicio/API se comprobaron en runners Mac reales de GitHub; los diálogos del usuario y la captura BPF siguen sin comprobarse.
 
 Modo API, desde la carpeta extraída:
 
@@ -312,7 +314,7 @@ Para informar de un fallo, indique versión, plataforma/arquitectura, etapa y me
 
 ## 9. Alcance de la verificación
 
-Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Las pruebas no demuestran el funcionamiento con sus routers físicos ni el comportamiento completo en un Mac real.
+Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Los paquetes nativos 3.1 se compilaron y verificaron en runners de GitHub Apple Silicon/macOS 26 e Intel/macOS 15: inicio/API, torrent JNI, contenido y pruebas del componente de red. No se han comprobado sus routers físicos, la instalación del usuario, los diálogos Finder/seguridad ni la captura BPF.
 
 macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 3.1 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
 

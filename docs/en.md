@@ -72,6 +72,8 @@ Choose the installer for your system from [GitHub Releases](https://github.com/2
 | Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
 | Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
 
+The five language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md` or `fr.md` in a text or Markdown viewer.
+
 ### Windows: install and open the application
 
 1. Download the `.exe` and check it against the release's published SHA-256. Open it and follow the installation wizard. Installation is for your user account; select the offered shortcut options.
@@ -169,7 +171,7 @@ This release is **not signed with Developer ID or notarized**. After trying to o
 
 If macOS requests **Local Network** access for Terminal, Java or the application, allow it if you want to use the LAN gateways. Administrator authorization and Local Network access are separate from the developer warning. File access prompts may also appear for the folder you select; grant only the destination access you need.
 
-Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. Actual Finder/permission prompts and Apple hardware operation have not been verified for this release.
+Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.1 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
 
 API-only launch from the extracted folder:
 
@@ -304,7 +306,7 @@ When reporting an issue, include version, OS/CPU, stage and exact error. Remove 
 
 Release checks cover Java, protocols with synthetic fixtures, scheduling/resume logic, SHA-256 comparison and offline native self-tests on Windows/POSIX. Installer changes are checked with controlled fixtures; that does not establish successful live installation of every third-party package.
 
-The physical-router combination and a complete real-Mac deployment/Finder flow remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.1 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
+Native 3.1 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.1 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
 
 ## Licence
 

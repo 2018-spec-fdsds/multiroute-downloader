@@ -86,9 +86,9 @@ Une version native appropriée de Java 17+ est réutilisée. Sinon, une JRE offi
 - Si macOS demande l’autorisation d’accéder au réseau local pour les programmes utilisés, vous devez accepter vous-même ces demandes.
 - Si Java 17+ natif est absent, une JRE Temurin 21 à version fixée et vérifiée par SHA-256 est installée dans un dossier privé. Le Java du système n’est pas remplacé.
 
-**Prérequis supplémentaire pour BitTorrent/magnet :** les bibliothèques torrent effectivement fournies ciblent des versions plus récentes : **macOS 26 ou ultérieur sur Apple Silicon, macOS 15 ou ultérieur sur Intel**. macOS 11+ ne signifie donc pas que tous les protocoles de cette publication y sont disponibles. Le lanceur détecte cette limite, avertit sur un système plus ancien et permet le déploiement Java/HTTP, sans mettre à niveau macOS. Une installation réussie ne prouve pas le chargement effectif de la bibliothèque torrent. Vérifiez version et architecture avec `sw_vers -productVersion` et `uname -m` ; l’exécution réelle sur Mac reste à vérifier.
+**Prérequis supplémentaire pour BitTorrent/magnet :** les bibliothèques torrent effectivement fournies ciblent des versions plus récentes : **macOS 26 ou ultérieur sur Apple Silicon, macOS 15 ou ultérieur sur Intel**. macOS 11+ ne signifie donc pas que tous les protocoles de cette publication y sont disponibles. Le lanceur détecte cette limite, avertit sur un système plus ancien et permet le déploiement Java/HTTP, sans mettre à niveau macOS. Une installation réussie ne prouve pas le chargement effectif de la bibliothèque torrent. Vérifiez version et architecture avec `sw_vers -productVersion` et `uname -m` ; l’exécution du paquet portable 3.0 sur un Mac utilisateur reste à vérifier.
 
-Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le comportement de Finder/Gatekeeper et la compilation sur un vrai Mac n’ont pas été vérifiés. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
+Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le parcours portable 3.0 Finder/Gatekeeper sur un Mac utilisateur reste à vérifier. Les builds natifs 3.1 et le lancement/API ont été vérifiés sur de vrais runners Mac GitHub ; les dialogues de sécurité utilisateur et la capture BPF restent à vérifier. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
 
 ### Vérifications automatiques des lanceurs
 
@@ -124,6 +124,8 @@ Choisissez l’installateur de votre système dans les [GitHub Releases](https:/
 | Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** dans Démarrer ou via son raccourci de bureau |
 | Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
 | Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
+
+Les cinq guides et les captures sont inclus pour une consultation hors ligne. Windows : `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS : dans le Finder, choisissez **Afficher le contenu du paquet** sur l’application installée, puis ouvrez `Contents/app/docs/`. Ouvrez `en.md`, `ru.md`, `de.md`, `es.md` ou `fr.md` avec un éditeur de texte ou un lecteur Markdown.
 
 ### Windows : installer et ouvrir
 
@@ -354,7 +356,7 @@ Pour mettre à jour les paquets portables 3.0 Linux/macOS, exécutez le lanceur 
 
 ## Portée des vérifications
 
-Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Un vrai Mac et son comportement BPF/Finder/Gatekeeper n’ont pas été vérifiés pour cette publication. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.1 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
+Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Les paquets natifs 3.1 ont été compilés et vérifiés sur les runners GitHub Apple Silicon/macOS 26 et Intel/macOS 15 : lancement/API, torrent JNI, contenu et tests du composant réseau. Installation utilisateur, dialogues Finder/sécurité et capture BPF restent à vérifier. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.1 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
 
 Rapports : [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Composants tiers et licences : [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
 

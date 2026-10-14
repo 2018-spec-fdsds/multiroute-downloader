@@ -6,7 +6,7 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import platform
 import plistlib
 import shlex
@@ -20,6 +20,30 @@ import xml.etree.ElementTree as ET
 
 
 REQUIRED = {"java.base", "java.desktop", "java.net.http", "java.xml", "jdk.httpserver"}
+ROOT = Path(__file__).resolve().parents[2]
+LANGUAGES = ("en", "ru", "de", "es", "fr")
+SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png")
+
+
+def verify_documentation(app_dir: Path, report: dict) -> None:
+    hashes = report["bundled_documentation_sha256"]
+    required = {"README.md", "README.ru.md", "docs/COMPATIBILITY.json"}
+    required.update("docs/" + language + ".md" for language in LANGUAGES)
+    required.update("docs/images/" + name for name in SCREENSHOTS)
+    assert required.issubset(hashes), "The app must contain five local guides, READMEs, compatibility information and screenshots."
+    for name, expected in hashes.items():
+        relative = PurePosixPath(name)
+        assert not relative.is_absolute() and ".." not in relative.parts, "Invalid documentation manifest path."
+        source = ROOT.joinpath(*relative.parts)
+        bundled = app_dir.joinpath(*relative.parts)
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, "Documentation differs from the saved source: " + name
+        assert hashlib.sha256(bundled.read_bytes()).hexdigest() == expected, "Bundled documentation mismatch: " + name
+    for language in LANGUAGES:
+        guide = (app_dir / "docs" / (language + ".md")).read_text(encoding="utf-8")
+        assert report["project_owner_url"] in guide, "Missing owner link in " + language + " guide."
+        assert "../LICENSE.txt" in guide, "Missing local licence link in " + language + " guide."
+    for name in SCREENSHOTS:
+        assert (app_dir / "docs/images" / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), "Invalid bundled screenshot: " + name
 
 
 def run(command, **kwargs):
@@ -60,6 +84,7 @@ def main() -> None:
     assert hashlib.sha256(license_bytes).hexdigest() == report["license_sha256"]
     assert ("Project owner: " + report["project_owner_url"]).encode("utf-8") in license_bytes
     assert (app_dir / "THIRD-PARTY-NOTICES.txt").is_file()
+    verify_documentation(app_dir, report)
     jars = [app_dir / "MultiRoute-Resume.jar", *sorted((app_dir / "lib").glob("*.jar"))]
     classpath = os.pathsep.join(str(path) for path in jars)
     jdk = Path(os.environ["JAVA_HOME"])
@@ -144,6 +169,13 @@ public final class MacAuthorizationFixture {
                         child.wait(timeout=5)
         expanded = owned / "expanded-package"
         run(["/usr/sbin/pkgutil", "--expand-full", directory / report["package"], expanded])
+        installed_apps = list(expanded.rglob("MultiRoute Resume.app"))
+        assert len(installed_apps) == 1, "The installer must contain exactly one application bundle."
+        installed_app_dir = installed_apps[0] / "Contents" / "app"
+        verify_documentation(installed_app_dir, report)
+        assert (installed_app_dir / "LICENSE.txt").read_bytes() == license_bytes
+        assert (installed_app_dir / "THIRD-PARTY-NOTICES.txt").read_bytes() == (ROOT / "THIRD-PARTY-NOTICES.txt").read_bytes()
+        checks.append("five local language guides, both READMEs, compatibility information and three screenshots match saved sources in the app and expanded installer")
         candidates = [path for path in expanded.rglob("gateway-net") if "/Library/PrivilegedHelperTools/" in path.as_posix()]
         assert len(candidates) == 1
         helper = candidates[0]

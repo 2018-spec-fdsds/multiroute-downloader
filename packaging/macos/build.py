@@ -174,9 +174,13 @@ def main() -> None:
         for path in jars:
             shutil.copy2(path, input_dir / "lib" / path.name)
         write_platform_jar(ROOT / "MultiRoute-Resume.jar", input_dir / "MultiRoute-Resume.jar", jars, version)
-        for name in ("LICENSE.txt", "LICENSING.md", "THIRD-PARTY-NOTICES.txt", "API.ru.txt", "openapi.yaml"):
+        for name in ("LICENSE.txt", "LICENSING.md", "THIRD-PARTY-NOTICES.txt", "API.ru.txt", "openapi.yaml", "README.md", "README.ru.md"):
             if (ROOT / name).is_file():
                 shutil.copy2(ROOT / name, input_dir / name)
+        shutil.copytree(ROOT / "docs", input_dir / "docs")
+        documentation_files = [ROOT / "README.md", ROOT / "README.ru.md"]
+        documentation_files.extend(path for path in sorted((ROOT / "docs").rglob("*")) if path.is_file())
+        documentation_hashes = {path.relative_to(ROOT).as_posix(): sha256(path) for path in documentation_files}
         shutil.copytree(ROOT / "lib/licenses", input_dir / "lib/licenses")
         runtime = stage / "runtime"
         run([jdk / "bin/jlink", "--add-modules", "java.se,jdk.httpserver,jdk.crypto.ec,jdk.unsupported,jdk.charsets,jdk.localedata",
@@ -283,6 +287,7 @@ def main() -> None:
             "gateway_launcher_sha256": launcher_digest, "helper_output_limit_bytes": 65536,
             "license_sha256": sha256(license_file), "project_owner_url": owner_url,
             "installer_displays_license": True,
+            "bundled_documentation_sha256": documentation_hashes,
             "bundled_java": int(found.group(1)), "modules": sorted(present),
             "dependencies": {path.name: sha256(path) for path in jars},
             "developer_id_signed": bool(args.signing_user), "notarized": bool(args.notarize_profile),

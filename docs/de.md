@@ -88,7 +88,7 @@ Vorhandenes passendes Java 17+ wird wiederverwendet. Andernfalls wird eine festg
 
 **Zusätzliche Voraussetzung für BitTorrent/magnet:** Die tatsächlich mitgelieferten Torrent-Bibliotheken haben höhere macOS-Ziele: **Apple Silicon benötigt macOS 26 oder neuer; Intel benötigt macOS 15 oder neuer**. macOS 11+ bedeutet daher nicht, dass alle Protokolle dieser Ausgabe dort verfügbar sind. Der Starter erkennt diese Versionsgrenze, warnt bei einem älteren System und erlaubt die Java-/HTTP-Bereitstellung, ohne macOS zu aktualisieren. Eine erfolgreiche Installation bestätigt keine tatsächlich geladene Torrent-Bibliothek. Betriebssystem und Architektur lassen sich mit `sw_vers -productVersion` und `uname -m` prüfen; die tatsächliche Ausführung auf einem Mac bleibt noch zu verifizieren.
 
-Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Verhalten von Finder/Gatekeeper und die Kompilierung auf einem echten Mac wurden nicht geprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
+Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.1-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
 
 ### Was die Starter automatisch prüfen
 
@@ -124,6 +124,8 @@ Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.c
 | Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
 | Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
 | Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+
+Die fünf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md` oder `fr.md` in einem Text- oder Markdown-Programm öffnen.
 
 ### Windows: installieren und öffnen
 
@@ -354,7 +356,7 @@ Für ein Update der portablen Pakete 3.0 unter Linux/macOS führen Sie den jewei
 
 ## Umfang der Release-Prüfung
 
-Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Ein echter Mac und sein BPF-/Finder-/Gatekeeper-Verhalten wurden in diesem Release nicht geprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.1 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
+Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.1-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.1 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
 
 Prüfberichte: [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Drittanbieter-Komponenten und ihre Lizenzen: [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
 
