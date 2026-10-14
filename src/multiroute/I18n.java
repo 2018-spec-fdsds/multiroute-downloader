@@ -253,6 +253,11 @@ public final class I18n {
         row("Системный трей недоступен. Окно свёрнуто, загрузки продолжаются. Для выхода нажмите «Выйти из приложения».", "The system tray is unavailable. The window is minimized; downloads continue. Use Exit application to quit.", "Das Systemtray ist nicht verfügbar. Das Fenster ist minimiert; Downloads laufen weiter. Zum Beenden Anwendung beenden wählen.", "La bandeja del sistema no está disponible. La ventana está minimizada; las descargas continúan. Use Salir de la aplicación para cerrar.", "La zone de notification est indisponible. La fenêtre est réduite ; les téléchargements continuent. Utilisez Quitter l’application pour fermer.");
         row("Файл", "File", "Datei", "Archivo", "Fichier");
         row("Состояние", "Status", "Status", "Estado", "État");
+        row("Прогресс", "Progress", "Fortschritt", "Progreso", "Progression");
+        row("Загружено: %s из %s · %s", "Downloaded: %s of %s · %s", "Heruntergeladen: %s von %s · %s", "Descargado: %s de %s · %s", "Téléchargé : %s sur %s · %s");
+        row("Получено: %s · размер неизвестен · %s", "Received: %s · size unknown · %s", "Empfangen: %s · Größe unbekannt · %s", "Recibido: %s · tamaño desconocido · %s", "Reçu : %s · taille inconnue · %s");
+        row("Получено: %s · размер неизвестен", "Received: %s · size unknown", "Empfangen: %s · Größe unbekannt", "Recibido: %s · tamaño desconocido", "Reçu : %s · taille inconnue");
+        row("Прогресс каждой загрузки. Если размер неизвестен, показан объём полученных данных. Подробности доступны при выборе строки.", "Progress for each download. If the size is unknown, received bytes are shown. Select a row for details.", "Fortschritt jedes Downloads. Bei unbekannter Größe werden die empfangenen Daten angezeigt. Eine Zeile für Details auswählen.", "Progreso de cada descarga. Si se desconoce el tamaño, se muestran los datos recibidos. Seleccione una fila para ver los detalles.", "Progression de chaque téléchargement. Si la taille est inconnue, le volume reçu est affiché. Sélectionnez une ligne pour les détails.");
         row("Готово", "Complete", "Abgeschlossen", "Completado", "Terminé");
         row("Скорость", "Speed", "Geschwindigkeit", "Velocidad", "Vitesse");
         row("Прошло", "Elapsed", "Vergangen", "Transcurrido", "Écoulé");

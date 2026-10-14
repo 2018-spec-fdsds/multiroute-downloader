@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -57,6 +58,7 @@ import javax.swing.Scrollable;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -77,7 +79,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public final class DesktopUI {
     private static final String[] GATEWAYS = {"192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.4"};
     private static final String SELECTION_POLICY = "all-default-v1";
-    private static final String[] HEADERS = {"Файл", "Состояние", "Готово", "Скорость", "Прошло", "Осталось", "Шлюзы"};
+    private static final String[] HEADERS = {"Файл", "Состояние", "Прогресс", "Скорость", "Прошло", "Осталось", "Шлюзы"};
     private final Main.Manager manager;
     private final Runnable onClose;
     private final ExecutorService background = Executors.newCachedThreadPool(task -> {
@@ -138,6 +140,9 @@ public final class DesktopUI {
     private final Map<String,Map<String,Object>> jobs = new LinkedHashMap<>();
     private final DefaultTableModel jobsModel = new DefaultTableModel(HEADERS, 0) {
         @Override public boolean isCellEditable(int row, int column) { return false; }
+        @Override public Class<?> getColumnClass(int column) {
+            return column == 2 ? DownloadProgress.class : column == 6 ? Integer.class : Object.class;
+        }
     };
 
     final JFrame frame = new JFrame("MultiRoute Resume " + Main.VERSION);
@@ -190,7 +195,18 @@ public final class DesktopUI {
     private JPanel networkEditor;
     private boolean profileChangeRunning;
     private String graphJobId = "";
-    final JTable jobsTable = new JTable(jobsModel);
+    final JTable jobsTable = new JTable(jobsModel) {
+        @Override public boolean getScrollableTracksViewportWidth() {
+            if (getParent() instanceof JViewport viewport) {
+                int minimumWidth = 0;
+                for (int column = 0; column < getColumnCount(); column++)
+                    minimumWidth += getColumnModel().getColumn(column).getMinWidth();
+                return viewport.getWidth() >= minimumWidth;
+            }
+            return super.getScrollableTracksViewportWidth();
+        }
+    };
+    final JScrollPane jobsScroll = new JScrollPane(jobsTable);
     final JProgressBar progressBar = new JProgressBar(0, 1000);
     final JTextArea detailsArea = new JTextArea();
     final JButton pauseButton = translatedButton("Пауза");
@@ -632,17 +648,23 @@ public final class DesktopUI {
         jobFilter.addActionListener(event->applyJobFilter());
 
         jobsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jobsTable.setRowHeight(Math.max(29, jobsTable.getRowHeight() + 9));
+        jobsTable.setRowHeight(Math.max(32, jobsTable.getRowHeight() + 9));
         jobsTable.setAutoCreateRowSorter(false);
         jobsTable.setRowSorter(jobsSorter);
         installJobMenu();
-        jobsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        jobsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jobsTable.setFillsViewportHeight(true);
         DefaultTableCellRenderer plaintext = new DefaultTableCellRenderer();
         plaintext.putClientProperty("html.disable", Boolean.TRUE);
         jobsTable.setDefaultRenderer(Object.class, plaintext);
-        int[] widths = {185, 95, 65, 105, 75, 80, 60};
-        for (int column = 0; column < widths.length; column++)
+        jobsTable.setDefaultRenderer(DownloadProgress.class, new DownloadProgress.Renderer());
+        int[] widths = {210, 110, 160, 110, 80, 95, 70};
+        int[] minimumWidths = {150, 85, 110, 90, 70, 85, 60};
+        for (int column = 0; column < widths.length; column++) {
+            jobsTable.getColumnModel().getColumn(column).setMinWidth(minimumWidths[column]);
             jobsTable.getColumnModel().getColumn(column).setPreferredWidth(widths[column]);
+        }
+        tip(jobsScroll, "Прогресс каждой загрузки. Если размер неизвестен, показан объём полученных данных. Подробности доступны при выборе строки.");
         jobsTable.getSelectionModel().addListSelectionListener(event -> {
             if (!updatingJobs && !event.getValueIsAdjusting()) selectCurrentJob();
         });
@@ -717,9 +739,9 @@ public final class DesktopUI {
         int retryMessageHeight = transferMessageArea.getPreferredSize().height;
         details.setMinimumSize(new Dimension(200, detailTop.getPreferredSize().height
                 + retryMessageHeight + details.getInsets().top + 12));
-        JScrollPane tableScroll = new JScrollPane(jobsTable);
-        tableScroll.setMinimumSize(new Dimension(200, 120));
-        JSplitPane rows = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tableScroll, details) {
+        jobsScroll.setMinimumSize(new Dimension(200, 120));
+        jobsScroll.getVerticalScrollBar().setUnitIncrement(jobsTable.getRowHeight());
+        JSplitPane rows = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsScroll, details) {
             @Override public void doLayout() {
                 // Preserve the action rows when a retry reason appears or the window gets shorter.
                 int topLimit = getHeight() - getDividerSize() - details.getMinimumSize().height;
@@ -1919,6 +1941,11 @@ public final class DesktopUI {
 
     private void updateJobs(List<Object> snapshots) {
         tray.update(snapshots);
+        Point viewportPosition = jobsScroll.getViewport().getViewPosition();
+        int firstVisibleRow = jobsTable.rowAtPoint(new Point(0, viewportPosition.y));
+        String anchorId = firstVisibleRow < 0 ? "" :
+                new ArrayList<>(jobs.keySet()).get(jobsTable.convertRowIndexToModel(firstVisibleRow));
+        int anchorOffset = firstVisibleRow < 0 ? 0 : viewportPosition.y - firstVisibleRow * jobsTable.getRowHeight();
         String keepId = selectedId;
         Map<String,String> priorStatuses = new LinkedHashMap<>();
         for (Map.Entry<String,Map<String,Object>> entry : jobs.entrySet())
@@ -1936,13 +1963,11 @@ public final class DesktopUI {
                 if ("complete".equals(currentStatus)) status("Загрузка завершена: %s", Main.str(job.get("filename")));
                 else if ("failed".equals(currentStatus)) status("Ошибка загрузки: %s", DiagnosticText.arg(Main.str(job.get("error"))));
             }
-            long size = Main.num(job.get("size"), 0);
-            long downloaded = Main.num(job.get("progress_bytes"), Main.num(job.get("downloaded"), 0));
             int channels = 0;
             for (Object routeItem : Main.arr(job.get("routes")))
                 if (Boolean.TRUE.equals(Main.obj(routeItem).get("enabled"))) channels++;
             jobsModel.addRow(new Object[]{Main.str(job.get("filename")), statusName(Main.str(job.get("status"))),
-                    size <= 0 ? (downloaded>0?bytes(downloaded):"—") : Math.min(100, downloaded * 100 / size) + "%",
+                    DownloadProgress.from(job),
                     speed(Main.num(job.get("speed_bps"), 0)), duration(Main.num(job.get("elapsed_ms"), 0)),
                     remaining(job), channels});
             if (id.equals(keepId)) selectedRow = jobsModel.getRowCount() - 1;
@@ -1955,6 +1980,22 @@ public final class DesktopUI {
         updatingJobs = false;
         if (visibleRow >= 0) selectCurrentJob();
         else { selectedId = null; renderDetails(null); }
+        restoreJobsViewport(viewportPosition, anchorId, anchorOffset);
+    }
+
+    /** Keep the first visible job in place, even when sorting or appending jobs on refresh. */
+    private void restoreJobsViewport(Point position, String anchorId, int anchorOffset) {
+        int y = position.y;
+        int modelRow = new ArrayList<>(jobs.keySet()).indexOf(anchorId);
+        if (modelRow >= 0) {
+            int viewRow = jobsTable.convertRowIndexToView(modelRow);
+            if (viewRow >= 0) y = viewRow * jobsTable.getRowHeight() + anchorOffset;
+        }
+        Dimension extent = jobsScroll.getViewport().getExtentSize();
+        Dimension content = jobsTable.getPreferredSize();
+        int x = Math.max(0, Math.min(position.x, content.width - extent.width));
+        y = Math.max(0, Math.min(y, content.height - extent.height));
+        jobsScroll.getViewport().setViewPosition(new Point(x, y));
     }
 
     private void selectCurrentJob() {
@@ -1991,11 +2032,13 @@ public final class DesktopUI {
         I18n.text(elapsedLabel, "Прошло: %s", duration(Main.num(job.get("elapsed_ms"), 0)));
         I18n.text(etaLabel, "Осталось: %s", remaining(job));
         renderGatewaySpeeds(job);
-        int perMille = size <= 0 ? 0 : (int) Math.min(1000, downloaded * 1000 / size);
+        DownloadProgress transferProgress = DownloadProgress.from(job);
+        int perMille = transferProgress.perMille();
         progressBar.setValue(perMille);
-        if(size<0&&Boolean.FALSE.equals(job.get("resumable")))I18n.text(progressBar,"Получено: %s · размер неизвестен",bytes(downloaded));
-        else I18n.text(progressBar, size <= 0 ? unknownSizeProgress(status) : bytes(downloaded) + " / " + bytes(size) +
-                "  ·  " + (perMille / 10.0) + "%");
+        if (size <= 0 && !transferProgress.determinate()) I18n.text(progressBar,
+                downloaded > 0 ? "Получено: %s · размер неизвестен" : unknownSizeProgress(status),
+                downloaded > 0 ? new Object[]{bytes(downloaded)} : new Object[]{});
+        else I18n.text(progressBar, bytes(downloaded) + " / " + bytes(size) + "  ·  " + transferProgress.text());
         renderTransferMessage(job, status);
         pauseButton.setEnabled(!jobActionRunning && List.of("running", "retrying", "queued", "verifying", "seeding").contains(status));
         resumeButton.setEnabled(!jobActionRunning && List.of("paused", "failed").contains(status));
@@ -2067,7 +2110,7 @@ public final class DesktopUI {
 
     private static String conciseError(String error) { return conciseError(error, 105); }
 
-    private static String conciseError(String error, int limit) {
+    static String conciseError(String error, int limit) {
         // URLs can include long signed query strings; the full original remains in details.
         String text = DiagnosticText.render(error).replaceAll("(?i)https?://\\S+", I18n.t("[адрес источника]"))
                 .replaceAll("\\s+", " ").trim();
@@ -2652,7 +2695,7 @@ public final class DesktopUI {
         });
     }
 
-    private static String statusName(String status) {
+    static String statusName(String status) {
         return switch (status) {
             case "queued" -> I18n.t("В очереди");
             case "running" -> I18n.t("Загрузка");
@@ -2666,7 +2709,7 @@ public final class DesktopUI {
         };
     }
 
-    private static String bytes(long size) {
+    static String bytes(long size) {
         if(size<0)return I18n.t("неизвестен");
         if (size < 1024) return I18n.t("%d Б", size);
         if (size < 1024L * 1024) return I18n.t("%.1f КБ", size / 1024.0);

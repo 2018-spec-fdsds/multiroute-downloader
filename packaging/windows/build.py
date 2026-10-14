@@ -109,7 +109,7 @@ def fetch_tool(tool, folder):
     folder.mkdir(parents=True, exist_ok=True)
     if not archive.exists():
         temporary = archive.with_suffix(".download")
-        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Resume-build/3.4"})
+        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Resume-build/3.5"})
         with urllib.request.urlopen(request, timeout=60) as incoming, temporary.open("xb") as outgoing:
             if not incoming.url.startswith("https://"):
                 raise ValueError("Build tool redirect must use HTTPS")
@@ -162,7 +162,7 @@ def copy_file(source, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="3.4")
+    parser.add_argument("--version", default="3.5")
     parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Resume.jar")
     parser.add_argument("--native-helper", type=Path, default=ROOT / "native/windows-x64/gateway-net.exe")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build/windows-package")
@@ -178,7 +178,7 @@ def main():
     if os.name != "nt":
         parser.error("Windows packages must be built on Windows, as required by jpackage.")
     if not args.version.replace(".", "").isdigit():
-        parser.error("Use a numeric application version, for example 3.4.")
+        parser.error("Use a numeric application version, for example 3.5.")
     if args.fetch_tools:
         jdk = fetch_tool("jdk", args.tools_dir.resolve())
         jre = fetch_tool("jre", args.tools_dir.resolve())

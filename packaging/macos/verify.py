@@ -232,6 +232,123 @@ public final class NativeChecksumFixture {
     return check_count
 
 
+def verify_download_progress_fixture(java: Path, jdk: Path, classpath: str, owned: Path) -> int:
+    """Check the actual packaged row DTO/renderer on the EDT without windows or downloads."""
+    fixture = owned / "NativeDownloadProgressFixture.java"
+    fixture.write_text(r'''
+package multiroute;
+import java.awt.Component;
+import java.nio.file.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+public final class NativeDownloadProgressFixture {
+    static int groups;
+    static void require(boolean valid, String message) {
+        if (!valid) throw new AssertionError(message);
+    }
+    static JProgressBar bar(Component renderer) {
+        require(renderer instanceof JPanel, "A reusable panel wraps the progress bar");
+        JPanel panel = (JPanel) renderer;
+        require(panel.getComponentCount() == 1 && panel.getComponent(0) instanceof JProgressBar,
+                "Exactly one progress bar is reused for every row");
+        return (JProgressBar) panel.getComponent(0);
+    }
+    static void exercise() {
+        DownloadProgress known = DownloadProgress.from(Map.of("size", 200L, "downloaded", 175L,
+                "progress_bytes", 25L, "status", "running"));
+        require(known.received() == 25 && known.perMille() == 125 && known.determinate(),
+                "Each row uses its own progress bytes instead of received retry traffic");
+        DownloadProgress fallback = DownloadProgress.from(Map.of("size", 200L, "downloaded", 100L, "status", "paused"));
+        require(fallback.perMille() == 500, "Older rows fall back to downloaded bytes");
+        DownloadProgress unknown = new DownloadProgress(-1, 64, "running", "");
+        require(!unknown.determinate() && unknown.perMille() == 0 && !unknown.text().contains("%"),
+                "Unknown totals show received bytes without an invented percentage");
+        DownloadProgress zero = new DownloadProgress(0, 0, "queued", "");
+        require(!zero.determinate() && zero.text().equals("—"), "A pending zero-sized row has no percentage");
+        DownloadProgress emptyComplete = new DownloadProgress(0, 0, "complete", "");
+        DownloadProgress emptySeeding = new DownloadProgress(0, 0, "seeding", "");
+        require(emptyComplete.determinate() && emptyComplete.perMille() == 1000 && emptySeeding.perMille() == 1000,
+                "Completed zero-byte and seeding rows have completed progress");
+        DownloadProgress failed = new DownloadProgress(100, 40, "failed", "owned transfer issue");
+        require(failed.perMille() == 400 && failed.tooltip().contains("owned transfer issue"),
+                "A failed row retains its own partial percentage and error");
+        require(new DownloadProgress(100, -5, null, null).perMille() == 0
+                && new DownloadProgress(100, 150, "running", "").perMille() == 1000,
+                "Negative bytes and bytes beyond the total remain bounded");
+        DownloadProgress huge = new DownloadProgress(Long.MAX_VALUE, Long.MAX_VALUE - 1, "running", "");
+        require(huge.perMille() == 999 && new DownloadProgress(Long.MAX_VALUE, Long.MAX_VALUE, "complete", "").perMille() == 1000,
+                "Long-sized values never overflow or show an incomplete file as 100 percent");
+        groups++;
+
+        DefaultTableModel mixed = new DefaultTableModel(new Object[][]{
+            {"owned-half", fallback}, {"owned-unknown", unknown}, {"owned-failed", failed}
+        }, new Object[]{"File", "Progress"});
+        JTable mixedTable = new JTable(mixed);
+        mixedTable.setRowSelectionInterval(0, 0);
+        DownloadProgress.Renderer renderer = new DownloadProgress.Renderer();
+        Component first = renderer.getTableCellRendererComponent(mixedTable, fallback, false, false, 0, 1);
+        JProgressBar reused = bar(first);
+        require(reused.getValue() == 500 && reused.getString().equals(fallback.text()), "Known progress renders its own row");
+        Component next = renderer.getTableCellRendererComponent(mixedTable, unknown, true, false, 1, 1);
+        require(next == first && bar(next) == reused && reused.getValue() == 0 && !reused.isIndeterminate()
+                && reused.getString().equals(unknown.text()) && !reused.getString().contains("%"),
+                "Rendering an unknown row resets the reused bar instead of retaining another row's percentage");
+        require(next.getBackground().equals(mixedTable.getSelectionBackground()), "Selection background belongs to the rendered row");
+        mixedTable.moveColumn(0, 1);
+        next = renderer.getTableCellRendererComponent(mixedTable, failed, false, false, 2, 0);
+        require(next == first && bar(next) == reused && reused.getValue() == 400
+                && reused.getToolTipText().contains("owned transfer issue")
+                && reused.getAccessibleContext().getAccessibleName().startsWith("owned-failed"),
+                "A failed row replaces tooltip and accessible filename correctly after column reordering");
+        groups++;
+
+        DefaultTableModel sortedModel = new DefaultTableModel(new Object[][]{
+            {"A", new DownloadProgress(100, 75, "running", "")},
+            {"B", new DownloadProgress(0, 128, "running", "")},
+            {"C", new DownloadProgress(100, 25, "failed", "owned sorted issue")},
+            {"D", new DownloadProgress(-1, 64, "retrying", "")},
+            {"E", emptyComplete}
+        }, new Object[]{"File", "Progress"}) {
+            public Class<?> getColumnClass(int column) { return column == 1 ? DownloadProgress.class : String.class; }
+        };
+        JTable sorted = new JTable(sortedModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(sortedModel);
+        sorted.setRowSorter(sorter);
+        sorter.setSortKeys(List.of(new RowSorter.SortKey(1, SortOrder.ASCENDING)));
+        require(sorted.convertRowIndexToModel(0) == 3 && sorted.convertRowIndexToModel(1) == 1
+                && sorted.convertRowIndexToModel(2) == 2 && sorted.convertRowIndexToModel(3) == 0
+                && sorted.convertRowIndexToModel(4) == 4, "JTable sorts actual progress DTOs by known state and numeric transfer progress");
+        sorter.setRowFilter(RowFilter.regexFilter("^(A|C|E)$", 0));
+        require(sorted.getRowCount() == 3 && sorted.convertRowIndexToModel(0) == 2
+                && sorted.convertRowIndexToModel(1) == 0 && sorted.convertRowIndexToModel(2) == 4,
+                "Filtering preserves the sorted visible-to-model row mapping");
+        sorted.setRowSelectionInterval(1, 1);
+        DownloadProgress visible = (DownloadProgress) sorted.getValueAt(0, 1);
+        Component rendered = renderer.getTableCellRendererComponent(sorted, visible, false, false, 0, 1);
+        require(rendered == first && bar(rendered) == reused && reused.getValue() == 250
+                && reused.getToolTipText().contains("owned sorted issue")
+                && reused.getAccessibleContext().getAccessibleName().startsWith("C"),
+                "A sorted and filtered row renders itself even when a different row is selected");
+        groups++;
+    }
+    public static void main(String[] args) throws Exception {
+        SwingUtilities.invokeAndWait(NativeDownloadProgressFixture::exercise);
+        System.out.println("OWNED_NATIVE_PROGRESS_FIXTURE_OK groups=" + groups);
+    }
+}
+''', encoding="utf-8")
+    run([jdk / "bin/javac", "--release", "17", "-cp", classpath, "-d", owned, fixture])
+    result = run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "progress-home"),
+                  "-Djava.io.tmpdir=" + str(owned), "-cp", str(owned) + os.pathsep + classpath,
+                  "multiroute.NativeDownloadProgressFixture"], capture_output=True, text=True)
+    counted = re.search(r"^OWNED_NATIVE_PROGRESS_FIXTURE_OK groups=(\d+)$", result.stdout, re.MULTILINE)
+    assert counted is not None, "The packaged row progress fixture must finish all headless groups."
+    progress_group_count = int(counted.group(1))
+    assert progress_group_count == 3, "All three packaged row progress groups must pass."
+    return progress_group_count
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--directory", type=Path, required=True)
@@ -400,6 +517,10 @@ public final class NativeDesktopFixture {
         checks.append("real owned Job.finish rejects wrong MD5 or SHA-512, preserves each partial file, retains all three actual hashes and never publishes a final file")
         checks.append("MD5 alone cannot satisfy strong source identity while a SHA-512 reference can")
         checks.append("legacy SHA-256-only state and two-argument discovery retain their source without fabricating MD5 or SHA-512 references")
+        download_progress_fixture_checks = verify_download_progress_fixture(java, jdk, classpath, owned)
+        checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow")
+        checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
+        checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
         fixture = owned / "MacAuthorizationFixture.java"
         fixture.write_text('''
 package multiroute;
@@ -511,13 +632,15 @@ public final class MacAuthorizationFixture {
         checks.append("expanded installer contains the matching helper/checksum and passes native offline self-test")
     result = {
         "ok": True, "architecture": architecture, "version": report["version"], "checks": checks,
-        "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction", "real macOS menu-bar tray interaction"],
+        "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction", "real macOS menu-bar tray interaction", "graphical macOS downloads table layout, scrolling and viewport restoration"],
         "installed_packages": False, "administrator_prompt_executed": False, "routing_or_BPF_permissions_changed": False,
         "controlled_uid_drop_fixture": True,
         "offline_markdown_link_counts": {"app_image": app_markdown_links, "expanded_installer": installed_markdown_links},
         "setup_language": "en", "desktop_shortcut_owned_fixture_checks": shortcut_checks,
         "java_desktop_shortcut_owned_fixture_checks": 7, "headless_tray_fixture_checks": 16,
         "checksum34_fixture_checks": checksum_fixture_checks, "whole_file_algorithms": ["md5", "sha256", "sha512"],
+        "download_progress35_fixture_checks": download_progress_fixture_checks,
+        "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }
     (directory / "macos-verification-report.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

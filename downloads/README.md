@@ -1,6 +1,6 @@
 # MultiRoute Resume installers
 
-**Latest:** [version 3.4](v3.4/). [Version 3.3](v3.3/) is also available. [Version 3.2](v3.2/) is also available. The files below are the previous 3.1 release.
+**Latest:** [version 3.5](v3.5/). [Version 3.4](v3.4/) is also available. [Version 3.3](v3.3/) is also available. [Version 3.2](v3.2/) is also available. The files below are the previous 3.1 release.
 
 The actual installer files are in this folder. Open the file page and click **Download raw file** to save it.
 

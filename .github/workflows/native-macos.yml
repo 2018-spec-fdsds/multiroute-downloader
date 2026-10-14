@@ -20,6 +20,19 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Installer binaries in downloads/ are outputs, not build inputs.
+          sparse-checkout: |
+            .github
+            docs
+            lib
+            linux
+            macOS
+            native
+            packaging
+            scripts
+            src
+            windows
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
