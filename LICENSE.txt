@@ -1,0 +1,62 @@
+MULTIROUTE RESUME LICENSE
+Version 1.0 — 2026-10-14
+
+Copyright (c) 2026 2018-spec-fdsds, for the original portions in which the
+licensor holds copyright or other licensable rights.
+Project owner: https://github.com/2018-spec-fdsds
+Project: https://github.com/2018-spec-fdsds/multiroute-resume
+
+1. Scope
+
+This license applies only to the original MultiRoute Resume application code
+and original documentation. Third-party components are excluded and remain
+under their respective licenses. Nothing here restricts rights granted by
+third-party licenses, applicable law, or the GitHub Terms of Service.
+
+2. Free use
+
+You may download, install and run the application without a license fee, for
+personal use or use within an organization, including business activities.
+You may make copies needed for installation and backup. This permission is
+non-exclusive and does not transfer ownership of the original software.
+
+3. No sale
+
+You may not sell the original software, charge for a license or sublicense to
+it, or redistribute it for payment. This prohibition includes paid bundles
+and modified versions containing the original software. A separate written
+agreement from the licensor is required for such distribution.
+
+Charging for independent services does not by itself amount to selling the
+software, provided no fee is charged for the software or a right to use it.
+
+4. Other permissions and notices
+
+No general right to modify, sublicense or redistribute the original software
+is granted by this license. Obtain the licensor's permission for those uses,
+except where another applicable permission or mandatory law allows them.
+Preserve this license, ownership notices and all third-party notices in any
+copies that you are permitted to make. GitHub's platform permissions remain
+governed by its Terms of Service.
+
+This is a custom license with a restriction on sale. It is not an OSI-approved
+open-source license. The licensor retains rights not expressly granted here
+and may offer separate agreements.
+
+5. Third-party components
+
+Java, JNI libraries, lwIP, JSch and other dependencies retain their upstream
+license terms and notices. See THIRD-PARTY-NOTICES.txt and lib/licenses/.
+This license does not impose its no-sale restriction on those components.
+Npcap is obtained separately from its official source under its own license.
+
+6. Warranty and liability
+
+To the extent permitted by applicable law, the original software is supplied
+AS IS, without warranties of any kind, including fitness for a purpose or
+merchantability. To that same extent, the licensor is not liable for damages
+arising from use or inability to use the original software. Mandatory legal
+rights and liabilities are not excluded.
+
+The English text is the controlling license text. Translated summaries explain
+the conditions; they do not grant additional rights.
