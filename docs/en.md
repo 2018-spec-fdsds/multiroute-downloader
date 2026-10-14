@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.3 — English guide
+# MultiRoute Resume 3.4 — English guide
 
 **English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md)
 
@@ -62,15 +62,15 @@ Common requirements:
 
 Version 3.0's gateway transport uses IPv4 over Ethernet. Wi-Fi-only, VPN-only and IPv6-only sources are **not supported configurations** for it.
 
-## Native installers 3.3: Windows and macOS
+## Native installers 3.4: Windows and macOS
 
 Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.3-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.3-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.3-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.4-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.4-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.4-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
 
 The five language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md` or `fr.md` in a text or Markdown viewer.
 
@@ -171,7 +171,7 @@ This release is **not signed with Developer ID or notarized**. After trying to o
 
 If macOS requests **Local Network** access for Terminal, Java or the application, allow it if you want to use the LAN gateways. Administrator authorization and Local Network access are separate from the developer warning. File access prompts may also appear for the folder you select; grant only the destination access you need.
 
-Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.3 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
+Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.4 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
 
 API-only launch from the extracted folder:
 
@@ -224,7 +224,7 @@ When removing a job, the option to delete its files is **unchecked by default**.
 
 Configure usernames/passwords, Bearer tokens, cookies or permitted headers in **source access** settings if the source requires them. These are source credentials: your routers do not need access tokens for this program. Stored credentials are encrypted locally and restricted to your user; do not put passwords in URLs.
 
-When an HTTP server ignores ranges, a whole-file stream uses **one** gateway: it cannot distribute/resume parts, and interruption restarts that stream from zero. FTP/FTPS/SFTP without a trusted published or supplied SHA-256 also use the whole-file mode.
+When an HTTP server ignores ranges, a whole-file stream uses **one** gateway: it cannot distribute/resume parts, and interruption restarts that stream from zero. FTP/FTPS/SFTP without a trusted published or supplied SHA-256 or SHA-512 also use the whole-file mode.
 
 Not every server publishes SHA-256. A locally calculated hash is distinct from **comparison with a publisher's expected hash**; calculation alone does not prove publisher identity or an exact match. Torrent verification uses its metadata and does not establish the uploader's identity. You can supply an expected SHA-256 from a trusted source.
 
@@ -262,12 +262,12 @@ Set network configuration in the window or with `POST /network` first. See the e
 
 ## 7. Data, updates and removal
 
-### Native installers 3.3
+### Native installers 3.4
 
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.3/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.4/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -306,9 +306,9 @@ When reporting an issue, include version, OS/CPU, stage and exact error. Remove 
 
 Release checks cover Java, protocols with synthetic fixtures, scheduling/resume logic, SHA-256 comparison and offline native self-tests on Windows/POSIX. Installer changes are checked with controlled fixtures; that does not establish successful live installation of every third-party package.
 
-Native 3.3 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.3 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
+Native 3.4 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.4 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
 
-## Tray and exit (3.3)
+## Tray and exit (3.4)
 
 Closing the main window keeps the application and downloads running in the system tray. The icon displays the total download speed of **all jobs**, independent of the selected job or table filter. Hover over it for the exact rate in Mbit/s or Gbit/s (from 1 Gbit/s), plus bytes/s, including speeds up to 10 Gbit/s; the small icon rounds the value. Choose **Open application** from the tray menu to restore the window. On Windows/Linux, clicking the icon also opens it. Choose **Exit application** in the tray menu or in the application window to save state and stop the program. Use this command before installing an update.
 
@@ -320,4 +320,16 @@ Setup creates a desktop shortcut by default. Windows also adds a Start menu entr
 
 You may install and use the original application free of charge for personal use and within organizations, including business activities. **Selling the application, charging for its licence or distributing it for payment is prohibited** without separate permission. The custom licence does not grant general modification or redistribution rights and is not an OSI-approved open-source licence. Third-party components retain their own licences. This is a summary; the controlling English terms are in [LICENSE.txt](../LICENSE.txt).
 
-In 3.3 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
+In 3.4 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
+
+## MD5, SHA-256 and SHA-512 verification
+
+The application calculates all three whole-file sums in one reading pass after assembly. Paste a reference into the main optional checksum field with Ctrl+V or Cmd+V. Its type is detected automatically: 32 hexadecimal characters mean MD5, 64 mean SHA-256, and 128 mean SHA-512. The optional Additional checksums section lets you provide multiple references.
+
+Published references are discovered from supported whole-representation digest headers and sidecars: `filename.md5`, `MD5SUMS`, `filename.sha256`, `SHA256SUMS`, `filename.sha512` and `SHA512SUMS`. A partial HTTP response digest is not treated as a checksum of the complete file. Hugging Face LFS SHA-256 and Metalink metadata retain their source-specific validation.
+
+Every known reference must match before the completed file is published. A mismatch marks the job failed and preserves partial data. Without a reference, the displayed value is a locally calculated sum, not a confirmed match with the source. MD5 detects accidental corruption; use SHA-256 or SHA-512 for stronger integrity checks. MD5 does not replace strong source identity or trusted-mirror requirements.
+
+Torrent piece verification remains mandatory. MD5/SHA-256/SHA-512 values for assembled torrent files are separate whole-file sums. A manual whole-file checksum requires exactly one selected file; for a group, provide a separate reference for each download.
+
+The local API accepts `expected_md5`, `expected_sha256` and `expected_sha512` in `POST /api/v1/jobs`. Results expose `md5`, `sha256`, `sha512` and reference provenance in `checksum_sources`. Existing `expected_sha256` requests remain compatible.

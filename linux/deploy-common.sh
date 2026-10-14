@@ -1,7 +1,7 @@
 #!/bin/bash
 # Sourced by launchers. No commands run merely by sourcing this file.
-MR_RELEASE=3.3
-MR_HELPER_ROOT=/usr/local/libexec/MultiRouteResume/3.3
+MR_RELEASE=3.4
+MR_HELPER_ROOT=/usr/local/libexec/MultiRouteResume/3.4
 MR_JRE_ROOT='jdk-21.0.12.1+1-jre'
 mr_note(){ printf '%s\n' "$*"; }
 mr_die(){ printf '\nMultiRoute Resume: %s\n' "$*" >&2; exit 1; }

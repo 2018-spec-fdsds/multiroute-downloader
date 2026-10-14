@@ -145,6 +145,9 @@ public final class DesktopUI {
     final JTextField filenameField = new JTextField(24);
     final JTextField directoryField = new JTextField(Path.of(System.getProperty("user.home"), "Downloads").toString(), 24);
     final JTextField shaField = new JTextField(24);
+    final JTextField md5Field = new JTextField(24);
+    final JTextField sha512Field = new JTextField(24);
+    final JCheckBox additionalChecksumsCheck = translatedCheckBox("Показать дополнительные эталоны", false);
     final JTextField virtualIpField = new JTextField("192.168.1.70", 15);
     final JComboBox<String> languageCombo = new JComboBox<>(new String[]{"ru", "en", "de", "es", "fr"});
     final JButton logButton = translatedButton("Журнал…");
@@ -377,7 +380,7 @@ public final class DesktopUI {
         JPanel header = new JPanel(new BorderLayout());
         JLabel title = new JLabel("MultiRoute Resume");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 23f));
-        JLabel subtitle = translatedLabel("Докачка через выбранные шлюзы с проверкой SHA-256");
+        JLabel subtitle = translatedLabel("Докачка через выбранные шлюзы · MD5, SHA-256, SHA-512");
         subtitle.setForeground(muted());
         JPanel brand = new JPanel();
         brand.setLayout(new BoxLayout(brand, BoxLayout.Y_AXIS));
@@ -482,9 +485,26 @@ public final class DesktopUI {
         add(panel, c, row++, directoryLine);
         browseButton.addActionListener(event -> browseDirectory());
 
-        label(panel, c, row++, "Ожидаемая SHA-256 (необязательно)");
+        label(panel, c, row++, "Ожидаемая контрольная сумма (необязательно)");
+        add(panel, c, row++, translatedLabel("MD5 · SHA-256 · SHA-512"));
         add(panel, c, row++, shaField);
-        note(panel, c, row++, "HTTP: поиск SHA-256 у источника. Torrent: проверка частей по метаданным раздачи.");
+        note(panel, c, row++, "Тип определяется автоматически: MD5 — 32, SHA-256 — 64, SHA-512 — 128 шестнадцатеричных символов.");
+        add(panel, c, row++, additionalChecksumsCheck);
+        JPanel additionalChecksums = new JPanel(new GridBagLayout());
+        GridBagConstraints checksumGrid = new GridBagConstraints();
+        checksumGrid.gridx = 0; checksumGrid.weightx = 1; checksumGrid.fill = GridBagConstraints.HORIZONTAL;
+        checksumGrid.anchor = GridBagConstraints.NORTHWEST; checksumGrid.insets = new Insets(0, 0, 8, 0);
+        label(additionalChecksums, checksumGrid, 0, "Ожидаемая MD5 (необязательно)");
+        add(additionalChecksums, checksumGrid, 1, md5Field);
+        label(additionalChecksums, checksumGrid, 2, "Ожидаемая SHA-512 (необязательно)");
+        add(additionalChecksums, checksumGrid, 3, sha512Field);
+        additionalChecksums.setVisible(false);
+        add(panel, c, row++, additionalChecksums);
+        additionalChecksumsCheck.addActionListener(event -> {
+            additionalChecksums.setVisible(additionalChecksumsCheck.isSelected());
+            frame.getContentPane().revalidate(); frame.repaint();
+        });
+        note(panel, c, row++, "Файл: MD5, SHA-256, SHA-512 по доступным эталонам. Части BitTorrent проверяются отдельно и автоматически: v1 — SHA-1, v2 — SHA-256 Merkle из метаданных раздачи.");
 
         JPanel chunkLine = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         JLabel chunkLabel = translatedLabel("Сегмент:  ");
@@ -873,7 +893,10 @@ public final class DesktopUI {
         tip(directoryField, "Папка для готовых файлов и скачанных частей. Можно выбрать другую папку системным диалогом.");
         tip(browseButton, "Папка для готовых файлов и скачанных частей. Можно выбрать другую папку системным диалогом.");
         tip(filenameField, "Указать своё имя HTTP-файла. Имена файлов torrent сохраняются из раздачи.");
-        tip(shaField, "Необязательная SHA-256 из доверенного источника. Приложение также ищет сумму у источника и проверяет собранный файл.");
+        tip(shaField, "Вставьте контрольную сумму из доверенного источника: MD5 — 32, SHA-256 — 64 или SHA-512 — 128 шестнадцатеричных символов. Тип определяется автоматически. Ctrl+V вставляет сумму; на macOS также Cmd+V. Эталоны источника также ищутся автоматически.");
+        tip(additionalChecksumsCheck, "Показать поля для дополнительных эталонов MD5 и SHA-512. Введённые значения используются и после сворачивания раздела; очистите поле, чтобы убрать эталон. Все указанные эталоны должны совпасть с файлом.");
+        tip(md5Field, "Необязательная MD5 из доверенного источника: 32 шестнадцатеричных символа. Ctrl+V вставляет сумму; на macOS также Cmd+V. Все указанные эталоны должны совпасть с файлом.");
+        tip(sha512Field, "Необязательная SHA-512 из доверенного источника: 128 шестнадцатеричных символов. Ctrl+V вставляет сумму; на macOS также Cmd+V. Все указанные эталоны должны совпасть с файлом.");
         String segment = "Размер HTTP-части: от 1 до 64 МиБ, по умолчанию 20 МиБ. Шлюзы берут части из общей очереди; для torrent размер частей задан раздачей.";
         tip(chunkSpinner, segment);
         if (chunkSpinner.getEditor() instanceof JSpinner.DefaultEditor editor) tip(editor.getTextField(), segment);
@@ -1609,17 +1632,91 @@ public final class DesktopUI {
         });
     }
 
+    private record ManualChecksumText(String primary, String md5, String sha512) { }
+
+    private ManualChecksumText checksumText() {
+        return new ManualChecksumText(shaField.getText(), md5Field.getText(), sha512Field.getText());
+    }
+
+    /** The primary field detects MD5/SHA-256/SHA-512; extra references are merged without hiding conflicts. */
+    private Map<String,Object> manualChecksums() {
+        Map<String,Object> input = new LinkedHashMap<>();
+        for (String algorithm : List.of("md5", "sha256", "sha512")) input.put("expected_" + algorithm, "");
+        String primary = shaField.getText().trim();
+        if (!primary.isEmpty()) {
+            String algorithm = switch (primary.length()) { case 32 -> "md5"; case 64 -> "sha256"; case 128 -> "sha512"; default -> ""; };
+            if (algorithm.isEmpty() || !validChecksum(algorithm, primary))
+                throw new IllegalArgumentException(I18n.tFor("ru", "Контрольная сумма должна содержать 32, 64 или 128 шестнадцатеричных символов: MD5, SHA-256 или SHA-512."));
+            input.put("expected_" + algorithm, primary);
+        }
+        for (String algorithm : List.of("md5", "sha512")) {
+            String value = (algorithm.equals("md5") ? md5Field : sha512Field).getText().trim();
+            if (!value.isEmpty() && !validChecksum(algorithm, value))
+                throw new IllegalArgumentException(I18n.tFor("ru", switch (algorithm) {
+                    case "md5" -> "Ожидаемая MD5 должна содержать 32 шестнадцатеричных символа";
+                    default -> "Ожидаемая SHA-512 должна содержать 128 шестнадцатеричных символов";
+                }));
+            if (value.isEmpty()) continue;
+            String existing = Main.str(input.get("expected_" + algorithm));
+            if (!existing.isEmpty() && !value.equalsIgnoreCase(existing))
+                throw new IllegalArgumentException("Conflicting manual " + (algorithm.equals("md5") ? "MD5" : "SHA-512") + " checksums");
+            if (existing.isEmpty()) input.put("expected_" + algorithm, value);
+        }
+        return input;
+    }
+
+    private Map<String,Object> jobInput() {
+        Map<String,Object> input = new LinkedHashMap<>(manualChecksums());
+        input.put("url", urlField.getText().trim());
+        input.put("filename", filenameField.getText().trim());
+        input.put("directory", directoryField.getText().trim());
+        input.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
+        return input;
+    }
+
+    private static boolean validChecksum(String algorithm, String value) {
+        int length = switch (algorithm) { case "md5" -> 32; case "sha512" -> 128; default -> 64; };
+        return value.matches("[a-fA-F0-9]{" + length + "}");
+    }
+
+    private static boolean hasManualChecksums(Map<String,Object> input) {
+        return List.of("md5", "sha256", "sha512").stream()
+                .anyMatch(algorithm -> !Main.str(input.get("expected_" + algorithm)).isBlank());
+    }
+
+    private static void requireSingleChecksumFile(Map<String,Object> input, List<?> selected) {
+        if (hasManualChecksums(input) && selected.size() != 1)
+            throw new IllegalArgumentException(I18n.tFor("ru", "Ожидаемые контрольные суммы относятся к одному файлу. Выберите один файл или очистите поля MD5, SHA-256 и SHA-512 для групповой загрузки."));
+    }
+
+    private boolean checksumsCurrent(Map<String,Object> input) {
+        try {
+            Map<String,Object> current = manualChecksums();
+            return List.of("md5", "sha256", "sha512").stream()
+                    .allMatch(algorithm -> Main.str(input.get("expected_" + algorithm)).equals(Main.str(current.get("expected_" + algorithm))));
+        } catch (IllegalArgumentException changed) { return false; }
+    }
+
+    private void requireCurrentChecksums(Map<String,Object> input) throws Exception {
+        requireCurrentChecksums(input, null);
+    }
+
+    private void requireCurrentChecksums(Map<String,Object> input, ManualChecksumText captured) throws Exception {
+        AtomicBoolean current = new AtomicBoolean();
+        SwingUtilities.invokeAndWait(() -> current.set(!closing && checksumsCurrent(input)
+                && (captured == null || captured.equals(checksumText()))));
+        if (!current.get()) throw failure("Ссылка или настройки изменились; начните загрузку повторно");
+    }
+
     private void createJob() {
         if (closing || createRunning) return;
         String url = urlField.getText().trim();
-        String filename = filenameField.getText().trim();
-        String directory = directoryField.getText().trim();
-        String expected = shaField.getText().trim();
         if (url.isEmpty()) { showError("Укажите ссылку на файл"); return; }
         final boolean torrent = TorrentSource.isTorrentSource(url);
-        if (!expected.isEmpty() && !Main.SHA256.matcher(expected).matches()) {
-            showError("Ожидаемая SHA-256 должна содержать 64 шестнадцатеричных символа"); return;
-        }
+        final ManualChecksumText capturedChecksums = checksumText();
+        final Map<String,Object> input;
+        try { input = jobInput(); }
+        catch (IllegalArgumentException invalid) { showError("%s", errorArgument(invalid)); return; }
         List<SpeedTarget> selectedGateways = new ArrayList<>();
         for (RouteRow route : routes) if (route.checkBox.isSelected()) {
             String problem = gatewayProblem(route);
@@ -1633,12 +1730,6 @@ public final class DesktopUI {
         final NetworkInput network;
         try { network = selectedGateways.isEmpty() ? null : networkInput(); }
         catch (IllegalArgumentException error) { showError("%s", errorArgument(error)); return; }
-        Map<String,Object> input = new LinkedHashMap<>();
-        input.put("url", url);
-        input.put("filename", filename);
-        input.put("directory", directory);
-        input.put("expected_sha256", expected);
-        input.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
         if (torrent) input.put("source_type", "torrent");
         createRunning = true;
         createButton.setEnabled(false);
@@ -1670,14 +1761,14 @@ public final class DesktopUI {
                     selected.put("enabled", true);
                     selectedRoutes.add(selected);
                 }
-                requireCurrentCreate(input, selectedGateways, urlGeneration, network);
+                requireCurrentCreate(input, selectedGateways, urlGeneration, network, capturedChecksums);
                 input.put("routes", selectedRoutes);
                 if (torrent) {
                     SwingUtilities.invokeLater(() -> {
                         if (!closing) status("Получаем сведения о раздаче через выбранный шлюз…");
                     });
                     Map<String,Object> inspection = torrentInspector.inspect(url, Main.obj(selectedRoutes.get(0)));
-                    requireCurrentCreate(input, selectedGateways, urlGeneration, network);
+                    requireCurrentCreate(input, selectedGateways, urlGeneration, network, capturedChecksums);
                     AtomicReference<List<String>> selectedFiles = new AtomicReference<>();
                     SwingUtilities.invokeAndWait(() -> {
                         if (!closing) {
@@ -1690,22 +1781,24 @@ public final class DesktopUI {
                         return;
                     }
                     if (selectedFiles.get().isEmpty()) throw failure("Выберите хотя бы один файл раздачи");
+                    requireSingleChecksumFile(input, selectedFiles.get());
                     input.put("selected_files", List.copyOf(selectedFiles.get()));
                     input.put("info_hash_v1", Main.str(inspection.get("info_hash_v1")));
                     input.put("info_hash_v2", Main.str(inspection.get("info_hash_v2")));
                 } else if (Metalink.isMetalink(url) || WebDav.isWebDav(url)) {
                     Map<String,Object> inspection=manager.inspectSource(input);
-                    requireCurrentCreate(input,selectedGateways,urlGeneration,network);
+                    requireCurrentCreate(input,selectedGateways,urlGeneration,network,capturedChecksums);
                     AtomicReference<List<String>> chosen=new AtomicReference<>();
                     SwingUtilities.invokeAndWait(()->{if(!closing)chosen.set(SourceFileDialog.choose(frame,inspection));});
                     if(chosen.get()==null){SwingUtilities.invokeLater(()->finishCreate("Выбор файлов отменён"));return;}
+                    requireSingleChecksumFile(input, chosen.get());
                     input.put("selected_files",chosen.get());
                 } else if (HubSource.isListingUrl(url)) {
                     SwingUtilities.invokeLater(() -> {
                         if (!closing) status("Получаем список файлов Hugging Face…");
                     });
                     Map<String,Object> inspection = hubInspector.inspect(url, Main.obj(selectedRoutes.get(0)));
-                    requireCurrentCreate(input, selectedGateways, urlGeneration, network);
+                    requireCurrentCreate(input, selectedGateways, urlGeneration, network, capturedChecksums);
                     AtomicReference<List<String>> selectedFiles = new AtomicReference<>();
                     SwingUtilities.invokeAndWait(() -> {
                         if (!closing) {
@@ -1718,10 +1811,11 @@ public final class DesktopUI {
                         return;
                     }
                     if (selectedFiles.get().isEmpty()) throw failure("Выберите хотя бы один файл");
+                    requireSingleChecksumFile(input, selectedFiles.get());
                     input.put("selected_files", List.copyOf(selectedFiles.get()));
                     input.put("revision", Main.str(inspection.get("revision")));
                 }
-                requireCurrentCreate(input, selectedGateways, urlGeneration, network);
+                requireCurrentCreate(input, selectedGateways, urlGeneration, network, capturedChecksums);
                 Map<String,Object> createInput = new LinkedHashMap<>(input);
                 if (torrent) createInput.put("filename", "");
                 Map<String,Object> created = manager.createFromSource(createInput);
@@ -1762,13 +1856,19 @@ public final class DesktopUI {
     /** Inspecting a large repository must not later start a stale URL or edited configuration. */
     private void requireCurrentCreate(Map<String,Object> input, List<SpeedTarget> targets,
             int generation, NetworkInput network) throws Exception {
+        requireCurrentCreate(input, targets, generation, network, null);
+    }
+
+    private void requireCurrentCreate(Map<String,Object> input, List<SpeedTarget> targets,
+            int generation, NetworkInput network, ManualChecksumText capturedChecksums) throws Exception {
         AtomicBoolean unchanged = new AtomicBoolean(true);
         SwingUtilities.invokeAndWait(() -> {
             if (closing || generation != speedUrlGeneration
                     || !Main.str(input.get("url")).equals(urlField.getText().trim())
                     || !Main.str(input.get("filename")).equals(filenameField.getText().trim())
                     || !Main.str(input.get("directory")).equals(directoryField.getText().trim())
-                    || !Main.str(input.get("expected_sha256")).equals(shaField.getText().trim())
+                    || !checksumsCurrent(input)
+                    || (capturedChecksums != null && !capturedChecksums.equals(checksumText()))
                     || Main.num(input.get("chunk_mb"), 0) != ((Number) chunkSpinner.getValue()).longValue())
                 unchanged.set(false);
             if (network != null) {
@@ -1911,23 +2011,8 @@ public final class DesktopUI {
                 .append(Main.str(job.get("filename"))).append("\n");
         if(Boolean.FALSE.equals(job.get("resumable"))||Boolean.FALSE.equals(job.get("distribution_supported")))
             info.append(I18n.t("Источник не поддерживает запросы частей. Передача выполняется одним шлюзом; после обрыва этот файл начнёт скачиваться заново.\n"));
-        String expected = Main.str(job.get("expected_sha256"));
-        String actual = Main.str(job.get("sha256"));
-        String source = Main.str(job.get("checksum_source"));
-        if ("torrent".equals(job.get("kind"))) renderTorrentDetails(info, job, status, expected, actual);
-        else {
-            info.append(I18n.t("\nПРОВЕРКА SHA-256\n"));
-            if (!actual.isEmpty()) info.append(I18n.t("Полученная: ")).append(actual).append("\n");
-            if (!expected.isEmpty()) {
-                info.append(I18n.t("Эталон:    ")).append(expected).append("\n");
-                info.append(I18n.t("Источник эталона: ")).append(source.isEmpty() || source.equals("manual")
-                        ? I18n.t("указан вручную") : source).append("\n");
-                info.append(I18n.t("Результат: ")).append("complete".equals(status) && actual.equalsIgnoreCase(expected)
-                        ? I18n.t("совпадает ✓") : I18n.t("ожидается проверка")).append("\n");
-            } else if (!actual.isEmpty()) {
-                info.append(I18n.t("Эталон источником не опубликован · рассчитана только локальная сумма\n"));
-            } else info.append(I18n.t("Поиск эталона у источника и проверка выполняются автоматически.\n"));
-        }
+        if ("torrent".equals(job.get("kind"))) renderTorrentDetails(info, job, status);
+        else renderChecksums(info, job);
         info.append(I18n.t("\nШЛЮЗЫ\n"));
         List<Object> jobRoutes = job.get("routes") instanceof List<?> ? Main.arr(job.get("routes")) : List.of();
         for (Object item : jobRoutes) {
@@ -2033,11 +2118,42 @@ public final class DesktopUI {
         return "≈ " + duration(seconds.longValue() * 1000);
     }
 
-    private static void renderTorrentDetails(StringBuilder info, Map<String,Object> job, String status,
-            String expected, String actual) {
+    /** A calculated local digest is distinct from a comparison with a known reference. */
+    private static void renderChecksums(StringBuilder info, Map<String,Object> job) {
+        Map<String,Object> sources = checksumSources(job);
+        Map<String,Object> warnings = job.get("checksum_warnings") instanceof Map<?,?> ? Main.obj(job.get("checksum_warnings")) : Map.of();
+        for (String algorithm : List.of("md5", "sha256", "sha512")) {
+            String name = switch (algorithm) { case "md5" -> "MD5"; case "sha512" -> "SHA-512"; default -> "SHA-256"; };
+            String actual = Main.str(job.get(algorithm)), expected = Main.str(job.get("expected_" + algorithm));
+            String source = Main.str(sources.get(algorithm));
+            if (source.isBlank() && algorithm.equals("sha256")) source = Main.str(job.get("checksum_source"));
+            info.append(I18n.t("\nПРОВЕРКА %s\n", name));
+            info.append(I18n.t("Полученная: ")).append(actual.isEmpty() ? I18n.t("ожидается расчёт") : actual).append('\n');
+            info.append(I18n.t("Эталон:    ")).append(expected.isEmpty() ? I18n.t("отсутствует") : expected).append('\n');
+            info.append(I18n.t("Источник эталона: ")).append(expected.isEmpty() ? I18n.t("отсутствует")
+                    : source.equals("manual") ? I18n.t("указан вручную") : source.isBlank() ? I18n.t("не указан") : source).append('\n');
+            String result;
+            if (expected.isEmpty()) result = actual.isEmpty() ? I18n.t("ожидается расчёт; эталона нет")
+                    : I18n.t("локальная сумма; эталона нет");
+            else if (actual.isEmpty()) result = I18n.t("ожидается проверка");
+            else if (validChecksum(algorithm, actual) && validChecksum(algorithm, expected) && actual.equalsIgnoreCase(expected))
+                result = I18n.t("совпадает ✓");
+            else result = I18n.t("НЕ СОВПАДАЕТ ✗");
+            info.append(I18n.t("Результат: ")).append(result).append('\n');
+            String warning = Main.str(warnings.get(algorithm));
+            if (!warning.isBlank()) info.append(I18n.t("Поиск эталона: ")).append(DiagnosticText.render(warning)).append('\n');
+        }
+    }
+
+    private static Map<String,Object> checksumSources(Map<String,Object> value) {
+        return value.get("checksum_sources") instanceof Map<?,?> ? Main.obj(value.get("checksum_sources")) : Map.of();
+    }
+
+    private static void renderTorrentDetails(StringBuilder info, Map<String,Object> job, String status) {
         info.append(I18n.t("Тип: BitTorrent\n"));
         info.append(I18n.t("Пиры: %d · сиды: %d\n",Main.num(job.get("peers"),0),Main.num(job.get("seeds"),0)));
-        for(Object raw:Main.arr(job.get("tracker_states"))){Map<String,Object> tracker=Main.obj(raw);
+        List<Object> trackers = job.get("tracker_states") instanceof List<?> ? Main.arr(job.get("tracker_states")) : List.of();
+        for(Object raw:trackers){Map<String,Object> tracker=Main.obj(raw);
             info.append(I18n.t("Шлюз %s",Main.str(tracker.get("gateway")))).append(" · ")
                 .append(I18n.t("active".equals(tracker.get("status"))?"Трекер активен":"Ожидание трекера")).append('\n');}
         if(Main.num(job.get("uploaded_bytes"),0)>0)info.append(I18n.t("Отдано: %s\n",bytes(Main.num(job.get("uploaded_bytes"),0))));
@@ -2048,23 +2164,36 @@ public final class DesktopUI {
         info.append(I18n.t("Контрольные суммы частей берутся из метаданных раздачи.\n"));
         info.append(I18n.t("Результат: ")).append(Boolean.TRUE.equals(job.get("pieces_verified"))
                 ? I18n.t("части проверены ✓") : I18n.t("ожидается проверка частей")).append("\n");
-        info.append(I18n.t("\nЛОКАЛЬНЫЕ SHA-256 ФАЙЛОВ\n"));
-        List<Object> selected = Main.arr(job.get("selected_files"));
-        boolean listed = false;
-        for (Object value : Main.arr(job.get("files"))) {
+        info.append(I18n.t("\nКОНТРОЛЬНЫЕ СУММЫ ФАЙЛОВ\n"));
+        List<Object> selected = job.get("selected_files") instanceof List<?> ? Main.arr(job.get("selected_files")) : List.of();
+        List<Map<String,Object>> files = new ArrayList<>();
+        List<Object> torrentFiles = job.get("files") instanceof List<?> ? Main.arr(job.get("files")) : List.of();
+        for (Object value : torrentFiles) {
             Map<String,Object> file = Main.obj(value);
             String path = Main.str(file.get("path"));
             if (Boolean.TRUE.equals(file.get("pad")) || (!selected.isEmpty() && !selected.contains(path))) continue;
-            String sha = Main.str(file.get("sha256"));
-            info.append(path).append(" — ").append(sha.isEmpty() ? I18n.t("сумма появится после завершения") : sha).append("\n");
-            listed = true;
+            files.add(file);
         }
-        if (!listed) info.append(actual.isEmpty() ? I18n.t("Суммы будут рассчитаны после сборки файлов.\n") : actual + "\n");
-        if (!expected.isEmpty()) {
-            info.append(I18n.t("\nУказанная SHA-256 одного файла: ")).append(expected).append("\n");
-            info.append(I18n.t("Сверка: ")).append("complete".equals(status) && actual.equalsIgnoreCase(expected)
-                    ? I18n.t("совпадает ✓") : I18n.t("ожидается проверка")).append("\n");
+        for (Map<String,Object> file : files) {
+            info.append('\n').append(Main.str(file.get("path"))).append('\n');
+            Map<String,Object> digest = new LinkedHashMap<>(file);
+            if (files.size() == 1) {
+                Map<String,Object> sources = new LinkedHashMap<>(checksumSources(file));
+                for (String algorithm : List.of("md5", "sha256", "sha512")) {
+                    if (Main.str(digest.get(algorithm)).isBlank()) digest.put(algorithm, Main.str(job.get(algorithm)));
+                    String expected = Main.str(job.get("expected_" + algorithm));
+                    if (!expected.isBlank()) {
+                        digest.put("expected_" + algorithm, expected);
+                        String source = Main.str(checksumSources(job).get(algorithm));
+                        if (source.isBlank() && algorithm.equals("sha256")) source = Main.str(job.get("checksum_source"));
+                        sources.put(algorithm, source);
+                    }
+                }
+                digest.put("checksum_sources", sources);
+            }
+            renderChecksums(info, digest);
         }
+        if (files.isEmpty() || (files.size() > 1 && hasManualChecksums(job))) renderChecksums(info, job);
     }
 
     private static final String VIRTUAL_IP_HELP = "Свободный IPv4 адрес в вашей локальной сети для трафика приложения через выбранные шлюзы. Например, 192.168.1.70. Адрес должен быть в одной подсети со шлюзами. Он используется внутри приложения и не добавляется сетевому адаптеру ОС; системные маршруты и подключение других программ не меняются.";
@@ -2252,6 +2381,10 @@ public final class DesktopUI {
     private void importLinks(String initial) {
         List<String> urls=BulkImportDialog.choose(frame,initial);if(urls==null||urls.isEmpty())return;
         if(createRunning){showError("Дождитесь подготовки текущей загрузки");return;}
+        final Map<String,Object> expectedChecksums;
+        final ManualChecksumText capturedChecksums = checksumText();
+        try { expectedChecksums=manualChecksums();requireSingleChecksumFile(expectedChecksums,urls); }
+        catch (IllegalArgumentException invalid) { showError("%s",errorArgument(invalid));return; }
         NetworkInput network;try{network=networkInput();}catch(Exception error){showError("%s",errorArgument(error));return;}
         List<SpeedTarget> selected=routes.stream().filter(row->row.checkBox.isSelected()&&gatewayProblem(row)==null).map(SpeedTarget::new).toList();
         if(selected.isEmpty()){showError("Выберите хотя бы один шлюз");return;}
@@ -2265,12 +2398,15 @@ public final class DesktopUI {
             List<Map<String,Object>> inputs=new ArrayList<>();List<Integer> sourceIndices=new ArrayList<>();List<String> preparationErrors=new ArrayList<>();
             for(int sourceIndex=0;sourceIndex<urls.size();sourceIndex++){
                 String url=urls.get(sourceIndex);Map<String,Object> input=new LinkedHashMap<>();input.put("url",url);input.put("directory",directory);input.put("chunk_mb",chunk);input.put("routes",selectedRoutes);
+                input.putAll(expectedChecksums);
                 try{
                     boolean torrent=TorrentSource.isTorrentSource(url),hub=HubSource.isListingUrl(url),generic=Metalink.isMetalink(url)||WebDav.isWebDav(url);
                     if(torrent||hub||generic){
                         Map<String,Object> inspection=manager.inspectSource(input);AtomicReference<List<String>> chosen=new AtomicReference<>();
                         SwingUtilities.invokeAndWait(()->{if(!closing)chosen.set(torrent?torrentFileSelector.choose(frame,inspection):hub?hubFileSelector.choose(frame,inspection):SourceFileDialog.choose(frame,inspection));});
                         if(chosen.get()==null){SwingUtilities.invokeLater(()->{bulkButton.setEnabled(true);finishCreate("Выбор файлов отменён");});return;}
+                        requireCurrentChecksums(expectedChecksums,capturedChecksums);
+                        requireSingleChecksumFile(input,chosen.get());
                         input.put("selected_files",chosen.get());if(torrent)input.put("source_type","torrent");
                         if(hub)input.put("revision",Main.str(inspection.get("revision")));
                     }
@@ -2278,6 +2414,7 @@ public final class DesktopUI {
                 }catch(Exception error){preparationErrors.add((sourceIndex+1)+": "+DiagnosticText.render(message(error)));}
             }
             if(closing)return;
+            requireCurrentChecksums(expectedChecksums,capturedChecksums);
             List<Object> combined=new ArrayList<>();long successCount=0;
             for(int offset=0;offset<inputs.size();offset+=128){
                 Map<String,Object> batch=manager.batchCreate(inputs.subList(offset,Math.min(inputs.size(),offset+128)));

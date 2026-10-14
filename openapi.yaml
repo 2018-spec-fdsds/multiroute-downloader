@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MultiRoute Resume local API
-  version: '3.0'
+  version: '3.4'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
 servers:
@@ -986,6 +986,17 @@ components:
       - url
       - routes
       properties:
+        expected_md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+          description: Optional expected whole-file MD5. It detects accidental corruption and does not
+            replace strong source identity, mirror trust or BitTorrent piece verification. Manual whole-file
+            checksums require exactly one selected file.
+        expected_sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+          description: Optional expected whole-file SHA-512. Every supplied or discovered checksum must
+            match before publishing the completed file. Legacy expected_sha256 remains supported.
         url:
           type: string
           description: HTTP/HTTPS/FTP/explicit FTPS/SFTP file, webdavs:// source, HTTPS Metalink, Hugging Face,
@@ -1099,6 +1110,14 @@ components:
       - path
       - size
       properties:
+        md5:
+          type: string
+          pattern: ^$|^[a-f0-9]{32}$
+          description: Local whole-file MD5 after assembly; separate from mandatory torrent piece checks.
+        sha512:
+          type: string
+          pattern: ^$|^[a-f0-9]{128}$
+          description: Local whole-file SHA-512 after assembly; separate from mandatory torrent piece checks.
         index:
           type: integer
         path:
@@ -1272,6 +1291,49 @@ components:
       - filename
       - status
       properties:
+        expected_md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+        expected_sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+        md5:
+          type: string
+          pattern: ^$|^[a-f0-9]{32}$
+          description: Calculated local whole-file MD5; empty before calculation. Calculation alone is
+            distinct from comparison with a publisher or manual reference.
+        sha512:
+          type: string
+          pattern: ^$|^[a-f0-9]{128}$
+          description: Calculated local whole-file SHA-512; empty before calculation. Multiple selected
+            torrent files expose their individual values in files.
+        checksum_sources:
+          type: object
+          description: Reference provenance per algorithm. Only algorithms with a known reference appear;
+            a calculated local hash without a reference does not receive a publisher source label.
+          additionalProperties:
+            type: string
+          properties:
+            md5:
+              type: string
+            sha256:
+              type: string
+            sha512:
+              type: string
+        checksum_warnings:
+          type: object
+          description: Optional reference lookup warnings keyed by algorithm, replaced on each metadata
+            probe. A missing reference is never reported as a successful publisher comparison. Supplied
+            references still must match, and published conflicts remain fatal.
+          additionalProperties:
+            type: string
+          properties:
+            md5:
+              type: string
+            sha256:
+              type: string
+            sha512:
+              type: string
         id:
           type: string
         reused:
@@ -1655,6 +1717,14 @@ components:
       - sha256
       - checksum_source
       properties:
+        md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+          description: Optional source-published whole-file MD5 when the source metadata provides it.
+        sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+          description: Optional source-published whole-file SHA-512 when the source metadata provides it.
         path:
           type: string
         filename:

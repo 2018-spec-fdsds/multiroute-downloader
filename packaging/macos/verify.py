@@ -132,6 +132,106 @@ def verify_desktop_shortcut(script: str, owned: Path) -> int:
     return 8
 
 
+
+def verify_checksum_fixture(java: Path, jdk: Path, classpath: str, owned: Path) -> int:
+    """Exercise the packaged Java checksum and publication code without network or a Manager."""
+    fixture = owned / "NativeChecksumFixture.java"
+    fixture.write_text(r'''
+package multiroute;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.*;
+public final class NativeChecksumFixture {
+    static int checks;
+    static final byte[] ABC = "abc".getBytes(StandardCharsets.US_ASCII);
+    static final Map<String,String> KNOWN = Map.of(
+        "md5", "900150983cd24fb0d6963f7d28e17f72",
+        "sha256", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "sha512", "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f");
+    static void require(boolean valid, String message) {
+        if (!valid) throw new AssertionError(message);
+    }
+    static void rejects(String algorithm, Object value) {
+        try {
+            Checksums.normalize(algorithm, value);
+            throw new AssertionError("Invalid " + algorithm + " accepted");
+        } catch (IllegalArgumentException expected) { }
+    }
+    public static void main(String[] args) throws Exception {
+        Path root = Files.createDirectories(Path.of(args[0]).toAbsolutePath());
+        Path input = root.resolve("owned-abc.bin");
+        Files.write(input, ABC);
+        require(Checksums.ALGORITHMS.equals(List.of("md5", "sha256", "sha512")), "Three standard whole-file algorithms");
+        require(Checksums.file(input).equals(KNOWN), "Bundled JRE fixed abc vectors for all three hashes");
+        Checksums.verify(KNOWN, KNOWN);
+        checks++;
+
+        Map<String,Object> supplied = new LinkedHashMap<>();
+        for (String algorithm : List.of("md5", "sha512")) {
+            supplied.put("expected_" + algorithm, " " + KNOWN.get(algorithm).toUpperCase(Locale.ROOT) + " ");
+            rejects(algorithm, "0".repeat(Checksums.hexLength(algorithm)-1));
+            rejects(algorithm, "z".repeat(Checksums.hexLength(algorithm)));
+            rejects(algorithm, 123);
+        }
+        require(Checksums.expected(supplied).equals(Map.of("md5", KNOWN.get("md5"), "sha512", KNOWN.get("sha512"))),
+                "Manual MD5 and SHA512 references normalize without inventing another reference");
+        checks++;
+
+        for (String algorithm : List.of("md5", "sha512")) {
+            Path output = Files.createDirectory(root.resolve("mismatch-" + algorithm));
+            Path part = output.resolve("owned.bin.part");
+            Files.write(part, ABC);
+            Map<String,Object> state = new LinkedHashMap<>();
+            state.put("id", "owned-" + algorithm);
+            state.put("directory", output.toString()); state.put("filename", "owned.bin");
+            state.put("part_path", part.toString()); state.put("size", 3L);
+            state.put("status", "verifying"); state.put("routes", List.of());
+            for (String hash : Checksums.ALGORITHMS) state.put("expected_" + hash,
+                    hash.equals(algorithm) ? "0".repeat(Checksums.hexLength(hash)) : KNOWN.get(hash));
+            Main.Job job = new Main.Job(state, root.resolve("owned-checkpoints"));
+            boolean rejected = false;
+            try { job.finish(); } catch (Checksum.ConflictException expected) { rejected = true; }
+            require(rejected, "Real finalization must reject wrong " + algorithm);
+            require(Files.isRegularFile(part, LinkOption.NOFOLLOW_LINKS) && Arrays.equals(Files.readAllBytes(part), ABC),
+                    "Mismatched partial data preserved");
+            require(!Files.exists(output.resolve("owned.bin"), LinkOption.NOFOLLOW_LINKS), "Wrong file is never published");
+            require(Checksums.values(state).equals(KNOWN), "All actual hashes retained before rejecting publication");
+        }
+        checks++;
+
+        require(!Checksums.strong(Map.of("md5", KNOWN.get("md5"))) && Checksums.strong(Map.of("sha512", KNOWN.get("sha512"))),
+                "MD5 does not relax the strong identity guard while SHA512 is a strong reference");
+        checks++;
+
+        Checksum.Discovery discovery = new Checksum.Discovery(KNOWN.get("sha256"), "owned legacy source");
+        require(discovery.sha256().equals(KNOWN.get("sha256")) && discovery.source().equals("owned legacy source")
+                && discovery.checksums().equals(Map.of("sha256", KNOWN.get("sha256")))
+                && discovery.md5().isEmpty() && discovery.sha512().isEmpty(), "Legacy two-argument discovery remains compatible");
+        Map<String,Object> legacy = new LinkedHashMap<>();
+        legacy.put("expected_sha256", KNOWN.get("sha256").toUpperCase(Locale.ROOT));
+        legacy.put("sha256", KNOWN.get("sha256")); legacy.put("checksum_source", "owned legacy source");
+        Checksums.normalizeState(legacy);
+        require(Checksums.expected(legacy).equals(Map.of("sha256", KNOWN.get("sha256")))
+                && Checksums.values(legacy).equals(Map.of("sha256", KNOWN.get("sha256")))
+                && Checksums.sources(legacy).equals(Map.of("sha256", "owned legacy source"))
+                && legacy.get("expected_md5").equals("") && legacy.get("expected_sha512").equals(""),
+                "Old SHA256-only state keeps its source and does not fabricate publisher MD5 or SHA512");
+        checks++;
+        System.out.println("OWNED_NATIVE_CHECKSUM_FIXTURE_OK checks=" + checks);
+    }
+}
+''', encoding="utf-8")
+    run([jdk / "bin/javac", "--release", "17", "-cp", classpath, "-d", owned, fixture])
+    result = run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "checksum-home"),
+                  "-Djava.io.tmpdir=" + str(owned), "-cp", str(owned) + os.pathsep + classpath,
+                  "multiroute.NativeChecksumFixture", owned / "owned-checksum-state"], capture_output=True, text=True)
+    counted = re.search(r"^OWNED_NATIVE_CHECKSUM_FIXTURE_OK checks=(\d+)$", result.stdout, re.MULTILINE)
+    assert counted is not None, "The packaged checksum fixture must finish all offline gates."
+    check_count = int(counted.group(1))
+    assert check_count == 5, "All five packaged checksum gates must pass."
+    return check_count
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--directory", type=Path, required=True)
@@ -294,6 +394,12 @@ public final class NativeDesktopFixture {
         assert "OWNED_NATIVE_DESKTOP_FIXTURE_OK shortcuts=7 tray=16" in desktop_test.stdout
         checks.append("seven normal-user Java shortcut fixtures create real native Mac symlinks and preserve existing items without touching the user Desktop")
         checks.append("sixteen headless tray checks include transparent background, black glyphs, native-size digit and unit rows through ten gigabits, aggregate rates and exact byte counters without installing a tray icon")
+        checksum_fixture_checks = verify_checksum_fixture(java, jdk, classpath, owned)
+        checks.append("bundled Java computes fixed abc MD5, SHA-256 and SHA-512 vectors through the whole-file helper without any network")
+        checks.append("manual MD5 and SHA-512 references normalize uppercase text and reject invalid lengths, hexadecimal text and numeric input")
+        checks.append("real owned Job.finish rejects wrong MD5 or SHA-512, preserves each partial file, retains all three actual hashes and never publishes a final file")
+        checks.append("MD5 alone cannot satisfy strong source identity while a SHA-512 reference can")
+        checks.append("legacy SHA-256-only state and two-argument discovery retain their source without fabricating MD5 or SHA-512 references")
         fixture = owned / "MacAuthorizationFixture.java"
         fixture.write_text('''
 package multiroute;
@@ -410,7 +516,8 @@ public final class MacAuthorizationFixture {
         "controlled_uid_drop_fixture": True,
         "offline_markdown_link_counts": {"app_image": app_markdown_links, "expanded_installer": installed_markdown_links},
         "setup_language": "en", "desktop_shortcut_owned_fixture_checks": shortcut_checks,
-        "java_desktop_shortcut_owned_fixture_checks": 7, "headless_tray_fixture_checks": 13,
+        "java_desktop_shortcut_owned_fixture_checks": 7, "headless_tray_fixture_checks": 16,
+        "checksum34_fixture_checks": checksum_fixture_checks, "whole_file_algorithms": ["md5", "sha256", "sha512"],
         "real_user_desktop_modified": False,
     }
     (directory / "macos-verification-report.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

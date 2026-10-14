@@ -143,6 +143,8 @@ public final class TorrentEngine {
             if(fs.padFileAt(file))throw new IOException("Нельзя выбрать служебный pad-файл");if(Main.num(filePriorities.get(TorrentSource.normalize(fs.filePath(file))),4)==0)continue;selected.add(file);total=Math.addExact(total,fs.fileSize(file));
         }
         if(!requested.isEmpty() || selected.isEmpty())throw new IOException("Выбранного файла нет в torrent");
+        Map<String,String> expectedHashes=Checksums.expected(state);
+        if(!expectedHashes.isEmpty()&&selected.size()!=1)throw new IOException("A global checksum is allowed only for one selected torrent file");
         boolean[] wanted=new boolean[ti.numPieces()];
         for(int file:selected) {
             long begin=fs.fileOffset(file),end=begin+fs.fileSize(file);
@@ -276,26 +278,28 @@ public final class TorrentEngine {
             for(int index:selected) {
                 if(stop.getAsBoolean())return Map.of("status","paused");
                 String path=TorrentSource.normalize(fs.filePath(index));Path source=safeResolve(assembled,path),destination=safeResolve(root,path);
-                String sha=digestFile(source);
-                if(selected.size()==1 && !string(state.get("expected_sha256")).isBlank() && !sha.equalsIgnoreCase(string(state.get("expected_sha256"))))
-                    throw new IOException("SHA-256 файла torrent не совпадает с ожидаемой");
+                Map<String,String> hashes=Checksums.file(source);String sha=hashes.get("sha256");
+                if(selected.size()==1){update.accept(new LinkedHashMap<>(hashes));Checksums.verify(hashes,expectedHashes);}
                 if(!ownedPublished(destination,path,published)) {
                     safeDirectories(destination.getParent());
                     if(Files.exists(destination,LinkOption.NOFOLLOW_LINKS))throw new IOException("Файл уже существует: "+path);
                     Path temporary=destination.resolveSibling("."+destination.getFileName()+".multiroute-"+string(state.get("id"))+".tmp");
                     if(Files.exists(temporary,LinkOption.NOFOLLOW_LINKS))throw new IOException("Временный файл уже существует: "+temporary.getFileName());
                     try {
-                        Files.copy(source,temporary);if(!digestFile(temporary).equals(sha))throw new IOException("Ошибка проверки скопированного файла");
+                        Files.copy(source,temporary);if(!Checksums.file(temporary).equals(hashes))throw new IOException("Ошибка проверки скопированного файла");
                         if(stop.getAsBoolean())return Map.of("status","paused");
                         // Record intent first; recovery only accepts the exact final length and hash.
-                        published.put(path,Map.of("sha256",sha,"size",fs.fileSize(index)));writeCheckpoint(checkpoint,saved);
+                        Map<String,Object> proof=new LinkedHashMap<>(hashes);proof.put("size",fs.fileSize(index));published.put(path,proof);writeCheckpoint(checkpoint,saved);
                         Files.move(temporary,destination);
                     }finally {Files.deleteIfExists(temporary);}
                 }
-                outputs.add(Map.of("path",path,"size",fs.fileSize(index),"sha256",sha,"verified",true));
+                Map<String,Object> output=new LinkedHashMap<>(hashes);output.put("path",path);output.put("size",fs.fileSize(index));output.put("verified",true);
+                if(selected.size()==1){for(var entry:expectedHashes.entrySet())output.put("expected_"+entry.getKey(),entry.getValue());output.put("checksum_sources",Checksums.sources(state));}
+                outputs.add(output);
             }
             Map<String,Object> result=progress(ti,fs,selected,wanted,complete,pieces,routes,total,"complete");
-            result.put("error","");result.put("files",outputs);result.put("sha256",outputs.size()==1?outputs.get(0).get("sha256"):"");
+            result.put("error","");result.put("files",outputs);for(String algorithm:Checksums.ALGORITHMS)result.put(algorithm,outputs.size()==1?outputs.get(0).get(algorithm):"");
+            result.put("checksum_sources",Checksums.sources(state));
             result.put("checksum_source","bittorrent-piece-hashes");result.put("verified",true);result.put("pieces_verified",true);
             if(Boolean.TRUE.equals(options.get().get("seeding_enabled")))seedVerified(ti,assembled,scratch,state,stop,update,routeSupplier,options,resolver,limits,result);
             return result;
@@ -602,7 +606,11 @@ public final class TorrentEngine {
     private static void safeDirectories(Path path)throws IOException {checkNoSymlinks(path);Files.createDirectories(path);checkNoSymlinks(path);}
     private static void ensureSparse(Path path,long size)throws IOException {checkNoSymlinks(path);if(Files.exists(path,LinkOption.NOFOLLOW_LINKS)){if(!Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))throw new IOException("Некорректный промежуточный файл");try(RandomAccessFile file=new RandomAccessFile(path.toFile(),"rw")){file.setLength(size);}return;}try(FileChannel file=FileChannel.open(path,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE,StandardOpenOption.SPARSE)){if(size>0){file.position(size-1);file.write(java.nio.ByteBuffer.wrap(new byte[]{0}));}}}
     private static void deleteOwnedStorage(Path storage,Path scratch)throws IOException {Path absolute=storage.toAbsolutePath().normalize();if(!absolute.startsWith(scratch)||!absolute.getParent().getFileName().toString().startsWith("gateway-"))throw new IOException("Некорректная папка частей torrent");if(!Files.exists(absolute,LinkOption.NOFOLLOW_LINKS))return;checkNoSymlinks(absolute);try(var paths=Files.walk(absolute)){for(Path path:paths.sorted(Comparator.reverseOrder()).toList()){checkNoSymlinks(path);if(!path.normalize().startsWith(scratch))throw new IOException("Путь частей torrent вне папки задания");Files.delete(path);}}}
-    private static boolean ownedPublished(Path path,String key,Map<String,Object> published)throws IOException {Object record=published.get(key);return record instanceof Map<?,?> proof&&Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS)&&Files.size(path)==((Number)proof.get("size")).longValue()&&digestFile(path).equals(proof.get("sha256"));}
+    private static boolean ownedPublished(Path path,String key,Map<String,Object> published)throws IOException {
+        Object record=published.get(key);if(!(record instanceof Map<?,?> proof)||!Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS)||!(proof.get("size") instanceof Number size)||Files.size(path)!=size.longValue())return false;
+        Map<String,String> expected=Checksums.values(proof);if(!expected.containsKey("sha256"))return false;
+        Map<String,String> actual=Checksums.file(path);for(var entry:expected.entrySet())if(!entry.getValue().equals(actual.get(entry.getKey())))return false;return true;
+    }
     static String digest(String algorithm,byte[] bytes)throws IOException {try{return HexFormat.of().formatHex(MessageDigest.getInstance(algorithm).digest(bytes));}catch(GeneralSecurityException error){throw new IOException(error);}}
     private static String digestFile(Path path)throws IOException {try{MessageDigest hash=MessageDigest.getInstance("SHA-256");try(InputStream input=Files.newInputStream(path)){byte[] buffer=new byte[1024*1024];int n;while((n=input.read(buffer))>=0)if(n>0)hash.update(buffer,0,n);}return HexFormat.of().formatHex(hash.digest());}catch(GeneralSecurityException error){throw new IOException(error);}}
     private static void writeCheckpoint(Path file,Map<String,Object> state)throws IOException {writeAtomic(file,Json.stringify(state).getBytes(java.nio.charset.StandardCharsets.UTF_8));}

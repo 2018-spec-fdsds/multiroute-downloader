@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.3 — Anleitung auf Deutsch
+# MultiRoute Resume 3.4 — Anleitung auf Deutsch
 
 [Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md)
 
@@ -88,7 +88,7 @@ Vorhandenes passendes Java 17+ wird wiederverwendet. Andernfalls wird eine festg
 
 **Zusätzliche Voraussetzung für BitTorrent/magnet:** Die tatsächlich mitgelieferten Torrent-Bibliotheken haben höhere macOS-Ziele: **Apple Silicon benötigt macOS 26 oder neuer; Intel benötigt macOS 15 oder neuer**. macOS 11+ bedeutet daher nicht, dass alle Protokolle dieser Ausgabe dort verfügbar sind. Der Starter erkennt diese Versionsgrenze, warnt bei einem älteren System und erlaubt die Java-/HTTP-Bereitstellung, ohne macOS zu aktualisieren. Eine erfolgreiche Installation bestätigt keine tatsächlich geladene Torrent-Bibliothek. Betriebssystem und Architektur lassen sich mit `sw_vers -productVersion` und `uname -m` prüfen; die tatsächliche Ausführung auf einem Mac bleibt noch zu verifizieren.
 
-Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.3-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
+Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.4-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
 
 ### Was die Starter automatisch prüfen
 
@@ -115,15 +115,15 @@ WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transpo
 
 DNS-Anfragen laufen über das ausgewählte Gateway: zunächst zum Router, dann bei Bedarf zu `1.1.1.1` oder `8.8.8.8` über denselben Weg. Es gibt keinen Rückfall auf den DNS-Resolver des Betriebssystems. DNSSEC, DoH und ein TCP-Rückfall bei gekürzten DNS-Antworten sind in diesem Release nicht implementiert.
 
-## Native Installationspakete 3.3: Windows und macOS
+## Native Installationspakete 3.4: Windows und macOS
 
 Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), sofern es dort angehängt ist. Jedes Paket ist **eine Installationsdatei** mit Anwendung, nativem Starter, vollständiger Java-Laufzeit und passendem Netzwerkhelfer. Quellcode und portable ZIPs der Version 3.0 sind separate Angebote.
 
 | System | Installationsdatei | Start nach der Installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.3-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.3-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.3-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.4-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.4-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.4-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
 
 Die fünf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md` oder `fr.md` in einem Text- oder Markdown-Programm öffnen.
 
@@ -252,7 +252,7 @@ Der Linkimport akzeptiert mehrere Zeilen, TXT-Dateien sowie hineingezogene URLs 
 | --- | --- |
 | HTTP/HTTPS | Verteilung über Range-Anfragen mit Antwort 206, wenn die Quelle eine sichere Teilübertragung erlaubt. TLS-Zertifikate und Hostnamen werden geprüft. |
 | HTTP ohne Range | Ein kompletter Datenstrom über **ein** gewähltes Gateway, auch ohne `Content-Length`. Bei Abbruch oder Wegwechsel beginnt dieser Strom bei Byte 0. |
-| FTP/FTPS | Passives FTP beziehungsweise explizites FTPS mit TLS für Steuer- und Datenverbindung. Für sichere Segmentierung ist eine vertrauenswürdige SHA-256 erforderlich; sonst wird vollständig über ein Gateway übertragen. |
+| FTP/FTPS | Passives FTP beziehungsweise explizites FTPS mit TLS für Steuer- und Datenverbindung. Für sichere Segmentierung ist eine vertrauenswürdige SHA-256 oder SHA-512 erforderlich; sonst wird vollständig über ein Gateway übertragen. |
 | SFTP | SSH/SFTP mit vorher unabhängig geprüftem, festgelegtem **SHA-256-Hostschlüssel-Fingerabdruck**. Ein abweichender Schlüssel wird abgelehnt. Eine vertrauenswürdige Datei-SHA-256 erlaubt sichere Segmentierung. |
 | WebDAV | HTTPS-Auflistung und Dateiauswahl; Quelladresse `webdavs://…` gemäß API-Schema. |
 | Metalink | `.meta4` mit Dateiauswahl, Spiegeln und veröffentlichten Datei-/Teilhashes. Spiegel werden nur bei vertrauenswürdiger SHA-256 als dieselbe Datei verwendet; gleiche Dateigröße allein reicht nicht. |
@@ -318,12 +318,12 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
-### Native Pakete 3.3
+### Native Pakete 3.4
 
 | System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, einschließlich Java | Enthaltener x64-Helfer; Npcap separat installiert |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.3/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.4/gateway-net` |
 
 Schließen Sie die Anwendung vor einem Update mit einem neuen Installer. Unter Windows erfolgt die Entfernung über **Einstellungen → Apps → Installierte Apps**. Unter macOS löscht das Entfernen der `.app` nicht automatisch den Verlauf und den separat geschützten Helfer. Heruntergeladene Dateien bleiben im gewählten Ordner; löschen Sie ihn nicht nur zur Deinstallation. Der Datenpfad unterscheidet sich vom Windows-ZIP 3.0; sichern Sie ein früheres Profil vor einer Migration.
 
@@ -356,11 +356,11 @@ Für ein Update der portablen Pakete 3.0 unter Linux/macOS führen Sie den jewei
 
 ## Umfang der Release-Prüfung
 
-Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.3-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.3 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
+Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.4-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.4 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
 
 Prüfberichte: [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Drittanbieter-Komponenten und ihre Lizenzen: [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
 
-## Systemtray und Beenden (3.3)
+## Systemtray und Beenden (3.4)
 
 Beim Schließen des Hauptfensters laufen Anwendung und Downloads im Systemtray weiter. Das Symbol zeigt den gesamten Download-Durchsatz **aller Aufträge**, unabhängig von Auswahl und Tabellenfilter. Die Tooltip-Anzeige enthält den genauen Wert in Mbit/s oder Gbit/s (ab 1 Gbit/s) und Byte/s, auch bis 10 Gbit/s; das kleine Symbol rundet ihn. Im Tray-Menü **Anwendung öffnen** wählen, um das Fenster wiederherzustellen. Unter Windows/Linux öffnet auch ein Klick auf das Symbol das Fenster. **Anwendung beenden** im Tray-Menü oder Fenster speichert den Zustand und beendet das Programm. Vor einem Update diese Funktion verwenden.
 
@@ -372,4 +372,16 @@ Das Setup erstellt standardmäßig eine Desktopverknüpfung und unter Windows ei
 
 Die Originalanwendung darf kostenlos installiert und privat sowie in Organisationen einschließlich geschäftlicher Tätigkeiten genutzt werden. **Verkauf der Anwendung, kostenpflichtige Lizenzen und entgeltliche Weitergabe sind untersagt**, soweit keine separate Erlaubnis vorliegt. Die eigene Lizenz gewährt keine allgemeinen Änderungs- oder Weitergaberechte und ist keine von OSI anerkannte Open-Source-Lizenz. Drittanbieter behalten ihre eigenen Lizenzbedingungen. Dies ist eine übersetzte Zusammenfassung; maßgeblich ist der englische Text in [LICENSE.txt](../LICENSE.txt).
 
-In 3.3 hat das Geschwindigkeitssymbol einen transparenten Hintergrund mit schwarzen Ziffern und Einheiten, auch bei 10 Gbit/s. Gesamtrate und Tray-Befehle bleiben erhalten.
+In 3.4 hat das Geschwindigkeitssymbol einen transparenten Hintergrund mit schwarzen Ziffern und Einheiten, auch bei 10 Gbit/s. Gesamtrate und Tray-Befehle bleiben erhalten.
+
+## Prüfung mit MD5, SHA-256 und SHA-512
+
+Nach dem Zusammensetzen berechnet die Anwendung alle drei Prüfsummen der gesamten Datei in einem Lesedurchlauf. Fügen Sie eine Referenz mit Strg+V oder Cmd+V in das optionale Hauptfeld ein. Der Typ wird automatisch erkannt: 32 Hexadezimalzeichen bedeuten MD5, 64 SHA-256 und 128 SHA-512. Der aufklappbare Bereich für zusätzliche Prüfsummen erlaubt mehrere Referenzen.
+
+Veröffentlichte Referenzen werden aus unterstützten Digest-Headern der gesamten Repräsentation und Begleitdateien ermittelt: `filename.md5`, `MD5SUMS`, `filename.sha256`, `SHA256SUMS`, `filename.sha512` und `SHA512SUMS`. Die Prüfsumme einer partiellen HTTP-Antwort gilt nicht als Prüfsumme der ganzen Datei. Die bisherigen Prüfungen für Hugging Face LFS und Metalink bleiben erhalten.
+
+Alle bekannten Referenzen müssen vor der Veröffentlichung der fertigen Datei übereinstimmen. Bei Abweichung schlägt der Auftrag fehl; Teildaten bleiben erhalten. Ohne Referenz ist die Anzeige eine lokal berechnete Summe und keine bestätigte Übereinstimmung mit der Quelle. MD5 erkennt zufällige Beschädigungen; SHA-256 oder SHA-512 bieten eine stärkere Integritätsprüfung. MD5 ersetzt weder sichere Dateiidentität noch Anforderungen an vertrauenswürdige Spiegel.
+
+Torrent-Teile werden weiterhin zwingend geprüft. Die Summen der zusammengesetzten Torrent-Dateien sind davon getrennt. Eine manuelle Referenz für die ganze Datei erfordert genau eine ausgewählte Datei; bei Gruppen erhält jeder Auftrag seine eigene Referenz.
+
+Die lokale API akzeptiert `expected_md5`, `expected_sha256` und `expected_sha512` in `POST /api/v1/jobs`. Ergebnisse enthalten `md5`, `sha256`, `sha512` und Referenzquellen in `checksum_sources`. Bestehende Anfragen mit `expected_sha256` bleiben kompatibel.

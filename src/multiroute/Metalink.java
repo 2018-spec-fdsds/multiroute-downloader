@@ -23,12 +23,21 @@ public final class Metalink {
         for(Element file:children(root,"file")){
             if(files.size()>=10000)throw new IOException("Metalink contains too many files");String name=file.getAttribute("name");validatePath(name);if(!names.add(name))throw new IOException("Duplicate Metalink file path");
             List<Element> sizes=children(file,"size");if(sizes.size()!=1)throw new IOException("Metalink requires one exact file size");long size=integer(sizes.get(0).getTextContent().trim(),false);
-            String sha="";for(Element hash:children(file,"hash"))if(hash.getAttribute("type").equalsIgnoreCase("sha-256")){String next=hash(hash.getTextContent());if(!sha.isEmpty()&&!sha.equals(next))throw new Checksum.ConflictException("Conflicting Metalink whole-file SHA-256");sha=next;}
+            Map<String,String> whole=new LinkedHashMap<>(),sources=new LinkedHashMap<>();
+            for(Element hash:children(file,"hash")){
+                String algorithm=switch(hash.getAttribute("type").toLowerCase(Locale.ROOT)){case "md5"->"md5";case "sha-256"->"sha256";case "sha-512"->"sha512";default->"";};
+                if(algorithm.isEmpty())continue;String next;
+                try{next=Checksums.normalize(algorithm,hash.getTextContent());}catch(IllegalArgumentException error){throw new IOException("Invalid publisher "+Checksums.label(algorithm),error);}
+                if(next.isEmpty())throw new IOException("Empty publisher "+Checksums.label(algorithm));
+                if(whole.containsKey(algorithm)&&!whole.get(algorithm).equals(next))throw new Checksum.ConflictException("Conflicting Metalink whole-file "+Checksums.label(algorithm));
+                whole.put(algorithm,next);sources.put(algorithm,"metalink-publisher-"+algorithm);
+            }
+            String sha=whole.getOrDefault("sha256","");
             if(sha.isEmpty())throw new IOException("Trusted mirrors require the publisher's whole-file SHA-256");
             List<Element> urls=children(file,"url");if(urls.isEmpty()||urls.size()>32)throw new IOException("Metalink requires 1 to 32 mirror URLs");
             urls.sort(Comparator.comparingLong(value->{try{return integer(value.getAttribute("priority").isEmpty()?"999999":value.getAttribute("priority"),true);}catch(IOException error){return Long.MAX_VALUE;}}));
             List<String> mirrors=new ArrayList<>();for(Element element:urls){String text=element.getTextContent().trim();URI target;try{target=source.resolve(text);}catch(RuntimeException error){throw new IOException("Invalid Metalink mirror URL");}String mirror=SourceTransfer.validate(target.toString()).toString();if(!mirrors.contains(mirror))mirrors.add(mirror);}
-            Map<String,Object> value=new LinkedHashMap<>();value.put("path",name);value.put("filename",name.substring(name.lastIndexOf('/')+1));value.put("url",mirrors.get(0));value.put("mirrors",mirrors);value.put("size",size);value.put("sha256",sha);value.put("checksum_source","metalink-publisher-sha256");value.put("metalink_url",source.toString());
+            Map<String,Object> value=new LinkedHashMap<>();value.put("path",name);value.put("filename",name.substring(name.lastIndexOf('/')+1));value.put("url",mirrors.get(0));value.put("mirrors",mirrors);value.put("size",size);value.putAll(whole);value.put("checksum_sources",sources);value.put("checksum_source","metalink-publisher-sha256");value.put("metalink_url",source.toString());
             List<Element> pieces=children(file,"pieces");if(pieces.size()>8)throw new IOException("Too many Metalink piece hash sets");boolean hadPieces=false;
             for(Element piece:pieces)if(piece.getAttribute("type").equalsIgnoreCase("sha-256")){
                 if(hadPieces)throw new IOException("Duplicate Metalink SHA-256 piece set");hadPieces=true;long length=integer(piece.getAttribute("length"),true);

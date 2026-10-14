@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "3.3";
+    static final String VERSION = "3.4";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -247,6 +247,7 @@ public final class Main {
                 throw new IllegalArgumentException("Invalid owned-test idle timeout");
             this.httpOpener = Objects.requireNonNull(opener); this.idleTimeoutNanos = idleTimeoutNanos;
             this.state = state;
+            Checksums.normalizeState(state);
             long historical = 0;
             for (Object raw : arr(state.get("routes"))) {
                 Map<String,Object> route = obj(raw);
@@ -452,23 +453,24 @@ public final class Main {
                             state.put("probe_modified", response.headers().firstValue("Last-Modified").orElse(""));
                             state.put("probe_whole", whole);
                         }
-                        Checksum.Discovery discovered = str(state.get("source_sha256")).isEmpty() ?
-                                Checksum.discover(route,metadataUrl, response, new Checksum.TransferObserver() {
+                        Checksum.Discovery discovered = Checksum.discover(route,metadataUrl, response, new Checksum.TransferObserver() {
                                     Lease current;
                                     public void opened(InputStream body) throws IOException {
                                         attempt.check(); current = new Lease(body, openStreams); attempt.attach(current);
                                     }
                                     public void received(int bytes) { attempt.progress(bytes); if (bytes > 0) current.touch(); }
                                     public void closed(InputStream body) { if (current != null) { current.close(); current = null; } }
-                                }) : Checksum.fromHeaders(response);
+                                }, Checksums.expected(state));
                         attempt.check();
-                        String pinned=str(state.get("expected_sha256"));if(pinned.isEmpty())pinned=str(state.get("source_sha256"));
-                        if(!pinned.isEmpty()&&!discovered.sha256().isEmpty()&&!pinned.equalsIgnoreCase(discovered.sha256()))throw new Checksum.ConflictException("Source SHA-256 differs from the trusted file checksum");
+                        Checksums.checkDiscovery(state, discovered.checksums());
                         synchronized (this) {
                             attempt.check();
                             state.put("probe_source_sha256", discovered.sha256());
                             state.put("probe_checksum_source", discovered.source());
-                            if(Set.of("ftp","ftps","sftp").contains(URI.create(str(state.get("url"))).getScheme().toLowerCase(Locale.ROOT))&&discovered.sha256().isEmpty()&&str(state.get("expected_sha256")).isEmpty())state.put("probe_whole",true);
+                            state.put("probe_checksums", discovered.checksums());
+                            state.put("probe_checksum_sources", discovered.sources());
+                            state.put("checksum_warnings", discovered.warnings());
+                            if(Set.of("ftp","ftps","sftp").contains(URI.create(str(state.get("url"))).getScheme().toLowerCase(Locale.ROOT))&&!Checksums.strong(discovered.checksums())&&!Checksums.strong(Checksums.expected(state)))state.put("probe_whole",true);
                         }
                         return new long[]{total};
                     }
@@ -847,22 +849,15 @@ public final class Main {
         void finish() throws Exception {
             Metalink.verifyPieces(part(),state);
             if (Files.size(part()) != size()) throw new IOException("Неверный итоговый размер");
-            MessageDigest digest = sha();
-            try (InputStream stream = Files.newInputStream(part())) {
-                byte[] buffer = new byte[4 * 1024 * 1024]; int got;
-                while ((got = stream.read(buffer)) >= 0) if (got > 0) digest.update(buffer, 0, got);
-            }
-            String actual = hex(digest.digest());
-            synchronized (this) { state.put("sha256", actual); persist(); }
-            String expected = str(state.get("expected_sha256"));
-            if (!expected.isEmpty() && !actual.equalsIgnoreCase(expected))
-                throw new IOException("SHA-256 не совпал с ожидаемой суммой; .part сохранён");
+            Map<String,String> actual = Checksums.file(part());
+            synchronized (this) { state.putAll(actual); persist(); }
+            Checksums.verify(actual, Checksums.expected(state));
             Path finalPath = Path.of(str(state.get("directory"))).resolve(str(state.get("filename")));
             safePath(finalPath);
             synchronized (this) {
                 if (stop) return;
                 if (Files.exists(finalPath)) {
-                    if (Files.size(finalPath) != size() || !hashFile(finalPath).equals(actual))
+                    if (Files.size(finalPath) != size() || !Checksums.file(finalPath).equals(actual))
                         throw new FileAlreadyExistsException("Целевой файл уже существует и отличается; .part сохранён");
                 } else {
                     try { Files.createLink(finalPath, part()); }
@@ -913,26 +908,22 @@ public final class Main {
         }
 
         String hashFile(Path path) throws Exception {
-            MessageDigest digest = sha();
-            try (InputStream stream = Files.newInputStream(path, LinkOption.NOFOLLOW_LINKS)) {
-                byte[] buffer = new byte[4 * 1024 * 1024]; int got;
-                while ((got = stream.read(buffer)) >= 0) if (got > 0) digest.update(buffer, 0, got);
-            }
-            return hex(digest.digest());
+            return Checksums.file(path).get("sha256");
         }
 
         boolean recoverPublished() throws Exception {
             Path finalPath = Path.of(str(state.get("directory"))).resolve(str(state.get("filename")));
             safePath(finalPath);
             String savedHash = str(state.get("sha256"));
-            if (savedHash.isEmpty() || size() <= 0 || !Files.exists(finalPath)) return false;
-            String expected = str(state.get("expected_sha256"));
-            if (!expected.isEmpty() && !savedHash.equalsIgnoreCase(expected)) return false;
-            if (Files.size(finalPath) != size() || !hashFile(finalPath).equals(savedHash))
+            if (savedHash.isEmpty() || size() < 0 || !Files.exists(finalPath)) return false;
+            Map<String,String> actual = Checksums.file(finalPath);
+            if (Files.size(finalPath) != size() || !actual.get("sha256").equals(savedHash))
                 throw new IOException("Итоговый файл существует, но не совпадает с сохранённым SHA-256");
+            Checksums.verify(actual, Checksums.values(state));
+            Checksums.verify(actual, Checksums.expected(state));
             synchronized (this) {
                 if (stop) return true;
-                state.put("status", "complete"); state.put("error", ""); persist();
+                state.putAll(actual); state.put("status", "complete"); state.put("error", ""); persist();
             }
             try { Files.deleteIfExists(part()); } catch (IOException ignored) { }
             return true;
@@ -967,16 +958,22 @@ public final class Main {
                 String modified = str(state.remove("probe_modified"));
                 String discoveredSha = str(state.remove("probe_source_sha256"));
                 String discoveredSource = str(state.remove("probe_checksum_source"));
+                Object rawDiscovered = state.remove("probe_checksums");
+                Map<String,String> discovered = Checksums.values(rawDiscovered instanceof Map<?,?> map ? map : Map.of());
+                Map<String,String> sources = new LinkedHashMap<>();
+                Object rawSources = state.remove("probe_checksum_sources");
+                if(rawSources instanceof Map<?,?> map)for(var entry:map.entrySet())sources.put(str(entry.getKey()),str(entry.getValue()));
+                if(discovered.isEmpty()&&!discoveredSha.isEmpty()){discovered=Map.of("sha256",discoveredSha);sources.put("sha256",discoveredSource);}
                 boolean whole = yes(state.remove("probe_whole"));
                 String expectedSha = str(state.get("expected_sha256"));
                 if(state.get("mirrors") instanceof List<?> mirrors&&mirrors.size()>1&&!expectedSha.isEmpty()){etag="";modified="";}
-                if (!discoveredSha.isEmpty() && !expectedSha.isEmpty() && !discoveredSha.equalsIgnoreCase(expectedSha))
-                    throw new Checksum.ConflictException("Опубликованная источником SHA-256 не совпадает с указанной или ранее сохранённой");
-                if (expectedSha.isEmpty() && !discoveredSha.isEmpty()) expectedSha = discoveredSha;
-                if (!whole && etag.isEmpty() && expectedSha.isEmpty())
-                    throw new IOException("Источник не дал сильный ETag; для безопасной докачки укажите ожидаемую SHA-256");
+                Checksums.checkDiscovery(state, discovered);
+                Map<String,String> expectedHashes = new LinkedHashMap<>(Checksums.expected(state)); expectedHashes.putAll(discovered);
+                expectedSha = expectedHashes.getOrDefault("sha256", "");
+                if (!whole && etag.isEmpty() && !Checksums.strong(expectedHashes))
+                    throw new IOException("Источник не дал сильный ETag; для безопасной докачки укажите ожидаемую SHA-256 или SHA-512");
                 synchronized (this) {
-                    if (size() != 0 && (size() != total || (expectedSha.isEmpty() &&
+                    if (size() != 0 && (size() != total || (!Checksums.strong(expectedHashes) &&
                             (!str(state.get("etag")).equals(etag) || !str(state.get("modified")).equals(modified)))))
                         throw new IOException("Исходный файл изменился; прежние сегменты сохранены");
                     state.put("size", total); state.put("etag", etag); state.put("modified", modified);
@@ -984,8 +981,7 @@ public final class Main {
                     state.put("distribution_supported", !whole);
                     if(whole) { state.put("chunks",new LinkedHashMap<>());state.put("downloaded",0L); }
                     if (whole) state.put("chunk_size", Math.max(1, total));
-                    state.put("expected_sha256", expectedSha);
-                    if (!discoveredSource.isEmpty()) state.put("checksum_source", discoveredSource);
+                    Checksums.acceptDiscovery(state, discovered, sources);
                     persist();
                 }
                 Path directory = Path.of(str(state.get("directory")));
@@ -1155,6 +1151,7 @@ public final class Main {
             Map<String,Object> tagged=new LinkedHashMap<>(input);tagged.put("_idempotency_fingerprint",fingerprint);Map<String,Object> result=createOnce(tagged);idempotency.put(key,Map.of("time",now,"fingerprint",fingerprint,"result",result));save(idempotencyFile,idempotency);return result;
         }
         private Map<String,Object> createOnce(Map<String,Object> input) throws Exception {
+            Checksums.expected(input);
             if (isTorrentInput(input)) return createTorrent(input);
             if (HubSource.isHubUrl(str(input.get("url"))) || Metalink.isMetalink(str(input.get("url"))) || WebDav.isWebDav(str(input.get("url"))) || Set.of("metalink","webdav").contains(str(input.get("source_type")))) {
                 Map<String,Object> result = createFromSource(input);
@@ -1167,6 +1164,7 @@ public final class Main {
         /** Resolve a repository explicitly; server metadata supplies all sizes/checksums. */
         synchronized Map<String,Object> createFromSource(Map<String,Object> input) throws Exception {
             if (closing) throw new IllegalStateException("Приложение завершает работу");
+            Map<String,String> manualHashes = Checksums.expected(input);
             if (isTorrentInput(input)) {
                 Map<String,Object> job = createTorrent(input);
                 return Map.of("jobs", List.of(job), "total_size", job.get("size"), "source",
@@ -1197,14 +1195,11 @@ public final class Main {
                 }
             } else selected.addAll(available.keySet());
             if (selected.isEmpty() || selected.size() > 1000) throw new IllegalArgumentException("Выберите от 1 до 1000 файлов");
-            if (selected.size() > 1 && (!str(input.get("filename")).isBlank() || !str(input.get("expected_sha256")).isBlank()))
-                throw new IllegalArgumentException("Общее имя или SHA-256 можно задавать только для одного файла");
+            if (selected.size() > 1 && (!str(input.get("filename")).isBlank() || !manualHashes.isEmpty()))
+                throw new IllegalArgumentException("A global filename or checksum is allowed only for one selected file");
             Path base = Path.of(str(input.get("directory")).isEmpty() ? "downloads" : str(input.get("directory"))).toAbsolutePath().normalize();
             long chunkMb = num(input.get("chunk_mb"), 20);
             if (chunkMb < 1 || chunkMb > MAX_CHUNK_MB) throw new IllegalArgumentException("Размер сегмента: 1–64 МиБ");
-            String givenSha = str(input.get("expected_sha256")).trim();
-            if (!givenSha.isEmpty() && !SHA256.matcher(givenSha).matches())
-                throw new IllegalArgumentException("SHA-256 должен содержать 64 шестнадцатеричных символа");
             List<PreparedHttp> prepared = new ArrayList<>();
             Set<String> targets = new HashSet<>();
             long total = 0, requiredSpace = 0;
@@ -1229,13 +1224,13 @@ public final class Main {
                     if (ancestor.startsWith(base) && !ancestor.equals(base) && Files.isSymbolicLink(ancestor))
                         throw new IllegalArgumentException("Подпапка репозитория является ссылкой: " + ancestor.getFileName());
                 }
-                String published = str(file.get("sha256"));
-                String manual = str(input.get("expected_sha256")).trim().toLowerCase(Locale.ROOT);
-                if (!manual.isEmpty() && !published.isEmpty() && !manual.equals(published))
-                    throw new Checksum.ConflictException("Указанная SHA-256 не совпадает с опубликованной Hugging Face");
+                Map<String,String> published = Checksums.values(file);
+                for(var entry:manualHashes.entrySet())if(published.containsKey(entry.getKey())&&!published.get(entry.getKey()).equals(entry.getValue()))
+                    throw new Checksum.ConflictException("Manual " + Checksums.label(entry.getKey()) + " differs from the publisher's checksum");
                 Map<String,Object> task = new LinkedHashMap<>(input);
                 task.put("url", file.get("url")); task.put("directory", targetDirectory.toString()); task.put("filename", name);
-                task.put("expected_sha256", published.isEmpty() ? manual : published);
+                Map<String,String> references=new LinkedHashMap<>(manualHashes);references.putAll(published);
+                for(String algorithm:Checksums.ALGORITHMS)task.put("expected_"+algorithm,references.getOrDefault(algorithm,""));
                 Map<String,Object> origin = new LinkedHashMap<>(file);
                 origin.put("source_url", sourceUrl); origin.put("repo_id", inspected.get("repo_id"));
                 origin.put("revision", inspected.get("revision")); origin.put("repo_type", inspected.get("repo_type"));
@@ -1307,9 +1302,10 @@ public final class Main {
                 if (!target.toString().equalsIgnoreCase(other.toString())) continue;
                 String priorSha = str(job.state.get("source_sha256"));
                 if (priorSha.isEmpty()) priorSha = str(job.state.get("expected_sha256"));
-                String requestedSha = str(input.get("expected_sha256"));
-                String priorExpected = str(job.state.get("expected_sha256"));
-                if (!requestedSha.isEmpty() && !priorExpected.isEmpty() && !requestedSha.equalsIgnoreCase(priorExpected)) continue;
+                Map<String,String> requestedHashes=Checksums.expected(input),priorHashes=Checksums.expected(job.state);
+                boolean sameReferences=true;
+                for(var entry:requestedHashes.entrySet())if(!entry.getValue().equals(priorHashes.get(entry.getKey())))sameReferences=false;
+                if(!sameReferences)continue;
                 if (origin != null) {
                     try {
                         HubSource.Source previous = HubSource.parse(str(job.state.get("url")));
@@ -1325,6 +1321,8 @@ public final class Main {
                 } else {
                     String currentSha = str(input.get("expected_sha256"));
                     if (str(job.state.get("url")).equals(str(input.get("url"))) && !priorSha.isEmpty() && priorSha.equalsIgnoreCase(currentSha)) return job;
+                    String prior512=priorHashes.getOrDefault("sha512",str(job.state.get("source_sha512"))),current512=requestedHashes.getOrDefault("sha512","");
+                    if(str(job.state.get("url")).equals(str(input.get("url")))&&!prior512.isEmpty()&&prior512.equals(current512))return job;
                 }
             }
             return null;
@@ -1392,9 +1390,9 @@ public final class Main {
             else throw new IOException("Выберите файлы многосоставного torrent перед загрузкой");
             if (selected.isEmpty() || selected.size() > 1000) throw new IOException("Выберите от 1 до 1000 файлов");
             if (!str(input.get("filename")).isBlank()) throw new IOException("Для torrent используются имена из раздачи; очистите поле имени файла");
-            String expected = str(input.get("expected_sha256")).trim().toLowerCase(Locale.ROOT);
-            if (!expected.isEmpty() && (selected.size() != 1 || !SHA256.matcher(expected).matches()))
-                throw new IOException("Ожидаемая SHA-256 разрешена только для одного выбранного файла");
+            Map<String,String> expectedHashes = Checksums.expected(input);
+            if (!expectedHashes.isEmpty() && selected.size() != 1)
+                throw new IOException("A global checksum is allowed only for one selected torrent file");
             Path base = Path.of(str(input.get("directory")).isBlank() ? "downloads" : str(input.get("directory"))).toAbsolutePath().normalize();
             List<String> targets = new ArrayList<>(); long size = 0;
             for (String path : selected) {
@@ -1414,7 +1412,7 @@ public final class Main {
             Map<String,Object> state = new LinkedHashMap<>();
             state.put("id", id); state.put("url", str(input.get("url"))); state.put("kind", "torrent");
             state.put("filename", filename(str(metadata.get("name")))); state.put("directory", base.toString());
-            state.put("size", size); state.put("downloaded", 0); state.put("sha256", ""); state.put("expected_sha256", expected);
+            state.put("size", size); state.put("downloaded", 0); Checksums.initialize(state,expectedHashes);
             state.put("checksum_source", "bittorrent-piece-hashes"); state.put("torrent_metadata", metadata.get("torrent_metadata"));
             state.put("info_hash_v1", metadata.get("info_hash_v1")); state.put("info_hash_v2", metadata.get("info_hash_v2"));
             state.put("selected_files", selected); state.put("target_paths", targets); state.put("files", metadata.get("files"));
@@ -1436,8 +1434,8 @@ public final class Main {
             if (name.isEmpty()) name = "download.bin";
             name = filename(name);
             Path directory = Path.of(str(input.get("directory")).isEmpty() ? "downloads" : str(input.get("directory"))).toAbsolutePath().normalize();
-            String expected = str(input.get("expected_sha256")).trim().toLowerCase(Locale.ROOT);
-            if (!expected.isEmpty() && !SHA256.matcher(expected).matches()) throw new IllegalArgumentException("SHA-256 должен содержать 64 шестнадцатеричных символа");
+            Map<String,String> expectedHashes = Checksums.expected(input);
+            String expected = expectedHashes.getOrDefault("sha256", "");
             long chunkMb = num(input.get("chunk_mb"), 20);
             if (chunkMb < 1 || chunkMb > MAX_CHUNK_MB) throw new IllegalArgumentException("Размер сегмента: 1–64 МиБ");
             List<Object> routes = new ArrayList<>();
@@ -1482,13 +1480,15 @@ public final class Main {
             String id = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
             Map<String,Object> state = new LinkedHashMap<>();
             state.put("id", id); state.put("url", url); state.put("filename", name); state.put("directory", directory.toString());
-            state.put("expected_sha256", expected); state.put("checksum_source", expected.isEmpty() ? "" : "manual");
+            Checksums.initialize(state,expectedHashes);
             if (origin != null) {
                 state.put("source_url", origin.get("source_url")); state.put("source_path", origin.get("path"));
                 state.put("repo_id", origin.get("repo_id")); state.put("revision", origin.get("revision"));
                 state.put("storage", origin.get("storage")); state.put("source_size", origin.get("size"));
-                state.put("source_sha256", origin.get("sha256"));
-                if (!str(origin.get("sha256")).isEmpty()) state.put("checksum_source", origin.get("checksum_source"));
+                Map<String,String> published=Checksums.values(origin),sources=new LinkedHashMap<>();
+                if(origin.get("checksum_sources") instanceof Map<?,?> map)for(var entry:map.entrySet())sources.put(str(entry.getKey()),str(entry.getValue()));
+                if(published.containsKey("sha256")&&!sources.containsKey("sha256"))sources.put("sha256",str(origin.get("checksum_source")));
+                Checksums.acceptDiscovery(state,published,sources);
             }
             Object mirrors=origin!=null?origin.get("mirrors"):input.get("mirrors");
             if(mirrors instanceof List<?> list){if(list.isEmpty()||list.size()>32||expected.isEmpty())throw new IOException("Trusted mirrors require a SHA-256 and 1 to 32 URLs");List<String> urls=new ArrayList<>();for(Object item:list)urls.add(SourceTransfer.validate(str(item)).toString());state.put("mirrors",urls);}

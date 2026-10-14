@@ -18,7 +18,7 @@ Java and the compiled gateway component are included. Setup creates a desktop sh
 
 Instructions and security confirmations:
 
-[English](../../docs/en.md) · [Русский](../../docs/ru.md) · [Deutsch](../../docs/de.md) · [Español](../../docs/es.md) · [Français](../../docs/fr.md).
+[English](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.3/docs/en.md) · [Русский](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.3/docs/ru.md) · [Deutsch](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.3/docs/de.md) · [Español](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.3/docs/es.md) · [Français](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.3/docs/fr.md).
 
 [SHA-256 checksums](SHA256SUMS.txt) · [Verification report](NATIVE-INSTALLER-TESTS.json).
 

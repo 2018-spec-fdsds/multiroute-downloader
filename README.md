@@ -1,7 +1,7 @@
 # MultiRoute Resume
 
 Java desktop download manager with resumable segments through selectable LAN
-gateways and a localhost API. Native installer version: **3.3**; portable ZIP
+gateways and a localhost API. Native installer version: **3.4**; portable ZIP
 distributions for **3.0** remain available.
 
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
@@ -9,9 +9,9 @@ distributions for **3.0** remain available.
 
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
-**New in 3.3:** the tray speed icon has a transparent background and black digits and units. Close to tray, aggregate rates through 10 Gbit/s, explicit Exit, desktop shortcuts and English setup are retained.
+**New in 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.3).
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.4).
 
 ## Why use this application?
 
@@ -36,7 +36,11 @@ limits; it is not a guaranteed multiple of the number of gateways.
 
 ## Screenshots
 
-Desktop interface in English, rendered from an isolated **demo profile**. The main-window examples were captured in 3.1; 3.2 introduced the tray and Exit command; 3.3 changes the speed icon to transparent with black text. Jobs and counters are illustrative data: these are not actual downloads or measured Internet speeds.
+The 3.4 checksum editor automatically recognizes MD5, SHA-256 and SHA-512. This own demo profile uses illustrative values to show a checksum error; no real file was downloaded.
+
+![Checksum type detected automatically, with optional additional references](docs/images/checksum-editor-3.4.png)
+
+Desktop interface in English, rendered from an isolated **demo profile**. The main-window examples were captured in 3.1; 3.2 introduced the tray and Exit command; 3.3 changes the speed icon to transparent with black text; 3.4 adds MD5 and SHA-512 verification. Jobs and counters are illustrative data: these are not actual downloads or measured Internet speeds.
 
 Tray icon examples rendered by the actual 3.3 drawing code at native icon sizes, enlarged for inspection. Speeds are synthetic examples; the tooltip displays the exact aggregate rate.
 
@@ -59,18 +63,18 @@ Batch import: one URL per line, preview before submission.
 
 ## Download and install
 
-### Native Windows and macOS installers (3.3)
+### Native Windows and macOS installers (3.4)
 
-Choose a single installer file from [release 3.3](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.3).
+Choose a single installer file from [release 3.4](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.4).
 The application, full Java runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
 | Platform | Installer | Installed application |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.3-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.3-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.3-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Windows 11 x64 | `MultiRoute-Resume-3.4-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.4-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.4-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
 
 Windows checks Npcap from the application. If missing, it offers a verified
 download of the official installer and a normal interactive UAC installation;
@@ -108,7 +112,7 @@ native `.pkg` application uses graphical authorization instead.
 ## Computer and network requirements
 
 - A full Java 17+ runtime for the native CPU architecture, including
-  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 3.3
+  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 3.4
   installers include a suitable runtime; portable/Linux deployment checks or
   downloads one when necessary.
 - Wired Ethernet in the same IPv4 LAN as the selected Internet gateways.
@@ -137,7 +141,8 @@ requirements were checked from the actual ELF/Mach-O binary metadata. See
   queue limits, scheduling, bulk URL import and speed graphs.
 - HTTP/HTTPS, passive FTP, explicit FTPS, SFTP with a pinned host key,
   secure WebDAV, Metalink, Hugging Face, torrent and magnet.
-- Published checksums when available, verification of saved segments and the
+- MD5, SHA-256 and SHA-512 whole-file sums, published references when available,
+  verification of saved segments and the
   assembled file. A locally calculated hash alone is not a publisher verification.
 - Source authentication, trusted mirrors and a versioned local JSON API with
   batch creation and server-sent events.
@@ -169,7 +174,7 @@ built Java JAR before it downloads prerequisites.
 ## API, verification and limitations
 
 - [API reference and examples](API.ru.txt); [OpenAPI schema](openapi.yaml).
-- [Native installer checks for 3.3](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
+- [Native installer checks for 3.4](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
   package hashes, Windows native startup and both macOS architectures.
 - Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
   [application report](TEST-REPORT.json) and
@@ -178,10 +183,10 @@ built Java JAR before it downloads prerequisites.
   helper fixtures were checked on real GitHub Mac runners. Windows native
   startup, instance replacement and profile retention were checked separately.
   End-user installation/security dialogs, BPF capture and physical gateway WAN
-  transfers remain unverified. Version 3.3 is a prerelease. The packages are
+  transfers remain unverified. Version 3.4 is a prerelease. The packages are
   unsigned with a publisher identity; macOS packages are not notarised.
 - Installer payloads contain the instructions as saved at the package source
-  commit recorded in the 3.3 report. Current verification results are published
+  commit recorded in the 3.4 report. Current verification results are published
   in that report and the release notes.
 - The native gateway transport supports public IPv4. Wi-Fi-only/VPN-only
   adapters, IPv6-only sources and local LAN torrent peers are outside this mode.
