@@ -1,49 +1,49 @@
 {
   "schema_version": 3,
   "application": "MultiRoute Resume",
-  "version": "3.4",
+  "version": "3.5",
   "status": "PASS",
   "release_stage": "prerelease",
-  "created_utc": "2026-10-14T15:28:17.101291+00:00",
+  "created_utc": "2026-10-14T18:57:47.611771+00:00",
   "repository": "https://github.com/2018-spec-fdsds/multiroute-resume",
   "project_owner_url": "https://github.com/2018-spec-fdsds",
-  "application_source_commit": "56ba858018ecc491211025b78e80f73b67f70a45",
+  "application_source_commit": "17812e425c805d548d550545c6762a8d75a265b9",
   "packages": [
     {
-      "filename": "MultiRoute-Resume-3.4-Windows-x64-Setup.exe",
-      "size_bytes": 57504768,
-      "md5": "8999637382f13a57d86d824dc808f805",
-      "sha256": "94db2fb4862a7621c6e2552f18fd00e897b9e70bfd8ed6ca22271f80c429b267",
-      "sha512": "1bed08332b6276631f3e7df6a7252ad87302f2ef0d14a0f52d8e049da8f351dc335d7c0e716ebbe516f4b83609e16b855ecaad12ef6ed673696c2855e5692cf2"
+      "filename": "MultiRoute-Resume-3.5-Windows-x64-Setup.exe",
+      "size_bytes": 57583616,
+      "md5": "56024fb37ddcb049f83826caf44b9814",
+      "sha256": "b9f6b97c4e63e4f09ec64e0476d41877d7e99f29b343ef6e25fbdc59d64dc157",
+      "sha512": "26e75a47079d67584422dd10081b27a60c3597c1a4da268eb9599962e1f8802283cd52f72e01987f58fdc30d895c9930757b16961e8b42e26abc0aa1119fe23f"
     },
     {
-      "filename": "MultiRoute-Resume-3.4-macOS-arm64.pkg",
-      "size_bytes": 59609081,
-      "md5": "13bef09293d70b1a5e7c0ebf86f18b42",
-      "sha256": "822bcb6f666f1757ed3a51cf1e111c0d8ea6504e948afba053de68638239e1cd",
-      "sha512": "d0c94cf866d250aaac72fa1c92ce8eac8879232e1e72717bd0b85dbf3ef20d2b9f8cb4b92a336703a34e122fa16a55884aad42711fda625610b7f34c77186638"
+      "filename": "MultiRoute-Resume-3.5-macOS-arm64.pkg",
+      "size_bytes": 59689292,
+      "md5": "725c9e05e7a8a32eff29808d65dcb2e7",
+      "sha256": "1dc005832a40c0af8067edbdf2dc10f180d6549904534e7d54ab1f93916831ad",
+      "sha512": "2ae90648b99adef80b5e234aca58279a96975609148e6cdbcae71ce577f865287bed379f58c65da0e82fce9be904a2c73e950a87a706b98898928e7495c15adc"
     },
     {
-      "filename": "MultiRoute-Resume-3.4-macOS-x86_64.pkg",
-      "size_bytes": 60800321,
-      "md5": "ec713a639ee2bf44f8fb38e27d1ae268",
-      "sha256": "1cd5c7356971cf13287a1c9097e96174215781cf5bcdc783f56c168c17cc5933",
-      "sha512": "ae6532c31dc539df5a6444586250b7cf2a04ee02f66140cbfe574556af97d15dedbcf56efbc4af7e9dbca543ec68eef32578e5d454e2b212adb8b63db8626a68"
+      "filename": "MultiRoute-Resume-3.5-macOS-x86_64.pkg",
+      "size_bytes": 60872653,
+      "md5": "893a0dac67bb416f203ff18c0c60e609",
+      "sha256": "06c98f5b79cdb73585b1b69f59c9b1e0d5230b4c32c36948d251ea5360b4e674",
+      "sha512": "c542430766610eb3dace7a83389b66b1f44347274478cbd41efaaf735d1869be5f8e809f2638dffb551a45588088e681acdcd94a983da24a1babe201445fe77d"
     }
   ],
   "windows_packaging": {
     "status": "PASS",
-    "version": "3.4",
+    "version": "3.5",
     "installer": {
-      "name": "MultiRoute-Resume-3.4-Windows-x64-Setup.exe",
-      "size": 57504768,
-      "sha256": "94db2fb4862a7621c6e2552f18fd00e897b9e70bfd8ed6ca22271f80c429b267"
+      "name": "MultiRoute-Resume-3.5-Windows-x64-Setup.exe",
+      "size": 57583616,
+      "sha256": "b9f6b97c4e63e4f09ec64e0476d41877d7e99f29b343ef6e25fbdc59d64dc157"
     },
-    "application_source_commit": "56ba858018ecc491211025b78e80f73b67f70a45",
-    "manifest_sha256": "fefa17fb08fc593e7ebcc0fdeb509cf4fe011fe8388001b0d14c057f1612481c",
-    "build_report_sha256": "47de52d06017b397c1427d34255cbb6fceb14a672d033b3f35e75d0f045afaf6",
-    "verification_report_sha256": "b10f630fd8394913be4da723791a2b487957b3fc23a37055191da0c069426a0c",
-    "source_payload_current_files_compared": 26,
+    "application_source_commit": "17812e425c805d548d550545c6762a8d75a265b9",
+    "manifest_sha256": "5dedf1f87d38aad93181120825746b7c937ea5644c40773fba3a5e23437d1537",
+    "build_report_sha256": "4ddbb26647acef1f3ea0321c91c0a8d7e6fd7baa5cb30c3bb83805bed1af16d9",
+    "verification_report_sha256": "0535f823a2c179f05710a025699074d0025b53bec7fbad2823c3f4be83079672",
+    "source_payload_current_files_compared": 27,
     "source_payload_current_files": [
       "README.md",
       "README.ru.md",
@@ -68,12 +68,13 @@
       "docs/images/desktop-bulk-import-en.png",
       "docs/images/desktop-downloads-en.png",
       "docs/images/desktop-network-en.png",
+      "docs/images/progress-downloads-3.5-en.png",
       "docs/images/tray-speeds-3.2.png",
       "docs/images/tray-speeds-3.3.png",
       "docs/ru.md"
     ],
-    "actual_installer_checks": 498,
-    "offline_markdown_links_checked": 103,
+    "actual_installer_checks": 501,
+    "offline_markdown_links_checked": 105,
     "native_functional_checks": [
       "actual native EXE reaches its loopback API with bundled Java and no system Java on PATH",
       "four default gateways and virtual IP retained without starting packet capture",
@@ -81,10 +82,13 @@
       "wrong stop key returns 403 without stopping the own controller",
       "authenticated stop ends the own controller while preserving its profile"
     ],
-    "native_functional_report_sha256": "f64a18a36a7a5a61d852da3598941bc3c45d12db424171c63be95a52dab2fbfb",
+    "native_functional_report_sha256": "e9c1e977d2f2fa64713d9e0af53d92af07409b0a07314d88ae3dba856205defb",
     "setup_language_checks": 25,
     "setup_language_report_sha256": "6eb9ff51667b55a4146f132511222a50299877842ab04cd7ea101e46a7bb9c2a",
-    "java_jar_sha256": "2641554294e2afafca4b9caf823f45fcc3fcf4dd18e95f0e782d7df1a4dcbe50",
+    "java_jar_sha256": "cd34597c132cdcfbecfbc407a1db648759cb09421ca8965a760c0d133ab0ddbc",
+    "frozen_reference_jar_sha256": "d0fa3a280e17427cb8f365d13f2726197b1265af586a662836a4a489703078f2",
+    "frozen_reference_jar_contents_match": true,
+    "frozen_reference_jar_entries_compared": 154,
     "compiled_from_current_saved_sources": true,
     "source_java_sha256": {
       "src/multiroute/APIEvents.java": "0b4ec8fac830e44e7285007803b404f423d4dfbbc8d26f2cf0db80e29943168f",
@@ -96,18 +100,19 @@
       "src/multiroute/DesktopLauncher.java": "63edf26f47b8ba17f0633bfce26db44b99b99032c8834f643347efda5565dadc",
       "src/multiroute/DesktopOptionsDialog.java": "43fde43d5af659aacf4156ce557bf977ce39e4d588516e8400ff90b67521dc99",
       "src/multiroute/DesktopTray.java": "71501f2bb5c1df531a8600c7e9a45e8372fc4f472198f5efb98d719ad68c2ba4",
-      "src/multiroute/DesktopUI.java": "5638ad5345ca98c7c9a348be1709cab0fe32da6823923bc30c14bca360288223",
+      "src/multiroute/DesktopUI.java": "ecb2a2b6145002b540d99d206c1d64ec004e80b52c08cac311a2649868f843b9",
       "src/multiroute/DiagnosticText.java": "debe2a91fc10440b7acb04493128b92fdf465ef8c6bc2de85c93646723f70fcd",
       "src/multiroute/DownloadMetrics.java": "a2e43787172f3b095c333ee8704342d98ede71160e60cb32346c95026b396335",
+      "src/multiroute/DownloadProgress.java": "c9852b50471976f522a37589f383566381c5fc2deee510814df37017eedf9e32",
       "src/multiroute/GatewayNetwork.java": "9696a9e8503f3d2701680df20fd42a6790ae13d9adc3255c1fb5fb3ffd4a6778",
       "src/multiroute/GatewayStatus.java": "47f6b7daa26169562560e25b1d5602389716aec1d454da980754907edbe90eaf",
       "src/multiroute/HubFileDialog.java": "ee40ec22da9d1745977ce644a8308be657bc41ba4320f2452ba511c4b858cd61",
       "src/multiroute/HubSource.java": "25cbad5023936d774b6326ca707de4fac5586809f578e9f488501b0879ee40b2",
-      "src/multiroute/I18n.java": "7152ad45a6247c977a427a8c05211ce371ecef43ef03035e6a96a381e1783d83",
+      "src/multiroute/I18n.java": "0e0b10634b82152511745943c49e0018a18751f48b8dea3e44561bfca4b9badf",
       "src/multiroute/JobGatewayDialog.java": "dc700e3122f81b7877a87b221c5ec4b0db1245cf492ec77c9092c174c97306d7",
       "src/multiroute/Json.java": "e35445b59c1c05fcd7868ff32972de9f53b10c5079133d2d0554bcfb46542cc4",
       "src/multiroute/MacGatewayLauncher.java": "dba3338118c828bcf5523268c5931702de637c5a445f3bf95d2eb7ec75d23df0",
-      "src/multiroute/Main.java": "960c5677c1df121916119e2f2663dfabadc79413f4c193f6a0cb55246966761f",
+      "src/multiroute/Main.java": "0e4ace1414aee9135ef49fb2f5002e69ae54c906112e014c3082964c7407d3d0",
       "src/multiroute/Metalink.java": "5eaeb507729033017e02f98d7986b33a165456f3ba06f30e02f29344ef1f739a",
       "src/multiroute/PieceScheduler.java": "319ea741c24511595b3b9f7ac41b63f854315e0c56fb70d0179bf089a574f4c2",
       "src/multiroute/QueueController.java": "f7c896034e8716300ac302d221b9307130d9cecf6b4cb15653a04adb65f42ef6",
@@ -130,9 +135,9 @@
       "src/multiroute/Worker.java": "c263b056415050e978acfe5e05380c7f4823095354d230cf371d3aee55c557ae",
       "src/multiroute/WorkerDiscovery.java": "cd3203ec52b0cb42d59fea6d709465f962ce4536de90019492fd89dfbedeb018"
     },
-    "compile_report_sha256": "95a9412cc021e47110de905ae680d808828bc5dca5cf221efd59ac6969ec07f1",
+    "compile_report_sha256": "ebab312b6fa1cb32021617b843700283aebf166ed3047f60890c0d61278f52d5",
     "native_helper_sha256": "d707d095979da2d44940f8a69027616feb1cdb51630445e25f6d4aa3211aa015",
-    "launcher_sha256": "79386c7c0816864dc22d4abae4f65ae7a87353c9af0274fea75d15d572e21980",
+    "launcher_sha256": "0effd7521f4741845f3aef8ace0c6d393a01619bee0c8b21bce1317d7e1fbaa9",
     "bundled_java_version": "21.0.12.1+1-LTS",
     "install_directory": "%LOCALAPPDATA%/MultiRoute Resume App",
     "user_data_directory": "%LOCALAPPDATA%/MultiRoute Resume/data",
@@ -170,7 +175,7 @@
   },
   "windows_actual_native_controller": {
     "status": "PASS",
-    "version": "3.4",
+    "version": "3.5",
     "checks": [
       "actual native EXE reaches its loopback API with bundled Java and no system Java on PATH",
       "four default gateways and virtual IP retained without starting packet capture",
@@ -188,9 +193,40 @@
     "application_sources_modified": false,
     "owned_descendants_cleaned_up": true
   },
+  "windows_packaged_download_progress_ui": {
+    "status": "PASS",
+    "checks": 826,
+    "cases": [
+      "default_downloads_uses_current_windows_profile_A_B_whitespace_normalized_valid_path_fallbacks_nonwindows_java_home",
+      "owned_hidden_gui_new_default_cached_foreign_profile_policy_current_user_custom_and_legacy_paths_preserved_default_custom_policies_saved",
+      "inflight_vs_saved_bytes_extreme_incomplete_totals_negative_and_oversized_payload_math",
+      "all_rows_independent_known_unknown_zero_paused_failed_queued_retrying_verifying_complete_seeding_extreme_sizes_no_false100",
+      "renderer_reuse_clears_indeterminate_fill_text_tooltips_and_previous_errors",
+      "sort_filter_refresh_column_drag_numeric_progress_sort_and_job_selection_association",
+      "ninety_rows_vertical_scroll_five_refreshes_keep_offscreen_selection_wide_table_fills_frame_narrow_horizontal_scroll",
+      "all_five_languages_progress_headers_unknown_size_tooltips_statuses_and_rendered_rows"
+    ],
+    "loaded_application_version": "3.5",
+    "loaded_application_jar_path": "M:\\Codex\\Tasks\\2026-10-11\\aria\\work\\native-windows-20261014\\release-3.5-profile-final\\image\\MultiRoute Resume\\app\\MultiRoute-Resume.jar",
+    "loaded_application_jar_sha256": "cd34597c132cdcfbecfbc407a1db648759cb09421ca8965a760c0d133ab0ddbc",
+    "desktop_ui_sha256": "ecb2a2b6145002b540d99d206c1d64ec004e80b52c08cac311a2649868f843b9",
+    "download_progress_sha256": "c9852b50471976f522a37589f383566381c5fc2deee510814df37017eedf9e32",
+    "i18n_sha256": "0e0b10634b82152511745943c49e0018a18751f48b8dea3e44561bfca4b9badf",
+    "user_clipboard_read": false,
+    "user_media_read": false,
+    "user_windows_read": false,
+    "live_downloads": false,
+    "network_calls": 0,
+    "os_routes_changed": false,
+    "frames_and_managers_closed": true,
+    "application_version": "3.5",
+    "packaged_application_jar_used": true,
+    "private_bundled_runtime_used": true,
+    "jar_sha256": "cd34597c132cdcfbecfbc407a1db648759cb09421ca8965a760c0d133ab0ddbc"
+  },
   "windows_packaged_checksum_ui": {
     "status": "PASS",
-    "checks": 1025,
+    "checks": 1029,
     "cases": [
       "primary_ctrl_v_auto_detects_32_64_128_empty_none_duplicate_merge_conflict_rejection_and_optional_disclosure",
       "three_manual_fields_preserved_and_ctrl_v_uses_injected_text_only",
@@ -204,8 +240,8 @@
       "five_language_new_labels_hints_tooltips_and_results_preserve_editable_values",
       "actual_hidden_hub_and_torrent_create_paths_reject_multiple_files_and_stale_sha512_before_any_job"
     ],
-    "desktop_ui_sha256": "5638ad5345ca98c7c9a348be1709cab0fe32da6823923bc30c14bca360288223",
-    "i18n_sha256": "7152ad45a6247c977a427a8c05211ce371ecef43ef03035e6a96a381e1783d83",
+    "desktop_ui_sha256": "ecb2a2b6145002b540d99d206c1d64ec004e80b52c08cac311a2649868f843b9",
+    "i18n_sha256": "0e0b10634b82152511745943c49e0018a18751f48b8dea3e44561bfca4b9badf",
     "diagnostic_text_sha256": "debe2a91fc10440b7acb04493128b92fdf465ef8c6bc2de85c93646723f70fcd",
     "primary_auto_detection": [
       "md5",
@@ -219,10 +255,10 @@
     "live_downloads": false,
     "packet_capture_started": false,
     "os_routes_changed": false,
-    "application_version": "3.4",
+    "application_version": "3.5",
     "packaged_application_jar_used": true,
     "private_bundled_runtime_used": true,
-    "jar_sha256": "2641554294e2afafca4b9caf823f45fcc3fcf4dd18e95f0e782d7df1a4dcbe50"
+    "jar_sha256": "cd34597c132cdcfbecfbc407a1db648759cb09421ca8965a760c0d133ab0ddbc"
   },
   "windows_packaged_checksum_integration": {
     "status": "PASS",
@@ -334,12 +370,12 @@
       "sha512": "43ef07a89fc86ef0923ee7aa277c89e9a754e0aff71fbffb7d8e34b116aafabfcee200f1ae9ee2ed3807d223906b23824ce36a2bc0b1802dff5a7ca45751c90e"
     },
     "known_vector_hashes": {
-      "sha512": "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f",
+      "md5": "900150983cd24fb0d6963f7d28e17f72",
       "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-      "md5": "900150983cd24fb0d6963f7d28e17f72"
+      "sha512": "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f"
     },
     "timings": {
-      "optional_algorithm_timeout_job_ms": 6084
+      "optional_algorithm_timeout_job_ms": 6129
     },
     "localhost_requests": {
       "/wrong-sha512/owned.bin.sha512": 1,
@@ -421,10 +457,10 @@
     "user_app_or_data_touched": false,
     "system_routes_changed": false,
     "torrent_sessions_or_peers_started": false,
-    "application_version": "3.4",
+    "application_version": "3.5",
     "packaged_application_jar_used": true,
     "private_bundled_runtime_used": true,
-    "jar_sha256": "2641554294e2afafca4b9caf823f45fcc3fcf4dd18e95f0e782d7df1a4dcbe50"
+    "jar_sha256": "cd34597c132cdcfbecfbc407a1db648759cb09421ca8965a760c0d133ab0ddbc"
   },
   "checksum_core_tests": {
     "status": "PASS",
@@ -476,40 +512,88 @@
       "https://www.gnu.org/s/coreutils/manual/html_node/sha2-utilities.html"
     ]
   },
-  "core_test_version_note": "The early core tests used the same five source files before only Main.VERSION changed from 3.3 to 3.4; all final packaged UI and integration tests use 3.4.",
+  "core_test_version_note": "The early core tests used the same five source files before only Main.VERSION changed from 3.3 to 3.5; all final packaged UI and integration tests use 3.5.",
   "macos_native_builds": {
     "schema_version": 1,
     "application": "MultiRoute Resume",
-    "application_version": "3.4",
-    "receipt_created_utc": "2026-10-14T15:24:37+00:00",
+    "application_version": "3.5",
+    "receipt_created_utc": "2026-10-14T18:56:30+00:00",
     "repository": "https://github.com/2018-spec-fdsds/multiroute-resume",
     "project_owner_url": "https://github.com/2018-spec-fdsds",
-    "ci_run_id": 38586668952,
-    "ci_run_url": "https://github.com/2018-spec-fdsds/multiroute-resume/actions/runs/38586668952",
+    "ci_run_id": 38618871091,
+    "ci_run_url": "https://github.com/2018-spec-fdsds/multiroute-resume/actions/runs/38618871091",
     "ci_conclusion": "success",
-    "source_commit": "56ba858018ecc491211025b78e80f73b67f70a45",
-    "source_commit_url": "https://github.com/2018-spec-fdsds/multiroute-resume/commit/56ba858018ecc491211025b78e80f73b67f70a45",
+    "source_commit": "17812e425c805d548d550545c6762a8d75a265b9",
+    "source_commit_url": "https://github.com/2018-spec-fdsds/multiroute-resume/commit/17812e425c805d548d550545c6762a8d75a265b9",
     "source_files_sha256_at_ci_commit": {
       "LICENSE.txt": "4ceb92d9c22aa5d3df207e7d042b93e4929a69a8fc60b243af9b1315be1cfb09",
       "THIRD-PARTY-NOTICES.txt": "575bfb06aa19aa49d90a3eb89ab196e7c62c2aaa112fd057319b89b8047cdaa5",
-      ".github/workflows/native-macos.yml": "513c25913b4b637424a417e9e05c9f207ca4c8e7bc3b12f2b876b042ab245e8a",
+      ".github/workflows/native-macos.yml": "70635a32db7934f7d1b10627d07bfda108b2dd8823235992fcbe41173607f225",
       "packaging/macos/build.py": "e393a75a80682b6fd513b384a8bd7dc89a9eee5a10ef86aa1a729d222365d575",
-      "packaging/macos/verify.py": "a7186a964ab5515195360fb03e0138560a023ab79b256cbfd11ee18a3711cc07",
+      "packaging/macos/verify.py": "5af88bbe47339da559204ff005db2ccb76b42c711fde923d237fe795df8505b3",
       "packaging/macos/gateway_launch.c": "982bcf13ae45994e6550c1214dbe86ca6ba15d1896389ab2b6b5e0a14bc10943",
       "packaging/macos/preinstall.sh.in": "f37d28522918dccd8098e98d367b85e4359ef5be4a8512b83cc126e79c99bc82",
       "packaging/macos/postinstall.sh.in": "99d4de9fe68c5ac4aade00247723c535b44d3d0c122418303f1affadb451eb40",
       "src/multiroute/MacGatewayLauncher.java": "dba3338118c828bcf5523268c5931702de637c5a445f3bf95d2eb7ec75d23df0",
       "src/multiroute/DesktopLauncher.java": "63edf26f47b8ba17f0633bfce26db44b99b99032c8834f643347efda5565dadc",
-      "src/multiroute/Main.java": "960c5677c1df121916119e2f2663dfabadc79413f4c193f6a0cb55246966761f",
+      "src/multiroute/Main.java": "0e4ace1414aee9135ef49fb2f5002e69ae54c906112e014c3082964c7407d3d0",
       "src/multiroute/GatewayNetwork.java": "d4500bcfbeb7bf8649b81728bbbf7cd7a340af0252fa8bbf42b68acbf79de721",
       "src/multiroute/DesktopTray.java": "71501f2bb5c1df531a8600c7e9a45e8372fc4f472198f5efb98d719ad68c2ba4",
-      "src/multiroute/DesktopUI.java": "5638ad5345ca98c7c9a348be1709cab0fe32da6823923bc30c14bca360288223",
-      "src/multiroute/I18n.java": "5bc20103fe74d35f08b769891082be0377981a4266b922e983cc1ddd4ea72835",
+      "src/multiroute/DesktopUI.java": "ecb2a2b6145002b540d99d206c1d64ec004e80b52c08cac311a2649868f843b9",
+      "src/multiroute/I18n.java": "db4a7a7dd78a2637a4c917a1d065f6479180159e7266f289bbf50c2fb398ca2c",
       "src/multiroute/Checksum.java": "4a2403630448a1565541693c3a0fffa9c36c8f81cb24cec75bb891b3621d14b0",
       "src/multiroute/Checksums.java": "c787ed657de5a1c2722f303991701c335b0e30a822a50d5452154f042cc4fc11",
       "src/multiroute/Metalink.java": "5eaeb507729033017e02f98d7986b33a165456f3ba06f30e02f29344ef1f739a",
-      "src/multiroute/TorrentEngine.java": "3606034a15ed1c693142ebe71214b0c68ddf1d95a3e617969d7221a9bb78359a"
+      "src/multiroute/TorrentEngine.java": "3606034a15ed1c693142ebe71214b0c68ddf1d95a3e617969d7221a9bb78359a",
+      "src/multiroute/DownloadProgress.java": "c9852b50471976f522a37589f383566381c5fc2deee510814df37017eedf9e32"
     },
+    "java_source_files_at_ci_commit": 43,
+    "all_java_source_sha256_at_ci_commit": {
+      "src/multiroute/APIEvents.java": "0b4ec8fac830e44e7285007803b404f423d4dfbbc8d26f2cf0db80e29943168f",
+      "src/multiroute/AppLog.java": "74c21d9486f03bd6328768b921ef4b47c813cda3728f6446129727180ba46807",
+      "src/multiroute/BulkImportDialog.java": "5fe7891b4fe5fda00f6380a15038d6d7d7b4b10cff1c09d0d66e2e82574bba62",
+      "src/multiroute/Checksum.java": "4a2403630448a1565541693c3a0fffa9c36c8f81cb24cec75bb891b3621d14b0",
+      "src/multiroute/Checksums.java": "c787ed657de5a1c2722f303991701c335b0e30a822a50d5452154f042cc4fc11",
+      "src/multiroute/ClipboardSupport.java": "b739ede5225dd11a712a30c38ad24e37da0c396b8a904936f4706f5b797ce874",
+      "src/multiroute/DesktopLauncher.java": "63edf26f47b8ba17f0633bfce26db44b99b99032c8834f643347efda5565dadc",
+      "src/multiroute/DesktopOptionsDialog.java": "43fde43d5af659aacf4156ce557bf977ce39e4d588516e8400ff90b67521dc99",
+      "src/multiroute/DesktopTray.java": "71501f2bb5c1df531a8600c7e9a45e8372fc4f472198f5efb98d719ad68c2ba4",
+      "src/multiroute/DesktopUI.java": "ecb2a2b6145002b540d99d206c1d64ec004e80b52c08cac311a2649868f843b9",
+      "src/multiroute/DiagnosticText.java": "c67ab03d3cceb9dc1ac2a229d5aa3dd08bbbf83da6ea27d438ddc2b380e44d69",
+      "src/multiroute/DownloadMetrics.java": "a2e43787172f3b095c333ee8704342d98ede71160e60cb32346c95026b396335",
+      "src/multiroute/DownloadProgress.java": "c9852b50471976f522a37589f383566381c5fc2deee510814df37017eedf9e32",
+      "src/multiroute/GatewayNetwork.java": "d4500bcfbeb7bf8649b81728bbbf7cd7a340af0252fa8bbf42b68acbf79de721",
+      "src/multiroute/GatewayStatus.java": "798073a8165e4f3ee6983627048ede089d281c31f14e2efe326333fc094695d2",
+      "src/multiroute/HubFileDialog.java": "ee40ec22da9d1745977ce644a8308be657bc41ba4320f2452ba511c4b858cd61",
+      "src/multiroute/HubSource.java": "25cbad5023936d774b6326ca707de4fac5586809f578e9f488501b0879ee40b2",
+      "src/multiroute/I18n.java": "db4a7a7dd78a2637a4c917a1d065f6479180159e7266f289bbf50c2fb398ca2c",
+      "src/multiroute/JobGatewayDialog.java": "dc700e3122f81b7877a87b221c5ec4b0db1245cf492ec77c9092c174c97306d7",
+      "src/multiroute/Json.java": "e35445b59c1c05fcd7868ff32972de9f53b10c5079133d2d0554bcfb46542cc4",
+      "src/multiroute/MacGatewayLauncher.java": "dba3338118c828bcf5523268c5931702de637c5a445f3bf95d2eb7ec75d23df0",
+      "src/multiroute/Main.java": "0e4ace1414aee9135ef49fb2f5002e69ae54c906112e014c3082964c7407d3d0",
+      "src/multiroute/Metalink.java": "5eaeb507729033017e02f98d7986b33a165456f3ba06f30e02f29344ef1f739a",
+      "src/multiroute/PieceScheduler.java": "70e36f41c5ad7aa48f4d084c0ca145e7196cc493d54744aae4f47cf9e7db2606",
+      "src/multiroute/QueueController.java": "f7c896034e8716300ac302d221b9307130d9cecf6b4cb15653a04adb65f42ef6",
+      "src/multiroute/SecureXml.java": "81e3f756158c75082e5e64b3f91d2fb498b0bfca8082083d4529e5e88ff2ec1c",
+      "src/multiroute/SingleInstance.java": "4efa4d9752142d92ebc2de0df9a2c72d0a85223b21db57f344fe57083f247772",
+      "src/multiroute/SourceAccessDialog.java": "b9238afc024249866ca86c89fac8d659c6e78b914c1868a282e46816f444f053",
+      "src/multiroute/SourceAuth.java": "e4934bd138f114ac4cb5f578b993578566ec8c65c4cc49df69270efd3d69f091",
+      "src/multiroute/SourceFileDialog.java": "c373613115b4fd9a3dd457d346a7cb04a17279379fd9d5ba4845a4def2dedc1c",
+      "src/multiroute/SourceTransfer.java": "ba4f8ec3bc2e319f8020a8f9be728e69891c26f5be5f8645e85af8b30a5e8b9a",
+      "src/multiroute/SpeedGraph.java": "e7ed79edc2f9ff0dec1c94d47cbce3b07b422cbf598e3d405c7fbc023fbd503b",
+      "src/multiroute/SpeedTest.java": "fc32fa54fd5198de539376656d3611a7dc73fc2d4922a3ea3f276e2502b80075",
+      "src/multiroute/TlsTrust.java": "aec386a3577a0430c1b280405f169c766523f05fc45f9b84f43ce0801b0050df",
+      "src/multiroute/TorrentEngine.java": "3606034a15ed1c693142ebe71214b0c68ddf1d95a3e617969d7221a9bb78359a",
+      "src/multiroute/TorrentFileDialog.java": "c96d7af57d53449149aacf34fdb5965412d9cb59b353f0e46749ebb28d0f9ddf",
+      "src/multiroute/TorrentNetwork.java": "465092af2a4d50a4a0ef19e3d65fb917f5f374ce4de3cc979233c0b8c586bb7e",
+      "src/multiroute/TorrentSource.java": "8cc82c4bc22608c79dd55bf47213cb53040eb48d3970e57ddfa6716e42fba04b",
+      "src/multiroute/TransferLimits.java": "a39ac5d0068f38caed56101f870c2e4e0cf5feb2e08a778c9540ce3f4a90e650",
+      "src/multiroute/Transport.java": "7923943f483face538eb9f71804db0bb301383a380866456a5c8f675633c286f",
+      "src/multiroute/WebDav.java": "b9fe30f06ea220d4098fc3d7ad43fb2ef56a724d11c357d3fe33ea9c8b301158",
+      "src/multiroute/Worker.java": "70a26dfcb04492b23e704a0a3c189f409f33dcb91028981ef3d9f764c72b1b9a",
+      "src/multiroute/WorkerDiscovery.java": "cd3203ec52b0cb42d59fea6d709465f962ce4536de90019492fd89dfbedeb018"
+    },
+    "all_java_saved_sources_still_match_ci_commit": true,
     "runtime_and_packaging_sources_still_match_ci_commit": {
       "packaging/macos/build.py": true,
       "packaging/macos/verify.py": true,
@@ -526,7 +610,8 @@
       "src/multiroute/Checksum.java": true,
       "src/multiroute/Checksums.java": true,
       "src/multiroute/Metalink.java": true,
-      "src/multiroute/TorrentEngine.java": true
+      "src/multiroute/TorrentEngine.java": true,
+      "src/multiroute/DownloadProgress.java": true
     },
     "working_tree_comparison_note": "Current source comparison normalizes CRLF to LF; CI hashes describe exact Git blob bytes.",
     "license_sha256": "4ceb92d9c22aa5d3df207e7d042b93e4929a69a8fc60b243af9b1315be1cfb09",
@@ -535,43 +620,44 @@
         "architecture": "arm64",
         "minimum_macos": "26.0",
         "ci_runner": "macos-26",
-        "filename": "MultiRoute-Resume-3.4-macOS-arm64.pkg",
-        "size_bytes": 59609081,
-        "sha256": "822bcb6f666f1757ed3a51cf1e111c0d8ea6504e948afba053de68638239e1cd",
+        "filename": "MultiRoute-Resume-3.5-macOS-arm64.pkg",
+        "size_bytes": 59689292,
+        "sha256": "1dc005832a40c0af8067edbdf2dc10f180d6549904534e7d54ab1f93916831ad",
         "helper_sha256": "da2ff9c4739c9490bcac54d8017fb0e14facc4a2374ebf7f56ac3a11210797ef",
-        "gateway_launcher_sha256": "37dbd0042d3d3d7ffe5f72a5a44ec659f2cecf5d07cbe77a3ac2b50ee2c8159d",
-        "artifact_id": 11904744359,
-        "artifact_zip_size_bytes": 58652217,
-        "artifact_zip_sha256": "613cfd540720fbb790f57ca6bfb5a4be2102a98c1ae571914be341f3cabf215d",
+        "gateway_launcher_sha256": "b1709b0b9efcc9dddd01c291b56d2afe8cbdd0e6f5e679043385d3a18e16d78c",
+        "artifact_id": 11921640011,
+        "artifact_zip_size_bytes": 58742680,
+        "artifact_zip_sha256": "3dad8b147fc154ac0c187ba4d7b16bc80a48472d339af6631f88e8e619d6b803",
         "artifact_zip_crc_verified": true,
-        "build_report_sha256": "6c202a4a3d3aa007c2d84c8687501dbcbffc3671a8572737588e081dbe118fde",
-        "verification_report_sha256": "b6190480c3e4c49b769eb97211f773368c06c5ac2b11ffbd7429594ebbd5f624",
+        "build_report_sha256": "a0659c5170bc4684b14a7cd8d9c7b0062687d17d86619536225c3aacab57804e",
+        "verification_report_sha256": "3096c0acbc84f379b04309543170b23f2ec4a54158bf96be9e45c23dec0dba95",
         "ci_verification_passed": true,
-        "bundled_documentation_files": 18,
+        "bundled_documentation_files": 19,
         "bundled_documentation_sha256": {
-          "README.md": "64db88e7af4c5c9e365898ab0a8fde8a9374c9a48155aded4cb38f6c53818f47",
-          "README.ru.md": "bf2d2916cd9a6b99da55a53909e44bb28404aad1f1c241661cf69e501ce452e6",
+          "README.md": "3c0ee40ec2c83888c69a60a1c2d31ee1790e5e99afcd079294ceef46c5448497",
+          "README.ru.md": "ac2a45ba780fe1a00182d76a8776fa2d544bb82aa884ad2a60c146b2310b0099",
           "CHECKS.ru.md": "2f3e7f8aeb191ca8a533e6db1c44682cbecbe8a80401057210847d312dd74c8c",
           "TEST-REPORT.json": "8ac936bb1d9e8e6c70f8971a8d27896bfd1512ecd41e0195c3b08e4a77b53436",
           "DEPLOYMENT-TEST-REPORT.json": "8f7a0aa058634b3c23e9e373346d4b00ff94ec1db62af3713ac99f357d7b4374",
           "native/source/BUILD-README.txt": "d4cf3eb50e636eff88c21ac208ccf695e52a5ec9a51d41704896e7a488c3dbfd",
           "docs/COMPATIBILITY.json": "24cc945ca46d2b803aac60ee1d329a6d6fd22f61b2b9affc9ebacb34e140d9cb",
-          "docs/de.md": "cd634496ed813239b05383f383bbed098434cbe203e285d27e57bc0510f3ade3",
-          "docs/en.md": "1a3e0843ca087bc8ad893cb1579a58d0b472f10229990c04ae85261b37bd9c30",
-          "docs/es.md": "4df3ece77bcd4e97c3469032725d2e702befc6a1fc3727f6a59b730dcdd7e54b",
-          "docs/fr.md": "bfbeefeacaae7b461508fdc12d36a97af2b1d2989a012043c8135530da23a479",
+          "docs/de.md": "9bf99d66899bfad3344e68e16d87428e6c7df35156ceb773a0c7cc1f1282886c",
+          "docs/en.md": "1a0ac29039ff246f81dafd7bf3429d42233075dc4f868104339ca733f46998b5",
+          "docs/es.md": "8c11d02080fbf658d0ac77f8e1af33663c6b1f8fb340bfd2e6437f6a6ef7560a",
+          "docs/fr.md": "b0ae346415255fa78b71ce8836f0cd9e990f475903389069381764c41e846c5a",
           "docs/images/checksum-editor-3.4.png": "56537cc4826973777413ffa50026e297e1e75023d9a34912d0aa89d413f80092",
           "docs/images/desktop-bulk-import-en.png": "d61e529a04a1c2e371ace2b1d2688b247dad126fdc122c03f6bcf91b35c20db4",
           "docs/images/desktop-downloads-en.png": "9cbab18d42272bf9af5b83b8f4d8a0f343285a83a1659e21956cbc81a92931bb",
           "docs/images/desktop-network-en.png": "a12fd320284a5f3d9081a51d240d019ea2c68035ea1c58ec82c12304581f6c9e",
+          "docs/images/progress-downloads-3.5-en.png": "8d9afb62bd995c4f645a71fa73296196b29362b8be772b921d0b85332f0f6a60",
           "docs/images/tray-speeds-3.2.png": "67df69da30ae8b059f00b74ef52dcc1149ca0359f91953acd65e31100cbcf05b",
           "docs/images/tray-speeds-3.3.png": "e4a016514e0f043bbdef894a760d7e4e2a3381d59932f201f38160e151490194",
-          "docs/ru.md": "4717727c4e63395624d23f694bececc911f2e0f346de354cde948bc366021a33"
+          "docs/ru.md": "bb05ce21293f0b60dc2041a66b0917fcd9a0514f981344a0f1c46afa58dbdf45"
         },
         "bundled_documentation_matches_source_commit": true,
         "offline_markdown_link_counts": {
-          "app_image": 103,
-          "expanded_installer": 103
+          "app_image": 105,
+          "expanded_installer": 105
         },
         "headless_tray_fixture_checks": 16,
         "raw_ci_reported_headless_tray_fixture_checks": 16,
@@ -581,49 +667,52 @@
           "md5",
           "sha256",
           "sha512"
-        ]
+        ],
+        "download_progress35_fixture_checks": 3,
+        "graphical_macos_downloads_table_layout_verified": false
       },
       {
         "architecture": "x86_64",
         "minimum_macos": "15.0",
         "ci_runner": "macos-15-intel",
-        "filename": "MultiRoute-Resume-3.4-macOS-x86_64.pkg",
-        "size_bytes": 60800321,
-        "sha256": "1cd5c7356971cf13287a1c9097e96174215781cf5bcdc783f56c168c17cc5933",
+        "filename": "MultiRoute-Resume-3.5-macOS-x86_64.pkg",
+        "size_bytes": 60872653,
+        "sha256": "06c98f5b79cdb73585b1b69f59c9b1e0d5230b4c32c36948d251ea5360b4e674",
         "helper_sha256": "fb7afbc7cbd51d7ee7580d55105377abcdeb3d7d944f643dd1a1e6f8405085dc",
-        "gateway_launcher_sha256": "60959a6db30d564760a1d32916cc12abe7562237b5cbe2922f55dc207f969651",
-        "artifact_id": 11905959538,
-        "artifact_zip_size_bytes": 59841309,
-        "artifact_zip_sha256": "8a6379ae19a210bc9d06ccc086a67849a7951c6b5497e7eca3be6a42c14f2715",
+        "gateway_launcher_sha256": "ffc2a071b3093f7adff1a975d5999ec5eaeb6cd7c8fab3d0bb4d8460764c892b",
+        "artifact_id": 11920459784,
+        "artifact_zip_size_bytes": 59917951,
+        "artifact_zip_sha256": "3d0f766e65e69cba66f76bceabb7f7b79fd9d23e5f327845d07bd691c92bd4c2",
         "artifact_zip_crc_verified": true,
-        "build_report_sha256": "3673467d5f2d08c89d0b20aa5b8130391b28d71ec1f5f1e9e857da91a91fb560",
-        "verification_report_sha256": "5a63c83cce767d49ce4a65e6bab1c8940ba4dce1f86d1961dafec9dc57412ab3",
+        "build_report_sha256": "d987fe2d9929f4127f6bdc10a1f6ce4af4848dd1fca1399c30bdf57de423bf2c",
+        "verification_report_sha256": "c9ed6d9b47affaa9b33f949e5f36867e0a6d32f52e7d0cf30b9f099905cb66ae",
         "ci_verification_passed": true,
-        "bundled_documentation_files": 18,
+        "bundled_documentation_files": 19,
         "bundled_documentation_sha256": {
-          "README.md": "64db88e7af4c5c9e365898ab0a8fde8a9374c9a48155aded4cb38f6c53818f47",
-          "README.ru.md": "bf2d2916cd9a6b99da55a53909e44bb28404aad1f1c241661cf69e501ce452e6",
+          "README.md": "3c0ee40ec2c83888c69a60a1c2d31ee1790e5e99afcd079294ceef46c5448497",
+          "README.ru.md": "ac2a45ba780fe1a00182d76a8776fa2d544bb82aa884ad2a60c146b2310b0099",
           "CHECKS.ru.md": "2f3e7f8aeb191ca8a533e6db1c44682cbecbe8a80401057210847d312dd74c8c",
           "TEST-REPORT.json": "8ac936bb1d9e8e6c70f8971a8d27896bfd1512ecd41e0195c3b08e4a77b53436",
           "DEPLOYMENT-TEST-REPORT.json": "8f7a0aa058634b3c23e9e373346d4b00ff94ec1db62af3713ac99f357d7b4374",
           "native/source/BUILD-README.txt": "d4cf3eb50e636eff88c21ac208ccf695e52a5ec9a51d41704896e7a488c3dbfd",
           "docs/COMPATIBILITY.json": "24cc945ca46d2b803aac60ee1d329a6d6fd22f61b2b9affc9ebacb34e140d9cb",
-          "docs/de.md": "cd634496ed813239b05383f383bbed098434cbe203e285d27e57bc0510f3ade3",
-          "docs/en.md": "1a3e0843ca087bc8ad893cb1579a58d0b472f10229990c04ae85261b37bd9c30",
-          "docs/es.md": "4df3ece77bcd4e97c3469032725d2e702befc6a1fc3727f6a59b730dcdd7e54b",
-          "docs/fr.md": "bfbeefeacaae7b461508fdc12d36a97af2b1d2989a012043c8135530da23a479",
+          "docs/de.md": "9bf99d66899bfad3344e68e16d87428e6c7df35156ceb773a0c7cc1f1282886c",
+          "docs/en.md": "1a0ac29039ff246f81dafd7bf3429d42233075dc4f868104339ca733f46998b5",
+          "docs/es.md": "8c11d02080fbf658d0ac77f8e1af33663c6b1f8fb340bfd2e6437f6a6ef7560a",
+          "docs/fr.md": "b0ae346415255fa78b71ce8836f0cd9e990f475903389069381764c41e846c5a",
           "docs/images/checksum-editor-3.4.png": "56537cc4826973777413ffa50026e297e1e75023d9a34912d0aa89d413f80092",
           "docs/images/desktop-bulk-import-en.png": "d61e529a04a1c2e371ace2b1d2688b247dad126fdc122c03f6bcf91b35c20db4",
           "docs/images/desktop-downloads-en.png": "9cbab18d42272bf9af5b83b8f4d8a0f343285a83a1659e21956cbc81a92931bb",
           "docs/images/desktop-network-en.png": "a12fd320284a5f3d9081a51d240d019ea2c68035ea1c58ec82c12304581f6c9e",
+          "docs/images/progress-downloads-3.5-en.png": "8d9afb62bd995c4f645a71fa73296196b29362b8be772b921d0b85332f0f6a60",
           "docs/images/tray-speeds-3.2.png": "67df69da30ae8b059f00b74ef52dcc1149ca0359f91953acd65e31100cbcf05b",
           "docs/images/tray-speeds-3.3.png": "e4a016514e0f043bbdef894a760d7e4e2a3381d59932f201f38160e151490194",
-          "docs/ru.md": "4717727c4e63395624d23f694bececc911f2e0f346de354cde948bc366021a33"
+          "docs/ru.md": "bb05ce21293f0b60dc2041a66b0917fcd9a0514f981344a0f1c46afa58dbdf45"
         },
         "bundled_documentation_matches_source_commit": true,
         "offline_markdown_link_counts": {
-          "app_image": 103,
-          "expanded_installer": 103
+          "app_image": 105,
+          "expanded_installer": 105
         },
         "headless_tray_fixture_checks": 16,
         "raw_ci_reported_headless_tray_fixture_checks": 16,
@@ -633,7 +722,9 @@
           "md5",
           "sha256",
           "sha512"
-        ]
+        ],
+        "download_progress35_fixture_checks": 3,
+        "graphical_macos_downloads_table_layout_verified": false
       }
     ],
     "verified_checks_on_native_mac_ci_runners": [
@@ -648,6 +739,9 @@
       "real owned Job.finish rejects wrong MD5 or SHA-512, preserves each partial file, retains all three actual hashes and never publishes a final file",
       "MD5 alone cannot satisfy strong source identity while a SHA-512 reference can",
       "legacy SHA-256-only state and two-argument discovery retain their source without fabricating MD5 or SHA-512 references",
+      "actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS",
+      "actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window",
+      "JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download",
       "AppleScript compiled; quoting round-trip and seven invalid requests rejected without authorization",
       "native app launcher reached its local API using fresh owned state",
       "eight owned normal-user Desktop shortcut fixtures pass; installer switches to a validated console user and preserves existing items",
@@ -666,7 +760,7 @@
       "fr"
     ],
     "offline_instructions_verified_in_app_and_expanded_pkg": true,
-    "offline_markdown_relative_links_verified_in_each_layout": 103,
+    "offline_markdown_relative_links_verified_in_each_layout": 105,
     "setup_language": "en",
     "desktop_shortcut_policy": {
       "name": "MultiRoute Resume.app",
@@ -693,6 +787,10 @@
       "sha512"
     ],
     "checksum_native_fixture_uses_network": false,
+    "download_progress35_fixture_checks": 3,
+    "download_progress35_fixture_uses_network_or_windows": false,
+    "current_user_downloads_directory_owned_fixture_verified": true,
+    "graphical_macos_downloads_table_layout_verified": false,
     "tray_icon_presentation": "black speed figures on a transparent background",
     "tray_transparent_black_pixels_verified_on_native_ci": true,
     "display_unit_boundaries_verified_gbit_per_second": [
@@ -714,7 +812,8 @@
       "Finder/Gatekeeper opening and security confirmations on an end-user Mac",
       "Graphical administrator authorization for the BPF component",
       "Packet capture, physical LAN gateways, combined download throughput and gateway failures",
-      "Actual menu-bar tray interaction, privacy prompts and console-user Desktop shortcut during an end-user installation"
+      "Actual menu-bar tray interaction, privacy prompts and console-user Desktop shortcut during an end-user installation",
+      "Graphical macOS downloads table layout, scrolling and viewport restoration"
     ],
     "publication_performed_by_receipt_task": false
   },
@@ -726,16 +825,16 @@
       "es",
       "fr"
     ],
-    "passed": 268,
-    "total": 268,
+    "passed": 277,
+    "total": 277,
     "files_sha256": {
-      "README.md": "64db88e7af4c5c9e365898ab0a8fde8a9374c9a48155aded4cb38f6c53818f47",
-      "README.ru.md": "bf2d2916cd9a6b99da55a53909e44bb28404aad1f1c241661cf69e501ce452e6",
-      "docs/en.md": "1a3e0843ca087bc8ad893cb1579a58d0b472f10229990c04ae85261b37bd9c30",
-      "docs/ru.md": "4717727c4e63395624d23f694bececc911f2e0f346de354cde948bc366021a33",
-      "docs/de.md": "cd634496ed813239b05383f383bbed098434cbe203e285d27e57bc0510f3ade3",
-      "docs/es.md": "4df3ece77bcd4e97c3469032725d2e702befc6a1fc3727f6a59b730dcdd7e54b",
-      "docs/fr.md": "bfbeefeacaae7b461508fdc12d36a97af2b1d2989a012043c8135530da23a479"
+      "README.md": "3c0ee40ec2c83888c69a60a1c2d31ee1790e5e99afcd079294ceef46c5448497",
+      "README.ru.md": "ac2a45ba780fe1a00182d76a8776fa2d544bb82aa884ad2a60c146b2310b0099",
+      "docs/en.md": "1a0ac29039ff246f81dafd7bf3429d42233075dc4f868104339ca733f46998b5",
+      "docs/ru.md": "bb05ce21293f0b60dc2041a66b0917fcd9a0514f981344a0f1c46afa58dbdf45",
+      "docs/de.md": "9bf99d66899bfad3344e68e16d87428e6c7df35156ceb773a0c7cc1f1282886c",
+      "docs/es.md": "8c11d02080fbf658d0ac77f8e1af33663c6b1f8fb340bfd2e6437f6a6ef7560a",
+      "docs/fr.md": "b0ae346415255fa78b71ce8836f0cd9e990f475903389069381764c41e846c5a"
     }
   },
   "screenshots": {
@@ -769,6 +868,12 @@
         "bytes": 59731,
         "width": 1268,
         "height": 965
+      },
+      "docs/images/progress-downloads-3.5-en.png": {
+        "sha256": "8d9afb62bd995c4f645a71fa73296196b29362b8be772b921d0b85332f0f6a60",
+        "bytes": 75547,
+        "width": 1504,
+        "height": 961
       }
     },
     "original_desktop_capture_fixture": {
@@ -782,6 +887,7 @@
         "desktop-bulk-import-en.png"
       ]
     },
+    "download_progress_fixture": "Actual desktop components with owned synthetic mixed-state jobs; no user desktop or live downloads.",
     "checksum_editor_fixture": "Owned synthetic error example rendered from actual UI components; no user desktop or real download.",
     "tray_fixture": "Unchanged transparent/black DesktopTray drawing from 3.3 with synthetic rates through 10 Gbit/s."
   },
