@@ -1,9 +1,9 @@
 #!/bin/bash
-# Bash 3.2 compatible. Sourced by the two Finder launchers; no commands run on source.
-MR_RELEASE=3.2
+# Bash 3.3 compatible. Sourced by the two Finder launchers; no commands run on source.
+MR_RELEASE=3.3
 MR_JRE_RELEASE='jdk-21.0.12.1+1'
 MR_JRE_ROOT='jdk-21.0.12.1+1-jre'
-MR_HELPER_ROOT='/Library/PrivilegedHelperTools/MultiRouteResume/3.2'
+MR_HELPER_ROOT='/Library/PrivilegedHelperTools/MultiRouteResume/3.3'
 
 mr_note() { printf '%s\n' "$*"; }
 mr_die() { printf '\nMultiRoute Resume: %s\n' "$*" >&2; exit 1; }
@@ -297,8 +297,8 @@ mr_app_install() {
 <key>CFBundleIdentifier</key><string>local.multiroute.resume</string>
 <key>CFBundleExecutable</key><string>MultiRoute</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>3.2</string>
-<key>CFBundleVersion</key><string>3.2</string>
+<key>CFBundleShortVersionString</key><string>3.3</string>
+<key>CFBundleVersion</key><string>3.3</string>
 <key>LSMinimumSystemVersion</key><string>11.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSLocalNetworkUsageDescription</key><string>MultiRoute Resume communicates with the gateways you select on your local network and uses an unused application virtual IP to download without changing system routes.</string>

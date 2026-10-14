@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.2 — Guía en español
+# MultiRoute Resume 3.3 — Guía en español
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md)
 
@@ -62,15 +62,15 @@ Requisitos comunes:
 
 La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión disponible solamente por VPN y fuentes accesibles únicamente por IPv6 **no son configuraciones admitidas** para este transporte. Tampoco promete sumar el ancho de banda si varios routers comparten la misma conexión, o si el servidor limita la descarga.
 
-## Instaladores nativos 3.2: Windows y macOS
+## Instaladores nativos 3.3: Windows y macOS
 
 Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), si está adjunto a la publicación. Cada paquete es **un solo archivo de instalación**, con aplicación, lanzador nativo, Java completo y componente de red. Las fuentes y los ZIP portátiles 3.0 son distribuciones distintas.
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.2-Windows-x64-Setup.exe` | **MultiRoute Resume** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.2-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.2-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.3-Windows-x64-Setup.exe` | **MultiRoute Resume** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.3-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.3-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
 
 Las cinco guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md` o `fr.md` con un editor de texto o visor Markdown.
 
@@ -181,7 +181,7 @@ El paquete **no está firmado con Developer ID ni notarizado**. Tras intentar ab
 
 Si se solicita acceso a la **Red local** para Terminal, Java o la aplicación, permita el acceso para utilizar los routers LAN. La contraseña de administrador y el permiso de red local son confirmaciones distintas del aviso del desarrollador. Al elegir una carpeta puede aparecer un permiso de archivos: autorice el destino que necesita.
 
-No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. El flujo de Finder/permisos del paquete portátil 3.0 sigue sin verificarse en un Mac del usuario. Las compilaciones nativas 3.2 y el inicio/API se comprobaron en runners Mac reales de GitHub; los diálogos del usuario y la captura BPF siguen sin comprobarse.
+No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. El flujo de Finder/permisos del paquete portátil 3.0 sigue sin verificarse en un Mac del usuario. Las compilaciones nativas 3.3 y el inicio/API se comprobaron en runners Mac reales de GitHub; los diálogos del usuario y la captura BPF siguen sin comprobarse.
 
 Modo API, desde la carpeta extraída:
 
@@ -272,12 +272,12 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## 7. Datos, actualización y desinstalación
 
-### Instaladores nativos 3.2
+### Instaladores nativos 3.3
 
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.2/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.3/gateway-net` |
 
 Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
 
@@ -314,11 +314,11 @@ Para informar de un fallo, indique versión, plataforma/arquitectura, etapa y me
 
 ## 9. Alcance de la verificación
 
-Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Los paquetes nativos 3.2 se compilaron y verificaron en runners de GitHub Apple Silicon/macOS 26 e Intel/macOS 15: inicio/API, torrent JNI, contenido y pruebas del componente de red. No se han comprobado sus routers físicos, la instalación del usuario, los diálogos Finder/seguridad ni la captura BPF.
+Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Los paquetes nativos 3.3 se compilaron y verificaron en runners de GitHub Apple Silicon/macOS 26 e Intel/macOS 15: inicio/API, torrent JNI, contenido y pruebas del componente de red. No se han comprobado sus routers físicos, la instalación del usuario, los diálogos Finder/seguridad ni la captura BPF.
 
-macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 3.2 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
+macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 3.3 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
 
-## Bandeja del sistema y salida (3.2)
+## Bandeja del sistema y salida (3.3)
 
 Cerrar la ventana principal mantiene la aplicación y las descargas en la bandeja del sistema. El icono muestra la velocidad total de descarga de **todos los trabajos**, sin depender de la selección ni del filtro. La información al pasar el ratón muestra el valor exacto en Mbit/s o Gbit/s (desde 1 Gbit/s), además de bytes/s, hasta 10 Gbit/s; el icono pequeño lo redondea. Elija **Abrir aplicación** en el menú de la bandeja para restaurar la ventana. En Windows/Linux también puede pulsar el icono. **Salir de la aplicación**, en la bandeja o ventana, guarda el estado y termina el programa. Utilice esta opción antes de actualizar.
 
@@ -329,3 +329,5 @@ El setup crea un acceso directo de escritorio y, en Windows, una entrada de Inic
 ## Licencia
 
 Puede instalar y usar gratuitamente la aplicación original para uso personal o en organizaciones, incluidas actividades empresariales. **Se prohíbe vender la aplicación, cobrar por su licencia o distribuirla por dinero** sin permiso separado. La licencia propia no concede derechos generales de modificación o redistribución y no es una licencia de código abierto aprobada por OSI. Los componentes de terceros conservan sus licencias. Este texto es un resumen traducido; rige el texto inglés de [LICENSE.txt](../LICENSE.txt).
+
+En 3.3 el icono de velocidad tiene fondo transparente y cifras y unidades negras, incluso a 10 Gbit/s. Se mantienen la velocidad total y los comandos de la bandeja.

@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 REQUIRED = {"java.base", "java.desktop", "java.net.http", "java.xml", "jdk.httpserver"}
 ROOT = Path(__file__).resolve().parents[2]
 LANGUAGES = ("en", "ru", "de", "es", "fr")
-SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png", "tray-speeds-3.2.png")
+SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png", "tray-speeds-3.3.png")
 
 
 def verify_documentation(app_dir: Path, report: dict) -> None:
@@ -265,6 +265,25 @@ public final class NativeDesktopFixture {
         boolean unitsChanged = false;
         for (int y=40;y<64;y++) for (int x=0;x<64;x++) unitsChanged |= megabit.getRGB(x,y) != gigabit.getRGB(x,y);
         check(unitsChanged, "Equal compact numbers render different Mb/s and Gb/s unit labels");
+        boolean transparent = true, black = true, bothRows = true;
+        for (int dimension : new int[]{16, 20, 24, 32}) for (long rate : new long[]{0L, 12500000L, 125000000L, 1250000000L}) {
+            BufferedImage rendered = DesktopTray.drawIcon(rate, new Dimension(dimension, dimension));
+            int empty = 0, numberInk = 0, unitInk = 0;
+            for (int y=0; y<dimension; y++) for (int x=0; x<dimension; x++) {
+                int pixel = rendered.getRGB(x,y);
+                if ((pixel >>> 24) == 0) empty++;
+                else {
+                    black &= (pixel & 0x00ffffff) == 0;
+                    if (y < Math.round(dimension * .62f)) numberInk++;
+                    if (y >= Math.round(dimension * .62f)) unitInk++;
+                }
+            }
+            transparent &= empty > dimension * dimension / 3 && (rendered.getRGB(0,0) >>> 24) == 0;
+            bothRows &= numberInk > 0 && unitInk > 0;
+        }
+        check(transparent, "Tray background remains transparent at native icon sizes through ten gigabits");
+        check(black, "All visible tray digits and units are black, including antialiased edges");
+        check(bothRows, "Both number and unit rows contain visible glyphs at every native icon size");
         System.out.println("OWNED_NATIVE_DESKTOP_FIXTURE_OK shortcuts=" + shortcuts + " tray=" + (checks-shortcuts));
     }
 }
@@ -272,9 +291,9 @@ public final class NativeDesktopFixture {
         run([jdk / "bin/javac", "--release", "17", "-cp", classpath, "-d", owned, desktop_fixture])
         desktop_test = run([java, "-Djava.awt.headless=true", "-cp", str(owned) + os.pathsep + classpath,
                             "multiroute.NativeDesktopFixture", owned / "owned-desktop-state"], capture_output=True, text=True)
-        assert "OWNED_NATIVE_DESKTOP_FIXTURE_OK shortcuts=7 tray=13" in desktop_test.stdout
+        assert "OWNED_NATIVE_DESKTOP_FIXTURE_OK shortcuts=7 tray=16" in desktop_test.stdout
         checks.append("seven normal-user Java shortcut fixtures create real native Mac symlinks and preserve existing items without touching the user Desktop")
-        checks.append("thirteen headless tray checks include one and ten gigabit boundaries, aggregate ten gigabits, exact byte counters and adaptive unit rendering without installing a tray icon")
+        checks.append("sixteen headless tray checks include transparent background, black glyphs, native-size digit and unit rows through ten gigabits, aggregate rates and exact byte counters without installing a tray icon")
         fixture = owned / "MacAuthorizationFixture.java"
         fixture.write_text('''
 package multiroute;

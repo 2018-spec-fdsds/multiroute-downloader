@@ -172,16 +172,14 @@ final class DesktopTray implements AutoCloseable {
         return String.format(Locale.ROOT, "%.1f", value);
     }
 
-    /** Two high-contrast rows: a live number and its unit, including in a 16-pixel Windows tray. */
+    /** Black speed and unit text on a transparent ARGB canvas, including a 16-pixel Windows tray. */
     static BufferedImage drawIcon(long rate, Dimension size) {
         int width = Math.max(16, size.width), height = Math.max(16, size.height);
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
         try {
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            graphics.setColor(new Color(12, 61, 81));
-            graphics.fillRoundRect(0, 0, width, height, Math.max(3, width / 5), Math.max(3, height / 5));
-            graphics.setColor(Color.WHITE);
+            graphics.setColor(Color.BLACK);
             String number = compactRate(rate);
             float numberSize = Math.max(8, height * .60f);
             Font numberFont = new Font(Font.SANS_SERIF, Font.BOLD, 10).deriveFont(numberSize);
