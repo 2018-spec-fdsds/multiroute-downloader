@@ -4,6 +4,16 @@
 
 MultiRoute Resume es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
 
+## ¿Para qué sirve?
+
+Si su red dispone de varias conexiones independientes a Internet, por ejemplo una línea fija y un router móvil 4G/5G, la aplicación aprovecha su ancho de banda simultáneamente. El equipo accede a las puertas de enlace a través de la misma red Ethernet local.
+
+- **Mayor velocidad total:** todas las puertas de enlace seleccionadas y disponibles descargan segmentos en paralelo desde una cola compartida. Las más rápidas pueden obtener más segmentos.
+- **Resistencia a fallos:** en las descargas segmentadas reanudables, las demás puertas de enlace siguen trabajando si una falla. Los segmentos incompletos vuelven a la cola para otra puerta de enlace y se conservan los datos verificados.
+- **Descargas por lotes:** importe una lista de URL, gestione varios archivos en la cola o envíe un grupo de descargas mediante la API local.
+
+La mejora de velocidad depende de la capacidad independiente de las conexiones y de los límites del servidor. Reanudar y reasignar segmentos requiere que el origen y el protocolo permitan una reanudación segura.
+
 Descargue el paquete de su plataforma desde [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) y extraiga **todo** su contenido. Los lanzadores necesitan el JAR, las bibliotecas y los componentes nativos que acompañan al paquete. El archivo «Source code» de GitHub corresponde al código fuente: compílelo primero o use un paquete listo para ejecutar. Los instaladores comprueban los archivos de la aplicación antes de descargar dependencias.
 
 ## 1. Entorno necesario

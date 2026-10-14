@@ -6,6 +6,10 @@
 
 MultiRoute Resume ist ein Java-Desktopprogramm zum Herunterladen großer Dateien über mehrere Internet-Gateways im selben lokalen Ethernet-Netz. Alle ausgewählten Gateways beziehen Teile aus einer gemeinsamen Warteschlange. Ein schnelleres Gateway kann dadurch mehr Teile herunterladen; ein langsames Gateway hält die anderen nicht auf. Unterbrochene Übertragungen können fortgesetzt werden, soweit das Quellprotokoll dies sicher erlaubt.
 
+Das ist besonders nützlich, wenn mehrere unabhängige Internetanschlüsse vorhanden sind, zum Beispiel ein kabelgebundener Festnetzanschluss und ein Mobilfunkrouter mit 4G/5G. Ihre Gateways müssen vom Rechner im selben Ethernet-LAN erreichbar sein. Das Programm nutzt alle ausgewählten, verfügbaren Gateways gleichzeitig für Dateisegmente und kann so die gemeinsame Downloadgeschwindigkeit erhöhen. Der tatsächliche Gewinn hängt von der unabhängigen Bandbreite der Anschlüsse und den Grenzen des Downloadservers ab.
+
+Bei segmentierten Downloads können die übrigen Gateways weiterarbeiten, wenn ein einzelner Anschluss ausfällt. Noch nicht vollständig geladene Teile werden anderen verfügbaren Gateways zugewiesen; bereits geprüfte Daten bleiben erhalten. Außerdem unterstützt das Programm den gemeinsamen Download mehrerer Dateien: URL-Listen und eine Warteschlange erlauben Gruppen von Downloads, die sich auch über die lokale API aus anderen Anwendungen anlegen lassen.
+
 Das Programm besitzt eine eigene Swing-Oberfläche, einen systemüblichen Ordnerdialog und eine lokale HTTP-API für andere Programme. Ein Webbrowser ist für die Bedienung nicht erforderlich. Die Oberfläche, registrierte Statusmeldungen und Hilfetexte sind in **Englisch, Russisch, Deutsch, Spanisch und Französisch** verfügbar. Bei einem neuen Profil ist Englisch voreingestellt. Die Sprachwahl wird gespeichert und sofort angewendet; Dateinamen, URLs und JSON-Schlüssel bleiben unverändert. Nicht registrierte Meldungen externer Server oder Bibliotheken können in ihrer ursprünglichen Sprache erscheinen.
 
 ## Erforderliche Umgebung

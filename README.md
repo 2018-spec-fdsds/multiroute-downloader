@@ -6,6 +6,27 @@ gateways and a localhost API. Current application version: **3.0**.
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
 [Español](docs/es.md) · [Français](docs/fr.md)
 
+## Why use this application?
+
+MultiRoute Resume helps you download files using several independent Internet
+connections at the same time. For example, one gateway can use a fixed broadband
+line and another a mobile 4G/5G connection. Both routers are available to your
+computer on the same local Ethernet network.
+
+- **Use the combined bandwidth.** File segments are downloaded concurrently
+  through all selected available gateways. Faster gateways take more work from
+  the shared queue, increasing aggregate download speed when the Internet
+  connections and source server have capacity.
+- **Keep downloading when a connection fails.** For resumable segmented
+  downloads, working gateways continue transferring data, unfinished segments
+  return to the shared queue and other gateways can download them. Already
+  verified data is preserved.
+- **Download groups of files.** Import a list of URLs, manage multiple files in
+  the download queue or submit a batch through the local API.
+
+The speed gain depends on independent upstream capacity and source-server
+limits; it is not a guaranteed multiple of the number of gateways.
+
 ## Download and install
 
 Download and extract a complete ZIP from [Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases).

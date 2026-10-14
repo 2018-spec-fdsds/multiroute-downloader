@@ -6,6 +6,10 @@
 
 MultiRoute Resume est une application de bureau Java qui télécharge de gros fichiers au moyen de plusieurs passerelles Internet présentes sur le même réseau Ethernet local. Les passerelles choisies prennent des segments dans une file commune. Une passerelle plus rapide peut ainsi télécharger davantage de segments ; une passerelle lente ne bloque pas les autres. Une transmission interrompue peut reprendre lorsque le protocole et l’identité du fichier permettent une reprise sûre.
 
+Elle est particulièrement utile lorsque plusieurs accès Internet indépendants sont disponibles, par exemple une ligne fixe filaire et un routeur mobile 4G/5G. Leurs passerelles doivent être accessibles depuis l’ordinateur sur le même réseau Ethernet local. L’application utilise simultanément toutes les passerelles sélectionnées et disponibles pour télécharger des segments de fichiers, ce qui peut augmenter le débit total. Le gain réel dépend de la capacité indépendante des connexions et des limites du serveur de téléchargement.
+
+Pour les téléchargements segmentés, la panne d’une connexion n’empêche pas les autres passerelles de continuer. Les segments incomplets sont réattribués aux passerelles encore disponibles et les données déjà vérifiées sont conservées. L’application prend également en charge le téléchargement groupé de plusieurs fichiers : des listes d’URL et une file d’attente permettent de gérer des groupes de téléchargements, que d’autres logiciels peuvent aussi créer via l’API locale.
+
 L’application possède une interface Swing, un sélecteur de dossier propre au système et une API HTTP locale utilisable par d’autres logiciels. Aucun navigateur n’est nécessaire pour la piloter. L’interface, les messages d’état enregistrés et les aides sont disponibles en **anglais, russe, allemand, espagnol et français**. Un nouveau profil utilise l’anglais. Le choix de langue est conservé et appliqué immédiatement ; les noms de fichiers, les URL et les clés JSON restent identiques. Certains messages externes non enregistrés, provenant d’un serveur ou d’une bibliothèque, peuvent conserver leur langue d’origine.
 
 ## Environnement nécessaire

@@ -4,6 +4,16 @@
 
 MultiRoute Resume is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
 
+## Why use it?
+
+If your network has several independent Internet connections, such as a fixed broadband line and a mobile 4G/5G router, the application can use their bandwidth simultaneously. Your computer reaches the gateways on the same local Ethernet network.
+
+- **Higher aggregate speed:** all selected available gateways download file segments concurrently from a shared queue. Faster gateways can take more segments.
+- **Resilience:** during resumable segmented downloads, a failed gateway leaves the remaining gateways working; unfinished segments return to the queue for another gateway, and verified data is retained.
+- **Batch downloads:** import a list of URLs, manage several files in the queue or submit a group of downloads through the local API.
+
+The speed gain depends on independent upstream capacity and source-server limits. Resuming and reassigning segments require a source and protocol that support safe resumption.
+
 Download the package for your platform from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) and extract **the entire package**. Keep the JAR, libraries, launchers and native files together. GitHub's “Source code” archive contains source files: build it first or use a ready-to-run release. The deployment scripts report missing application binaries before downloading prerequisites.
 
 ## 1. Required environment
