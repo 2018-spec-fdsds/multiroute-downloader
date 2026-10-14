@@ -9,6 +9,8 @@
 
 Владелец проекта: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
+**Скачать установщики:** [файлы Windows и macOS в папке downloads](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads).
+
 ## Зачем нужно приложение
 
 Если в локальной сети есть несколько независимых выходов в Интернет, приложение

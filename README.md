@@ -9,6 +9,8 @@ distributions for **3.0** remain available.
 
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads).
+
 ## Why use this application?
 
 MultiRoute Resume helps you download files using several independent Internet
