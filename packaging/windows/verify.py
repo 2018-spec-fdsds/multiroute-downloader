@@ -116,6 +116,12 @@ def main():
     msi = json.loads(msi_report.read_text(encoding="utf-8-sig"))
     properties = {item["Property"]: item["Value"] for item in msi["properties"]}
     check("installer version matches", properties.get("ProductVersion") == original["application_version"])
+    check("installer product language is English", properties.get("ProductLanguage") == "1033")
+    installer_log = (build/"jpackage-installer.log").read_text(encoding="utf-8")
+    check("installer compiled with English culture", "-cultures:en-us" in installer_log)
+    check("desktop shortcut enabled by default", properties.get("JP_INSTALL_DESKTOP_SHORTCUT") == "1")
+    check("Start menu shortcut enabled by default", properties.get("JP_INSTALL_STARTMENU_SHORTCUT") == "1")
+    check("no installer shortcut opt-out dialog", not any(row["Dialog"] == "ShortcutPromptDlg" for row in msi["dialogs"]))
     # An absent/empty ALLUSERS installs per user, per Windows Installer semantics.
     check("installer is per-user", not properties.get("ALLUSERS"))
     directory_table = {item["Directory"]: item for item in msi["directories"]}

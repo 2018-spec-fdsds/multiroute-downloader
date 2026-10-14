@@ -1,10 +1,13 @@
 # Native Windows installer
 
-The release artifact `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` is one
+The release artifact `MultiRoute-Resume-3.2-Windows-x64-Setup.exe` is one
 installer file. It installs an ordinary `MultiRoute Resume.exe`, a private Java
-runtime, a Start menu shortcut, an optional desktop shortcut and a Windows
+runtime, Start menu and desktop shortcuts by default, and a Windows
 uninstall entry. Shortcuts point directly to the EXE. Java does not need to be
 installed separately, and normal launches do not open a CMD or PowerShell window.
+Our installer and application setup windows use English independently of the
+language selected for the regular application interface. Windows authorization
+and official third-party installers keep their own language settings.
 
 The default installation folder is `%LOCALAPPDATA%\MultiRoute Resume App`.
 The installer is for the current Windows user. Application data is kept separately

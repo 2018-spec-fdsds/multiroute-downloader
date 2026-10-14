@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.1 — Guide en français
+# MultiRoute Resume 3.2 — Guide en français
 
 [Accueil](../README.md) · [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · **Français**
 
@@ -88,7 +88,7 @@ Une version native appropriée de Java 17+ est réutilisée. Sinon, une JRE offi
 
 **Prérequis supplémentaire pour BitTorrent/magnet :** les bibliothèques torrent effectivement fournies ciblent des versions plus récentes : **macOS 26 ou ultérieur sur Apple Silicon, macOS 15 ou ultérieur sur Intel**. macOS 11+ ne signifie donc pas que tous les protocoles de cette publication y sont disponibles. Le lanceur détecte cette limite, avertit sur un système plus ancien et permet le déploiement Java/HTTP, sans mettre à niveau macOS. Une installation réussie ne prouve pas le chargement effectif de la bibliothèque torrent. Vérifiez version et architecture avec `sw_vers -productVersion` et `uname -m` ; l’exécution du paquet portable 3.0 sur un Mac utilisateur reste à vérifier.
 
-Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le parcours portable 3.0 Finder/Gatekeeper sur un Mac utilisateur reste à vérifier. Les builds natifs 3.1 et le lancement/API ont été vérifiés sur de vrais runners Mac GitHub ; les dialogues de sécurité utilisateur et la capture BPF restent à vérifier. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
+Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le parcours portable 3.0 Finder/Gatekeeper sur un Mac utilisateur reste à vérifier. Les builds natifs 3.2 et le lancement/API ont été vérifiés sur de vrais runners Mac GitHub ; les dialogues de sécurité utilisateur et la capture BPF restent à vérifier. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
 
 ### Vérifications automatiques des lanceurs
 
@@ -115,15 +115,15 @@ Ce transport Ethernet ne prend pas en charge le Wi-Fi, les adaptateurs exclusive
 
 Les requêtes DNS utilisent la passerelle choisie : d’abord le routeur, puis si nécessaire `1.1.1.1` ou `8.8.8.8` via cette même passerelle. Il n’existe pas de repli vers le résolveur DNS du système. DNSSEC, DoH et le repli TCP en cas de réponse DNS tronquée ne sont pas implémentés dans cette version.
 
-## Installateurs natifs 3.1 : Windows et macOS
+## Installateurs natifs 3.2 : Windows et macOS
 
 Choisissez l’installateur de votre système dans les [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), s’il est joint à la publication. Chaque paquet est **un seul fichier d’installation**, contenant application, lanceur natif, Java complet et composant réseau. Les sources et les ZIP portables 3.0 restent des distributions distinctes.
 
 | Système | Installateur | Lancement après installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** dans Démarrer ou via son raccourci de bureau |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.2-Windows-x64-Setup.exe` | **MultiRoute Resume** dans Démarrer ou via son raccourci de bureau |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.2-macOS-arm64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.2-macOS-x86_64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
 
 Les cinq guides et les captures sont inclus pour une consultation hors ligne. Windows : `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS : dans le Finder, choisissez **Afficher le contenu du paquet** sur l’application installée, puis ouvrez `Contents/app/docs/`. Ouvrez `en.md`, `ru.md`, `de.md`, `es.md` ou `fr.md` avec un éditeur de texte ou un lecteur Markdown.
 
@@ -318,12 +318,12 @@ Tous les chemins de ce tableau sont relatifs à `/api/v1`. Les champs et erreurs
 
 ## Données, mise à jour et dépannage
 
-### Installateurs natifs 3.1
+### Installateurs natifs 3.2
 
 | Système | Réglages, historique et journaux | Application/Java | Composant réseau |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, avec Java inclus | Composant x64 inclus ; Npcap installé séparément |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.1/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.2/gateway-net` |
 
 Fermez l’application avant une mise à jour avec un nouvel installateur. Sous Windows, supprimez-la par **Paramètres → Applications → Applications installées**. Sous macOS, supprimer la `.app` ne supprime pas automatiquement l’historique ni le composant protégé séparé. Les fichiers téléchargés restent dans le dossier choisi ; ne le supprimez pas seulement pour désinstaller. Le chemin des données diffère du ZIP Windows 3.0 ; conservez votre ancien profil avant migration.
 
@@ -356,9 +356,17 @@ Pour mettre à jour les paquets portables 3.0 Linux/macOS, exécutez le lanceur 
 
 ## Portée des vérifications
 
-Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Les paquets natifs 3.1 ont été compilés et vérifiés sur les runners GitHub Apple Silicon/macOS 26 et Intel/macOS 15 : lancement/API, torrent JNI, contenu et tests du composant réseau. Installation utilisateur, dialogues Finder/sécurité et capture BPF restent à vérifier. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.1 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
+Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Les paquets natifs 3.2 ont été compilés et vérifiés sur les runners GitHub Apple Silicon/macOS 26 et Intel/macOS 15 : lancement/API, torrent JNI, contenu et tests du composant réseau. Installation utilisateur, dialogues Finder/sécurité et capture BPF restent à vérifier. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.2 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
 
 Rapports : [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Composants tiers et licences : [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
+
+## Zone de notification et fermeture (3.2)
+
+Fermer la fenêtre principale laisse l’application et les téléchargements actifs dans la zone de notification. L’icône indique le débit total de **tous les travaux**, indépendamment de la sélection et du filtre. Son infobulle affiche le débit exact en Mbit/s ou Gbit/s (à partir de 1 Gbit/s), ainsi qu’en octets/s, jusqu’à 10 Gbit/s ; la petite icône arrondit la valeur. Choisissez **Ouvrir l’application** dans le menu de l’icône pour restaurer la fenêtre. Sous Windows/Linux, un clic sur l’icône l’ouvre également. **Quitter l’application**, dans le menu de l’icône ou la fenêtre, enregistre l’état et termine le programme. Utilisez cette commande avant une mise à jour.
+
+Sans zone de notification compatible, la fenêtre est réduite dans la barre des tâches et les téléchargements continuent ; Quitter reste disponible. Si la zone disparaît, la fenêtre cachée se rouvre. Windows peut ranger l’icône dans les notifications masquées.
+
+Le setup crée un raccourci sur le bureau et, sous Windows, une entrée Démarrer. macOS crée un lien Desktop vers la `.app` installée pour l’utilisateur connecté et réessaie au premier lancement graphique. Les éléments existants sont conservés. Si la confidentialité empêche la création, autorisez l’accès demandé ou ouvrez depuis Applications. Nos textes du setup sont anglais ; les dialogues de sécurité et d’autorisation du système suivent la langue du système.
 
 ## Licence
 

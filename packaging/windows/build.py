@@ -109,7 +109,7 @@ def fetch_tool(tool, folder):
     folder.mkdir(parents=True, exist_ok=True)
     if not archive.exists():
         temporary = archive.with_suffix(".download")
-        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Resume-build/3.1"})
+        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Resume-build/3.2"})
         with urllib.request.urlopen(request, timeout=60) as incoming, temporary.open("xb") as outgoing:
             if not incoming.url.startswith("https://"):
                 raise ValueError("Build tool redirect must use HTTPS")
@@ -162,7 +162,7 @@ def copy_file(source, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="3.1")
+    parser.add_argument("--version", default="3.2")
     parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Resume.jar")
     parser.add_argument("--native-helper", type=Path, default=ROOT / "native/windows-x64/gateway-net.exe")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build/windows-package")
@@ -178,7 +178,7 @@ def main():
     if os.name != "nt":
         parser.error("Windows packages must be built on Windows, as required by jpackage.")
     if not args.version.replace(".", "").isdigit():
-        parser.error("Use a numeric application version, for example 3.1.")
+        parser.error("Use a numeric application version, for example 3.2.")
     if args.fetch_tools:
         jdk = fetch_tool("jdk", args.tools_dir.resolve())
         jre = fetch_tool("jre", args.tools_dir.resolve())
@@ -235,7 +235,7 @@ def main():
     icon(app_icon)
     image_folder = build / "image"
     image_folder.mkdir()
-    image_args = [args.jpackage, "--type", "app-image", "--input", inputs, "--dest", image_folder,
+    image_args = [args.jpackage, "-J-Duser.language=en", "-J-Duser.country=US", "--type", "app-image", "--input", inputs, "--dest", image_folder,
                   "--name", APP_NAME, "--app-version", args.version,
                   "--vendor", "2018-spec-fdsds", "--description", "Downloads over multiple LAN Internet gateways",
                   "--main-jar", "MultiRoute-Resume.jar", "--main-class", args.main_class,
@@ -259,7 +259,9 @@ def main():
         "native_helper_sha256": sha256(args.native_helper),
         "launcher_sha256": sha256(executable),
         "driver_bundled": False,
-        "installation_scope": "Current user, Start menu and optional desktop shortcuts; Windows uninstall entry",
+        "installation_scope": "Current user, Start menu and desktop shortcuts by default; Windows uninstall entry",
+        "installer_language": "English (en-US, Windows Installer language 1033)",
+        "desktop_shortcut_default": True,
         "app_image_files": {p.relative_to(image).as_posix(): sha256(p) for p in sorted(image.rglob("*")) if p.is_file()},
         "limitations": ["Installer and launcher are unsigned; Windows may show an unrecognized-app confirmation.",
                         "Npcap is downloaded from its official source at first launch if missing, after checksum and publisher checks, using its normal interactive UAC installer.",
@@ -270,11 +272,11 @@ def main():
         installer_folder.mkdir()
         env = os.environ.copy()
         env["PATH"] = str(args.wix.resolve()) + os.pathsep + env.get("PATH", "")
-        package_args = [args.jpackage, "--type", "exe", "--app-image", image,
+        package_args = [args.jpackage, "-J-Duser.language=en", "-J-Duser.country=US", "--verbose", "--type", "exe", "--app-image", image,
                         "--dest", installer_folder, "--name", APP_NAME, "--app-version", args.version,
                         "--vendor", "2018-spec-fdsds", "--description", "Downloads over multiple LAN Internet gateways",
                         "--win-per-user-install", "--install-dir", "MultiRoute Resume App", "--win-dir-chooser", "--win-menu", "--win-menu-group", APP_NAME,
-                        "--win-shortcut", "--win-shortcut-prompt", "--win-upgrade-uuid", UPGRADE_UUID,
+                        "--win-shortcut", "--win-upgrade-uuid", UPGRADE_UUID,
                         "--license-file", ROOT / "LICENSE.txt",
                         "--about-url", "https://github.com/2018-spec-fdsds/multiroute-resume",
                         "--win-help-url", "https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/docs/en.md"]

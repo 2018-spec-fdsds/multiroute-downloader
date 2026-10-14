@@ -218,6 +218,13 @@ public final class I18n {
             throw new IllegalStateException("Duplicate localization key: " + ru);
     }
     private static void catalog() {
+        row("Открыть приложение", "Open application", "Anwendung öffnen", "Abrir aplicación", "Ouvrir l’application");
+        row("Выйти из приложения", "Exit application", "Anwendung beenden", "Salir de la aplicación", "Quitter l’application");
+        row("Все загрузки: %.2f Мбит/с (%d Б/с)", "All downloads: %.2f Mbit/s (%d B/s)", "Alle Downloads: %.2f Mbit/s (%d B/s)", "Todas las descargas: %.2f Mbit/s (%d B/s)", "Tous les téléchargements : %.2f Mbit/s (%d B/s)");
+        row("Все загрузки: %.2f Гбит/с (%d Б/с)", "All downloads: %.2f Gbit/s (%d B/s)", "Alle Downloads: %.2f Gbit/s (%d B/s)", "Todas las descargas: %.2f Gbit/s (%d B/s)", "Tous les téléchargements : %.2f Gbit/s (%d B/s)");
+        row("%.1f Гбит/с", "%.1f Gbit/s", "%.1f Gbit/s", "%.1f Gbit/s", "%.1f Gbit/s");
+        row("Завершить приложение и сохранить загрузки для продолжения. Крестик окна сворачивает приложение в трей.", "Exit the application and save downloads for resuming. The window close button minimizes to the system tray.", "Anwendung beenden und Downloads zum Fortsetzen speichern. Die Schließen-Schaltfläche minimiert ins Systemtray.", "Salir de la aplicación y guardar las descargas para reanudarlas. El botón de cierre minimiza a la bandeja del sistema.", "Quitter l’application et enregistrer les téléchargements pour les reprendre. Le bouton de fermeture réduit l’application dans la zone de notification.");
+        row("Системный трей недоступен. Окно свёрнуто, загрузки продолжаются. Для выхода нажмите «Выйти из приложения».", "The system tray is unavailable. The window is minimized; downloads continue. Use Exit application to quit.", "Das Systemtray ist nicht verfügbar. Das Fenster ist minimiert; Downloads laufen weiter. Zum Beenden Anwendung beenden wählen.", "La bandeja del sistema no está disponible. La ventana está minimizada; las descargas continúan. Use Salir de la aplicación para cerrar.", "La zone de notification est indisponible. La fenêtre est réduite ; les téléchargements continuent. Utilisez Quitter l’application pour fermer.");
         row("Файл", "File", "Datei", "Archivo", "Fichier");
         row("Состояние", "Status", "Status", "Estado", "État");
         row("Готово", "Complete", "Abgeschlossen", "Completado", "Terminé");

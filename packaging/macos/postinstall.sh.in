@@ -31,6 +31,42 @@ actual=${actual%% *}
 [ "$actual" = "$launcher_expected" ] || exit 1
 "$helper" --self-test
 "$launcher" --self-test
+# BEGIN_DESKTOP_SHORTCUT_USER
+create_user_desktop_shortcut() {
+    local home="$1" expected_uid="$2" application="$3" desktop shortcut
+    [ "$(/usr/bin/id -u)" = "$expected_uid" ] && [ "$expected_uid" != 0 ] || return 1
+    [ -d "$home" ] && [ ! -L "$home" ] && [ "$(/usr/bin/stat -f '%u' "$home")" = "$expected_uid" ] || return 1
+    [ -d "$application" ] && [ ! -L "$application" ] || return 1
+    desktop="$home/Desktop"
+    [ -d "$desktop" ] && [ ! -L "$desktop" ] && [ "$(/usr/bin/stat -f '%u' "$desktop")" = "$expected_uid" ] || return 1
+    shortcut="$desktop/MultiRoute Resume.app"
+    # Keep any existing file, folder or link, including a broken link.
+    [ ! -e "$shortcut" ] && [ ! -L "$shortcut" ] || return 0
+    /bin/ln -s "$application" "$shortcut"
+}
+# END_DESKTOP_SHORTCUT_USER
+
+create_desktop_shortcut() {
+    local console_user console_uid home application='/Applications/MultiRoute Resume.app'
+    console_user=$(/usr/bin/stat -f '%Su' /dev/console) || return 1
+    console_uid=$(/usr/bin/stat -f '%u' /dev/console) || return 1
+    case "$console_user" in root|loginwindow|_mbsetupuser|''|*[!A-Za-z0-9._-]*) return 1 ;; esac
+    case "$console_uid" in ''|*[!0-9]*) return 1 ;; esac
+    [ "$console_uid" -ge 500 ] && [ "$(/usr/bin/id -u "$console_user")" = "$console_uid" ] || return 1
+    home=$(/usr/bin/dscl . -read "/Users/$console_user" NFSHomeDirectory | /usr/bin/sed -n 's/^NFSHomeDirectory: //p') || return 1
+    case "$home" in /*) ;; *) return 1 ;; esac
+    [[ "$home" != *$'\n'* ]] && [ "$home" != / ] || return 1
+    [ -d "$application" ] && [ ! -L "$application" ] && [ "$(/usr/bin/stat -f '%u' "$application")" = 0 ] || return 1
+    # The root installer never writes through a user's Desktop or home. All
+    # shortcut checks and the ln operation run after sudo switches to that user.
+    /usr/bin/sudo -n -H -u "$console_user" -- /bin/bash -c \
+        "$(declare -f create_user_desktop_shortcut); create_user_desktop_shortcut \"\$@\"" \
+        multiroute-desktop-shortcut "$home" "$console_uid" "$application"
+}
+
+if ! create_desktop_shortcut; then
+    printf '%s\n' 'Desktop shortcut was not created during setup. The application will retry on its first graphical launch without replacing existing Desktop items.' >&2
+fi
 # Only the capture component needs graphical authorization later. The installer
 # never starts Java as root and never writes a user's application state.
 exit 0

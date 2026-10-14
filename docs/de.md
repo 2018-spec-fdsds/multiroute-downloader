@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.1 — Anleitung auf Deutsch
+# MultiRoute Resume 3.2 — Anleitung auf Deutsch
 
 [Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md)
 
@@ -88,7 +88,7 @@ Vorhandenes passendes Java 17+ wird wiederverwendet. Andernfalls wird eine festg
 
 **Zusätzliche Voraussetzung für BitTorrent/magnet:** Die tatsächlich mitgelieferten Torrent-Bibliotheken haben höhere macOS-Ziele: **Apple Silicon benötigt macOS 26 oder neuer; Intel benötigt macOS 15 oder neuer**. macOS 11+ bedeutet daher nicht, dass alle Protokolle dieser Ausgabe dort verfügbar sind. Der Starter erkennt diese Versionsgrenze, warnt bei einem älteren System und erlaubt die Java-/HTTP-Bereitstellung, ohne macOS zu aktualisieren. Eine erfolgreiche Installation bestätigt keine tatsächlich geladene Torrent-Bibliothek. Betriebssystem und Architektur lassen sich mit `sw_vers -productVersion` und `uname -m` prüfen; die tatsächliche Ausführung auf einem Mac bleibt noch zu verifizieren.
 
-Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.1-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
+Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.2-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
 
 ### Was die Starter automatisch prüfen
 
@@ -115,15 +115,15 @@ WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transpo
 
 DNS-Anfragen laufen über das ausgewählte Gateway: zunächst zum Router, dann bei Bedarf zu `1.1.1.1` oder `8.8.8.8` über denselben Weg. Es gibt keinen Rückfall auf den DNS-Resolver des Betriebssystems. DNSSEC, DoH und ein TCP-Rückfall bei gekürzten DNS-Antworten sind in diesem Release nicht implementiert.
 
-## Native Installationspakete 3.1: Windows und macOS
+## Native Installationspakete 3.2: Windows und macOS
 
 Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), sofern es dort angehängt ist. Jedes Paket ist **eine Installationsdatei** mit Anwendung, nativem Starter, vollständiger Java-Laufzeit und passendem Netzwerkhelfer. Quellcode und portable ZIPs der Version 3.0 sind separate Angebote.
 
 | System | Installationsdatei | Start nach der Installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.2-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.2-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.2-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
 
 Die fünf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md` oder `fr.md` in einem Text- oder Markdown-Programm öffnen.
 
@@ -318,12 +318,12 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
-### Native Pakete 3.1
+### Native Pakete 3.2
 
 | System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, einschließlich Java | Enthaltener x64-Helfer; Npcap separat installiert |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.1/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.2/gateway-net` |
 
 Schließen Sie die Anwendung vor einem Update mit einem neuen Installer. Unter Windows erfolgt die Entfernung über **Einstellungen → Apps → Installierte Apps**. Unter macOS löscht das Entfernen der `.app` nicht automatisch den Verlauf und den separat geschützten Helfer. Heruntergeladene Dateien bleiben im gewählten Ordner; löschen Sie ihn nicht nur zur Deinstallation. Der Datenpfad unterscheidet sich vom Windows-ZIP 3.0; sichern Sie ein früheres Profil vor einer Migration.
 
@@ -356,9 +356,17 @@ Für ein Update der portablen Pakete 3.0 unter Linux/macOS führen Sie den jewei
 
 ## Umfang der Release-Prüfung
 
-Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.1-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.1 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
+Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.2-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.2 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
 
 Prüfberichte: [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Drittanbieter-Komponenten und ihre Lizenzen: [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
+
+## Systemtray und Beenden (3.2)
+
+Beim Schließen des Hauptfensters laufen Anwendung und Downloads im Systemtray weiter. Das Symbol zeigt den gesamten Download-Durchsatz **aller Aufträge**, unabhängig von Auswahl und Tabellenfilter. Die Tooltip-Anzeige enthält den genauen Wert in Mbit/s oder Gbit/s (ab 1 Gbit/s) und Byte/s, auch bis 10 Gbit/s; das kleine Symbol rundet ihn. Im Tray-Menü **Anwendung öffnen** wählen, um das Fenster wiederherzustellen. Unter Windows/Linux öffnet auch ein Klick auf das Symbol das Fenster. **Anwendung beenden** im Tray-Menü oder Fenster speichert den Zustand und beendet das Programm. Vor einem Update diese Funktion verwenden.
+
+Ohne Systemtray wird das Fenster in die Taskleiste minimiert; Downloads laufen weiter und Beenden bleibt verfügbar. Verschwindet das Tray, wird das verborgene Fenster wieder geöffnet. Windows kann das Symbol im ausgeblendeten Benachrichtigungsbereich ablegen.
+
+Das Setup erstellt standardmäßig eine Desktopverknüpfung und unter Windows einen Startmenüeintrag. macOS erstellt für den angemeldeten Benutzer einen Desktoplink zur installierten `.app`; beim ersten grafischen Start wird es erneut versucht. Vorhandene Desktopobjekte werden erhalten. Bei Datenschutzbeschränkungen den angeforderten Zugriff erlauben oder die App aus Programme öffnen. Unsere Setuptexte sind immer Englisch; Systemdialoge für Sicherheit und Berechtigungen folgen der Betriebssystemsprache.
 
 ## Lizenz
 

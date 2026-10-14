@@ -31,6 +31,6 @@ done
 if [ -e '/Applications/MultiRoute Resume.app' ] || [ -L '/Applications/MultiRoute Resume.app' ]; then
     [ -d '/Applications/MultiRoute Resume.app' ] && [ ! -L '/Applications/MultiRoute Resume.app' ] || exit 1
 fi
-# No user-home writes, launchctl changes, sudoers entries, BPF permission changes,
+# No root user-home writes, launchctl changes, sudoers entries, BPF permission changes,
 # system routes, Java installation outside the bundle, or app launch as root.
 exit 0

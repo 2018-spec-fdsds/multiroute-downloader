@@ -148,6 +148,8 @@ public final class DesktopUI {
     final JTextField virtualIpField = new JTextField("192.168.1.70", 15);
     final JComboBox<String> languageCombo = new JComboBox<>(new String[]{"ru", "en", "de", "es", "fr"});
     final JButton logButton = translatedButton("Журнал…");
+    final JButton exitButton = translatedButton("Выйти из приложения");
+    private final DesktopTray tray;
     JDialog logDialog;
     JTextArea logArea;
     private Timer logTimer;
@@ -222,6 +224,7 @@ public final class DesktopUI {
             installReadableFonts();
             DesktopUI ui = new DesktopUI(manager, onClose);
             ui.frame.setVisible(true);
+            ui.tray.install();
             ui.refreshJobs();
         };
         if (SwingUtilities.isEventDispatchThread()) show.run();
@@ -290,6 +293,7 @@ public final class DesktopUI {
         if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Create DesktopUI on the EDT");
         this.manager = manager;
         this.onClose = onClose;
+        this.tray = new DesktopTray(frame, this::requestExit);
         this.gatewayInspector = gatewayInspector;
         this.networkConfigurator = networkConfigurator;
         this.routeSpeedTester = routeSpeedTester;
@@ -325,14 +329,30 @@ public final class DesktopUI {
         if (autoDiscover) findGateways();
     }
 
+    private void requestWindowClose() {
+        if (closing || tray.hideWindow()) return;
+        // Linux desktops without tray integration still retain a reachable taskbar window.
+        frame.setExtendedState(frame.getExtendedState() | JFrame.ICONIFIED);
+        status("Системный трей недоступен. Окно свёрнуто, загрузки продолжаются. Для выхода нажмите «Выйти из приложения».");
+    }
+
+    private void requestExit() {
+        if (closing) return;
+        tray.close();
+        frame.dispose();
+    }
+
     private void buildWindow() {
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setMinimumSize(new Dimension(1080, 700));
         frame.setSize(1280, 820);
         frame.setLocationRelativeTo(null);
         frame.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent event) { requestWindowClose(); }
             @Override public void windowClosed(WindowEvent event) {
+                if (closing) return;
                 closing = true;
+                tray.close();
                 discoveryGeneration++;
                 speedUrlGeneration++;
                 for (RouteRow row : routes) if (row != null) row.generation++;
@@ -384,6 +404,9 @@ public final class DesktopUI {
         languageLine.add(languageCombo);
         logButton.addActionListener(event -> openLog());
         languageLine.add(logButton);
+        exitButton.addActionListener(event -> requestExit());
+        tip(exitButton, "Завершить приложение и сохранить загрузки для продолжения. Крестик окна сворачивает приложение в трей.");
+        languageLine.add(exitButton);
         preferences.add(languageLine);
         header.add(preferences, BorderLayout.EAST);
         languageCombo.addActionListener(event -> {
@@ -1795,6 +1818,7 @@ public final class DesktopUI {
     }
 
     private void updateJobs(List<Object> snapshots) {
+        tray.update(snapshots);
         String keepId = selectedId;
         Map<String,String> priorStatuses = new LinkedHashMap<>();
         for (Map.Entry<String,Map<String,Object>> entry : jobs.entrySet())
@@ -1990,7 +2014,7 @@ public final class DesktopUI {
     }
 
     private static String speed(long bps) {
-        return I18n.t("%.1f Мбит/с", Math.max(0, bps) * 8.0 / 1_000_000);
+        return DesktopTray.formatSpeed(bps);
     }
 
     private static String duration(long milliseconds) {

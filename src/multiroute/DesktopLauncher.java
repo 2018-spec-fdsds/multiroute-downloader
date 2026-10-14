@@ -20,6 +20,30 @@ import javax.swing.SwingUtilities;
 public final class DesktopLauncher {
     private DesktopLauncher() { }
 
+    static final String SETUP_TITLE = "Application setup";
+    static final String SETUP_STATUS = "Checking network support. Approve the official Npcap installer if requested.";
+
+    private static final class SetupFailure extends IOException {
+        SetupFailure(String message) { super(message); }
+    }
+
+    static String setupErrorText(Exception failure) {
+        return failure instanceof SetupFailure ? failure.getMessage()
+                : "Unable to prepare MultiRoute Resume. Reinstall the complete application and try again.";
+    }
+
+    /** Optional convenience link, under the logged-in user's existing Desktop. */
+    static void createDesktopShortcutIfAbsent(Path desktop, Path application) {
+        Path link = desktop.resolve("MultiRoute Resume.app");
+        try {
+            if (!Files.isDirectory(desktop) || Files.isSymbolicLink(desktop) || !Files.isDirectory(application)
+                    || Files.exists(link, java.nio.file.LinkOption.NOFOLLOW_LINKS)) return;
+            Files.createSymbolicLink(link, application.toAbsolutePath().normalize());
+        } catch (IOException | SecurityException | UnsupportedOperationException ignored) {
+            // Desktop privacy denial never blocks starting the installed application.
+        }
+    }
+
     static boolean nativeDesktop() { return Boolean.getBoolean("multiroute.native.desktop"); }
 
     static Path userRoot() {
@@ -37,13 +61,15 @@ public final class DesktopLauncher {
 
     static Path applicationRoot() throws Exception {
         Path jar = Path.of(DesktopLauncher.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-        if (!Files.isRegularFile(jar)) throw new IOException("The installed application JAR is missing.");
+        if (!Files.isRegularFile(jar)) throw new SetupFailure("The installed application JAR is missing.");
         return jar.getParent();
     }
 
     public static void main(String[] args) {
         System.setProperty("multiroute.native.desktop", "true");
         JFrame[] progress = new JFrame[1];
+        boolean gui = !GraphicsEnvironment.isHeadless() && !Arrays.asList(args).contains("--headless")
+                && !Arrays.asList(args).contains("--no-browser");
         try {
             // Installer diagnostics do not open a controller, a capture device or user settings.
             if (args.length == 2 && args[0].equals("--launcher-check")) {
@@ -61,17 +87,11 @@ public final class DesktopLauncher {
                 return;
             }
             Main.restoreStartupLanguage(args);
-            boolean gui = !GraphicsEnvironment.isHeadless() && !Arrays.asList(args).contains("--headless")
-                    && !Arrays.asList(args).contains("--no-browser");
             if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
                 if (gui) SwingUtilities.invokeAndWait(() -> {
                     JFrame window = new JFrame("MultiRoute Resume");
                     window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                    JLabel label = new JLabel(message("Checking network support. Approve the official Npcap installer if requested.",
-                            "Проверка сетевого компонента. При запросе подтвердите официальный установщик Npcap.",
-                            "Netzwerk wird geprüft. Bestätigen Sie bei Bedarf den offiziellen Npcap-Installer.",
-                            "Comprobando la red. Autorice el instalador oficial de Npcap si se solicita.",
-                            "Vérification du réseau. Autorisez l’installateur officiel Npcap si nécessaire."));
+                    JLabel label = new JLabel(SETUP_STATUS);
                     label.setBorder(javax.swing.BorderFactory.createEmptyBorder(18,18,18,18));
                     window.add(label, java.awt.BorderLayout.CENTER);
                     JProgressBar bar = new JProgressBar(); bar.setIndeterminate(true);
@@ -80,15 +100,17 @@ public final class DesktopLauncher {
                 });
                 prepareWindows();
             }
+            if (gui && System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("mac")
+                    && !"root".equals(System.getProperty("user.name")))
+                createDesktopShortcutIfAbsent(Path.of(System.getProperty("user.home"), "Desktop"),
+                        Path.of("/Applications/MultiRoute Resume.app"));
             if (progress[0] != null) SwingUtilities.invokeAndWait(progress[0]::dispose);
             Main.main(args);
         } catch (Exception failure) {
             if (progress[0] != null) SwingUtilities.invokeLater(progress[0]::dispose);
-            String detail = failure.getMessage() == null ? failure.getClass().getSimpleName() : failure.getMessage();
-            if (!GraphicsEnvironment.isHeadless()) {
-                String title = message("Application setup", "Подготовка приложения", "Anwendungseinrichtung",
-                        "Configuración de la aplicación", "Configuration de l’application");
-                JOptionPane.showMessageDialog(null, detail, title, JOptionPane.ERROR_MESSAGE);
+            String detail = setupErrorText(failure);
+            if (gui) {
+                JOptionPane.showMessageDialog(null, detail, SETUP_TITLE, JOptionPane.ERROR_MESSAGE);
             } else System.err.println(detail);
             System.exit(1);
         }
@@ -96,9 +118,9 @@ public final class DesktopLauncher {
 
     private static void prepareWindows() throws Exception {
         Path script = applicationRoot().resolve("windows/NativePrerequisites.ps1");
-        if (!Files.isRegularFile(script)) throw new IOException("Reinstall the complete application: its environment check is missing.");
+        if (!Files.isRegularFile(script)) throw new SetupFailure("Reinstall the complete application: its environment check is missing.");
         String system = System.getenv("SystemRoot");
-        if (system == null || system.isBlank()) throw new IOException("Windows system directory is unavailable.");
+        if (system == null || system.isBlank()) throw new SetupFailure("Windows system directory is unavailable.");
         Path powershell = Path.of(system, "System32/WindowsPowerShell/v1.0/powershell.exe");
         Process check = new ProcessBuilder(powershell.toString(), "-NoLogo", "-NoProfile", "-NonInteractive",
                 "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", script.toString(),
@@ -114,17 +136,14 @@ public final class DesktopLauncher {
         }, "native-environment-check");
         reader.setDaemon(true); reader.start();
         if (!check.waitFor(30, TimeUnit.MINUTES)) {
-            check.destroy(); throw new IOException("Network setup timed out. Finish the official installer and reopen the application.");
+            check.destroy(); throw new SetupFailure("Network setup timed out. Finish the official installer and reopen the application.");
         }
         String text = output.get(5, TimeUnit.SECONDS);
         if (check.exitValue() != 0) {
             String explanation = text.lines().filter(l -> l.startsWith("MultiRoute:")).reduce((a,b)->b)
                     .orElse("Network support is not ready. Finish the official Npcap installer or restart Windows, then reopen the application.");
-            throw new IOException(explanation);
+            throw new SetupFailure(explanation);
         }
     }
 
-    private static String message(String en, String ru, String de, String es, String fr) {
-        return switch (I18n.language()) { case "ru" -> ru; case "de" -> de; case "es" -> es; case "fr" -> fr; default -> en; };
-    }
 }

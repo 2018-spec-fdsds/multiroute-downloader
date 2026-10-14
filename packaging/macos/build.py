@@ -295,6 +295,13 @@ def main() -> None:
             "dependencies": {path.name: sha256(path) for path in jars},
             "developer_id_signed": bool(args.signing_user), "notarized": bool(args.notarize_profile),
             "terminal_required_for_installed_application": False,
+            "setup_language": "en",
+            "desktop_shortcut": {
+                "name": "MultiRoute Resume.app", "target": "/Applications/MultiRoute Resume.app",
+                "installer_creation_context": "validated console user via sudo, never a root home write",
+                "existing_desktop_items_replaced": False,
+                "failure_policy": "best effort during setup; normal-user first GUI launch retries",
+            },
             "privileged_java": False, "system_routes_changed": False,
             "verification": "Compiled and packaged on this runner; local API/native self-tests run separately.",
             "not_verified": ["physical LAN gateways", "BPF access authorization dialog", "Finder/Gatekeeper on an end-user Mac"],

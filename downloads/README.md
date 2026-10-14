@@ -1,4 +1,6 @@
-# MultiRoute Resume 3.1 installers
+# MultiRoute Resume installers
+
+**Latest:** [version 3.2](v3.2/). The files below are the previous 3.1 release.
 
 The actual installer files are in this folder. Open the file page and click **Download raw file** to save it.
 
@@ -14,9 +16,9 @@ Java and the compiled gateway component are included. After installation, open *
 
 Instructions and security confirmations:
 
-[English](../docs/en.md) · [Русский](../docs/ru.md) · [Deutsch](../docs/de.md) · [Español](../docs/es.md) · [Français](../docs/fr.md).
+[English](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/en.md) · [Русский](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/ru.md) · [Deutsch](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/de.md) · [Español](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/es.md) · [Français](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/fr.md).
 
-[SHA-256 checksums](SHA256SUMS.txt) · [Verification report](../NATIVE-INSTALLER-TESTS.json) · [Release 3.1](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.1).
+[SHA-256 checksums](SHA256SUMS.txt) · [Verification report](https://github.com/2018-spec-fdsds/multiroute-resume/releases/download/v3.1/NATIVE-INSTALLER-TESTS.json) · [Release 3.1](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.1).
 
 These files are identical to the release assets. Version 3.1 is a prerelease; end-user installation/security dialogs and physical gateway transfers remain unverified. Packages are not publisher-signed, and macOS packages are not notarized.
 
