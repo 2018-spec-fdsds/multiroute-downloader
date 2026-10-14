@@ -220,13 +220,15 @@ def main():
         copy_file(source, inputs / "lib" / name)
     shutil.copytree(ROOT / "lib/licenses", inputs / "lib/licenses")
     copy_file(ROOT / "native/source/lwip/COPYING", inputs / "native/LICENSE-lwIP.txt")
+    copy_file(ROOT / "native/source/BUILD-README.txt", inputs / "native/source/BUILD-README.txt")
+    copy_file(ROOT / "THIRD-PARTY-NOTICES.txt", inputs / "THIRD-PARTY-NOTICES.txt")
     copy_file(args.native_helper, inputs / "native/windows-x64/gateway-net.exe")
     for name in ("bootstrap.ps1", "bootstrap-common.psm1", "NativePrerequisites.ps1"):
         copy_file(ROOT / "windows" / name, inputs / "windows" / name)
     for source in sorted((ROOT / "docs").rglob("*")):
-        if source.is_file() and source.suffix.lower() in {".md", ".png", ".svg", ".jpg", ".jpeg"}:
+        if source.is_file() and source.suffix.lower() in {".md", ".png", ".svg", ".jpg", ".jpeg", ".json"}:
             copy_file(source, inputs / "docs" / source.relative_to(ROOT / "docs"))
-    for source in (ROOT / "README.md", ROOT / "LICENSE.txt", ROOT / "LICENSING.md", ROOT / "API.ru.txt", ROOT / "openapi.yaml"):
+    for source in (ROOT / "README.md", ROOT / "README.ru.md", ROOT / "LICENSE.txt", ROOT / "LICENSING.md", ROOT / "API.ru.txt", ROOT / "openapi.yaml", ROOT / "CHECKS.ru.md", ROOT / "TEST-REPORT.json", ROOT / "DEPLOYMENT-TEST-REPORT.json"):
         if source.is_file():
             copy_file(source, inputs / source.name)
     app_icon = build / "MultiRoute-Resume.ico"

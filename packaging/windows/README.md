@@ -14,6 +14,8 @@ administrator permission if the capture driver is missing. The application itsel
 continues to run as the normal user.
 The installer displays the project's `LICENSE.txt`; third-party Java and native
 library license notices remain included separately and retain their own terms.
+The installed payload includes `THIRD-PARTY-NOTICES.txt`, `lib/licenses/`, the
+runtime's licence files and all five offline language guides under `app/docs/`.
 
 ## Build from the current saved sources
 

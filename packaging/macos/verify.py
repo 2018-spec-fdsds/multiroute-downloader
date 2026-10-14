@@ -9,12 +9,14 @@ import os
 from pathlib import Path, PurePosixPath
 import platform
 import plistlib
+import re
 import shlex
 import socket
 import subprocess
 import tempfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -27,7 +29,8 @@ SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bu
 
 def verify_documentation(app_dir: Path, report: dict) -> None:
     hashes = report["bundled_documentation_sha256"]
-    required = {"README.md", "README.ru.md", "docs/COMPATIBILITY.json"}
+    required = {"README.md", "README.ru.md", "docs/COMPATIBILITY.json", "CHECKS.ru.md",
+                "TEST-REPORT.json", "DEPLOYMENT-TEST-REPORT.json", "native/source/BUILD-README.txt"}
     required.update("docs/" + language + ".md" for language in LANGUAGES)
     required.update("docs/images/" + name for name in SCREENSHOTS)
     assert required.issubset(hashes), "The app must contain five local guides, READMEs, compatibility information and screenshots."
@@ -44,6 +47,25 @@ def verify_documentation(app_dir: Path, report: dict) -> None:
         assert "../LICENSE.txt" in guide, "Missing local licence link in " + language + " guide."
     for name in SCREENSHOTS:
         assert (app_dir / "docs/images" / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), "Invalid bundled screenshot: " + name
+
+
+def verify_relative_markdown_links(app_dir: Path) -> int:
+    app_root = app_dir.resolve()
+    count = 0
+    for document in sorted(app_root.rglob("*.md")):
+        content = document.read_text(encoding="utf-8")
+        for raw_target in re.findall(r"!?\[[^\]]*\]\(([^\)]+)\)", content):
+            parsed = urllib.parse.urlsplit(raw_target.strip().strip("<>"))
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            local = (document.parent / urllib.parse.unquote(parsed.path)).resolve()
+            assert local.is_relative_to(app_root) and local.exists(), (
+                "Offline documentation link is missing or escapes the app: "
+                + document.relative_to(app_root).as_posix() + " -> " + parsed.path
+            )
+            count += 1
+    assert count > 0, "The installed guides must retain their local links."
+    return count
 
 
 def run(command, **kwargs):
@@ -85,6 +107,7 @@ def main() -> None:
     assert ("Project owner: " + report["project_owner_url"]).encode("utf-8") in license_bytes
     assert (app_dir / "THIRD-PARTY-NOTICES.txt").is_file()
     verify_documentation(app_dir, report)
+    app_markdown_links = verify_relative_markdown_links(app_dir)
     jars = [app_dir / "MultiRoute-Resume.jar", *sorted((app_dir / "lib").glob("*.jar"))]
     classpath = os.pathsep.join(str(path) for path in jars)
     jdk = Path(os.environ["JAVA_HOME"])
@@ -173,9 +196,12 @@ public final class MacAuthorizationFixture {
         assert len(installed_apps) == 1, "The installer must contain exactly one application bundle."
         installed_app_dir = installed_apps[0] / "Contents" / "app"
         verify_documentation(installed_app_dir, report)
+        installed_markdown_links = verify_relative_markdown_links(installed_app_dir)
+        assert installed_markdown_links == app_markdown_links
         assert (installed_app_dir / "LICENSE.txt").read_bytes() == license_bytes
         assert (installed_app_dir / "THIRD-PARTY-NOTICES.txt").read_bytes() == (ROOT / "THIRD-PARTY-NOTICES.txt").read_bytes()
         checks.append("five local language guides, both READMEs, compatibility information and three screenshots match saved sources in the app and expanded installer")
+        checks.append("all relative Markdown links resolve within the app image and expanded installer, including baseline reports and native build instructions")
         candidates = [path for path in expanded.rglob("gateway-net") if "/Library/PrivilegedHelperTools/" in path.as_posix()]
         assert len(candidates) == 1
         helper = candidates[0]
@@ -209,6 +235,7 @@ public final class MacAuthorizationFixture {
         "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction"],
         "installed_packages": False, "administrator_prompt_executed": False, "routing_or_BPF_permissions_changed": False,
         "controlled_uid_drop_fixture": True,
+        "offline_markdown_link_counts": {"app_image": app_markdown_links, "expanded_installer": installed_markdown_links},
     }
     (directory / "macos-verification-report.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))

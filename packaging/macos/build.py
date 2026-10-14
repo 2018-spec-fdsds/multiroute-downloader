@@ -174,11 +174,14 @@ def main() -> None:
         for path in jars:
             shutil.copy2(path, input_dir / "lib" / path.name)
         write_platform_jar(ROOT / "MultiRoute-Resume.jar", input_dir / "MultiRoute-Resume.jar", jars, version)
-        for name in ("LICENSE.txt", "LICENSING.md", "THIRD-PARTY-NOTICES.txt", "API.ru.txt", "openapi.yaml", "README.md", "README.ru.md"):
+        documentation_names = ("README.md", "README.ru.md", "CHECKS.ru.md", "TEST-REPORT.json",
+                               "DEPLOYMENT-TEST-REPORT.json", "native/source/BUILD-README.txt")
+        for name in ("LICENSE.txt", "LICENSING.md", "THIRD-PARTY-NOTICES.txt", "API.ru.txt", "openapi.yaml", *documentation_names):
             if (ROOT / name).is_file():
+                (input_dir / name).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / name, input_dir / name)
         shutil.copytree(ROOT / "docs", input_dir / "docs")
-        documentation_files = [ROOT / "README.md", ROOT / "README.ru.md"]
+        documentation_files = [ROOT / name for name in documentation_names]
         documentation_files.extend(path for path in sorted((ROOT / "docs").rglob("*")) if path.is_file())
         documentation_hashes = {path.relative_to(ROOT).as_posix(): sha256(path) for path in documentation_files}
         shutil.copytree(ROOT / "lib/licenses", input_dir / "lib/licenses")

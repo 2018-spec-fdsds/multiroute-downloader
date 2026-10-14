@@ -6,8 +6,10 @@ import collections
 import hashlib
 import json
 import os
+import re
 import struct
 import subprocess
+import urllib.parse
 
 
 def sha256(path):
@@ -127,6 +129,21 @@ def main():
     if original["entry_point"] == "multiroute.DesktopLauncher":
         check("installer separates app files from user profile", directory_table["INSTALLDIR"]["DefaultDir"].split("|")[-1] == "MultiRoute Resume App")
         check("original project license included in installed files", (image/"app/LICENSE.txt").is_file())
+        check("third-party notices included in installed files", (image/"app/THIRD-PARTY-NOTICES.txt").is_file() and (image/"app/THIRD-PARTY-NOTICES.txt").stat().st_size > 0)
+        check("all five offline language guides included", all((image/"app/docs"/(language+".md")).is_file() for language in ("en", "ru", "de", "es", "fr")))
+        check("offline compatibility audit included", (image/"app/docs/COMPATIBILITY.json").is_file())
+        check("Russian documentation entry included", (image/"app/README.ru.md").is_file())
+        app_root = (image/"app").resolve()
+        for document in [image/"app/README.md", image/"app/README.ru.md", image/"app/LICENSING.md", *sorted((image/"app/docs").rglob("*.md"))]:
+            content = document.read_text(encoding="utf-8")
+            for raw_target in re.findall(r"!?\[[^\]]*\]\(([^\)]+)\)", content):
+                target = raw_target.strip().strip("<>")
+                parsed = urllib.parse.urlsplit(target)
+                if parsed.scheme or parsed.netloc or not parsed.path:
+                    continue
+                local = (document.parent/urllib.parse.unquote(parsed.path)).resolve()
+                check("offline link "+document.relative_to(app_root).as_posix()+" -> "+parsed.path,
+                      local.is_relative_to(app_root) and local.exists())
         check("installer license confirmation dialog included", any(row["Dialog"] == "LicenseAgreementDlg" for row in msi["dialogs"]))
         check("installer displays the project's license text", any(row["Type"] == "ScrollableText" and "MULTIROUTE RESUME LICENSE" in row["Text"] for row in msi["license_controls"]))
     check("Windows uninstall entry enabled", properties.get("ARPNOREMOVE") != "1")
