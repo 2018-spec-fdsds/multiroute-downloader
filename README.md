@@ -15,6 +15,8 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.5).
 
+The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
+
 ## Why use this application?
 
 MultiRoute Resume helps you download files using several independent Internet

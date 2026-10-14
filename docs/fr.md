@@ -389,3 +389,5 @@ L’API locale accepte `expected_md5`, `expected_sha256` et `expected_sha512` da
 ## Progression de chaque téléchargement (3.5)
 
 Chaque téléchargement dispose de sa propre barre dans la colonne Progression. Les colonnes occupent toute la largeur du panneau des téléchargements. La liste défile verticalement lorsque les tâches sont nombreuses ; les panneaux étroits permettent aussi un défilement horizontal sans rendre les colonnes illisibles. Lors de l’actualisation, la première tâche visible est conservée. Le tri et les filtres maintiennent chaque barre associée à son téléchargement. Si la taille totale est inconnue, le volume reçu est affiché à la place du pourcentage ; l’infobulle indique taille, état et erreurs. La ligne sélectionnée affiche toujours la progression détaillée, les temps et les vitesses des passerelles.
+
+Le dossier de téléchargement par défaut est déterminé au démarrage pour l’utilisateur actuel : `%USERPROFILE%\Downloads` sous Windows et `~/Downloads` sous macOS/Linux. Le dossier par défaut enregistré suit le profil actuel ; un dossier choisi manuellement est conservé.

@@ -79,6 +79,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public final class DesktopUI {
     private static final String[] GATEWAYS = {"192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.4"};
     private static final String SELECTION_POLICY = "all-default-v1";
+    private static final String DIRECTORY_POLICY = "current-user-downloads-v1";
     private static final String[] HEADERS = {"Файл", "Состояние", "Прогресс", "Скорость", "Прошло", "Осталось", "Шлюзы"};
     private final Main.Manager manager;
     private final Runnable onClose;
@@ -148,7 +149,7 @@ public final class DesktopUI {
     final JFrame frame = new JFrame("MultiRoute Resume " + Main.VERSION);
     final JTextField urlField = new JTextField(96);
     final JTextField filenameField = new JTextField(24);
-    final JTextField directoryField = new JTextField(Path.of(System.getProperty("user.home"), "Downloads").toString(), 24);
+    final JTextField directoryField = new JTextField(defaultDownloadDirectory().toString(), 24);
     final JTextField shaField = new JTextField(24);
     final JTextField md5Field = new JTextField(24);
     final JTextField sha512Field = new JTextField(24);
@@ -2627,7 +2628,9 @@ public final class DesktopUI {
         try {
             Map<String,Object> settings = Main.obj(Json.parse(Files.readString(settingsPath)));
             String savedDirectory = Main.str(settings.get("directory"));
-            if (!savedDirectory.isBlank()) directoryField.setText(savedDirectory);
+            if (DIRECTORY_POLICY.equals(settings.get("directory_policy")))
+                directoryField.setText(defaultDownloadDirectory().toString());
+            else if (!savedDirectory.isBlank()) directoryField.setText(savedDirectory);
             long chunk = Main.num(settings.get("chunk_mb"), 20);
             if (chunk >= 1 && chunk <= 64) chunkSpinner.setValue((int) chunk);
             String virtualIp = Main.str(settings.get("virtual_ip"));
@@ -2667,6 +2670,12 @@ public final class DesktopUI {
         }
         Map<String,Object> settings = new LinkedHashMap<>();
         settings.put("directory", directoryField.getText().trim());
+        try {
+            settings.put("directory_policy", Path.of(directoryField.getText().trim()).toAbsolutePath().normalize()
+                    .equals(defaultDownloadDirectory()) ? DIRECTORY_POLICY : "custom");
+        } catch (java.nio.file.InvalidPathException ignored) {
+            settings.put("directory_policy", "custom");
+        }
         settings.put("language", I18n.language());
         settings.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
         String virtualIp = virtualIpField.getText().trim();
@@ -2693,6 +2702,24 @@ public final class DesktopUI {
             }
             catch (Exception error) { SwingUtilities.invokeLater(() -> status("Не удалось сохранить настройки окна: %s", errorArgument(error))); }
         });
+    }
+
+    static Path defaultDownloadDirectory() {
+        return defaultDownloadDirectory(System.getProperty("os.name", ""),
+                System.getProperty("user.home"), System.getenv());
+    }
+
+    /** Resolve the current profile at launch instead of storing a particular user's default. */
+    static Path defaultDownloadDirectory(String operatingSystem, String userHome, Map<String,String> environment) {
+        Path home = Path.of(userHome).toAbsolutePath().normalize();
+        if (operatingSystem.toLowerCase(java.util.Locale.ROOT).startsWith("windows")) {
+            String profile = environment.get("USERPROFILE");
+            if (profile != null && !profile.isBlank()) try {
+                Path current = Path.of(profile.trim());
+                if (current.isAbsolute()) home = current.normalize();
+            } catch (java.nio.file.InvalidPathException ignored) { }
+        }
+        return home.resolve("Downloads");
     }
 
     static String statusName(String status) {

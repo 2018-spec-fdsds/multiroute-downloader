@@ -389,3 +389,5 @@ Die lokale API akzeptiert `expected_md5`, `expected_sha256` und `expected_sha512
 ## Fortschritt einzelner Downloads (3.5)
 
 Jeder Download hat einen eigenen Balken in der Spalte Fortschritt. Die Spalten füllen die Breite des Downloadbereichs. Bei vielen Aufgaben wird die Liste vertikal gescrollt; schmale Bereiche bieten auch horizontales Scrollen, ohne die Spalten unlesbar zu verkleinern. Beim Aktualisieren bleibt die erste sichtbare Aufgabe erhalten. Sortierung und Filter ordnen jeden Balken weiterhin seinem Download zu. Bei unbekannter Gesamtgröße werden empfangene Daten statt eines Prozentsatzes angezeigt; der Tooltip zeigt Größe, Status und Fehlerdetails. Die ausgewählte Zeile zeigt weiterhin ausführlichen Fortschritt, Zeiten und Gateway-Geschwindigkeiten.
+
+Der Standard-Downloadordner wird beim Start für den aktuellen Benutzer ermittelt: `%USERPROFILE%\Downloads` unter Windows und `~/Downloads` unter macOS/Linux. Ein gespeicherter Standardordner folgt dem aktuellen Profil; ein manuell gewählter Ordner bleibt erhalten.

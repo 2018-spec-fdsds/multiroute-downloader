@@ -337,3 +337,5 @@ The local API accepts `expected_md5`, `expected_sha256` and `expected_sha512` in
 ## Individual download progress (3.5)
 
 Each download has its own bar in the Progress column. Columns expand to fill the downloads panel. The list scrolls vertically when it contains many jobs; narrow panels also scroll horizontally without squeezing columns below readable widths. Refresh preserves the first visible job. Sorting and filtering keep each bar linked to its own download. If a total size is unknown, the bar shows received bytes instead of a percentage; hover for size, status and error details. Selecting a row still shows its detailed progress, time and gateway speeds.
+
+The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.

@@ -347,3 +347,5 @@ La API local acepta `expected_md5`, `expected_sha256` y `expected_sha512` en `PO
 ## Progreso de cada descarga (3.5)
 
 Cada descarga tiene su propia barra en la columna Progreso. Las columnas ocupan todo el ancho del panel de descargas. La lista permite desplazarse verticalmente cuando hay muchas tareas; los paneles estrechos también permiten desplazarse horizontalmente sin comprimir las columnas hasta hacerlas ilegibles. Al actualizar se mantiene la primera tarea visible. La ordenación y los filtros mantienen cada barra vinculada a su descarga. Si se desconoce el tamaño total, se muestran los datos recibidos en lugar de un porcentaje; la ayuda emergente muestra tamaño, estado y errores. La fila seleccionada sigue mostrando progreso detallado, tiempos y velocidades de las puertas de enlace.
+
+La carpeta de descarga predeterminada se determina al iniciar para el usuario actual: `%USERPROFILE%\Downloads` en Windows y `~/Downloads` en macOS/Linux. La carpeta predeterminada guardada sigue el perfil actual; se conserva cualquier carpeta elegida manualmente.

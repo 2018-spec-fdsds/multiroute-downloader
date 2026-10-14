@@ -255,6 +255,23 @@ public final class NativeDownloadProgressFixture {
         return (JProgressBar) panel.getComponent(0);
     }
     static void exercise() {
+        Path providedHome = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+                .resolve("owned fallback profile");
+        for (String name : List.of("owned Windows profile A", "owned Windows profile B")) {
+            Path profile = providedHome.resolveSibling(name);
+            require(DesktopUI.defaultDownloadDirectory("Windows 11", providedHome.toString(),
+                    Map.of("USERPROFILE", " " + profile + " ")).equals(profile.resolve("Downloads")),
+                    "Each provided Windows profile gets its own Downloads without reading user files");
+        }
+        for (String invalid : List.of("", "   ", "relative-profile"))
+            require(DesktopUI.defaultDownloadDirectory("Windows 11", providedHome.toString(),
+                    Map.of("USERPROFILE", invalid)).equals(providedHome.resolve("Downloads")),
+                    "Blank or relative Windows profiles safely fall back to the provided home");
+        for (String operatingSystem : List.of("Linux", "Mac OS X", "Darwin"))
+            require(DesktopUI.defaultDownloadDirectory(operatingSystem, providedHome.toString(),
+                    Map.of("USERPROFILE", providedHome.resolveSibling("ignored Windows profile").toString()))
+                    .equals(providedHome.resolve("Downloads")),
+                    "Linux and macOS use the provided home and ignore Windows environment input");
         DownloadProgress known = DownloadProgress.from(Map.of("size", 200L, "downloaded", 175L,
                 "progress_bytes", 25L, "status", "running"));
         require(known.received() == 25 && known.perMille() == 125 && known.determinate(),
@@ -518,7 +535,7 @@ public final class NativeDesktopFixture {
         checks.append("MD5 alone cannot satisfy strong source identity while a SHA-512 reference can")
         checks.append("legacy SHA-256-only state and two-argument discovery retain their source without fabricating MD5 or SHA-512 references")
         download_progress_fixture_checks = verify_download_progress_fixture(java, jdk, classpath, owned)
-        checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow")
+        checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
         fixture = owned / "MacAuthorizationFixture.java"
