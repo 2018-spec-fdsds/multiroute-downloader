@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+[ "$(id -u)" = 0 ] || exit 1
+[ "${3:-}" = / ] || exit 1
+helper='/Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@/gateway-net'
+marker='/Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@/gateway-net.sha256'
+launcher='/Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@/gateway-launch'
+launcher_marker='/Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@/gateway-launch.sha256'
+expected='@HELPER_SHA256@'
+launcher_expected='@LAUNCHER_SHA256@'
+for component in /Library /Library/PrivilegedHelperTools /Library/PrivilegedHelperTools/MultiRouteResume /Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@; do
+    [ -d "$component" ] && [ ! -L "$component" ] && [ "$(stat -f '%u' "$component")" = 0 ] || exit 1
+    mode=$(stat -f '%Lp' "$component")
+    [ "$((8#$mode & 0022))" = 0 ] || exit 1
+done
+for component in "$helper" "$marker" "$launcher" "$launcher_marker"; do
+    [ -f "$component" ] && [ ! -L "$component" ] && [ "$(stat -f '%u' "$component")" = 0 ] || exit 1
+    mode=$(stat -f '%Lp' "$component")
+    [ "$((8#$mode & 0022))" = 0 ] || exit 1
+done
+[ -x "$helper" ] || exit 1
+[ "$(cat "$marker")" = "$expected" ] || exit 1
+actual=$(shasum -a 256 "$helper")
+actual=${actual%% *}
+[ "$actual" = "$expected" ] || exit 1
+[ -x "$launcher" ] && [ "$(cat "$launcher_marker")" = "$launcher_expected" ] || exit 1
+actual=$(shasum -a 256 "$launcher")
+actual=${actual%% *}
+[ "$actual" = "$launcher_expected" ] || exit 1
+"$helper" --self-test
+"$launcher" --self-test
+# Only the capture component needs graphical authorization later. The installer
+# never starts Java as root and never writes a user's application state.
+exit 0

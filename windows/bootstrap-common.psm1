@@ -317,4 +317,14 @@ function Invoke-MrBootstrap([string]$Root, [string]$Mode, [string[]]$Application
     return (Start-MrApplication $Root $java $ApplicationArguments)
 }
 
-Export-ModuleMember -Function Invoke-MrBootstrap
+function Invoke-MrNativePrerequisites([string]$Root, [string]$StateRoot) {
+    Assert-MrWindows
+    Assert-MrPayload $Root
+    $statePath = Assert-MrSafePath $StateRoot
+    [void][IO.Directory]::CreateDirectory($statePath)
+    $npcap = Get-MrNpcapState
+    if (-not $npcap.Present) { $npcap = Install-MrNpcap $statePath }
+    if (-not $npcap.Ready) { Stop-MrSetup 'Npcap is installed but its driver service is not running. Check Npcap or restart Windows, then reopen the application.' }
+}
+
+Export-ModuleMember -Function Invoke-MrBootstrap,Invoke-MrNativePrerequisites

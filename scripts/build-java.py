@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compile the current saved Java sources into a Java 17 application JAR."""
 from pathlib import Path
-import argparse,hashlib,json,os,shutil,subprocess,tempfile,zipfile
+import argparse,hashlib,json,os,re,shutil,subprocess,tempfile,zipfile
 
 root=Path(__file__).resolve().parent.parent
 parser=argparse.ArgumentParser(description=__doc__)
@@ -31,7 +31,8 @@ with tempfile.TemporaryDirectory(prefix='multiroute-java-build-') as folder:
     subprocess.run([str(javac),'--release','17','-encoding','UTF-8','-cp',os.pathsep.join(map(str,libraries)),'-d',str(classes),*map(str,sources)],check=True)
     names={s.stem for s in sources};compiled=sorted(classes.rglob('*.class'))
     if not compiled or not all(p.stem.split('$')[0] in names and p.read_bytes()[:8]==bytes.fromhex('cafebabe0000003d') for p in compiled):raise SystemExit('Unexpected compiler output.')
-    manifest='Manifest-Version: 1.0\r\nMain-Class: multiroute.Main\r\nImplementation-Version: 3.0\r\n'
+    version=re.search(r'static final String VERSION = "([0-9.]+)";', (root/'src/multiroute/Main.java').read_text(encoding='utf-8')).group(1)
+    manifest='Manifest-Version: 1.0\r\nMain-Class: multiroute.Main\r\nImplementation-Version: '+version+'\r\n'
     manifest+=attribute('Class-Path',' '.join('lib/'+p.name for p in selected))+'\r\n'
     candidate=Path(folder)/'MultiRoute-Resume.jar'
     with zipfile.ZipFile(candidate,'w',zipfile.ZIP_DEFLATED) as archive:

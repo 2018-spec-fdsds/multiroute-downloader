@@ -1,0 +1,42 @@
+name: Native macOS installers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-26
+            architecture: arm64
+          - runner: macos-15-intel
+            architecture: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          architecture: ${{ matrix.architecture == 'arm64' && 'aarch64' || 'x64' }}
+      - name: Build native app and single Installer package
+        run: python3 packaging/macos/build.py --architecture '${{ matrix.architecture }}' --output dist/macos
+      - name: Verify package, JNI, local API and bounded helper
+        run: python3 packaging/macos/verify.py --directory dist/macos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multiroute-macos-${{ matrix.architecture }}
+          path: |
+            dist/macos/*.pkg
+            dist/macos/*report.json
+          if-no-files-found: error
+          retention-days: 7

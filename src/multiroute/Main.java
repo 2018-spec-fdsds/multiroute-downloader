@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "3.0";
+    static final String VERSION = "3.1";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -2170,11 +2170,11 @@ public final class Main {
         if (Arrays.asList(args).contains("--worker")) return;
         try {
             Path launch = Path.of("").toAbsolutePath().normalize();
-            Path directory = launch.resolve("data"); boolean explicit = false;
+            Path directory = DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot().resolve("data") : launch.resolve("data"); boolean explicit = false;
             for (int i = 0; i + 1 < args.length; i++) if (args[i].equals("--data-dir")) {
                 directory = launch.resolve(Path.of(args[i + 1])).normalize(); explicit = true; break;
             }
-            Path profile = launch.resolve("data-location.config");
+            Path profile = (DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot() : launch).resolve("data-location.config");
             if (!explicit && Files.isRegularFile(profile) && Files.size(profile) < 65536) {
                 String saved = Files.readString(profile).trim();
                 if (!saved.isEmpty()) directory = launch.resolve(Path.of(saved)).normalize();
@@ -2189,7 +2189,7 @@ public final class Main {
 
     static void start(String[] args) throws Exception {
         if (args.length > 0 && args[0].equals("--worker")) { Worker.main(Arrays.copyOfRange(args, 1, args.length)); return; }
-        String bind = "127.0.0.1"; int port = 8765; Path data = Path.of("data"); boolean desktop = true, explicitData = false;
+        String bind = "127.0.0.1"; int port = 8765; Path data = DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot().resolve("data") : Path.of("data"); boolean desktop = true, explicitData = false;
         for (int i = 0; i < args.length; i++) switch (args[i]) {
             case "--bind" -> bind = args[++i];
             case "--port" -> port = Integer.parseInt(args[++i]);
@@ -2203,7 +2203,8 @@ public final class Main {
         if (desktop && java.awt.GraphicsEnvironment.isHeadless())
             throw new IllegalArgumentException("Для окна приложения нужен графический рабочий стол; используйте --headless для запуска только API");
         Path launchDirectory = Path.of("").toAbsolutePath().normalize();
-        Path profile = launchDirectory.resolve("data-location.config");
+        Path profile = (DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot() : launchDirectory).resolve("data-location.config");
+        if (DesktopLauncher.nativeDesktop()) Files.createDirectories(DesktopLauncher.userRoot());
         if (!explicitData && Files.isRegularFile(profile)) {
             String saved = Files.readString(profile).trim();
             if (!saved.isEmpty()) data = launchDirectory.resolve(Path.of(saved)).normalize();

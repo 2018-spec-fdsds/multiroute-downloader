@@ -31,7 +31,7 @@ import java.util.jar.JarFile;
 public final class SingleInstance {
     public static final String APP_ID = "multiroute-resume";
     public static final String STOP_HEADER = "X-Instance-Key";
-    private static final String VERSION = "3.0";
+    private static final String VERSION = Main.VERSION;
     private static final String JAR_NAME = "MultiRoute-Resume.jar";
     private static final long DEADLINE_MS = 20_000;
     private static final SecureRandom RANDOM = new SecureRandom();

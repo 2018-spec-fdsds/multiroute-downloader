@@ -1,6 +1,8 @@
-# MultiRoute Resume 3.0 — Anleitung auf Deutsch
+# MultiRoute Resume 3.1 — Anleitung auf Deutsch
 
 [Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md)
+
+Projektinhaber: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 ## Zweck des Programms
 
@@ -12,7 +14,28 @@ Bei segmentierten Downloads können die übrigen Gateways weiterarbeiten, wenn e
 
 Das Programm besitzt eine eigene Swing-Oberfläche, einen systemüblichen Ordnerdialog und eine lokale HTTP-API für andere Programme. Ein Webbrowser ist für die Bedienung nicht erforderlich. Die Oberfläche, registrierte Statusmeldungen und Hilfetexte sind in **Englisch, Russisch, Deutsch, Spanisch und Französisch** verfügbar. Bei einem neuen Profil ist Englisch voreingestellt. Die Sprachwahl wird gespeichert und sofort angewendet; Dateinamen, URLs und JSON-Schlüssel bleiben unverändert. Nicht registrierte Meldungen externer Server oder Bibliotheken können in ihrer ursprünglichen Sprache erscheinen.
 
+## Screenshots
+
+Die echte Desktopoberfläche auf Englisch, aus einem getrennten **Demoprofil** gerendert. Aufträge und Zähler sind Beispieldaten, keine tatsächlichen Downloads oder gemessenen Internetgeschwindigkeiten.
+
+![Downloads: Warteschlange, Fortschritt und Statistik je Gateway](images/desktop-downloads-en.png)
+
+<details>
+<summary>Netzwerkeinstellungen und Gruppenimport</summary>
+
+Vier ausgewählte Gateways und eine virtuelle Anwendungsadresse. Das Beispiel führt keine Gateway- oder Geschwindigkeitstests aus.
+
+![Vier ausgewählte Gateways und eine virtuelle Anwendungsadresse. Das Beispiel führt keine Gateway- oder Geschwindigkeitstests aus.](images/desktop-network-en.png)
+
+Gruppenimport: eine URL pro Zeile, Prüfung vor dem Hinzufügen.
+
+![Gruppenimport: eine URL pro Zeile, Prüfung vor dem Hinzufügen.](images/desktop-bulk-import-en.png)
+
+</details>
+
 ## Erforderliche Umgebung
+
+Die unten beschriebenen nativen Windows-/macOS-Pakete enthalten Java und den fertig kompilierten Netzwerkhelfer. Java-Auswahl, private Downloads und lokale Kompilierung in diesem Abschnitt betreffen die **portablen ZIPs 3.0 und Linux**. Npcap wird unter Windows weiterhin separat benötigt. Für neue macOS-Pakete gilt die strengere Grenze 26+/15+ aus dem Installationsabschnitt.
 
 ### Allgemeine Voraussetzungen
 
@@ -55,7 +78,7 @@ Bei Bedarf werden auch `curl`, CA-Zertifikate, `tar`, `gzip` und Desktopbiblioth
 
 Vorhandenes passendes Java 17+ wird wiederverwendet. Andernfalls wird eine festgelegte offizielle Temurin-21-JRE mit SHA-256-Prüfung **nur für diese Anwendung** installiert. Internetzugang ist nötig, wenn Pakete oder diese JRE fehlen.
 
-### macOS
+### macOS — nur portables ZIP 3.0
 
 - Zielplattform für Bereitstellung und Java-/HTTP-Funktionen: **macOS 11 oder neuer**, Intel oder Apple Silicon. Die Laufzeit muss zur nativen CPU passen; auf Apple Silicon wird nicht automatisch eine Intel-JRE unter Rosetta gewählt.
 - Apples **Command Line Tools** und das System-libpcap werden zum lokalen Kompilieren des Netzwerkhelfers benötigt. Vollständiges Xcode und Homebrew sind nicht erforderlich. Siehe [Apples Installationsanleitung](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/).
@@ -92,7 +115,40 @@ WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transpo
 
 DNS-Anfragen laufen über das ausgewählte Gateway: zunächst zum Router, dann bei Bedarf zu `1.1.1.1` oder `8.8.8.8` über denselben Weg. Es gibt keinen Rückfall auf den DNS-Resolver des Betriebssystems. DNSSEC, DoH und ein TCP-Rückfall bei gekürzten DNS-Antworten sind in diesem Release nicht implementiert.
 
-## Installation und Start
+## Native Installationspakete 3.1: Windows und macOS
+
+Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), sofern es dort angehängt ist. Jedes Paket ist **eine Installationsdatei** mit Anwendung, nativem Starter, vollständiger Java-Laufzeit und passendem Netzwerkhelfer. Quellcode und portable ZIPs der Version 3.0 sind separate Angebote.
+
+| System | Installationsdatei | Start nach der Installation |
+| --- | --- | --- |
+| Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+
+### Windows: installieren und öffnen
+
+1. Laden Sie die `.exe` herunter und vergleichen Sie deren SHA-256 mit dem Release. Öffnen Sie die Datei und folgen Sie dem Installationsassistenten. Die Installation gilt für Ihr Benutzerkonto; wählen Sie die angebotenen Verknüpfungsoptionen.
+2. Öffnen Sie **MultiRoute Resume** im Startmenü oder über die Verknüpfung. Ein normales Programmfenster erscheint, ohne Kommandozeilenfenster. Java ist enthalten und muss nicht separat installiert werden.
+3. Das Programm prüft Npcap. Fehlt der Treiber, bestätigen Sie seinen Download im Programm. Es lädt den festgelegten offiziellen Installer, prüft SHA-256, Authenticode-Signatur und Herausgeber und öffnet die normale Npcap-Installation. Lesen Sie die Lizenz und bestätigen Sie Windows UAC. Nach einem erforderlichen Neustart öffnen Sie MultiRoute erneut. Npcap bleibt ein separater Treiber: **Er wird nicht mitgeliefert oder still installiert**. Wenn er fehlt, ist für diesen Schritt Internetzugang nötig.
+
+Programm und Installer haben keine Herausgebersignatur. SmartScreen kann einen unbekannten Herausgeber melden: Prüfen Sie das offizielle Release und die Datei, bevor Sie gegebenenfalls **Weitere Informationen → Trotzdem ausführen** wählen. Eine Malware-Erkennung ist ein anderer Fall. Deaktivieren Sie keinen Virenschutz und legen Sie keine Ausnahme als Installationsschritt an. Eine AdminOnly-Npcap-Installation kann eine weitere Autorisierung für den Gerätezugriff erfordern. Starten Sie die Java-Anwendung als normalen Benutzer.
+
+### macOS: installieren und öffnen
+
+1. Wählen Sie die `.pkg` für die **native** CPU: arm64 für Apple Silicon, x86_64 für Intel. Die neuen Pakete benötigen **macOS 26+ auf Apple Silicon** beziehungsweise **15+ auf Intel**, einschließlich Torrent/magnet. Die ältere portable HTTP-Mindestversion gilt für diese Pakete nicht.
+2. Laden Sie die `.pkg` herunter, vergleichen Sie die veröffentlichte SHA-256 und öffnen Sie Apples Installer. Bestätigen Sie Installation und Administratorfreigabe zum Einrichten des geschützten Netzwerkhelfers.
+3. Öffnen Sie **`/Applications/MultiRoute Resume.app`** in Finder oder Spotlight. Das Symbol kann ins Dock übernommen werden. Java und der fertig kompilierte Helfer sind enthalten: **Terminal, Command Line Tools, Homebrew und eine separate Java-Installation werden für dieses Paket nicht benötigt**.
+4. Bestätigen Sie bei Bedarf den normalen macOS-Administratordialog, damit der geschützte Helfer das Ethernet-BPF-Gerät öffnen kann. Anschließend gibt er die erhöhten Rechte ab; das Java-Fenster läuft als normaler Benutzer. Während der Nutzung ist keine Terminalsitzung nötig.
+
+### macOS: Sicherheitsbestätigungen des nativen Pakets
+
+Das Paket ist **nicht mit Developer ID signiert und nicht notarisiert**. Eine technische Ad-hoc-Signatur bestätigt keine Apple-Entwickleridentität. Versuchen Sie zunächst, `.pkg` oder Anwendung normal zu öffnen. Falls macOS einen nicht verifizierten Entwickler meldet und eine Ausnahme anbietet, wählen Sie **Systemeinstellungen → Datenschutz & Sicherheit → Dennoch öffnen**, dann **Öffnen**, erst nach Prüfung von Release-Herkunft und Hash. Ein verwalteter Mac kann dies verbieten. Siehe [Apple](https://support.apple.com/de-de/102445).
+
+Installationsfreigabe, spätere Helferfreigabe und Entwicklerausnahme sind getrennte Bestätigungen. Erlauben Sie bei Nachfrage **Lokales Netzwerk** für MultiRoute/Java, damit Ihre LAN-Gateways erreichbar sind. Einen Ordnerzugriff erlauben Sie für das gewählte Downloadziel. Eine abgelehnte Abfrage bedeutet nicht, dass die gesamte Java-Anwendung als root gestartet werden soll.
+
+Der Installer deaktiviert weder Gatekeeper/SIP noch globale Quarantäneprüfungen, verändert keine Systemrouten und richtet keine globale `sudoers`-Ausnahme ein. Eine Warnung vor Malware oder einer beschädigten Datei ist keine normale Entwicklerbestätigung: Halten Sie an und prüfen Sie die Datei. Der Dialogtext kann je nach macOS und Organisationsrichtlinien abweichen.
+
+## Portable ZIPs 3.0 und Linux: Installation und Start
 
 Laden Sie das zu Ihrem System gehörende ZIP aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) herunter und entpacken Sie **den vollständigen Inhalt**. Das fertige Release und eine Kopie der Quellen sind nicht dasselbe: eine reine Quellkopie muss zuerst gebaut werden. Hinweise dazu stehen im [Build-Handbuch](../native/source/BUILD-README.txt).
 
@@ -136,7 +192,7 @@ bash ./Start-Linux.sh --headless
 
 Starten Sie nicht die gesamte Anwendung mit `sudo`.
 
-### macOS
+### macOS — nur portables ZIP 3.0
 
 1. Entpacken Sie das vollständige macOS-ZIP; starten Sie das Skript nicht innerhalb eines Archivs.
 2. Öffnen Sie **`Deploy-macOS.command`** mit Terminal. Der Starter prüft System, native CPU, freien Platz, Schreibrechte, Java und Helfer.
@@ -260,6 +316,17 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
+### Native Pakete 3.1
+
+| System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
+| --- | --- | --- | --- |
+| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, einschließlich Java | Enthaltener x64-Helfer; Npcap separat installiert |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.1/gateway-net` |
+
+Schließen Sie die Anwendung vor einem Update mit einem neuen Installer. Unter Windows erfolgt die Entfernung über **Einstellungen → Apps → Installierte Apps**. Unter macOS löscht das Entfernen der `.app` nicht automatisch den Verlauf und den separat geschützten Helfer. Heruntergeladene Dateien bleiben im gewählten Ordner; löschen Sie ihn nicht nur zur Deinstallation. Der Datenpfad unterscheidet sich vom Windows-ZIP 3.0; sichern Sie ein früheres Profil vor einer Migration.
+
+### Portable Pakete 3.0 und Linux
+
 | System | Daten und Verlauf | Privater Java-Ordner / Helfer |
 | --- | --- | --- |
 | Windows | Standardmäßig `data` neben dem Programm; `data-location.config` oder `--data-dir` kann auf ein anderes Profil verweisen. | Optional `runtime` neben dem Programm; Helfer `native/windows-x64/gateway-net.exe`. |
@@ -274,7 +341,7 @@ Das Downloadziel ist unabhängig vom Datenordner. UTF-8-Protokolle liegen relati
 | Npcap-Fehler | Npcap-Installation und Zugriffsrechte prüfen, insbesondere AdminOnly. Keine Antivirus-Ausnahme automatisch einrichten. |
 | Kein passender Adapter / mehrere passende Adapter | Physisches Ethernet, gemeinsames IPv4-LAN und Adapterkonfiguration prüfen. WLAN/VPN ist kein Ersatz für den unterstützten Transport. |
 | Virtuelle Adresse bereits belegt | Eine andere freie LAN-Adresse wählen und erneut prüfen. Nicht die Betriebssystem-Routen ändern. |
-| Linux/macOS-Autorisierung abgelaufen | Anwendung schließen, den normalen Starter erneut öffnen und im zugehörigen Terminal autorisieren. Java nicht als root starten. |
+| Linux/macOS-Autorisierung abgelaufen | Natives macOS: Anwendung erneut öffnen und bei Bedarf den Administratordialog bestätigen. Portable 3.0/Linux: Terminalstarter erneut öffnen und dort autorisieren; Terminal offen lassen. Java nicht als root starten. |
 | Keine GUI unter Linux | X11 beziehungsweise XWayland/Schriftbibliotheken prüfen oder mit `--headless` ausschließlich die API starten. |
 | Download wartet, obwohl ein Geschwindigkeitstest funktioniert | Quell-URL, DNS, Zugriffsrechte, Netzwerk-/Serverfehler in den Details prüfen. Ein Test einer anderen Datei beweist keine Erreichbarkeit des gewünschten Servers. |
 | HTTP 401/403 oder private Hugging-Face-Quelle | Erforderliche Quellberechtigung und origingebundenen Zugang konfigurieren. Der Gateway-Test ersetzt keine Serverberechtigung. |
@@ -283,10 +350,14 @@ Das Downloadziel ist unabhängig vom Datenordner. UTF-8-Protokolle liegen relati
 | Speicherplatz fehlt | Ziel- und Datenlaufwerk prüfen; Auftrag anhalten, den Ordner über die Oberfläche ändern, dann fortsetzen. |
 | API-Port belegt | Eigenen Port mit `--port 8766` wählen. Ein früherer MultiRoute-Prozess wird geordnet geschlossen; fremde Programme werden nicht beendet. |
 
-Für ein Update unter Linux/macOS führen Sie den jeweiligen Bereitstellungsstarter aus dem neu entpackten Release aus. Nach einem Umzug des Programmordners führen Sie ihn erneut aus, damit der Launcher auf den neuen Ort zeigt. Sichern Sie Daten und Auftragsverlauf vor bewusster Entfernung; löschen Sie zum Deinstallieren nicht rekursiv den Downloadordner.
+Für ein Update der portablen Pakete 3.0 unter Linux/macOS führen Sie den jeweiligen Bereitstellungsstarter aus dem neu entpackten Release aus. Nach einem Umzug des Programmordners führen Sie ihn erneut aus, damit der Launcher auf den neuen Ort zeigt. Sichern Sie Daten und Auftragsverlauf vor bewusster Entfernung; löschen Sie zum Deinstallieren nicht rekursiv den Downloadordner.
 
 ## Umfang der Release-Prüfung
 
-Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Ein echter Mac, dessen BPF-/Finder-/Gatekeeper-Verhalten und die lokale Kompilierung mit Apples SDK wurden in diesem Release nicht geprüft. Prüfen Sie nach Installation jeden Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
+Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Ein echter Mac und sein BPF-/Finder-/Gatekeeper-Verhalten wurden in diesem Release nicht geprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.1 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
 
 Prüfberichte: [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Drittanbieter-Komponenten und ihre Lizenzen: [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
+
+## Lizenz
+
+Die Originalanwendung darf kostenlos installiert und privat sowie in Organisationen einschließlich geschäftlicher Tätigkeiten genutzt werden. **Verkauf der Anwendung, kostenpflichtige Lizenzen und entgeltliche Weitergabe sind untersagt**, soweit keine separate Erlaubnis vorliegt. Die eigene Lizenz gewährt keine allgemeinen Änderungs- oder Weitergaberechte und ist keine von OSI anerkannte Open-Source-Lizenz. Drittanbieter behalten ihre eigenen Lizenzbedingungen. Dies ist eine übersetzte Zusammenfassung; maßgeblich ist der englische Text in [LICENSE.txt](../LICENSE.txt).

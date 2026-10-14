@@ -140,7 +140,7 @@ public final class DesktopUI {
         @Override public boolean isCellEditable(int row, int column) { return false; }
     };
 
-    final JFrame frame = new JFrame("MultiRoute Resume 3.0");
+    final JFrame frame = new JFrame("MultiRoute Resume " + Main.VERSION);
     final JTextField urlField = new JTextField(96);
     final JTextField filenameField = new JTextField(24);
     final JTextField directoryField = new JTextField(Path.of(System.getProperty("user.home"), "Downloads").toString(), 24);

@@ -25,6 +25,7 @@ public final class GatewayNetwork {
     private static Thread outputPump;
     private static Path readyFile;
     private static Path stopFile;
+    private static boolean nativeMacSession;
     private static Map<String,Object> ready;
     private static long controlRevision;
 
@@ -212,7 +213,8 @@ public final class GatewayNetwork {
                 : linux ? Path.of("/usr/local/libexec/MultiRouteResume", Main.VERSION, "gateway-net")
                 : base.resolve("native").resolve(platform).resolve(executable);
         if (!Files.isRegularFile(helper)) throw new IOException(mac
-                ? "Сетевой компонент macOS не установлен; выполните Deploy-macOS.command"
+                ? DesktopLauncher.nativeDesktop() ? "Reinstall the macOS application package: its network component is missing"
+                : "Сетевой компонент macOS не установлен; выполните Deploy-macOS.command"
                 : linux ? "The Linux gateway component is not installed; run Deploy-Linux.sh"
                 : "Сетевой компонент для " + platform + " не найден в папке программы");
         if (mac) verifyMacHelper(helper);
@@ -227,9 +229,11 @@ public final class GatewayNetwork {
         ProcessBuilder builder = new ProcessBuilder(helperArguments(platform, helper, virtualIp, gateways,
                 readyFile, stopFile, ProcessHandle.current().pid(), uid, gid));
         builder.directory(base.toFile()).redirectErrorStream(true);
-        process = builder.start();
+        boolean nativeMac = mac && DesktopLauncher.nativeDesktop();
+        nativeMacSession = nativeMac;
+        process = nativeMac ? MacGatewayLauncher.startHelper(builder.command().subList(3, builder.command().size()), base) : builder.start();
         outputPump = drainOutput(process);
-        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(20);
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(nativeMac ? 120 : 20);
         try {
             while (System.nanoTime() < deadline) {
                 if (Files.isRegularFile(readyFile)) {
@@ -247,11 +251,13 @@ public final class GatewayNetwork {
                 if (!process.isAlive()) throw new IOException(linux
                         ? "Authorize the gateway component through Start-Linux.sh and check the gateways again"
                         : mac
-                        ? "Разрешите запуск сетевого компонента через Start-macOS.command и повторите проверку шлюзов"
+                        ? nativeMac ? "Authorize the network component in the macOS system dialog and check the gateways again"
+                        : "Разрешите запуск сетевого компонента через Start-macOS.command и повторите проверку шлюзов"
                         : "Сетевой компонент завершился; журнал: " + log);
                 Thread.sleep(40);
             }
-            throw new IOException("Подготовка сети приложения превысила 20 секунд; журнал: " + log);
+            throw new IOException(nativeMac ? "macOS network authorization or preparation timed out; check the gateways again"
+                    : "Подготовка сети приложения превысила 20 секунд; журнал: " + log);
         } catch (IOException | InterruptedException error) { close(); throw error; }
     }
 
@@ -289,7 +295,7 @@ public final class GatewayNetwork {
             }
             // A privileged sudo monitor cannot always be killed by this user. Leave the marker
             // for a delayed, permanently unprivileged helper until every observed child has exited.
-            if (gracefulMac && (process.isAlive() || ownedChildren.values().stream().anyMatch(ProcessHandle::isAlive)))
+            if (gracefulMac && (nativeMacSession || process.isAlive() || ownedChildren.values().stream().anyMatch(ProcessHandle::isAlive)))
                 stopFile = null; // the existing marker remains on disk, associated with the old UUID only
             try { process.getInputStream().close(); } catch (IOException ignored) { }
         }
@@ -306,6 +312,7 @@ public final class GatewayNetwork {
         readyFile = null;
         if (stopFile != null) try { Files.deleteIfExists(stopFile); } catch (IOException ignored) { }
         stopFile = null;
+        nativeMacSession = false;
     }
 
     /** Direct argv preserves Unicode/space paths; only the fixed root-owned macOS helper is elevated. */

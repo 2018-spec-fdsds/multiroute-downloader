@@ -1,8 +1,10 @@
-# MultiRoute Resume 3.0 — Guía en español
+# MultiRoute Resume 3.1 — Guía en español
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md)
 
 MultiRoute Resume es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
+
+Titular del proyecto: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 ## ¿Para qué sirve?
 
@@ -14,9 +16,30 @@ Si su red dispone de varias conexiones independientes a Internet, por ejemplo un
 
 La mejora de velocidad depende de la capacidad independiente de las conexiones y de los límites del servidor. Reanudar y reasignar segmentos requiere que el origen y el protocolo permitan una reanudación segura.
 
-Descargue el paquete de su plataforma desde [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) y extraiga **todo** su contenido. Los lanzadores necesitan el JAR, las bibliotecas y los componentes nativos que acompañan al paquete. El archivo «Source code» de GitHub corresponde al código fuente: compílelo primero o use un paquete listo para ejecutar. Los instaladores comprueban los archivos de la aplicación antes de descargar dependencias.
+**Solo ZIP portátil 3.0:** descargue el paquete de su plataforma desde [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) y extraiga **todo** su contenido. Los lanzadores necesitan el JAR, las bibliotecas y los componentes nativos que acompañan al paquete. El archivo «Source code» de GitHub corresponde al código fuente: compílelo primero o use un paquete listo para ejecutar. Los instaladores comprueban los archivos de la aplicación antes de descargar dependencias.
+
+## Capturas de pantalla
+
+Interfaz de escritorio real en inglés, dibujada desde un **perfil de demostración** aislado. Los trabajos y contadores son datos de ejemplo, no descargas reales ni velocidades de Internet medidas.
+
+![Descargas: cola, progreso y estadísticas por puerta de enlace](images/desktop-downloads-en.png)
+
+<details>
+<summary>Ajustes de red e importación en grupo</summary>
+
+Cuatro puertas de enlace seleccionadas y una dirección virtual de la aplicación. La demostración no comprueba puertas de enlace ni velocidades.
+
+![Cuatro puertas de enlace seleccionadas y una dirección virtual de la aplicación. La demostración no comprueba puertas de enlace ni velocidades.](images/desktop-network-en.png)
+
+Importación en grupo: una URL por línea, revisión antes de añadir.
+
+![Importación en grupo: una URL por línea, revisión antes de añadir.](images/desktop-bulk-import-en.png)
+
+</details>
 
 ## 1. Entorno necesario
+
+Los nuevos instaladores Windows/macOS descritos más abajo incluyen Java y el componente compilado. La selección de Java, su descarga privada y la compilación local de esta sección corresponden a los **ZIP portátiles 3.0 y al despliegue Linux**. Windows sigue necesitando Npcap aparte. Los nuevos paquetes macOS tienen el mínimo más estricto 26+/15+ indicado abajo.
 
 | Plataforma | Sistema y arquitectura | Java y componentes adicionales |
 | --- | --- | --- |
@@ -39,7 +62,40 @@ Requisitos comunes:
 
 La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión disponible solamente por VPN y fuentes accesibles únicamente por IPv6 **no son configuraciones admitidas** para este transporte. Tampoco promete sumar el ancho de banda si varios routers comparten la misma conexión, o si el servidor limita la descarga.
 
-## 2. Instalación y primer inicio
+## Instaladores nativos 3.1: Windows y macOS
+
+Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), si está adjunto a la publicación. Cada paquete es **un solo archivo de instalación**, con aplicación, lanzador nativo, Java completo y componente de red. Las fuentes y los ZIP portátiles 3.0 son distribuciones distintas.
+
+| Sistema | Instalador | Inicio después de instalar |
+| --- | --- | --- |
+| Windows 11 x64 | `MultiRoute-Resume-3.1-Windows-x64-Setup.exe` | **MultiRoute Resume** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.1-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.1-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+
+### Windows: instalar y abrir
+
+1. Descargue el `.exe` y compare su SHA-256 con la publicada. Abra el archivo y siga el asistente. La aplicación se instala para su cuenta; elija las opciones de accesos directos ofrecidas.
+2. Abra **MultiRoute Resume** desde Inicio o el acceso directo. Aparece como aplicación de escritorio, sin ventana de comandos. Java está incluido; no necesita instalarlo por separado.
+3. La aplicación comprueba Npcap. Si falta el controlador, confirme su descarga en la aplicación. Se obtiene el instalador oficial fijado, se verifican SHA-256, firma Authenticode y editor, y se abre la instalación normal de Npcap. Lea la licencia y confirme UAC de Windows. Si se pide reiniciar, reinicie Windows y abra MultiRoute de nuevo. Npcap es un controlador aparte: **no está incluido ni se instala silenciosamente**. Si falta, este paso necesita Internet.
+
+Aplicación e instalador no tienen firma de editor. SmartScreen puede mostrar un editor desconocido: compruebe la publicación oficial y el archivo antes de elegir **Más información → Ejecutar de todas formas**, si se ofrece. Una detección de malware es otra situación. No desactive el antivirus ni añada excepciones como paso de instalación. Npcap con AdminOnly puede pedir otra autorización de captura. Abra Java como usuario normal, sin ejecutar toda la aplicación como administrador.
+
+### macOS: instalar y abrir
+
+1. Use el `.pkg` correspondiente al procesador **nativo**: arm64 para Apple Silicon, x86_64 para Intel. Los nuevos paquetes exigen **macOS 26+ en Apple Silicon** o **15+ en Intel**, incluido torrent/magnet. El mínimo HTTP del antiguo ZIP portátil no se aplica a estos paquetes.
+2. Descargue el `.pkg`, compruebe la SHA-256 publicada y ábralo con el Instalador de Apple. Confirme la instalación y la autorización de administrador para colocar el componente de red protegido.
+3. Abra **`/Applications/MultiRoute Resume.app`** en Finder o Spotlight. Puede añadir su icono al Dock. Java y el componente ya compilado están incluidos: **no necesita Terminal, Command Line Tools, Homebrew ni instalar Java aparte** para este paquete.
+4. Cuando se solicite, confirme el diálogo normal de administrador de macOS para que el componente protegido abra el dispositivo Ethernet BPF. Después reduce sus privilegios; la ventana Java funciona con su usuario normal. No necesita mantener una sesión de Terminal abierta.
+
+#### Confirmaciones de seguridad del paquete nativo macOS
+
+El paquete **no está firmado con Developer ID ni notarizado**. Una firma técnica ad hoc no acredita la identidad de un desarrollador Apple. Primero intente abrir normalmente el `.pkg` o la aplicación. Si macOS informa de un desarrollador no verificado y ofrece una excepción, elija **Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente**, luego **Abrir**, únicamente después de comprobar el origen y la suma del archivo. Un Mac administrado puede impedirlo. Consulte [Apple](https://support.apple.com/es-es/102445).
+
+La autorización de instalación, la posterior del componente y la excepción del desarrollador son confirmaciones distintas. Si se solicita **Red local** para MultiRoute/Java, permita el acceso para utilizar sus puertas de enlace LAN. Autorice los permisos de carpeta para el destino elegido. Cancelar no implica ejecutar toda la aplicación Java como root.
+
+El instalador no desactiva Gatekeeper/SIP, no cambia las rutas del sistema, no crea una excepción global de `sudoers` ni elimina globalmente la cuarentena. Un aviso de malware o archivo dañado no es la confirmación normal de desarrollador desconocido: deténgase y compruebe el archivo. El texto depende de macOS y de la política de la organización.
+
+## ZIP portátiles 3.0 y Linux: instalación y primer inicio
 
 ### Windows
 
@@ -106,7 +162,7 @@ bash ./Start-Linux.sh --headless
 
 Ejecute estos lanzadores como su usuario normal, **sin anteponer `sudo`**. Solo el componente de captura recibe autorización administrativa; después de abrir los dispositivos de captura, reduce permanentemente sus privilegios al usuario que lo lanzó.
 
-### macOS
+### macOS — solo ZIP portátil 3.0
 
 1. Extraiga el paquete macOS completo a una carpeta escribible. No ejecute el instalador dentro del ZIP.
 2. Abra `Deploy-macOS.command` con Terminal. Comprueba macOS, arquitectura nativa, espacio, Java y el componente de red.
@@ -214,6 +270,17 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## 7. Datos, actualización y desinstalación
 
+### Instaladores nativos 3.1
+
+| Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
+| --- | --- | --- | --- |
+| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.1/gateway-net` |
+
+Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
+
+### Paquetes portátiles 3.0 y Linux
+
 | Plataforma | Ajustes, historial y registros | Java privado si se instala | Componente protegido |
 | --- | --- | --- | --- |
 | Windows | `data/` dentro de la carpeta de lanzamiento, salvo selección mediante `data-location.config` o `--data-dir` | `runtime/` en la carpeta de aplicación | `native/windows-x64/gateway-net.exe` dentro del paquete; Npcap es un controlador instalado por separado |
@@ -236,7 +303,7 @@ Para actualizar, cierre la aplicación y despliegue el nuevo paquete completo co
 | Dirección virtual ocupada | Elija una dirección libre y vuelva a comprobarla. No debe estar configurada en el propio adaptador de la OS. Evite el rango DHCP automático. |
 | Router no disponible o velocidad cero | El router debe responder en la LAN y proporcionar salida a Internet al IP virtual. Pruebe cada puerta de enlace; compruebe URL, permisos del origen, identidad del archivo y mensaje del trabajo. |
 | SFTP rechaza la conexión | Compare la huella SHA256 con un dato fiable del administrador del servidor y configure la misma huella; no desactive la comprobación. |
-| macOS/Linux pierde autorización | Cierre y vuelva a abrir el lanzador en una terminal para renovar `sudo`. Mantenga esa terminal abierta. No ejecute toda la aplicación como `root`. |
+| macOS/Linux pierde autorización | macOS nativo: vuelva a abrir la aplicación y confirme el diálogo de administrador cuando se solicite. Portátil 3.0/Linux: renueve `sudo` en el lanzador de terminal y manténgala abierta. No ejecute toda Java como root. |
 | Carpeta inaccesible o disco lleno | Permisos del destino y espacio para archivo, partes y temporales torrent. Pause antes de cambiar la carpeta de un trabajo. |
 | Puerto 8765 ocupado | El inicio sustituye su instancia anterior. Si el puerto pertenece a otro programa, elija otro mediante `--port 8766`; no cierre procesos ajenos a MultiRoute. |
 | Descarga antigua repetida | Seleccione el trabajo compatible existente y use continuar. Si desea eliminarlo, decida en el diálogo si conserva sus archivos; compruebe el error del trabajo antes de repetirlo. |
@@ -247,4 +314,8 @@ Para informar de un fallo, indique versión, plataforma/arquitectura, etapa y me
 
 Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Las pruebas no demuestran el funcionamiento con sus routers físicos ni el comportamiento completo en un Mac real.
 
-macOS requiere compilar y comprobar el componente en el Mac de destino. Esta versión no es un binario universal firmado y probado en hardware Apple. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
+macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 3.1 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
+
+## Licencia
+
+Puede instalar y usar gratuitamente la aplicación original para uso personal o en organizaciones, incluidas actividades empresariales. **Se prohíbe vender la aplicación, cobrar por su licencia o distribuirla por dinero** sin permiso separado. La licencia propia no concede derechos generales de modificación o redistribución y no es una licencia de código abierto aprobada por OSI. Los componentes de terceros conservan sus licencias. Este texto es un resumen traducido; rige el texto inglés de [LICENSE.txt](../LICENSE.txt).
