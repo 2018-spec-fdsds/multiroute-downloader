@@ -1,0 +1,440 @@
+{
+  "schema_version": 2,
+  "application": "MultiRoute Resume",
+  "version": "3.2",
+  "status": "PASS",
+  "release_stage": "prerelease",
+  "created_utc": "2026-10-14T12:12:08.668950+00:00",
+  "repository": "https://github.com/2018-spec-fdsds/multiroute-resume",
+  "project_owner_url": "https://github.com/2018-spec-fdsds",
+  "application_source_commit": "286f1fda28795d0c941cf12815cff310b901709d",
+  "windows_packaging_sources_sha256": {
+    "packaging/windows/build.py": "3eef862aaaf81e5088d38e5e2b7c7abf8a8fad9373b4b1073dbe07aff7ce1900",
+    "packaging/windows/verify.py": "e1abf7ff71ae2a30acf2c18a0a873701b0270190e802070bb355cc36c827e195"
+  },
+  "packages": [
+    {
+      "filename": "MultiRoute-Resume-3.2-Windows-x64-Setup.exe",
+      "size_bytes": 57406464,
+      "sha256": "202e0d1aa8867cb5686307a3a367dbd8d8e0567669d9f07ab3c13ef0e050eb57"
+    },
+    {
+      "filename": "MultiRoute-Resume-3.2-macOS-arm64.pkg",
+      "size_bytes": 59513567,
+      "sha256": "d2d457e60c59409cb4bb967266e51190005a93f33773daa10876776203ef406d"
+    },
+    {
+      "filename": "MultiRoute-Resume-3.2-macOS-x86_64.pkg",
+      "size_bytes": 60696000,
+      "sha256": "49b363e0d1f1930dca1c2b58de33ab5fc8e2d0c645b956dbee1599cedf6bb188"
+    }
+  ],
+  "windows_packaging": {
+    "status": "PASS",
+    "version": "3.2",
+    "installer": {
+      "name": "MultiRoute-Resume-3.2-Windows-x64-Setup.exe",
+      "size": 57406464,
+      "sha256": "202e0d1aa8867cb5686307a3a367dbd8d8e0567669d9f07ab3c13ef0e050eb57"
+    },
+    "manifest_sha256": "f6c38fbaafa9ec1ad3197c63caeda31943b846ead60d4b18b160934c2b02fa41",
+    "build_report_sha256": "a4e924c8a68e8fbfa29e0bd2ee7660aae036940d3bcd0cccaa374c09b1a86cff",
+    "verification_report_sha256": "e247538f8925b0b5398028348a844856dec0dc002f312b54f8228daf9ba0c197",
+    "source_payload_current_files_compared": 24,
+    "source_payload_current_files": [
+      "README.md",
+      "README.ru.md",
+      "LICENSE.txt",
+      "LICENSING.md",
+      "API.ru.txt",
+      "openapi.yaml",
+      "CHECKS.ru.md",
+      "TEST-REPORT.json",
+      "DEPLOYMENT-TEST-REPORT.json",
+      "THIRD-PARTY-NOTICES.txt",
+      "native/source/BUILD-README.txt",
+      "windows/bootstrap.ps1",
+      "windows/bootstrap-common.psm1",
+      "windows/NativePrerequisites.ps1",
+      "docs/COMPATIBILITY.json",
+      "docs/de.md",
+      "docs/en.md",
+      "docs/es.md",
+      "docs/fr.md",
+      "docs/images/desktop-bulk-import-en.png",
+      "docs/images/desktop-downloads-en.png",
+      "docs/images/desktop-network-en.png",
+      "docs/images/tray-speeds-3.2.png",
+      "docs/ru.md"
+    ],
+    "actual_installer_checks": 494,
+    "offline_markdown_links_checked": 101,
+    "native_functional_checks": [
+      "actual native EXE reaches its loopback API with bundled Java and no system Java on PATH",
+      "four default gateways and virtual IP retained without starting packet capture",
+      "repeated native start replaces only the own prior controller and retains profile and language",
+      "wrong stop key returns 403 without stopping the own controller",
+      "authenticated stop ends the own controller while preserving its profile"
+    ],
+    "native_functional_report_sha256": "550865f079e11552e3c6aa00797a7b2eb268279b04b73add50861be503b34eb0",
+    "setup_language_checks": 25,
+    "setup_language_report_sha256": "6eb9ff51667b55a4146f132511222a50299877842ab04cd7ea101e46a7bb9c2a",
+    "java_jar_sha256": "6cd88093c227a0b011cdd08672a35a4e8155d3473683f4ce36cc357e1c019152",
+    "native_helper_sha256": "d707d095979da2d44940f8a69027616feb1cdb51630445e25f6d4aa3211aa015",
+    "launcher_sha256": "7a80076d6c6cc2df6f0ea1f9f8f56df86921bb46f9293ff9f2c6207b8f3be7ef",
+    "bundled_java_version": "21.0.12.1+1-LTS",
+    "install_directory": "%LOCALAPPDATA%/MultiRoute Resume App",
+    "user_data_directory": "%LOCALAPPDATA%/MultiRoute Resume/data",
+    "installer_product_language": 1033,
+    "installer_compile_culture": "en-US",
+    "setup_window_language": "English",
+    "all_five_regular_application_languages_preserved": true,
+    "per_user_native_launcher": true,
+    "desktop_shortcut_created_by_default": true,
+    "start_menu_shortcut_created_by_default": true,
+    "project_license_page": true,
+    "third_party_notices_included": true,
+    "offline_guides": [
+      "en",
+      "ru",
+      "de",
+      "es",
+      "fr"
+    ],
+    "compatibility_audit_included": true,
+    "controller_pid_is_verified_owned_descendant": true,
+    "owned_descendants_cleaned_up": true,
+    "system_java_not_used": true,
+    "installed_msi_or_npcap": false,
+    "capture_devices_opened": false,
+    "user_app_data_or_downloads_accessed": false,
+    "release_sources_modified_by_tests": false,
+    "limitations": [
+      "Installer and native EXE are unsigned.",
+      "Actual MSI registration and Npcap/UAC installation were not executed.",
+      "Physical gateway transfers were not exercised by this packaging test.",
+      "Positive macOS desktop symlink cases require the separate macOS test host; this Windows host does not permit symlink creation.",
+      "Windows UAC and third-party Npcap installer messages use their own OS/provider language."
+    ]
+  },
+  "windows_actual_native_controller": {
+    "status": "PASS",
+    "version": "3.2",
+    "checks": [
+      "actual native EXE reaches its loopback API with bundled Java and no system Java on PATH",
+      "four default gateways and virtual IP retained without starting packet capture",
+      "repeated native start replaces only the own prior controller and retains profile and language",
+      "wrong stop key returns 403 without stopping the own controller",
+      "authenticated stop ends the own controller while preserving its profile"
+    ],
+    "native_executable_used": true,
+    "system_java_not_used": true,
+    "all_application_profiles_and_pids_owned": true,
+    "loopback_proxy_bypassed_for_test_only": true,
+    "driver_installed": false,
+    "gateway_capture_started": false,
+    "user_runtime_or_downloads_accessed": false,
+    "application_sources_modified": false,
+    "owned_descendants_cleaned_up": true
+  },
+  "windows_packaged_tray_gui": {
+    "status": "PASS",
+    "checks": 91,
+    "cases": [
+      "macos_native_primary_click_menu_preserved_without_os_name_spoofing",
+      "adaptive_units_0_100m_999m_1g_9_99g_10g_and_two_five_gigabit_jobs_without_clamp",
+      "sum_all_active_downloads_negative_stale_and_overflow_guards",
+      "exact_rate_tooltip_five_languages_and_native_icon_sizes",
+      "real_windows_tray_install_hide_restore_and_cleanup",
+      "hidden_refresh_continues_and_filter_does_not_change_aggregate",
+      "real_manager_paused_and_complete_dto_rates_zero",
+      "hidden_tray_live_language_change_and_lost_tray_restores_window",
+      "tray_exit_shutdown_callback_once_settings_saved_timer_stopped",
+      "unavailable_tray_keeps_taskbar_window_and_timer_with_explanation_and_explicit_exit"
+    ],
+    "os_routes_changed": false,
+    "packet_capture_started": false,
+    "user_data_accessed": false,
+    "environment": "Windows actual Java SystemTray",
+    "application_version": "3.2",
+    "packaged_application_jar_used": true,
+    "private_bundled_runtime_used": true,
+    "jar_sha256": "6cd88093c227a0b011cdd08672a35a4e8155d3473683f4ce36cc357e1c019152"
+  },
+  "tray_headless": {
+    "status": "PASS",
+    "checks": 62,
+    "cases": [
+      "macos_native_primary_click_menu_preserved_without_os_name_spoofing",
+      "adaptive_units_0_100m_999m_1g_9_99g_10g_and_two_five_gigabit_jobs_without_clamp",
+      "sum_all_active_downloads_negative_stale_and_overflow_guards",
+      "exact_rate_tooltip_five_languages_and_native_icon_sizes",
+      "headless_unsupported_tray_guard"
+    ],
+    "os_routes_changed": false,
+    "packet_capture_started": false,
+    "user_data_accessed": false,
+    "environment": "headless"
+  },
+  "macos_native_builds": {
+    "schema_version": 1,
+    "application": "MultiRoute Resume",
+    "application_version": "3.2",
+    "receipt_created_utc": "2026-10-14T12:08:31+00:00",
+    "repository": "https://github.com/2018-spec-fdsds/multiroute-resume",
+    "project_owner_url": "https://github.com/2018-spec-fdsds",
+    "ci_run_id": 38560531856,
+    "ci_run_url": "https://github.com/2018-spec-fdsds/multiroute-resume/actions/runs/38560531856",
+    "ci_conclusion": "success",
+    "source_commit": "286f1fda28795d0c941cf12815cff310b901709d",
+    "source_commit_url": "https://github.com/2018-spec-fdsds/multiroute-resume/commit/286f1fda28795d0c941cf12815cff310b901709d",
+    "source_files_sha256_at_ci_commit": {
+      "LICENSE.txt": "4ceb92d9c22aa5d3df207e7d042b93e4929a69a8fc60b243af9b1315be1cfb09",
+      "THIRD-PARTY-NOTICES.txt": "575bfb06aa19aa49d90a3eb89ab196e7c62c2aaa112fd057319b89b8047cdaa5",
+      ".github/workflows/native-macos.yml": "513c25913b4b637424a417e9e05c9f207ca4c8e7bc3b12f2b876b042ab245e8a",
+      "packaging/macos/build.py": "e393a75a80682b6fd513b384a8bd7dc89a9eee5a10ef86aa1a729d222365d575",
+      "packaging/macos/verify.py": "8c60a4363481b34005b837864e1e299fc50e3fa836d6c9cef474d69ddd2a7081",
+      "packaging/macos/gateway_launch.c": "982bcf13ae45994e6550c1214dbe86ca6ba15d1896389ab2b6b5e0a14bc10943",
+      "src/multiroute/MacGatewayLauncher.java": "dba3338118c828bcf5523268c5931702de637c5a445f3bf95d2eb7ec75d23df0",
+      "src/multiroute/DesktopLauncher.java": "63edf26f47b8ba17f0633bfce26db44b99b99032c8834f643347efda5565dadc",
+      "src/multiroute/Main.java": "c78725c43fc2da47bdedc7cf1103cb3074f60d836657c97aa5b723693c0145a4",
+      "src/multiroute/GatewayNetwork.java": "d4500bcfbeb7bf8649b81728bbbf7cd7a340af0252fa8bbf42b68acbf79de721",
+      "src/multiroute/DesktopTray.java": "bb668b838a4d6ec88fc5f7335b8ecd5fdfb83f16f591db6b6e8d0c3fedd85375",
+      "src/multiroute/DesktopUI.java": "2146f412c470d0bdaca7783dd5f9a7315331ff2fd1a83275a1149fc51e2acde7",
+      "src/multiroute/I18n.java": "59c9ac3033b184c4f41666057c2e857eed36162a74a7aa0f04684b943a2448eb",
+      "packaging/macos/preinstall.sh.in": "f37d28522918dccd8098e98d367b85e4359ef5be4a8512b83cc126e79c99bc82",
+      "packaging/macos/postinstall.sh.in": "99d4de9fe68c5ac4aade00247723c535b44d3d0c122418303f1affadb451eb40"
+    },
+    "runtime_and_packaging_sources_still_match_ci_commit": {
+      "packaging/macos/build.py": true,
+      "packaging/macos/verify.py": true,
+      "packaging/macos/gateway_launch.c": true,
+      "src/multiroute/MacGatewayLauncher.java": true,
+      "src/multiroute/DesktopLauncher.java": true,
+      "src/multiroute/Main.java": true,
+      "src/multiroute/GatewayNetwork.java": true,
+      "src/multiroute/DesktopTray.java": true,
+      "src/multiroute/DesktopUI.java": true,
+      "src/multiroute/I18n.java": true,
+      "packaging/macos/preinstall.sh.in": true,
+      "packaging/macos/postinstall.sh.in": true
+    },
+    "working_tree_comparison_note": "Current working-tree source comparison normalizes CRLF to LF; CI source SHA-256 values describe the exact Git blob bytes.",
+    "license_sha256": "4ceb92d9c22aa5d3df207e7d042b93e4929a69a8fc60b243af9b1315be1cfb09",
+    "packages": [
+      {
+        "architecture": "arm64",
+        "minimum_macos": "26.0",
+        "ci_runner": "macos-26",
+        "filename": "MultiRoute-Resume-3.2-macOS-arm64.pkg",
+        "size_bytes": 59513567,
+        "sha256": "d2d457e60c59409cb4bb967266e51190005a93f33773daa10876776203ef406d",
+        "helper_sha256": "da2ff9c4739c9490bcac54d8017fb0e14facc4a2374ebf7f56ac3a11210797ef",
+        "gateway_launcher_sha256": "b7f7f3bb3446503ac506ac747550897faa29eb216abd7ea97cdf514b06beeb45",
+        "artifact_id": 11891389127,
+        "artifact_zip_size_bytes": 58562021,
+        "artifact_zip_sha256": "e40e6ba34baf342451d5af0996ae779fdddec80dc6e0631dcd09c40b49943ae7",
+        "artifact_zip_crc_verified": true,
+        "build_report_sha256": "6efc6dbc0b0dafdfc4ca03782afea8d3998e2e481bc5af01a3bc36c146148e94",
+        "verification_report_sha256": "361f3449e17e56ee9f1422c0504299d4cef1baed6d527d9d85e165bd803e1b38",
+        "ci_verification_passed": true,
+        "bundled_documentation_files": 16,
+        "bundled_documentation_sha256": {
+          "README.md": "e1b5be7f57ddd8288e2ca7330cf61c3cb88ff28f3c12280e50aad06a1a7ce889",
+          "README.ru.md": "4d0087a1aa0fe0c5ac193edb4138f1c609354a5634cf3f55684ecb61955acfc4",
+          "CHECKS.ru.md": "2f3e7f8aeb191ca8a533e6db1c44682cbecbe8a80401057210847d312dd74c8c",
+          "TEST-REPORT.json": "8ac936bb1d9e8e6c70f8971a8d27896bfd1512ecd41e0195c3b08e4a77b53436",
+          "DEPLOYMENT-TEST-REPORT.json": "8f7a0aa058634b3c23e9e373346d4b00ff94ec1db62af3713ac99f357d7b4374",
+          "native/source/BUILD-README.txt": "d4cf3eb50e636eff88c21ac208ccf695e52a5ec9a51d41704896e7a488c3dbfd",
+          "docs/COMPATIBILITY.json": "24cc945ca46d2b803aac60ee1d329a6d6fd22f61b2b9affc9ebacb34e140d9cb",
+          "docs/de.md": "234cafd7f49ad260e1ee517fcaa7b340f32cddc531c5692595a83c21a4f07e68",
+          "docs/en.md": "fc19247487f7efde750f7a8eed1c8652c5f0726e75d18d1005cb628734085dda",
+          "docs/es.md": "0a5b5f3e838e867fbbeb8df4bb28034454d5a8ff1642de7b0b3dd1f20da901ee",
+          "docs/fr.md": "7c57ff9a9fa45b4cf59f5d69784dcf0c9c259fa2c1cfa05b4d73b5cd7443e959",
+          "docs/images/desktop-bulk-import-en.png": "d61e529a04a1c2e371ace2b1d2688b247dad126fdc122c03f6bcf91b35c20db4",
+          "docs/images/desktop-downloads-en.png": "9cbab18d42272bf9af5b83b8f4d8a0f343285a83a1659e21956cbc81a92931bb",
+          "docs/images/desktop-network-en.png": "a12fd320284a5f3d9081a51d240d019ea2c68035ea1c58ec82c12304581f6c9e",
+          "docs/images/tray-speeds-3.2.png": "67df69da30ae8b059f00b74ef52dcc1149ca0359f91953acd65e31100cbcf05b",
+          "docs/ru.md": "da2399920aada7795e9acbe37a237aba9d6ff610f9436f1fd0eb3e0e46bd9571"
+        },
+        "bundled_documentation_matches_source_commit": true,
+        "offline_markdown_link_counts": {
+          "app_image": 101,
+          "expanded_installer": 101
+        }
+      },
+      {
+        "architecture": "x86_64",
+        "minimum_macos": "15.0",
+        "ci_runner": "macos-15-intel",
+        "filename": "MultiRoute-Resume-3.2-macOS-x86_64.pkg",
+        "size_bytes": 60696000,
+        "sha256": "49b363e0d1f1930dca1c2b58de33ab5fc8e2d0c645b956dbee1599cedf6bb188",
+        "helper_sha256": "fb7afbc7cbd51d7ee7580d55105377abcdeb3d7d944f643dd1a1e6f8405085dc",
+        "gateway_launcher_sha256": "1c867958aa3befb08a5988019890cabd9ad83ca5c17e2e14c8ee4b3ee2081f7b",
+        "artifact_id": 11890984895,
+        "artifact_zip_size_bytes": 59741717,
+        "artifact_zip_sha256": "7ba1a8cdd739c2c01207743e1a5ec321e902213189366d1311caefce469fa79b",
+        "artifact_zip_crc_verified": true,
+        "build_report_sha256": "554a248726e133e5c65d1fcc651efe0bde53f125fcbf1d32039f5c2806662e6b",
+        "verification_report_sha256": "3b3da33e94660b9cbdaf42dcea6acfdd1425905301a13d5cdfb4fb2477733e42",
+        "ci_verification_passed": true,
+        "bundled_documentation_files": 16,
+        "bundled_documentation_sha256": {
+          "README.md": "e1b5be7f57ddd8288e2ca7330cf61c3cb88ff28f3c12280e50aad06a1a7ce889",
+          "README.ru.md": "4d0087a1aa0fe0c5ac193edb4138f1c609354a5634cf3f55684ecb61955acfc4",
+          "CHECKS.ru.md": "2f3e7f8aeb191ca8a533e6db1c44682cbecbe8a80401057210847d312dd74c8c",
+          "TEST-REPORT.json": "8ac936bb1d9e8e6c70f8971a8d27896bfd1512ecd41e0195c3b08e4a77b53436",
+          "DEPLOYMENT-TEST-REPORT.json": "8f7a0aa058634b3c23e9e373346d4b00ff94ec1db62af3713ac99f357d7b4374",
+          "native/source/BUILD-README.txt": "d4cf3eb50e636eff88c21ac208ccf695e52a5ec9a51d41704896e7a488c3dbfd",
+          "docs/COMPATIBILITY.json": "24cc945ca46d2b803aac60ee1d329a6d6fd22f61b2b9affc9ebacb34e140d9cb",
+          "docs/de.md": "234cafd7f49ad260e1ee517fcaa7b340f32cddc531c5692595a83c21a4f07e68",
+          "docs/en.md": "fc19247487f7efde750f7a8eed1c8652c5f0726e75d18d1005cb628734085dda",
+          "docs/es.md": "0a5b5f3e838e867fbbeb8df4bb28034454d5a8ff1642de7b0b3dd1f20da901ee",
+          "docs/fr.md": "7c57ff9a9fa45b4cf59f5d69784dcf0c9c259fa2c1cfa05b4d73b5cd7443e959",
+          "docs/images/desktop-bulk-import-en.png": "d61e529a04a1c2e371ace2b1d2688b247dad126fdc122c03f6bcf91b35c20db4",
+          "docs/images/desktop-downloads-en.png": "9cbab18d42272bf9af5b83b8f4d8a0f343285a83a1659e21956cbc81a92931bb",
+          "docs/images/desktop-network-en.png": "a12fd320284a5f3d9081a51d240d019ea2c68035ea1c58ec82c12304581f6c9e",
+          "docs/images/tray-speeds-3.2.png": "67df69da30ae8b059f00b74ef52dcc1149ca0359f91953acd65e31100cbcf05b",
+          "docs/ru.md": "da2399920aada7795e9acbe37a237aba9d6ff610f9436f1fd0eb3e0e46bd9571"
+        },
+        "bundled_documentation_matches_source_commit": true,
+        "offline_markdown_link_counts": {
+          "app_image": 101,
+          "expanded_installer": 101
+        }
+      }
+    ],
+    "verified_checks_on_native_mac_ci_runners": [
+      "native Finder launcher",
+      "bundle metadata and five language prompts",
+      "bundled Java modules",
+      "bundled torrent JNI loaded without any peers or downloads",
+      "seven normal-user Java shortcut fixtures create real native Mac symlinks and preserve existing items without touching the user Desktop",
+      "thirteen headless tray checks include one and ten gigabit boundaries, aggregate ten gigabits, exact byte counters and adaptive unit rendering without installing a tray icon",
+      "AppleScript compiled; quoting round-trip and seven invalid requests rejected without authorization",
+      "native app launcher reached its local API using fresh owned state",
+      "eight owned normal-user Desktop shortcut fixtures pass; installer switches to a validated console user and preserves existing items",
+      "five local language guides, both READMEs, compatibility information and four screenshots match saved sources in the app and expanded installer",
+      "all relative Markdown links resolve within the app image and expanded installer, including baseline reports and native build instructions",
+      "capture monitor drained 1MiB with a 64KiB bound, preserved exit codes and tolerated a closed consumer",
+      "controlled root monitor fixture permanently dropped UID/GID and could not regain root",
+      "Installer license resource and installed app license exactly match the saved license and owner profile",
+      "expanded installer contains the matching helper/checksum and passes native offline self-test"
+    ],
+    "offline_instructions_languages": [
+      "en",
+      "ru",
+      "de",
+      "es",
+      "fr"
+    ],
+    "offline_instructions_verified_in_app_and_expanded_pkg": true,
+    "offline_markdown_relative_links_verified_in_each_layout": 101,
+    "setup_language": "en",
+    "desktop_shortcut_owned_fixture_checks": {
+      "installer_user_shell": 8,
+      "first_user_gui_launch_method": 7
+    },
+    "headless_tray_fixture_checks": 13,
+    "display_unit_boundaries_verified_gbit_per_second": [
+      1,
+      10
+    ],
+    "desktop_shortcut_policy": {
+      "name": "MultiRoute Resume.app",
+      "target": "/Applications/MultiRoute Resume.app",
+      "installer_creation_context": "validated console user via sudo, never a root home write",
+      "existing_desktop_items_replaced": false,
+      "failure_policy": "best effort during setup; normal-user first GUI launch retries"
+    },
+    "real_user_desktop_modified": false,
+    "bundled_java_major": 21,
+    "helper_output_limit_bytes": 65536,
+    "developer_id_signed": false,
+    "notarized": false,
+    "installer_executed_during_ci": false,
+    "administrator_gui_prompt_executed": false,
+    "controlled_root_to_uid_gid_drop_fixture_executed": true,
+    "gateway_network_or_bpf_capture_test_performed": false,
+    "system_routing_or_bpf_permissions_changed": false,
+    "unverified": [
+      "Graphical Apple Installer completion on an end-user Mac",
+      "Finder/Gatekeeper opening and security confirmations on an end-user Mac",
+      "Graphical administrator authorization for the BPF component",
+      "Packet capture, actual LAN gateways, combined download throughput and gateway failures",
+      "Actual menu-bar tray interaction, privacy prompts and console-user Desktop shortcut during an end-user installation"
+    ],
+    "publication_performed_by_receipt_task": false
+  },
+  "instructions": {
+    "languages": [
+      "en",
+      "ru",
+      "de",
+      "es",
+      "fr"
+    ],
+    "passed": 224,
+    "total": 224,
+    "files_sha256": {
+      "README.md": "d774f7431bb701e4fca766f2580d6abbe73df538b300c0ebcc4ce1a64e790a73",
+      "README.ru.md": "6f25c41987615ffa0fafedb8eafff26717822b7054b3ebbe3b094acfff254e16",
+      "docs/en.md": "db657be092be64631f91d13936be5349efab39ccd1b9aa7de459f2672b5b0321",
+      "docs/ru.md": "7cd6335d716dd448369942b087dc42d3ed77cc37a540619e75d1d2b823eddeee",
+      "docs/de.md": "ff8bf3c7eabf4bcd7aa7eabecd4a06ac2df132bbadfac11fc1f53e7c3179bd91",
+      "docs/es.md": "1bc380fd87a3c58057b37753ed37d41fd43347a7a09246dac4630bc86ae40bf7",
+      "docs/fr.md": "19d796199ae89282484f3f4b9835d02494731328b13888eff342e70bee6f5348"
+    }
+  },
+  "screenshots": {
+    "images": {
+      "docs/images/desktop-downloads-en.png": {
+        "sha256": "9cbab18d42272bf9af5b83b8f4d8a0f343285a83a1659e21956cbc81a92931bb",
+        "bytes": 70935,
+        "width": 1584,
+        "height": 1001
+      },
+      "docs/images/desktop-network-en.png": {
+        "sha256": "a12fd320284a5f3d9081a51d240d019ea2c68035ea1c58ec82c12304581f6c9e",
+        "bytes": 57594,
+        "width": 1584,
+        "height": 1381
+      },
+      "docs/images/desktop-bulk-import-en.png": {
+        "sha256": "d61e529a04a1c2e371ace2b1d2688b247dad126fdc122c03f6bcf91b35c20db4",
+        "bytes": 12815,
+        "width": 626,
+        "height": 386
+      },
+      "docs/images/tray-speeds-3.2.png": {
+        "sha256": "67df69da30ae8b059f00b74ef52dcc1149ca0359f91953acd65e31100cbcf05b",
+        "bytes": 41761,
+        "width": 1080,
+        "height": 900
+      }
+    },
+    "desktop_capture_fixture": {
+      "network_operations": 0,
+      "profile": "owned isolated demo profile",
+      "data": "illustrative paused/completed jobs; no real downloads or measured WAN speeds",
+      "rendering": "actual DesktopUI and BulkImportDialog components printed into BufferedImage; no screen or user window capture",
+      "images": [
+        "desktop-downloads-en.png",
+        "desktop-network-en.png",
+        "desktop-bulk-import-en.png"
+      ]
+    },
+    "desktop_screenshot_version": "3.1",
+    "tray_icon_fixture": "Actual DesktopTray rendering with synthetic rates through 10 Gbit/s; no user desktop capture."
+  },
+  "limitations": [
+    "Packages are unsigned with a publisher identity and macOS packages are not notarized.",
+    "End-user MSI/Apple Installer registration and completion were not exercised.",
+    "Npcap installation, UAC and graphical BPF authorization were not exercised.",
+    "Finder/Gatekeeper dialogs and actual macOS menu-bar tray interaction were not exercised.",
+    "Physical LAN gateways, aggregate WAN throughput and gateway failover were not exercised.",
+    "The 10 Gbit/s display was verified using synthetic rates; it is not a measured WAN throughput claim.",
+    "Our setup text is English; operating-system and third-party security dialogs use their own language."
+  ]
+}
