@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.6 — English guide
+# MultiRoute Resume 3.7 — English guide
 
 **English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md)
 
@@ -62,15 +62,15 @@ Common requirements:
 
 Version 3.0's gateway transport uses IPv4 over Ethernet. Wi-Fi-only, VPN-only and IPv6-only sources are **not supported configurations** for it.
 
-## Native installers 3.6: Windows and macOS
+## Native installers 3.7: Windows and macOS
 
 Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.6-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.6-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.6-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.7-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.7-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.7-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
 
 The five language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md` or `fr.md` in a text or Markdown viewer.
 
@@ -171,7 +171,7 @@ This release is **not signed with Developer ID or notarized**. After trying to o
 
 If macOS requests **Local Network** access for Terminal, Java or the application, allow it if you want to use the LAN gateways. Administrator authorization and Local Network access are separate from the developer warning. File access prompts may also appear for the folder you select; grant only the destination access you need.
 
-Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.6 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
+Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.7 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
 
 API-only launch from the extracted folder:
 
@@ -262,12 +262,12 @@ Set network configuration in the window or with `POST /network` first. See the e
 
 ## 7. Data, updates and removal
 
-### Native installers 3.6
+### Native installers 3.7
 
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.6/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.7/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -306,9 +306,9 @@ When reporting an issue, include version, OS/CPU, stage and exact error. Remove 
 
 Release checks cover Java, protocols with synthetic fixtures, scheduling/resume logic, SHA-256 comparison and offline native self-tests on Windows/POSIX. Installer changes are checked with controlled fixtures; that does not establish successful live installation of every third-party package.
 
-Native 3.6 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.6 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
+Native 3.7 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.7 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
 
-## Tray and exit (3.6)
+## Tray and exit (3.7)
 
 Closing the main window keeps the application and downloads running in the system tray. The icon displays the total download speed of **all jobs**, independent of the selected job or table filter. Hover over it for the exact rate in Mbit/s or Gbit/s (from 1 Gbit/s), plus bytes/s, including speeds up to 10 Gbit/s; the small icon rounds the value. Choose **Open application** from the tray menu to restore the window. On Windows/Linux, clicking the icon also opens it. Choose **Exit application** in the tray menu or in the application window to save state and stop the program. Use this command before installing an update.
 
@@ -320,7 +320,7 @@ Setup creates a desktop shortcut by default. Windows also adds a Start menu entr
 
 You may install and use the original application free of charge for personal use and within organizations, including business activities. **Selling the application, charging for its licence or distributing it for payment is prohibited** without separate permission. The custom licence does not grant general modification or redistribution rights and is not an OSI-approved open-source licence. Third-party components retain their own licences. This is a summary; the controlling English terms are in [LICENSE.txt](../LICENSE.txt).
 
-In 3.6 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
+In 3.7 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
 
 ## MD5, SHA-256 and SHA-512 verification
 
@@ -334,7 +334,7 @@ Torrent piece verification remains mandatory. MD5/SHA-256/SHA-512 values for ass
 
 The local API accepts `expected_md5`, `expected_sha256` and `expected_sha512` in `POST /api/v1/jobs`. Results expose `md5`, `sha256`, `sha512` and reference provenance in `checksum_sources`. Existing `expected_sha256` requests remain compatible.
 
-## Individual download progress (3.6)
+## Individual download progress (3.7)
 
 Each download has its own bar in the Progress column. Columns expand to fill the downloads panel. The list scrolls vertically when it contains many jobs; narrow panels also scroll horizontally without squeezing columns below readable widths. Refresh preserves the first visible job. Sorting and filtering keep each bar linked to its own download. If a total size is unknown, the bar shows received bytes instead of a percentage; hover for size, status and error details. Selecting a row still shows its detailed progress, time and gateway speeds.
 
@@ -343,3 +343,7 @@ The default download folder is resolved for the current user at launch: `%USERPR
 ## Log viewer (3.6)
 
 The log window keeps the current reading position during automatic and manual refresh. When you scroll to the bottom, new entries remain visible. Scrolling up pauses following without stopping logging. Text selection remains available for copying. Changing the interface language preserves the visible event; reopening the window shows the latest entries.
+
+## Download details and checksum report (3.7)
+
+The lower details panel for the selected download keeps its reading position and text selection during repeated automatic refreshes. You can read the end of the checksum report without the panel returning to the beginning. Selecting a different download opens its report at the top. The separate log window retains its existing scroll behavior.

@@ -545,6 +545,16 @@ public final class NativeDesktopFixture {
         assert log_scroll["version"] == report["version"] and not log_scroll["user_logs_read"]
         checks.append("twenty-five packaged log viewport checks preserve tail, browsing position, selection, later scrolling, bounded history and five-language rendering using owned text without reading user logs")
 
+        details_fixture = ROOT / "packaging/tests/DetailsScrollTest37.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, details_fixture])
+        run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "details-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.DetailsScrollTest37", owned / "details-scroll", "headless"], capture_output=True, text=True)
+        details_scroll = json.loads((owned / "details-scroll/DETAILS-SCROLL-TESTS.json").read_text(encoding="utf-8"))
+        assert details_scroll["status"] == "PASS" and details_scroll["checks"] == 10 and details_scroll["headless_only"]
+        assert details_scroll["version"] == report["version"] and not details_scroll["user_profile_or_logs_read"]
+        assert details_scroll["network_calls"] == 0
+        checks.append("ten packaged download-details viewport checks preserve the report tail, selection, reading position and manual scrolling while resetting a newly selected report, using only owned text")
+
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
@@ -668,6 +678,7 @@ public final class MacAuthorizationFixture {
         "checksum34_fixture_checks": checksum_fixture_checks, "whole_file_algorithms": ["md5", "sha256", "sha512"],
         "download_progress35_fixture_checks": download_progress_fixture_checks,
         "log_scroll36_fixture_checks": log_scroll["checks"],
+        "details_scroll37_fixture_checks": details_scroll["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

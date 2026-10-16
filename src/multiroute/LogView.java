@@ -15,6 +15,7 @@ import javax.swing.text.DefaultCaret;
 
 /** Log refreshes preserve the reader's viewport independently of the text caret. */
 final class LogView extends JScrollPane {
+    private final boolean followOnOpen;
     private boolean updating, suppressCaretScroll, loaded;
     private long generation, interaction;
     private Point observed = new Point();
@@ -26,6 +27,11 @@ final class LogView extends JScrollPane {
     };
 
     LogView() {
+        this(true);
+    }
+
+    LogView(boolean followOnOpen) {
+        this.followOnOpen = followOnOpen;
         text.setEditable(false);
         text.setLineWrap(true);
         text.setWrapStyleWord(true);
@@ -57,13 +63,23 @@ final class LogView extends JScrollPane {
     }
 
     void updateSnapshot(String snapshot) {
+        updateSnapshot(snapshot, false);
+    }
+
+    /** A different download starts at its heading, independently of the previous selection. */
+    void resetSnapshot(String snapshot) {
+        updateSnapshot(snapshot, true);
+    }
+
+    private void updateSnapshot(String snapshot, boolean resetToStart) {
         if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Update log on the EDT");
-        if (loaded && previous.equals(snapshot)) return;
-        Point position = getViewport().getViewPosition();
-        int dot = text.getCaret().getDot(), mark = text.getCaret().getMark();
-        boolean follow = !loaded || (dot == mark && !getVerticalScrollBar().getValueIsAdjusting()
+        if (loaded && previous.equals(snapshot) && !resetToStart) return;
+        Point position = resetToStart ? new Point() : getViewport().getViewPosition();
+        int dot = resetToStart ? 0 : text.getCaret().getDot();
+        int mark = resetToStart ? 0 : text.getCaret().getMark();
+        boolean follow = !resetToStart && ((!loaded && followOnOpen) || (loaded && dot == mark && !getVerticalScrollBar().getValueIsAdjusting()
                 && getVerticalScrollBar().getValue() + getVerticalScrollBar().getVisibleAmount()
-                        >= getVerticalScrollBar().getMaximum() - 2);
+                        >= getVerticalScrollBar().getMaximum() - 2));
         int anchor = text.viewToModel2D(position);
         double anchorOffset = 0;
         try {
@@ -78,11 +94,11 @@ final class LogView extends JScrollPane {
         suppressCaretScroll = true;
         updating = true;
         try {
-            if (loaded && snapshot.startsWith(old)) text.append(snapshot.substring(old.length()));
+            if (loaded && snapshot.startsWith(old) && !resetToStart) text.append(snapshot.substring(old.length()));
             else {
                 text.setText(snapshot);
-                text.getCaret().setDot(newMark);
-                text.getCaret().moveDot(newDot);
+                text.getCaret().setDot(resetToStart ? 0 : newMark);
+                text.getCaret().moveDot(resetToStart ? 0 : newDot);
             }
             getViewport().setViewPosition(position);
         } finally { updating = false; }
@@ -99,7 +115,7 @@ final class LogView extends JScrollPane {
                 getViewport().doLayout();
                 int y = position.y;
                 if (follow) y = getViewport().getViewSize().height;
-                else if (!snapshot.startsWith(old)) {
+                else if (!resetToStart && !snapshot.startsWith(old)) {
                     Rectangle2D bounds = text.modelToView2D(Math.min(newAnchor, text.getDocument().getLength()));
                     if (bounds != null) y = (int) Math.round(bounds.getY() + pixelOffset);
                 }

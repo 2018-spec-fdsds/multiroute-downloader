@@ -210,7 +210,9 @@ public final class DesktopUI {
     };
     final JScrollPane jobsScroll = new JScrollPane(jobsTable);
     final JProgressBar progressBar = new JProgressBar(0, 1000);
-    final JTextArea detailsArea = new JTextArea();
+    private final LogView detailsView = new LogView(false);
+    final JTextArea detailsArea = detailsView.text;
+    private String detailsJobId = "";
     final JButton pauseButton = translatedButton("Пауза");
     final JButton resumeButton = translatedButton("Продолжить");
     final JButton changeGatewaysButton = translatedButton("Изменить шлюзы…");
@@ -728,8 +730,8 @@ public final class DesktopUI {
         detailsArea.setWrapStyleWord(true);
         detailsArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
         detailsArea.setMargin(new Insets(9, 9, 9, 9));
-        I18n.text(detailsArea, "После запуска здесь появятся сведения о шлюзах и проверке файла.");
-        details.add(new JScrollPane(detailsArea), BorderLayout.CENTER);
+        updateDetails("", I18n.t("После запуска здесь появятся сведения о шлюзах и проверке файла."));
+        details.add(detailsView, BorderLayout.CENTER);
         pauseButton.setEnabled(false); resumeButton.setEnabled(false); changeGatewaysButton.setEnabled(false);
         changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false);
         pauseButton.addActionListener(event -> changeJob(false));
@@ -2018,7 +2020,7 @@ public final class DesktopUI {
             I18n.text(totalSpeedLabel, "Общая скорость: —");
             I18n.text(elapsedLabel, "Прошло: —"); I18n.text(etaLabel, "Осталось: —");
             renderGatewaySpeeds(Map.of());
-            I18n.text(detailsArea, "После запуска здесь появятся сведения о шлюзах и проверке файла.");
+            updateDetails("", I18n.t("После запуска здесь появятся сведения о шлюзах и проверке файла."));
             pauseButton.setEnabled(false); resumeButton.setEnabled(false); changeGatewaysButton.setEnabled(false);
             changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false); return;
         }
@@ -2075,8 +2077,15 @@ public final class DesktopUI {
             info.append(I18n.t("\nОШИБКА\n")).append(DiagnosticText.render(error)).append("\n");
             if (isNoSpaceError(error)) info.append(I18n.t("\nВыберите «Изменить папку…» и папку со свободным местом, затем нажмите «Продолжить». Скачанные части сохранятся.\n"));
         }
-        I18n.text(detailsArea, info.toString());
-        detailsArea.setCaretPosition(0);
+        updateDetails(Main.str(job.get("id")), info.toString());
+    }
+
+    /** Periodic snapshots keep the reader's position; selecting another download resets it. */
+    private void updateDetails(String jobId, String snapshot) {
+        boolean changedJob = !jobId.equals(detailsJobId);
+        detailsJobId = jobId;
+        if (changedJob) detailsView.resetSnapshot(snapshot);
+        else detailsView.updateSnapshot(snapshot);
     }
 
     /** The latest cause must stay visible even when the detailed log is below the fold. */
