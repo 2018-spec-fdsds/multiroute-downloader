@@ -161,6 +161,7 @@ public final class DesktopUI {
     private final DesktopTray tray;
     JDialog logDialog;
     JTextArea logArea;
+    private LogView logView;
     private Timer logTimer;
     private String lastLogSnapshot = "";
     private long lastLogRevision = -1;
@@ -840,12 +841,10 @@ public final class DesktopUI {
         JPanel content = new JPanel(new BorderLayout(0, 10));
         content.setBorder(BorderFactory.createEmptyBorder(12, 14, 12, 14));
         content.add(translatedLabel("Сообщения отображаются на выбранном языке интерфейса."), BorderLayout.NORTH);
-        logArea = new JTextArea();
-        logArea.setEditable(false);
-        logArea.setLineWrap(true);
-        logArea.setWrapStyleWord(true);
-        logArea.putClientProperty("html.disable", Boolean.TRUE);
-        content.add(new JScrollPane(logArea), BorderLayout.CENTER);
+        LogView view = new LogView();
+        logView = view;
+        logArea = view.text;
+        content.add(view, BorderLayout.CENTER);
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton refresh = translatedButton("Обновить");
         tip(refresh, "Обновить сообщения в журнале.");
@@ -856,7 +855,10 @@ public final class DesktopUI {
         actions.add(refresh); actions.add(close); content.add(actions, BorderLayout.SOUTH);
         logDialog.setContentPane(content);
         logDialog.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosed(WindowEvent event) { stopLogRefresh(); }
+            @Override public void windowClosed(WindowEvent event) {
+                view.stop();
+                if (event.getWindow() == logDialog) stopLogRefresh();
+            }
         });
         logLanguageListener = this::refreshLog;
         I18n.addLanguageListener(logLanguageListener);
@@ -880,15 +882,13 @@ public final class DesktopUI {
         lastLogLanguage = language;
         if (snapshot.isBlank()) snapshot = I18n.t("Записей пока нет");
         if (!snapshot.equals(lastLogSnapshot)) {
-            int caret = logArea.getCaretPosition();
-            boolean tail = caret == logArea.getDocument().getLength();
-            logArea.setText(snapshot);
-            logArea.setCaretPosition(tail ? logArea.getDocument().getLength() : Math.min(caret, logArea.getDocument().getLength()));
+            logView.updateSnapshot(snapshot);
             lastLogSnapshot = snapshot;
         }
     }
 
     private void stopLogRefresh() {
+        if (logView != null) logView.stop();
         if (logTimer != null) { logTimer.stop(); logTimer = null; }
         if (logLanguageListener != null) {
             I18n.removeLanguageListener(logLanguageListener); logLanguageListener = null;

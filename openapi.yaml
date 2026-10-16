@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MultiRoute Resume local API
-  version: '3.5'
+  version: '3.6'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
 servers:

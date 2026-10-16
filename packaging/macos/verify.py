@@ -535,6 +535,16 @@ public final class NativeDesktopFixture {
         checks.append("MD5 alone cannot satisfy strong source identity while a SHA-512 reference can")
         checks.append("legacy SHA-256-only state and two-argument discovery retain their source without fabricating MD5 or SHA-512 references")
         download_progress_fixture_checks = verify_download_progress_fixture(java, jdk, classpath, owned)
+
+        log_fixture = ROOT / "packaging/tests/LogScrollTest36.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, log_fixture])
+        run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "log-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.LogScrollTest36", owned / "log-scroll", "headless"], capture_output=True, text=True)
+        log_scroll = json.loads((owned / "log-scroll/LOG-SCROLL-TESTS.json").read_text(encoding="utf-8"))
+        assert log_scroll["status"] == "PASS" and log_scroll["checks"] == 25 and log_scroll["headless_only"]
+        assert log_scroll["version"] == report["version"] and not log_scroll["user_logs_read"]
+        checks.append("twenty-five packaged log viewport checks preserve tail, browsing position, selection, later scrolling, bounded history and five-language rendering using owned text without reading user logs")
+
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
@@ -657,6 +667,7 @@ public final class MacAuthorizationFixture {
         "java_desktop_shortcut_owned_fixture_checks": 7, "headless_tray_fixture_checks": 16,
         "checksum34_fixture_checks": checksum_fixture_checks, "whole_file_algorithms": ["md5", "sha256", "sha512"],
         "download_progress35_fixture_checks": download_progress_fixture_checks,
+        "log_scroll36_fixture_checks": log_scroll["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }
