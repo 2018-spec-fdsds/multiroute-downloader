@@ -1,0 +1,3 @@
+b7ae14d678f11daebc39b861c6967d51  MultiRoute-Resume-3.6-Windows-x64-Setup.exe
+f7dc0ec9346e89701a3a6847ff31d109  MultiRoute-Resume-3.6-macOS-arm64.pkg
+027ec51c58444c5d0a0ed3a2aa142b36  MultiRoute-Resume-3.6-macOS-x86_64.pkg
