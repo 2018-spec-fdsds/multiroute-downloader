@@ -517,6 +517,12 @@ public final class I18n {
         row("Сохранить", "Save", "Speichern", "Guardar", "Enregistrer");
         row("Обновить", "Refresh", "Aktualisieren", "Actualizar", "Actualiser");
         row("Помощь", "Help", "Hilfe", "Ayuda", "Aide");
+        row("Инструкция", "Instructions", "Anleitung", "Instrucciones", "Instructions");
+        row("Работа с API", "API guide", "API-Anleitung", "Guía de la API", "Guide API");
+        row("Открытие браузера недоступно", "Opening a browser is unavailable", "Das Öffnen eines Browsers ist nicht verfügbar", "No se puede abrir un navegador", "L’ouverture d’un navigateur est indisponible");
+        row("Открыть инструкцию на выбранном языке в браузере.", "Open the instructions in your browser in the selected language.", "Die Anleitung in der ausgewählten Sprache im Browser öffnen.", "Abrir las instrucciones en el navegador en el idioma seleccionado.", "Ouvrir les instructions dans le navigateur dans la langue sélectionnée.");
+        row("Открыть примеры запросов и описание API на выбранном языке в браузере.", "Open API request examples and documentation in your browser in the selected language.", "API-Anfragebeispiele und Dokumentation in der ausgewählten Sprache im Browser öffnen.", "Abrir ejemplos de solicitudes y la documentación de la API en el navegador en el idioma seleccionado.", "Ouvrir les exemples de requêtes et la documentation de l’API dans le navigateur dans la langue sélectionnée.");
+        row("Не удалось открыть инструкцию: %s\nСсылка: %s", "Could not open the instructions: %s\nLink: %s", "Die Anleitung konnte nicht geöffnet werden: %s\nLink: %s", "No se pudieron abrir las instrucciones: %s\nEnlace: %s", "Impossible d’ouvrir les instructions : %s\nLien : %s");
         row("Имя файла:", "File name:", "Dateiname:", "Nombre de archivo:", "Nom du fichier :");
         row("Имя папки:", "Folder name:", "Ordnername:", "Nombre de carpeta:", "Nom du dossier :");
         row("Тип файлов:", "Files of type:", "Dateityp:", "Archivos de tipo:", "Type de fichiers :");

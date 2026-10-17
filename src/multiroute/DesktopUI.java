@@ -27,6 +27,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -126,6 +127,9 @@ public final class DesktopUI {
     @FunctionalInterface interface JobDirectorySelector {
         String choose(JFrame owner, String currentDirectory);
     }
+    @FunctionalInterface interface DocumentationOpener {
+        void browse(URI uri) throws Exception;
+    }
     private final GatewayInspector gatewayInspector;
     private final NetworkConfigurator networkConfigurator;
     private final RouteSpeedTester routeSpeedTester;
@@ -136,6 +140,7 @@ public final class DesktopUI {
     private final TorrentFileSelector torrentFileSelector;
     private final JobDeletionConfirmation jobDeletionConfirmation;
     private final JobDirectorySelector jobDirectorySelector;
+    private final DocumentationOpener documentationOpener;
     private final Object networkConfigurationLock = new Object();
     private volatile NetworkInput configuredNetwork;
     private final Map<String,Map<String,Object>> jobs = new LinkedHashMap<>();
@@ -157,6 +162,8 @@ public final class DesktopUI {
     final JTextField virtualIpField = new JTextField("192.168.1.70", 15);
     final JComboBox<String> languageCombo = new JComboBox<>(new String[]{"ru", "en", "de", "es", "fr"});
     final JButton logButton = translatedButton("Журнал…");
+    final JButton instructionsButton = translatedButton("Инструкция");
+    final JButton apiGuideButton = translatedButton("Работа с API");
     final JButton exitButton = translatedButton("Выйти из приложения");
     private final DesktopTray tray;
     JDialog logDialog;
@@ -313,6 +320,18 @@ public final class DesktopUI {
             NetworkSettingsProvider networkSettingsProvider, HubInspector hubInspector, HubFileSelector hubFileSelector,
             TorrentInspector torrentInspector, TorrentFileSelector torrentFileSelector,
             JobDeletionConfirmation jobDeletionConfirmation, JobDirectorySelector jobDirectorySelector) {
+        this(manager, onClose, autoDiscover, gatewayInspector, networkConfigurator, routeSpeedTester,
+                networkSettingsProvider, hubInspector, hubFileSelector, torrentInspector, torrentFileSelector,
+                jobDeletionConfirmation, jobDirectorySelector, DesktopUI::browseDocumentation);
+    }
+
+    /** Owned UI fixtures capture help navigation without starting a browser or using the network. */
+    DesktopUI(Main.Manager manager, Runnable onClose, boolean autoDiscover, GatewayInspector gatewayInspector,
+            NetworkConfigurator networkConfigurator, RouteSpeedTester routeSpeedTester,
+            NetworkSettingsProvider networkSettingsProvider, HubInspector hubInspector, HubFileSelector hubFileSelector,
+            TorrentInspector torrentInspector, TorrentFileSelector torrentFileSelector,
+            JobDeletionConfirmation jobDeletionConfirmation, JobDirectorySelector jobDirectorySelector,
+            DocumentationOpener documentationOpener) {
         if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Create DesktopUI on the EDT");
         this.manager = manager;
         this.onClose = onClose;
@@ -327,6 +346,7 @@ public final class DesktopUI {
         this.torrentFileSelector = torrentFileSelector;
         this.jobDeletionConfirmation = jobDeletionConfirmation;
         this.jobDirectorySelector = jobDirectorySelector;
+        this.documentationOpener = documentationOpener;
         this.settingsPath = manager.dataDir.resolve("desktop-settings.config");
         I18n.setLanguage(savedLanguage(settingsPath));
         I18n.installSwingDefaults();
@@ -431,6 +451,14 @@ public final class DesktopUI {
         tip(exitButton, "Завершить приложение и сохранить загрузки для продолжения. Крестик окна сворачивает приложение в трей.");
         languageLine.add(exitButton);
         preferences.add(languageLine);
+        JPanel helpLine = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        helpLine.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        instructionsButton.addActionListener(event -> openDocumentation(false));
+        apiGuideButton.addActionListener(event -> openDocumentation(true));
+        helpLine.add(instructionsButton);
+        helpLine.add(apiGuideButton);
+        preferences.add(Box.createVerticalStrut(5));
+        preferences.add(helpLine);
         header.add(preferences, BorderLayout.EAST);
         languageCombo.addActionListener(event -> {
             if (restoring || closing) return;
@@ -941,6 +969,8 @@ public final class DesktopUI {
         tip(changeDirectoryButton, "Изменить папку приостановленной загрузки и перенести сохранённые части.");
         tip(removeButton, "Удалить запись о загрузке. В окне подтверждения можно дополнительно выбрать удаление её файлов; эта галочка выключена по умолчанию.");
         tip(logButton, "Просмотреть сообщения приложения на выбранном языке интерфейса.");
+        tip(instructionsButton, "Открыть инструкцию на выбранном языке в браузере.");
+        tip(apiGuideButton, "Открыть примеры запросов и описание API на выбранном языке в браузере.");
         tip(languageCombo, "Изменить язык интерфейса и журнала без остановки загрузок.");
         tip(torrentFileButton, "Выбрать torrent-файл с вашего компьютера.");
     }
@@ -2385,6 +2415,31 @@ public final class DesktopUI {
                 for(int i=0;i<controls.length;i++)menu.getComponent(i).setEnabled(controls[i].isEnabled());}}
             @Override public void mousePressed(MouseEvent e){select(e);}@Override public void mouseReleased(MouseEvent e){select(e);}
             @Override public void mouseClicked(MouseEvent e){if(e.getClickCount()==2&&SwingUtilities.isLeftMouseButton(e))openSelectedFolder();}
+        });
+    }
+
+    static URI documentationUri(String language, boolean api) {
+        String selected = List.of("en", "ru", "de", "es", "fr").contains(language == null ? "" : language)
+                ? language : I18n.DEFAULT_LANGUAGE;
+        return URI.create("https://github.com/2018-spec-fdsds/multiroute-resume/blob/v" + Main.VERSION
+                + "/docs/" + selected + ".md" + (api ? "#multiroute-api" : ""));
+    }
+
+    private static void browseDocumentation(URI uri) throws IOException {
+        if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
+            throw failure("Открытие браузера недоступно");
+        Desktop.getDesktop().browse(uri);
+    }
+
+    private void openDocumentation(boolean api) {
+        URI uri = documentationUri(I18n.language(), api);
+        background.execute(() -> {
+            try { documentationOpener.browse(uri); }
+            catch (Exception error) {
+                SwingUtilities.invokeLater(() -> {
+                    if (!closing) showError("Не удалось открыть инструкцию: %s\nСсылка: %s", errorArgument(error), uri.toString());
+                });
+            }
         });
     }
 

@@ -555,6 +555,17 @@ public final class NativeDesktopFixture {
         assert details_scroll["network_calls"] == 0
         checks.append("ten packaged download-details viewport checks preserve the report tail, selection, reading position and manual scrolling while resetting a newly selected report, using only owned text")
 
+        documentation_fixture = ROOT / "packaging/tests/DocumentationLinksTest38.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, documentation_fixture])
+        run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "documentation-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.DocumentationLinksTest38",
+             owned / "documentation-links", "headless", ROOT], capture_output=True, text=True)
+        documentation_links = json.loads((owned / "documentation-links/DOCUMENTATION-LINKS-TESTS.json").read_text(encoding="utf-8"))
+        assert documentation_links["status"] == "PASS" and documentation_links["checks"] == 211 and documentation_links["headless_only"]
+        assert documentation_links["version"] == report["version"] and documentation_links["local_guide_anchors_checked"]
+        assert documentation_links["network_calls"] == documentation_links["browser_launches"] == 0
+        checks.append("two hundred eleven packaged documentation checks validate five languages, pinned HTTPS guide links, API anchors, English fallback and bundled guide sections without launching a browser")
+
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
@@ -679,6 +690,7 @@ public final class MacAuthorizationFixture {
         "download_progress35_fixture_checks": download_progress_fixture_checks,
         "log_scroll36_fixture_checks": log_scroll["checks"],
         "details_scroll37_fixture_checks": details_scroll["checks"],
+        "documentation_links38_fixture_checks": documentation_links["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

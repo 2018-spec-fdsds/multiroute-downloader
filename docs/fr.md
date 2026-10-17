@@ -1,4 +1,4 @@
-# MultiRoute Resume 3.7 — Guide en français
+# MultiRoute Resume 3.8 — Guide en français
 
 [Accueil](../README.md) · [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · **Français**
 
@@ -88,7 +88,7 @@ Une version native appropriée de Java 17+ est réutilisée. Sinon, une JRE offi
 
 **Prérequis supplémentaire pour BitTorrent/magnet :** les bibliothèques torrent effectivement fournies ciblent des versions plus récentes : **macOS 26 ou ultérieur sur Apple Silicon, macOS 15 ou ultérieur sur Intel**. macOS 11+ ne signifie donc pas que tous les protocoles de cette publication y sont disponibles. Le lanceur détecte cette limite, avertit sur un système plus ancien et permet le déploiement Java/HTTP, sans mettre à niveau macOS. Une installation réussie ne prouve pas le chargement effectif de la bibliothèque torrent. Vérifiez version et architecture avec `sw_vers -productVersion` et `uname -m` ; l’exécution du paquet portable 3.0 sur un Mac utilisateur reste à vérifier.
 
-Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le parcours portable 3.0 Finder/Gatekeeper sur un Mac utilisateur reste à vérifier. Les builds natifs 3.7 et le lancement/API ont été vérifiés sur de vrais runners Mac GitHub ; les dialogues de sécurité utilisateur et la capture BPF restent à vérifier. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
+Le `.app` produit dans cette version **n’est ni signé avec Developer ID ni notarié**. Le parcours portable 3.0 Finder/Gatekeeper sur un Mac utilisateur reste à vérifier. Les builds natifs 3.8 et le lancement/API ont été vérifiés sur de vrais runners Mac GitHub ; les dialogues de sécurité utilisateur et la capture BPF restent à vérifier. Les demandes de sécurité macOS et leurs confirmations sont expliquées séparément ci-dessous.
 
 ### Vérifications automatiques des lanceurs
 
@@ -115,15 +115,15 @@ Ce transport Ethernet ne prend pas en charge le Wi-Fi, les adaptateurs exclusive
 
 Les requêtes DNS utilisent la passerelle choisie : d’abord le routeur, puis si nécessaire `1.1.1.1` ou `8.8.8.8` via cette même passerelle. Il n’existe pas de repli vers le résolveur DNS du système. DNSSEC, DoH et le repli TCP en cas de réponse DNS tronquée ne sont pas implémentés dans cette version.
 
-## Installateurs natifs 3.7 : Windows et macOS
+## Installateurs natifs 3.8 : Windows et macOS
 
 Choisissez l’installateur de votre système dans les [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), s’il est joint à la publication. Chaque paquet est **un seul fichier d’installation**, contenant application, lanceur natif, Java complet et composant réseau. Les sources et les ZIP portables 3.0 restent des distributions distinctes.
 
 | Système | Installateur | Lancement après installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.7-Windows-x64-Setup.exe` | **MultiRoute Resume** dans Démarrer ou via son raccourci de bureau |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.7-macOS-arm64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.7-macOS-x86_64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
+| Windows 11 x64 | `MultiRoute-Resume-3.8-Windows-x64-Setup.exe` | **MultiRoute Resume** dans Démarrer ou via son raccourci de bureau |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.8-macOS-arm64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.8-macOS-x86_64.pkg` | **MultiRoute Resume** dans Applications, Spotlight ou le Dock |
 
 Les cinq guides et les captures sont inclus pour une consultation hors ligne. Windows : `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS : dans le Finder, choisissez **Afficher le contenu du paquet** sur l’application installée, puis ouvrez `Contents/app/docs/`. Ouvrez `en.md`, `ru.md`, `de.md`, `es.md` ou `fr.md` avec un éditeur de texte ou un lecteur Markdown.
 
@@ -267,6 +267,8 @@ Après assemblage, la SHA-256 du résultat est calculée. Si elle ne correspond 
 
 Sous **Source access**, vous pouvez saisir explicitement des accès Basic/Bearer, cookies, en-têtes autorisés et identifiants FTP/SFTP. Ils sont liés à l’origine exacte et ne sont pas transmis à un autre serveur lors d’une redirection. Le magasin local AES-GCM est limité au compte utilisateur. Les cookies du navigateur et les clés d’autres applications ne sont pas lus automatiquement. Ces accès facultatifs concernent les sources ; ce ne sont pas des jetons de passerelle.
 
+<a name="multiroute-api"></a>
+
 ## API locale pour d’autres applications
 
 Adresse de base : **`http://127.0.0.1:8765/api/v1`**. L’application doit être lancée. L’API utilise JSON/UTF-8 et ne demande pas de jeton de passerelle ou d’API. Elle est limitée au même ordinateur et ne fournit pas d’authentification distante. Les requêtes provenant d’une autre origine de navigateur sont rejetées ; une intégration dans un navigateur nécessite un intermédiaire serveur local.
@@ -318,12 +320,12 @@ Tous les chemins de ce tableau sont relatifs à `/api/v1`. Les champs et erreurs
 
 ## Données, mise à jour et dépannage
 
-### Installateurs natifs 3.7
+### Installateurs natifs 3.8
 
 | Système | Réglages, historique et journaux | Application/Java | Composant réseau |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, avec Java inclus | Composant x64 inclus ; Npcap installé séparément |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.7/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.8/gateway-net` |
 
 Fermez l’application avant une mise à jour avec un nouvel installateur. Sous Windows, supprimez-la par **Paramètres → Applications → Applications installées**. Sous macOS, supprimer la `.app` ne supprime pas automatiquement l’historique ni le composant protégé séparé. Les fichiers téléchargés restent dans le dossier choisi ; ne le supprimez pas seulement pour désinstaller. Le chemin des données diffère du ZIP Windows 3.0 ; conservez votre ancien profil avant migration.
 
@@ -356,11 +358,11 @@ Pour mettre à jour les paquets portables 3.0 Linux/macOS, exécutez le lanceur 
 
 ## Portée des vérifications
 
-Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Les paquets natifs 3.7 ont été compilés et vérifiés sur les runners GitHub Apple Silicon/macOS 26 et Intel/macOS 15 : lancement/API, torrent JNI, contenu et tests du composant réseau. Installation utilisateur, dialogues Finder/sécurité et capture BPF restent à vérifier. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.7 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
+Les tests Java, API, protocoles, interface et composants natifs hors ligne ainsi que des cas réseau synthétiques propres au projet ont été exécutés. Ils **ne démontrent pas le transfert réel par vos routeurs physiques**. Les paquets natifs 3.8 ont été compilés et vérifiés sur les runners GitHub Apple Silicon/macOS 26 et Intel/macOS 15 : lancement/API, torrent JNI, contenu et tests du composant réseau. Installation utilisateur, dialogues Finder/sécurité et capture BPF restent à vérifier. Seul le paquet portable 3.0 compile le composant localement chez l’utilisateur ; les paquets natifs 3.8 incluent des composants précompilés distincts Intel/Apple Silicon, sans signature Developer ID ni notarisation. Les vérifications de paquet ou CI ne démontrent pas leur fonctionnement sur votre Mac. Après installation, testez chaque passerelle avec un vrai fichier avant de compter sur leur bande passante combinée.
 
 Rapports : [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Composants tiers et licences : [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
 
-## Zone de notification et fermeture (3.7)
+## Zone de notification et fermeture (3.8)
 
 Fermer la fenêtre principale laisse l’application et les téléchargements actifs dans la zone de notification. L’icône indique le débit total de **tous les travaux**, indépendamment de la sélection et du filtre. Son infobulle affiche le débit exact en Mbit/s ou Gbit/s (à partir de 1 Gbit/s), ainsi qu’en octets/s, jusqu’à 10 Gbit/s ; la petite icône arrondit la valeur. Choisissez **Ouvrir l’application** dans le menu de l’icône pour restaurer la fenêtre. Sous Windows/Linux, un clic sur l’icône l’ouvre également. **Quitter l’application**, dans le menu de l’icône ou la fenêtre, enregistre l’état et termine le programme. Utilisez cette commande avant une mise à jour.
 
@@ -372,7 +374,7 @@ Le setup crée un raccourci sur le bureau et, sous Windows, une entrée Démarre
 
 Vous pouvez installer et utiliser gratuitement l’application originale à titre personnel et dans des organisations, y compris pour des activités professionnelles. **Vendre l’application, facturer sa licence ou la redistribuer contre paiement est interdit** sans autorisation distincte. La licence spécifique n’accorde pas de droit général de modification ou redistribution et n’est pas une licence open source approuvée par l’OSI. Les composants tiers conservent leurs licences. Ceci est un résumé traduit ; le texte anglais de [LICENSE.txt](../LICENSE.txt) fait foi.
 
-En 3.7 l’icône de vitesse a un fond transparent avec des chiffres et unités noirs, y compris à 10 Gbit/s. La vitesse totale et les commandes de la zone de notification sont conservées.
+En 3.8 l’icône de vitesse a un fond transparent avec des chiffres et unités noirs, y compris à 10 Gbit/s. La vitesse totale et les commandes de la zone de notification sont conservées.
 
 ## Vérification MD5, SHA-256 et SHA-512
 
@@ -386,7 +388,7 @@ La vérification des pièces torrent reste obligatoire et distincte des sommes d
 
 L’API locale accepte `expected_md5`, `expected_sha256` et `expected_sha512` dans `POST /api/v1/jobs`. Les résultats contiennent `md5`, `sha256`, `sha512` et les sources de référence dans `checksum_sources`. Les requêtes existantes avec `expected_sha256` restent compatibles.
 
-## Progression de chaque téléchargement (3.7)
+## Progression de chaque téléchargement (3.8)
 
 Chaque téléchargement dispose de sa propre barre dans la colonne Progression. Les colonnes occupent toute la largeur du panneau des téléchargements. La liste défile verticalement lorsque les tâches sont nombreuses ; les panneaux étroits permettent aussi un défilement horizontal sans rendre les colonnes illisibles. Lors de l’actualisation, la première tâche visible est conservée. Le tri et les filtres maintiennent chaque barre associée à son téléchargement. Si la taille totale est inconnue, le volume reçu est affiché à la place du pourcentage ; l’infobulle indique taille, état et erreurs. La ligne sélectionnée affiche toujours la progression détaillée, les temps et les vitesses des passerelles.
 
@@ -399,3 +401,7 @@ La fenêtre du journal conserve la position de lecture lors des actualisations a
 ## Détails du téléchargement et rapport des sommes (3.7)
 
 Le panneau inférieur des détails du téléchargement sélectionné conserve la position de lecture et la sélection de texte lors des actualisations automatiques répétées. Vous pouvez lire la fin du rapport des sommes sans que le panneau revienne au début. La sélection d’un autre téléchargement ouvre son rapport au début. La fenêtre distincte du journal conserve son comportement de défilement.
+
+## Instructions et guide API (3.8)
+
+Les boutons **Instructions** et **Guide API** se trouvent en haut à droite, sur une ligne distincte sous le choix de langue. Ils ouvrent le guide dans la langue sélectionnée avec le navigateur par défaut. **Guide API** mène directement à la section de l’API locale. Les liens correspondent à la version de l’application ; une connexion Internet est nécessaire pour ouvrir les pages GitHub.
