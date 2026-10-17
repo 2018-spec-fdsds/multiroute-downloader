@@ -1,6 +1,7 @@
 package multiroute;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -365,28 +366,19 @@ public final class SingleInstance {
         Path javaBinary = Path.of(handle.info().command().orElseThrow(() -> new IOException("Путь к Java старого контроллера неизвестен")));
         Path jcmd = javaBinary.resolveSibling("jcmd.exe");
         if (!Files.isRegularFile(jcmd)) throw new IOException("Для проверки относительного JAR нужен jcmd.exe рядом с " + javaBinary);
-        Path capture = Files.createTempFile("multiroute-jcmd-", ".txt");
-        byte[] bytes;
+        CapturedCommand command;
         try {
-            Process process = new ProcessBuilder(jcmd.toString(), Long.toString(handle.pid()), "VM.system_properties")
-                .redirectErrorStream(true).redirectOutput(capture.toFile()).start();
-            try {
-                if (!process.waitFor(8, TimeUnit.SECONDS)) {
-                    process.destroyForcibly();
-                    throw new IOException("jcmd не завершил проверку прежнего контроллера за 8 секунд");
-                }
-            } catch (InterruptedException error) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Проверка jcmd прервана", error);
-            }
-            if (process.exitValue() != 0 || Files.size(capture) > 2_000_000)
-                throw new IOException("jcmd не смог безопасно подтвердить cwd/classpath старого контроллера");
-            bytes = Files.readAllBytes(capture);
-        } finally {
-            Files.deleteIfExists(capture);
+            command = captureCommand(8, 2_000_000, jcmd.toString(), Long.toString(handle.pid()), "VM.system_properties");
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Проверка jcmd прервана", error);
+        } catch (OutputLimitException error) {
+            throw new IOException("jcmd не смог безопасно подтвердить cwd/classpath старого контроллера", error);
         }
+        if (command == null) throw new IOException("jcmd не завершил проверку прежнего контроллера за 8 секунд");
+        if (command.exitCode != 0) throw new IOException("jcmd не смог безопасно подтвердить cwd/classpath старого контроллера");
         Properties properties = new Properties();
-        properties.load(new StringReader(new String(bytes, java.nio.charset.StandardCharsets.UTF_8)));
+        properties.load(new StringReader(new String(command.output, java.nio.charset.StandardCharsets.UTF_8)));
         String directory = properties.getProperty("user.dir");
         String classpath = properties.getProperty("java.class.path");
         String javaCommand = properties.getProperty("sun.java.command");
@@ -453,22 +445,74 @@ public final class SingleInstance {
     }
     private record CommandResult(int exitCode, String output) { }
     private static CommandResult runCommand(int seconds, String... argv) throws IOException {
-        Path capture = Files.createTempFile("multiroute-port-", ".txt");
         try {
-            Process process;
-            try { process = new ProcessBuilder(argv).redirectErrorStream(true).redirectOutput(capture.toFile()).start(); }
-            catch (IOException error) { return null; }
-            try {
-                if (!process.waitFor(seconds, TimeUnit.SECONDS)) { process.destroyForcibly(); return null; }
-            } catch (InterruptedException error) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Проверка владельца порта прервана", error);
-            }
-            if (Files.size(capture) > 4_000_000) throw new IOException("Слишком большой ответ при проверке владельца порта");
+            CapturedCommand command = captureCommand(seconds, 4_000_000, argv);
+            if (command == null) return null;
             // Only ASCII digits and netstat column names are parsed. Console error text
             // may use an OEM code page instead of UTF-8 on Russian Windows hosts.
-            return new CommandResult(process.exitValue(), new String(Files.readAllBytes(capture), java.nio.charset.StandardCharsets.ISO_8859_1));
-        } finally { Files.deleteIfExists(capture); }
+            return new CommandResult(command.exitCode, new String(command.output, java.nio.charset.StandardCharsets.ISO_8859_1));
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Проверка владельца порта прервана", error);
+        } catch (OutputLimitException error) {
+            throw new IOException("Слишком большой ответ при проверке владельца порта", error);
+        }
+    }
+
+    private record CapturedCommand(int exitCode, byte[] output) { }
+    private static final class OutputLimitException extends IOException { }
+
+    /** Drain trusted diagnostic commands without a shared output file or a blocked reader thread. */
+    private static CapturedCommand captureCommand(int seconds, int limit, String... argv)
+            throws IOException, InterruptedException {
+        if (seconds < 1 || limit < 1) throw new IllegalArgumentException("Invalid command capture limits");
+        Process process;
+        try { process = new ProcessBuilder(argv).redirectErrorStream(true).start(); }
+        catch (IOException unavailable) { return null; }
+        try {
+            process.getOutputStream().close();
+            InputStream pipe = process.getInputStream();
+            ByteArrayOutputStream output = new ByteArrayOutputStream(Math.min(limit, 8192));
+            byte[] buffer = new byte[8192];
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(seconds);
+            while (true) {
+                if (Thread.interrupted()) throw new InterruptedException();
+                if (System.nanoTime() >= deadline) return null;
+                boolean exited = !process.isAlive();
+                int available = pipe.available();
+                if (available > 0) {
+                    int count = pipe.read(buffer, 0, Math.min(available, buffer.length));
+                    if (count > 0) {
+                        if (count > limit - output.size()) throw new OutputLimitException();
+                        output.write(buffer, 0, count);
+                    }
+                } else if (exited) {
+                    // available()==0 alone is not EOF: only finish after this producer has exited.
+                    return new CapturedCommand(process.exitValue(), output.toByteArray());
+                } else {
+                    process.waitFor(Math.max(1, Math.min(TimeUnit.MILLISECONDS.toNanos(1), deadline - System.nanoTime())), TimeUnit.NANOSECONDS);
+                }
+            }
+        } finally { closeCommand(process); }
+    }
+
+    /** Reap only the process we created, even when the calling thread was interrupted. */
+    private static void closeCommand(Process process) throws IOException {
+        boolean interrupted = Thread.interrupted();
+        try {
+            if (process.isAlive()) process.destroyForcibly();
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2);
+            while (process.isAlive() && System.nanoTime() < deadline) {
+                try { process.waitFor(Math.max(1, deadline - System.nanoTime()), TimeUnit.NANOSECONDS); }
+                catch (InterruptedException pending) { interrupted = true; }
+            }
+            if (process.isAlive()) throw new IOException("Не удалось завершить вспомогательную команду проверки");
+        } finally {
+            try { process.getOutputStream().close(); } catch (IOException ignored) { }
+            try { process.getInputStream().close(); } catch (IOException ignored) { }
+            try { process.getErrorStream().close(); } catch (IOException ignored) { }
+            if (interrupted) Thread.currentThread().interrupt();
+        }
     }
     private static long listeningPidUnix(int port) {
         // The new-version descriptor and file locks remain cross-platform. Legacy process

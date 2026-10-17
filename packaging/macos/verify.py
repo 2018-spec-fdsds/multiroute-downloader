@@ -566,6 +566,18 @@ public final class NativeDesktopFixture {
         assert documentation_links["network_calls"] == documentation_links["browser_launches"] == 0
         checks.append("two hundred eleven packaged documentation checks validate five languages, pinned HTTPS guide links, API anchors, English fallback and bundled guide sections without launching a browser")
 
+        startup_fixture = ROOT / "packaging/tests/StartupCommandTest39.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, startup_fixture])
+        run([java, "-Djava.awt.headless=true", "-Duser.home=" + str(owned / "startup-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.StartupCommandTest39",
+             owned / "startup-commands", "headless"], capture_output=True, text=True)
+        startup_commands = json.loads((owned / "startup-commands/STARTUP-COMMAND-TESTS.json").read_text(encoding="utf-8"))
+        assert startup_commands["status"] == "PASS" and startup_commands["checks"] == 32
+        assert startup_commands["version"] == report["version"] and startup_commands["headless_only"]
+        assert startup_commands["helper_cleanup"] and startup_commands["collector_threads_alive"] == 0
+        assert startup_commands["network_calls"] == 0 and not startup_commands["user_profile_or_logs_read"]
+        checks.append("thirty-two packaged startup command checks validate bounded pipe output, byte preservation, delayed final output, timeout, interruption, helper cleanup and independence from temporary output files")
+
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
@@ -691,6 +703,7 @@ public final class MacAuthorizationFixture {
         "log_scroll36_fixture_checks": log_scroll["checks"],
         "details_scroll37_fixture_checks": details_scroll["checks"],
         "documentation_links38_fixture_checks": documentation_links["checks"],
+        "startup_command39_fixture_checks": startup_commands["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

@@ -1,7 +1,7 @@
 # MultiRoute Resume
 
 Java desktop download manager with resumable segments through selectable LAN
-gateways and a localhost API. Native installer version: **3.8**; portable ZIP
+gateways and a localhost API. Native installer version: **3.9**; portable ZIP
 distributions for **3.0** remain available.
 
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
@@ -9,7 +9,9 @@ distributions for **3.0** remain available.
 
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
-**New in 3.8:** visible **Instructions** and **API guide** buttons at the upper right open the versioned guide in your selected language using the default browser. The API button goes directly to its API section.
+**New in 3.9:** startup no longer depends on deleting temporary command-output files after a process lookup times out. Output is collected through bounded pipes; identity checks for replacing an earlier MultiRoute instance remain in place.
+
+**Retained from 3.8:** visible **Instructions** and **API guide** buttons at the upper right open the versioned guide in your selected language using the default browser. The API button goes directly to its API section.
 
 **Retained from 3.7:** the selected download’s lower details and checksum report keep the reading position and text selection during refresh. Selecting a different download opens its report at the top.
 
@@ -19,7 +21,7 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.8).
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.9).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 
@@ -77,18 +79,18 @@ Batch import: one URL per line, preview before submission.
 
 ## Download and install
 
-### Native Windows and macOS installers (3.8)
+### Native Windows and macOS installers (3.9)
 
-Choose a single installer file from [release 3.8](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.8).
+Choose a single installer file from [release 3.9](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.9).
 The application, full Java runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
 | Platform | Installer | Installed application |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.8-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.8-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.8-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Windows 11 x64 | `MultiRoute-Resume-3.9-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.9-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Intel, macOS 15+ | `MultiRoute-Resume-3.9-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
 
 Windows checks Npcap from the application. If missing, it offers a verified
 download of the official installer and a normal interactive UAC installation;
@@ -126,7 +128,7 @@ native `.pkg` application uses graphical authorization instead.
 ## Computer and network requirements
 
 - A full Java 17+ runtime for the native CPU architecture, including
-  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 3.8
+  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 3.9
   installers include a suitable runtime; portable/Linux deployment checks or
   downloads one when necessary.
 - Wired Ethernet in the same IPv4 LAN as the selected Internet gateways.
@@ -188,7 +190,7 @@ built Java JAR before it downloads prerequisites.
 ## API, verification and limitations
 
 - [API reference and examples](API.ru.txt); [OpenAPI schema](openapi.yaml).
-- [Native installer checks for 3.8](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
+- [Native installer checks for 3.9](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
   package hashes, Windows native startup and both macOS architectures.
 - Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
   [application report](TEST-REPORT.json) and
@@ -197,10 +199,10 @@ built Java JAR before it downloads prerequisites.
   helper fixtures were checked on real GitHub Mac runners. Windows native
   startup, instance replacement and profile retention were checked separately.
   End-user installation/security dialogs, BPF capture and physical gateway WAN
-  transfers remain unverified. Version 3.8 is a prerelease. The packages are
+  transfers remain unverified. Version 3.9 is a prerelease. The packages are
   unsigned with a publisher identity; macOS packages are not notarised.
 - Installer payloads contain the instructions as saved at the package source
-  commit recorded in the 3.8 report. Current verification results are published
+  commit recorded in the 3.9 report. Current verification results are published
   in that report and the release notes.
 - The native gateway transport supports public IPv4. Wi-Fi-only/VPN-only
   adapters, IPv6-only sources and local LAN torrent peers are outside this mode.
