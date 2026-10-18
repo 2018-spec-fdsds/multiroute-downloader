@@ -1,14 +1,14 @@
-MULTIROUTE RESUME LICENSE
+MULTIROUTE DOWNLOADER LICENSE
 Version 1.0 — 2026-10-14
 
 Copyright (c) 2026 2018-spec-fdsds, for the original portions in which the
 licensor holds copyright or other licensable rights.
 Project owner: https://github.com/2018-spec-fdsds
-Project: https://github.com/2018-spec-fdsds/multiroute-resume
+Project: https://github.com/2018-spec-fdsds/multiroute-downloader
 
 1. Scope
 
-This license applies only to the original MultiRoute Resume application code
+This license applies only to the original MultiRoute Downloader application code
 and original documentation. Third-party components are excluded and remain
 under their respective licenses. Nothing here restricts rights granted by
 third-party licenses, applicable law, or the GitHub Terms of Service.

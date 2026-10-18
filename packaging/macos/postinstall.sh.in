@@ -39,7 +39,7 @@ create_user_desktop_shortcut() {
     [ -d "$application" ] && [ ! -L "$application" ] || return 1
     desktop="$home/Desktop"
     [ -d "$desktop" ] && [ ! -L "$desktop" ] && [ "$(/usr/bin/stat -f '%u' "$desktop")" = "$expected_uid" ] || return 1
-    shortcut="$desktop/MultiRoute Resume.app"
+    shortcut="$desktop/MultiRoute Downloader.app"
     # Keep any existing file, folder or link, including a broken link.
     [ ! -e "$shortcut" ] && [ ! -L "$shortcut" ] || return 0
     /bin/ln -s "$application" "$shortcut"
@@ -47,7 +47,7 @@ create_user_desktop_shortcut() {
 # END_DESKTOP_SHORTCUT_USER
 
 create_desktop_shortcut() {
-    local console_user console_uid home application='/Applications/MultiRoute Resume.app'
+    local console_user console_uid home application='/Applications/MultiRoute Downloader.app'
     console_user=$(/usr/bin/stat -f '%Su' /dev/console) || return 1
     console_uid=$(/usr/bin/stat -f '%u' /dev/console) || return 1
     case "$console_user" in root|loginwindow|_mbsetupuser|''|*[!A-Za-z0-9._-]*) return 1 ;; esac

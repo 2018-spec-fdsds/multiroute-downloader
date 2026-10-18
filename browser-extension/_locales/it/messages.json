@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Invia link al programma desktop tramite i gateway Internet selezionati."
+  },
+  "downloadLink": {
+    "message": "Scarica con MultiRoute"
+  },
+  "popupHint": {
+    "message": "Invia la pagina attuale o incolla un link a un file."
+  },
+  "urlLabel": {
+    "message": "Link di download"
+  },
+  "portLabel": {
+    "message": "Porta API dell’applicazione"
+  },
+  "sendButton": {
+    "message": "Invia a MultiRoute"
+  },
+  "setupHint": {
+    "message": "Mantieni aperta l’applicazione desktop e abilita l’integrazione Chrome / Edge nelle impostazioni. Verranno usati la cartella, i gateway e il profilo del sito attuali."
+  },
+  "helpLink": {
+    "message": "Istruzioni di configurazione"
+  },
+  "invalidUrl": {
+    "message": "Usa un link HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV o magnet senza password incorporata."
+  },
+  "invalidPort": {
+    "message": "Inserisci una porta API compresa tra 1 e 65535."
+  },
+  "enableIntegration": {
+    "message": "Abilita l’integrazione Chrome / Edge nell’applicazione desktop."
+  },
+  "openApplication": {
+    "message": "Apri l’applicazione desktop MultiRoute e controlla la porta API."
+  },
+  "sendFailed": {
+    "message": "Impossibile inviare il link."
+  },
+  "sending": {
+    "message": "Invio…"
+  },
+  "sent": {
+    "message": "Link inviato all’applicazione desktop. Potrebbe essere necessario selezionare i file nella sua finestra."
+  }
+}

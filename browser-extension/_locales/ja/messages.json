@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "選択したインターネットゲートウェイ経由でデスクトップのダウンローダーにリンクを送信します。"
+  },
+  "downloadLink": {
+    "message": "MultiRoute でダウンロード"
+  },
+  "popupHint": {
+    "message": "現在のページを送信するか、ファイルのリンクを貼り付けてください。"
+  },
+  "urlLabel": {
+    "message": "ダウンロードリンク"
+  },
+  "portLabel": {
+    "message": "アプリケーションの API ポート"
+  },
+  "sendButton": {
+    "message": "MultiRoute に送信"
+  },
+  "setupHint": {
+    "message": "デスクトップアプリを起動したまま、設定で Chrome / Edge 連携を有効にしてください。現在のフォルダー、ゲートウェイ、サイトプロファイルを使用します。"
+  },
+  "helpLink": {
+    "message": "設定手順"
+  },
+  "invalidUrl": {
+    "message": "パスワードを含まない HTTP、HTTPS、FTP、FTPS、SFTP、WebDAV、magnet リンクを指定してください。"
+  },
+  "invalidPort": {
+    "message": "1 から 65535 までの API ポートを入力してください。"
+  },
+  "enableIntegration": {
+    "message": "デスクトップアプリで Chrome / Edge 連携を有効にしてください。"
+  },
+  "openApplication": {
+    "message": "MultiRoute のデスクトップアプリを開き、API ポートを確認してください。"
+  },
+  "sendFailed": {
+    "message": "リンクを送信できませんでした。"
+  },
+  "sending": {
+    "message": "送信中…"
+  },
+  "sent": {
+    "message": "リンクをデスクトップアプリに送信しました。アプリ側でファイルの選択を求められる場合があります。"
+  }
+}

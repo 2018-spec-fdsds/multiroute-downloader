@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Отправляйте ссылки настольному загрузчику через выбранные интернет-шлюзы."
+  },
+  "downloadLink": {
+    "message": "Скачать через MultiRoute"
+  },
+  "popupHint": {
+    "message": "Отправьте текущую страницу или вставьте ссылку на файл."
+  },
+  "urlLabel": {
+    "message": "Ссылка для скачивания"
+  },
+  "portLabel": {
+    "message": "Порт API приложения"
+  },
+  "sendButton": {
+    "message": "Передать в MultiRoute"
+  },
+  "setupHint": {
+    "message": "Приложение должно быть запущено. Разрешите интеграцию с Chrome / Edge в его настройках. Используются текущая папка, шлюзы и профиль сайта."
+  },
+  "helpLink": {
+    "message": "Инструкция по настройке"
+  },
+  "invalidUrl": {
+    "message": "Укажите ссылку HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV или magnet без встроенного пароля."
+  },
+  "invalidPort": {
+    "message": "Укажите порт API от 1 до 65535."
+  },
+  "enableIntegration": {
+    "message": "Разрешите интеграцию с Chrome / Edge в настольном приложении."
+  },
+  "openApplication": {
+    "message": "Откройте настольное приложение MultiRoute и проверьте его порт API."
+  },
+  "sendFailed": {
+    "message": "Не удалось передать ссылку."
+  },
+  "sending": {
+    "message": "Передаём…"
+  },
+  "sent": {
+    "message": "Ссылка передана в настольное приложение. Выбор файлов может потребоваться в его окне."
+  }
+}

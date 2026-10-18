@@ -1,7 +1,7 @@
 # Native Windows installer
 
-The release artifact `MultiRoute-Resume-3.2-Windows-x64-Setup.exe` is one
-installer file. It installs an ordinary `MultiRoute Resume.exe`, a private Java
+The release artifact `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` is one
+installer file. It installs an ordinary `MultiRoute Downloader.exe`, a private Java
 runtime, Start menu and desktop shortcuts by default, and a Windows
 uninstall entry. Shortcuts point directly to the EXE. Java does not need to be
 installed separately, and normal launches do not open a CMD or PowerShell window.
@@ -9,16 +9,20 @@ Our installer and application setup windows use English independently of the
 language selected for the regular application interface. Windows authorization
 and official third-party installers keep their own language settings.
 
-The default installation folder is `%LOCALAPPDATA%\MultiRoute Resume App`.
+The default installation folder is `%LOCALAPPDATA%\MultiRoute Downloader App`.
 The installer is for the current Windows user. Application data is kept separately
-in `%LOCALAPPDATA%\MultiRoute Resume\data`; uninstalling the application does not
+in `%LOCALAPPDATA%\MultiRoute Downloader\data`; uninstalling the application does not
 delete downloads or this profile. Only the official Npcap installer can request
 administrator permission if the capture driver is missing. The application itself
 continues to run as the normal user.
 The installer displays the project's `LICENSE.txt`; third-party Java and native
 library license notices remain included separately and retain their own terms.
 The installed payload includes `THIRD-PARTY-NOTICES.txt`, `lib/licenses/`, the
-runtime's licence files and all five offline language guides under `app/docs/`.
+runtime's licence files and all twelve offline language guides under `app/docs/`.
+
+For an upgrade, saved data in the previous `MultiRoute Resume` profile is kept
+and reused when the new-name profile does not yet exist. The application does
+not move or erase user files during this compatibility check.
 
 ## Build from the current saved sources
 

@@ -1,4 +1,6 @@
-# MultiRoute Resume
+# MultiRoute Downloader
+
+**New in 4.0:** saved site profiles with isolated accounts, verified FTP/FTPS/SFTP uploads and remote browsing, plus bounded ZIP/TAR/7Z/RAR previews. Uploads require remote read permission for full SHA-256 verification. One upload file uses one gateway; multiple files can run in parallel. [Full instructions](docs/en.md#saved-sites-uploads-and-archive-previews-40).
 
 Java desktop download manager with resumable segments through selectable LAN
 gateways and a localhost API. Native installer version: **4.0**; portable ZIP
@@ -7,7 +9,7 @@ distributions for **3.0** remain available.
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
 [Español](docs/es.md) · [Français](docs/fr.md)
 
-[中文](docs/zh.md) · [한국어](docs/ko.md) · [العربية](docs/ar.md) · [Italiano](docs/it.md)
+[中文](docs/zh.md) · [한국어](docs/ko.md) · [العربية](docs/ar.md) · [Italiano](docs/it.md) · [日本語](docs/ja.md) · [हिन्दी](docs/hi.md) · [Tiếng Việt](docs/vi.md)
 
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -25,13 +27,13 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v4.0).
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.0).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 
 ## Why use this application?
 
-MultiRoute Resume helps you download files using several independent Internet
+MultiRoute Downloader helps you download files using several independent Internet
 connections at the same time. For example, one gateway can use a fixed broadband
 line and another a mobile 4G/5G connection. Both routers are available to your
 computer on the same local Ethernet network.
@@ -54,9 +56,9 @@ limits; it is not a guaranteed multiple of the number of gateways.
 
 Version 4.0, light and dark appearances. These are actual desktop components rendered with an isolated own demo profile, Unicode filenames and synthetic job counters. The speeds are illustrative, not an Internet benchmark.
 
-![MultiRoute Resume 4.0 with the light theme](docs/images/desktop-4.0-light-en.png)
+![MultiRoute Downloader 4.0 with the light theme](docs/images/desktop-4.0-light-en.png)
 
-![MultiRoute Resume 4.0 with the dark theme](docs/images/desktop-4.0-dark-en.png)
+![MultiRoute Downloader 4.0 with the dark theme](docs/images/desktop-4.0-dark-en.png)
 
 Version 3.5: progress bars for individual downloads and columns filling the panel. This own demo uses synthetic jobs and counters.
 
@@ -91,16 +93,16 @@ Batch import: one URL per line, preview before submission.
 
 ### Native Windows and macOS installers (4.0)
 
-Choose a single installer file from [release 4.0](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v4.0).
+Choose a single installer file from [release 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0).
 The application, full Java runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
 | Platform | Installer | Installed application |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
-| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Windows 11 x64 | `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` | **MultiRoute Downloader** in Start or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0-macOS-arm64.pkg` | `/Applications/MultiRoute Downloader.app` |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.0-macOS-x86_64.pkg` | `/Applications/MultiRoute Downloader.app` |
 
 Windows checks Npcap from the application. If missing, it offers a verified
 download of the official installer and a normal interactive UAC installation;
@@ -109,7 +111,7 @@ installed Java, Command Line Tools or Homebrew. Its protected network component
 requests administrator authorization through a standard macOS dialog while the
 Java application remains under your normal user account.
 
-These installers are not publisher/Developer ID signed or notarized. The nine
+These installers are not publisher/Developer ID signed or notarized. The twelve
 language guides explain SmartScreen/Gatekeeper, administrator, Local Network and
 folder-access confirmations without disabling system protections. macOS native
 packages have the strict 26+/15+ minimum above; the older ZIP's HTTP-only minimum
@@ -172,7 +174,7 @@ requirements were checked from the actual ELF/Mach-O binary metadata. See
   assembled file. A locally calculated hash alone is not a publisher verification.
 - Source authentication, trusted mirrors and a versioned local JSON API with
   batch creation and server-sent events.
-- English, Russian, German, Spanish, French, Chinese, Korean, Arabic and Italian; English by default.
+- English, Russian, German, Spanish, French, Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese; English by default.
 
 The gateway transport uses an application-owned lwIP stack. Its virtual address
 and gateway selection leave the OS routing table unchanged. The local API is
@@ -200,7 +202,7 @@ built Java JAR before it downloads prerequisites.
 ## API, verification and limitations
 
 - [API reference and examples](API.ru.txt); [OpenAPI schema](openapi.yaml).
-- [Native installer checks for 4.0](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
+- [Native installer checks for 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/main/NATIVE-INSTALLER-TESTS.json), including
   package hashes, Windows native startup and both macOS architectures.
 - Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
   [application report](TEST-REPORT.json) and
@@ -226,3 +228,25 @@ built Java JAR before it downloads prerequisites.
 You may install and use the original application free of charge for personal use and within organizations, including business activities. **Selling the application, charging for its licence or distributing it for payment is prohibited** without separate permission. The custom licence does not grant general modification or redistribution rights and is not an OSI-approved open-source licence. Third-party components retain their own licences. This is a summary; the controlling English terms are in [LICENSE.txt](LICENSE.txt).
 
 See [LICENSING.md](LICENSING.md), [third-party notices](THIRD-PARTY-NOTICES.txt) and [dependency licences](lib/licenses/).
+
+## Download scheduling and priority
+
+Use the queue/schedule controls to set `max_active_jobs` (1–32), global or gateway speed limits and a daily download window (`schedule_enabled`, `schedule_start`, `schedule_end`, HH:mm). Times use the computer’s local timezone, also reported as `schedule_timezone`; a window may cross midnight, and equal start/end means all day. Outside the enabled window, downloads return to the queue and continue when allowed. A manually paused job remains paused. In a selected download’s priority/schedule settings, `priority` ranges from -100 to 100: higher queued jobs start first; equal priorities use creation order. Changing priority does not interrupt an already active download. `start_after_ms` is an optional earliest Unix-epoch start time in milliseconds; 0 removes the one-time delay. These settings persist across restarts. They govern the download queue, not the independent upload queue. Keep the application running (the tray is sufficient) and the computer awake; this is not an OS wake-up scheduler. The existing `GET`/`PUT`/`POST /api/v1/queue` and `PUT`/`POST /api/v1/jobs/{id}/options` expose the same controls.
+
+### Uploads in the desktop app
+
+![Uploads with a saved site profile](docs/images/uploads-4.0-en.png)
+
+The image uses owned synthetic Unicode demo tasks. Its counters are not a throughput benchmark.
+
+<a name="browser-integration"></a>
+
+## Browser integration
+
+Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.0-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
+
+Keep MultiRoute running, including in the tray. Right-click a link and choose the MultiRoute download action, or use the extension popup to send a URL. The desktop uses the currently selected folder, gateways and site profile; repository/torrent choices still appear when needed. The popup port defaults to 8765; set it to the application’s actual local API port if changed. Only the URL is sent: browser cookies/passwords are not copied and ordinary browser downloads are not intercepted. Configure required source access in the application. If the browser requests permission for the local connection, approve it only for this chosen extension.
+
+The bridge is off by default and accepts only this extension’s fixed origin `chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl` at `/api/v1/browser/status` and `/api/v1/browser/download`; other local API browser-origin rules remain unchanged. HTTP 202 means the URL reached the desktop flow, not that a file completed. A headless server alone cannot open the required desktop selection flow. Remove the extension on the browser’s extensions page or disable its desktop integration to stop link delivery.
+
+[Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world) · [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).

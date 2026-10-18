@@ -1,14 +1,14 @@
-# MultiRoute Resume 4.0 — 中文使用说明
+# MultiRoute Downloader 4.0 — 中文使用说明
 
-[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md)
+[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
 项目所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
 
 ## 1. 用途与工作方式
 
-MultiRoute Resume 是 Java 桌面下载管理器，可通过同一 Ethernet 局域网中的多个互联网网关并行下载文件。例如，网关可以分别连接有线宽带和移动 4G/5G 网络。所有选中的可用网关从共享队列领取文件片段；速度更快的网关可以领取更多片段。一个连接中断时，其他网关继续下载，未完成的片段重新进入队列，已经校验的数据保留。也可以批量导入链接，或由其他程序通过本地 API 创建任务。
+MultiRoute Downloader 是 Java 桌面下载管理器，可通过同一 Ethernet 局域网中的多个互联网网关并行下载文件。例如，网关可以分别连接有线宽带和移动 4G/5G 网络。所有选中的可用网关从共享队列领取文件片段；速度更快的网关可以领取更多片段。一个连接中断时，其他网关继续下载，未完成的片段重新进入队列，已经校验的数据保留。也可以批量导入链接，或由其他程序通过本地 API 创建任务。
 
-速度提升取决于各出口是否具有独立带宽、服务器限速和协议能力，并非网关数量的固定倍数。本程序是独立桌面应用，不需要浏览器来操作。新配置默认使用英语；可选择英语、俄语、德语、西班牙语、法语、中文、韩语、阿拉伯语和意大利语。语言设置会保存，已注册的状态、日志和提示随语言切换；服务器或外部库的原始消息可能保留原文。文件名、路径、URL 和 JSON 字段不会翻译。
+速度提升取决于各出口是否具有独立带宽、服务器限速和协议能力，并非网关数量的固定倍数。本程序是独立桌面应用，不需要浏览器来操作。新配置默认使用英语；可选择英语、俄语、德语、西班牙语、法语、中文、韩语、阿拉伯语、意大利语、日语、印地语和越南语。语言设置会保存，已注册的状态、日志和提示随语言切换；服务器或外部库的原始消息可能保留原文。文件名、路径、URL 和 JSON 字段不会翻译。
 
 ## 2. 电脑与网络要求
 
@@ -27,11 +27,11 @@ MultiRoute Resume 是 Java 桌面下载管理器，可通过同一 Ethernet 局�
 
 ## 3. 安装与安全确认
 
-从 [4.0 发布页](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v4.0) 下载安装包（如果已附在该版本中），并与发布页的 SHA-256 比较：
+从 [4.0 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0) 下载安装包（如果已附在该版本中），并与发布页的 SHA-256 比较：
 
-- Windows：`MultiRoute-Resume-4.0-Windows-x64-Setup.exe`。
-- Apple Silicon，macOS 26+：`MultiRoute-Resume-4.0-macOS-arm64.pkg`。
-- Intel，macOS 15+：`MultiRoute-Resume-4.0-macOS-x86_64.pkg`。
+- Windows：`MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`。
+- Apple Silicon，macOS 26+：`MultiRoute-Downloader-4.0-macOS-arm64.pkg`。
+- Intel，macOS 15+：`MultiRoute-Downloader-4.0-macOS-x86_64.pkg`。
 
 ### Windows
 
@@ -43,7 +43,7 @@ MultiRoute Resume 是 Java 桌面下载管理器，可通过同一 Ethernet 局�
 
 ### macOS
 
-选择与原生处理器匹配的 PKG，在 Apple Installer 中安装并批准放置受保护网络组件的管理员请求。然后从 Finder、Spotlight 或 Dock 打开 `/Applications/MultiRoute Resume.app`。此安装包不需要 Terminal、Command Line Tools、Homebrew 或单独 Java。
+选择与原生处理器匹配的 PKG，在 Apple Installer 中安装并批准放置受保护网络组件的管理员请求。然后从 Finder、Spotlight 或 Dock 打开 `/Applications/MultiRoute Downloader.app`。此安装包不需要 Terminal、Command Line Tools、Homebrew 或单独 Java。
 
 应用需要网络组件打开 Ethernet BPF 设备时，会显示正常的 macOS 管理员授权；组件打开捕获设备后降低权限，Java 以普通用户运行。程序和 PKG **没有 Developer ID 签名，也未公证**。如系统提示无法验证开发者，且提供例外入口，请先核对来源和 SHA-256，再按 [Apple 官方说明](https://support.apple.com/en-us/102445) 使用“系统设置 → 隐私与安全性 → 仍要打开”，然后确认“打开”。受管理设备可能禁止例外。
 
@@ -53,7 +53,7 @@ MultiRoute Resume 是 Java 桌面下载管理器，可通过同一 Ethernet 局�
 
 下载并解压完整 ZIP。Linux 首次执行 `bash ./Deploy-Linux.sh`，以后执行 `bash ./Start-Linux.sh`；Windows portable 首次 `Deploy-Windows.cmd`、以后 `Start-Windows.cmd`；macOS portable 使用 `Deploy-macOS.command` 和 `Start-macOS.command`。这些旧发行包保留脚本启动方式，不能当作 4.0 原生安装包。Linux 部署按发行版安装缺少的编译和 libpcap 依赖；macOS portable 可要求 Apple Command Line Tools 和 sudo。保留其授权终端；不要让整个 Java 进程作为 root 运行。Alpine/musl 不在发行范围内。部署不会升级操作系统或替换 glibc。
 
-九种语言的说明包含在离线安装中。Windows：`%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`；macOS：对应用选择“显示包内容”，打开 `Contents/app/docs/zh.md`。浏览器中的版本说明链接需要联网。
+十二种语言的说明包含在离线安装中。Windows：`%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`；macOS：对应用选择“显示包内容”，打开 `Contents/app/docs/zh.md`。浏览器中的版本说明链接需要联网。
 
 ## 4. 配置网关与虚拟地址
 
@@ -182,8 +182,8 @@ print(job["id"])
 
 | 系统 | 数据目录 | 应用与运行时 |
 | --- | --- | --- |
-| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App` |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app` |
+| Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
 原生 macOS 网络组件为 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`。portable Windows 3.0 使用启动目录下 `data/`，可由 `data-location.config` 或 `--data-dir` 覆盖；Linux 私有运行时在 `~/.local/share/MultiRouteResume/runtime`，受保护组件在 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。下载文件在您所选目录，可能在上述位置之外。
@@ -208,3 +208,35 @@ API 的 `lifecycle_history` 事件含 `event_id`、`job_id`、`kind`、`time`、
 ## 10. 许可证
 
 原版应用可免费用于个人和组织，包括商业活动；未经单独许可，不得销售应用、收取许可证费用或有偿分发。此自定义许可不一般性授权修改/再分发，也不是 OSI 认可的开源许可证。以英文 [LICENSE.txt](../LICENSE.txt) 为准；FlatLaf（Apache-2.0）及其他第三方组件保留其自身许可。项目所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
+
+## 名称与旧配置兼容
+
+MultiRoute Downloader 原名 MultiRoute Resume。新配置使用上述新路径。如果新名称数据目录不存在但旧配置可用，会直接复用旧配置，不移动或删除文件。旧 Windows 数据可能仍在 `%LOCALAPPDATA%\MultiRoute Resume\data`，Mac 为 `~/Library/Application Support/MultiRoute Resume/data`。受保护的 `MultiRouteResume` 目录、Windows 升级标识、内部 API 身份和端口保持兼容。安装后请使用 MultiRoute Downloader 的快捷方式或应用。旧发行文件名不变。
+
+## 已保存站点、上传和压缩包预览（4.0）
+
+打开 **网站配置…** 新建或编辑配置，再在 **下载** 或 **上传** 的站点列表选择它。网关和虚拟 IP 位于 **网络设置**。在 **上传** 输入**远程目录 URL**，按 **选择文件并上传…** 通过系统选择器选择一个或多个本地文件；界面自动附加文件名，而 API 的 `target_url` 必须指向完整远程文件。预览时将压缩包 URL 粘贴到主 URL 栏并按 **压缩包内容…**，不会开始下载。
+
+站点配置保存名称、基础 URL、本地下载目录、远程目录及网关。支持匿名访问、HTTP Basic/Bearer/Cookie/自定义请求头、FTP，以及带有事先核实的服务器 SHA-256 指纹的 SFTP。同一服务器的多个账户可以分别保存，凭据相互隔离。明确指定的目录和网关优先；相对下载/上传 URL 以基础 URL 为准。凭据在仅限所有者访问的 `site-profiles/vault.bin` 中加密，本地密钥是 `site-profiles/key.bin`；控制您的账户和密钥的人仍可读取。公共 API 不返回凭据。只有来源和认证类型不变时，空字段才保留旧凭据；`replace_credentials:true` 明确替换。HTTP 跳转到其他来源不会携带该配置的凭据。删除配置不会删除任务或本地/远程文件；任务保留原配置绑定，不能直接切换账户；若已删除原配置，请按需使用有效配置重新创建任务。
+
+上传和远程目录浏览支持通过所选网关的 **FTP、显式 FTPS 和 SFTP**。选择普通本地文件和完整远程文件 URL（`target_url`），不能仅填写目录。上传使用远程临时文件，比较现有前缀后才能续传。成功必须完整读回远程文件并核对 SHA-256，因此账户需要**读取、写入和重命名**权限；读回会再次消耗带宽。校验不符或无法读取都属于失败。单个文件一次使用一个网关，多个文件可分配到不同网关并行上传；闲置超时后可切换网关。不会将同一上传文件拆分到多个网关。暂停、继续和进度可跨重启保存。删除上传任务保留本地文件以及远程成品和临时文件。
+
+默认不覆盖。FTP/SFTP 并非总能保证“仅目标不存在时原子重命名”，其他客户端可能在发布时同时修改目标；共享远程路径应协调使用。浏览目录不会上传或删除文件。
+
+预览可列出远程 **ZIP、TAR、7Z、RAR4 和 RAR5** 的名称、路径、大小、目录和加密标志，不解压、不执行。需要选择网关、支持字节范围，并具有稳定的 ETag 或 Last-Modified。元数据上限为 16 MiB、10,000 条、60 秒；7z 头解码内存上限 64 MiB。列表可能截断，不代表内容完整性校验。文件名错误时可指定原始字符集。支持的加密 7z 头可提供不保存的密码；加密 RAR 头会标为不支持/需要密码。分卷等情况可能只能部分列出。
+
+API 在下载、上传、目录浏览和预览中接受 `site_profile_id`。`GET /api/v1/site-profiles` 返回 `{profiles:[...]}`；`POST` 或 `PUT` 保存扁平配置并返回公共字段；`DELETE /api/v1/site-profiles/{id}` 仅删除配置。`POST /api/v1/uploads` 接受 `local_path`、`target_url`、`routes`、可选 `site_profile_id`、`overwrite:false`，返回 HTTP 201。`GET /api/v1/uploads` 返回 `{uploads:[...]}`；单项支持 GET/DELETE 和 POST `/{id}/pause`、`/{id}/resume`。`POST /api/v1/remote/list` 使用 `url` 与 `route`/`routes`；`POST /api/v1/archives/preview` 另接受可选 `password` 和 `charset`。详见 [openapi.yaml](../openapi.yaml)。`data/uploads/` 中 UTF-8 清单只引用配置 ID，不保存密码。预览不创建下载任务。
+
+## 下载计划与优先级
+
+队列/计划设置支持 `max_active_jobs`（1–32）、总/网关限速和每日窗口（`schedule_enabled`、`schedule_start`、`schedule_end`，HH:mm）。使用电脑本地时区，API 的 `schedule_timezone` 会报告它；可跨午夜，起止相同表示全天。窗口外下载回到队列，手动暂停的任务仍暂停。`priority` 为 -100 至 100，等待任务先按高优先级、再按创建时间启动，不抢占已运行任务。`start_after_ms` 是最早启动的 Unix 毫秒时间，0 取消一次性延迟。设置跨重启保存，仅管理下载，不管理独立上传队列。应用和电脑必须运行且不休眠，不提供系统唤醒。API：`GET`/`PUT`/`POST /api/v1/queue`、`PUT`/`POST /api/v1/jobs/{id}/options`。
+
+## Chrome 和 Edge 集成
+
+打开桌面应用的 **Chrome / Edge** 集成，启用链接传递并打开扩展目录。首次进入 `chrome://extensions` 或 `edge://extensions`，启用开发者模式，点击“加载已解压的扩展程序”，选择含 `manifest.json` 的 `browser-extension`。安装包将它放在 JAR 旁，源码也提供 [browser-extension/](../browser-extension/)。请保留该目录；使用单独的 `MultiRoute-Downloader-4.0-Chrome-Edge.zip` 时先解压。本版本未发布到扩展商店。
+
+MultiRoute 必须正在运行，托盘中也可以。右键链接选择 MultiRoute 下载，或从扩展弹窗发送 URL。使用当前保存目录、网关和站点配置，必要时仍显示仓库/torrent 文件选择。默认端口 8765，API 改端口时同步修改。仅发送 URL，不复制浏览器 cookies/密码，不接管其他浏览器下载；源站认证在应用中配置。若浏览器请求本地连接权限，仅为选定扩展确认。
+
+桥接默认关闭，只允许 `chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl` 使用 `/api/v1/browser/status` 和 `/api/v1/browser/download`，其他 API 来源规则不变。HTTP 202 只表示送达桌面流程，不代表下载完成。仅 headless 服务无法打开桌面选择。可从浏览器扩展页删除或在应用禁用集成。
+
+[Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world) · [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).

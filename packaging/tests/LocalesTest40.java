@@ -21,10 +21,10 @@ public final class LocalesTest40 {
     public static void main(String[] args) throws Exception {
         Main.configureUtf8Console();
         Path owned = Path.of(args[0]).toAbsolutePath(); Files.createDirectories(owned);
-        check(I18n.codes().equals(List.of("ru","en","de","es","fr","zh","ko","ar","it")), "Nine-language selector inventory differs");
+        check(I18n.codes().equals(List.of("ru","en","de","es","fr","zh","ko","ar","it","ja","hi","vi")), "Twelve-language selector inventory differs");
         check(I18n.DEFAULT_LANGUAGE.equals("en"), "Default language changed");
         Map<String,String[]> all = new TreeMap<>(DiagnosticText.catalogRows()); all.putAll(I18n.sourceRows());
-        check(all.size() == 1234, "Unexpected canonical message inventory");
+        check(all.size() == 1407, "Unexpected canonical message inventory");
         Map<String,Object> counts = new LinkedHashMap<>();
         for (String code : LocalizedCatalog.EXTRA) {
             Map<String,String> catalog = LocalizedCatalog.catalog(code);
@@ -48,7 +48,7 @@ public final class LocalesTest40 {
         state.put("directory", owned.resolve("payload").toString()); DownloadHistory.initialize(state);
         DownloadHistory history = new DownloadHistory(owned, state); DownloadHistory.begin(state); history.checkpoint(state);
         for (String code : I18n.codes()) {
-            String guide = "https://github.com/2018-spec-fdsds/multiroute-resume/blob/v" + Main.VERSION + "/docs/" + code + ".md";
+            String guide = "https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v" + Main.VERSION + "/docs/" + code + ".md";
             check(DesktopUI.documentationUri(code, false).toString().equals(guide), "Incorrect language-specific guide URL: " + code);
             check(DesktopUI.documentationUri(code, true).toString().equals(guide + "#multiroute-api"), "Incorrect language-specific API guide URL: " + code);
             String rendered = DownloadHistory.snapshotText(owned, code);

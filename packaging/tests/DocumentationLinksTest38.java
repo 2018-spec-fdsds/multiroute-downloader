@@ -63,7 +63,7 @@ public final class DocumentationLinksTest38 {
     }
     static String expected(String code, int key) { return translations[key][languages.indexOf(code)]; }
     static String uri(String code, boolean api) {
-        return "https://github.com/2018-spec-fdsds/multiroute-resume/blob/v" + Main.VERSION + "/docs/" + code + ".md"
+        return "https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v" + Main.VERSION + "/docs/" + code + ".md"
                 + (api ? "#multiroute-api" : "");
     }
     static void verifyUri(String input, String selected, boolean api) {

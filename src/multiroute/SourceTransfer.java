@@ -9,9 +9,27 @@ import java.security.MessageDigest;
 import java.util.*;
 import javax.net.ssl.*;
 
-/** Read-only HTTP, passive FTP/explicit FTPS and host-key-pinned SFTP through selected gateways. */
+/** HTTP downloads and FTP/FTPS/SFTP file operations through selected application gateways. */
 public final class SourceTransfer {
     private SourceTransfer() { }
+    /** Cancellable upload resource scope. Absolute progress includes a verified remote prefix. */
+    interface UploadControl {
+        boolean cancelled();
+        void attach(AutoCloseable resource);
+        void detach(AutoCloseable resource);
+        void progress(long bytes) throws IOException;
+        void stage(String status) throws IOException;
+        default void check() throws IOException {
+            if (cancelled() || Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Transfer cancelled");
+        }
+    }
+    public static Map<String,Object> listRemote(Map<String,Object> route, String url) throws IOException, InterruptedException {
+        return RemoteFiles.list(route, url);
+    }
+    static Map<String,Object> upload(Map<String,Object> route, String url, java.nio.file.Path local,
+            String temporary, long size, String sha256, boolean overwrite, UploadControl control) throws IOException, InterruptedException {
+        return RemoteFiles.upload(route, url, local, temporary, size, sha256, overwrite, control);
+    }
     interface EndpointResolver {URI endpoint(Map<String,Object> route)throws IOException,InterruptedException;}
     static volatile EndpointResolver endpoints=GatewayNetwork::endpoint; // Package-only owned-fixture seam.
     static final class MissingSourceException extends Transport.NonRetryableException {MissingSourceException(){super("Source file not found");}}
@@ -82,7 +100,7 @@ public final class SourceTransfer {
             socket.setSoTimeout(60000);return socket;
         }catch(IOException|InterruptedException error){try{socket.close();}catch(IOException ignored){}throw error;}
     }
-    private static SSLSocket tls(Socket raw,String host,int port)throws IOException {
+    static SSLSocket tls(Socket raw,String host,int port)throws IOException {
         SSLSocket secure=(SSLSocket)TlsTrust.context().getSocketFactory().createSocket(raw,host,port,true);
         SSLParameters parameters=secure.getSSLParameters();parameters.setEndpointIdentificationAlgorithm("HTTPS");secure.setSSLParameters(parameters);secure.setSoTimeout(15000);
         try{secure.startHandshake();secure.setSoTimeout(60000);return secure;}catch(IOException error){try{secure.close();}catch(IOException ignored){}throw error;}
@@ -90,7 +108,7 @@ public final class SourceTransfer {
     private static HttpResponse<InputStream> ftp(Map<String,Object> route,URI uri,long start,long end,String modified)throws IOException,InterruptedException {
         Ftp control=new Ftp(route,uri);
         try {
-            Map<String,Object> auth=SourceAuth.forUri(uri);String user=(String)auth.getOrDefault("username","anonymous"),pass=(String)auth.getOrDefault("password","MultiRoute-Resume@");
+            Map<String,Object> auth=SourceAuth.forUri(uri,route);String user=(String)auth.getOrDefault("username","anonymous"),pass=(String)auth.getOrDefault("password","MultiRoute-Downloader@");
             control.login(user,pass);control.expect("TYPE I",200);
             String path=uri.getPath();Reply size=control.command("SIZE "+path);if(size.code==550)throw new MissingSourceException();if(size.code!=213)throw new Transport.NonRetryableException("FTP server did not provide the file size");
             long total;try{total=Long.parseLong(size.text.trim());}catch(NumberFormatException error){throw new IOException("Invalid FTP file size");}
@@ -108,8 +126,8 @@ public final class SourceTransfer {
             }catch(IOException error){try{data.close();}catch(IOException ignored){}throw error;}
         }catch(IOException|InterruptedException error){control.close();throw error;}
     }
-    private record Reply(int code,String text) { }
-    private static final class Ftp implements AutoCloseable {
+    record Reply(int code,String text) { }
+    static final class Ftp implements AutoCloseable {
         Socket socket;BufferedReader reader;BufferedWriter writer;final boolean secure;final URI uri;
         Ftp(Map<String,Object> route,URI uri)throws IOException,InterruptedException {
             this.uri=uri;secure=uri.getScheme().equalsIgnoreCase("ftps");socket=connect(route,uri.getHost(),uri.getPort()<0?21:uri.getPort());
@@ -143,7 +161,7 @@ public final class SourceTransfer {
         public void close(){try{socket.close();}catch(IOException ignored){}}
     }
     private static HttpResponse<InputStream> sftp(Map<String,Object> route,URI uri,long start,long end,String modified)throws IOException,InterruptedException {
-        Map<String,Object> auth=SourceAuth.forUri(uri);String fingerprint=(String)auth.getOrDefault("host_key_sha256","");
+        Map<String,Object> auth=SourceAuth.forUri(uri,route);String fingerprint=(String)auth.getOrDefault("host_key_sha256","");
         if(fingerprint.isEmpty()||!(auth.get("username") instanceof String username))throw new Transport.NonRetryableException("Configure SFTP credentials and the verified server host-key fingerprint first");
         JSch client=new JSch();client.setHostKeyRepository(new PinnedKey(fingerprint));Session session=null;ChannelSftp channel=null;
         try {
@@ -152,9 +170,9 @@ public final class SourceTransfer {
             session.setPassword(((String)auth.getOrDefault("password","")).getBytes(StandardCharsets.UTF_8));
             session.setTimeout(60000);session.setSocketFactory(new com.jcraft.jsch.SocketFactory(){public Socket createSocket(String host,int port)throws IOException{try{return connect(route,host,port);}catch(InterruptedException error){Thread.currentThread().interrupt();throw new IOException("Source connection interrupted");}}public InputStream getInputStream(Socket socket)throws IOException{return socket.getInputStream();}public OutputStream getOutputStream(Socket socket)throws IOException{return socket.getOutputStream();}});
             session.connect(15000);channel=(ChannelSftp)session.openChannel("sftp");channel.connect(15000);
-            SftpATTRS attrs=channel.stat(uri.getPath());if(attrs.isDir()||!attrs.isReg())throw new IOException("SFTP source is not a regular file");long total=attrs.getSize();if(total==0){channel.disconnect();session.disconnect();return empty(uri,"sftp");}if(total<=end)throw new IOException("Source range exceeds file size");
+            SftpATTRS attrs=channel.stat(RemoteFiles.literal(uri.getPath()));if(attrs.isDir()||!attrs.isReg())throw new IOException("SFTP source is not a regular file");long total=attrs.getSize();if(total==0){channel.disconnect();session.disconnect();return empty(uri,"sftp");}if(total<=end)throw new IOException("Source range exceeds file size");
             String timestamp=Long.toString(Integer.toUnsignedLong(attrs.getMTime()));if(modified!=null&&!modified.isBlank()&&!modified.equals(timestamp))throw new IOException("Remote Last-Modified changed or is missing");
-            ChannelSftp finalChannel=channel;Session finalSession=session;InputStream raw=channel.get(uri.getPath(),null,start);
+            ChannelSftp finalChannel=channel;Session finalSession=session;InputStream raw=channel.get(RemoteFiles.literal(uri.getPath()),null,start);
             InputStream stream=new Limited(raw,end-start+1,()->{try{raw.close();}finally{finalChannel.disconnect();finalSession.disconnect();}});
             return response(uri,stream,start,end,total,timestamp,"sftp");
         }catch(JSchException|SftpException error){if(channel!=null)channel.disconnect();if(session!=null)session.disconnect();if(error instanceof SftpException missing&&missing.id==ChannelSftp.SSH_FX_NO_SUCH_FILE)throw new MissingSourceException();throw new Transport.NonRetryableException("SFTP connection, host-key verification or authentication failed",error);}

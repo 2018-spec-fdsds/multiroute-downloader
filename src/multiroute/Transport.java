@@ -89,10 +89,10 @@ public final class Transport {
                         .header("Accept-Encoding", "identity")
                         .header("Want-Repr-Digest", "sha-256=10")
                         .header("Cache-Control", "no-transform")
-                        .header("User-Agent", "MultiRoute-Resume/1.8");
+                        .header("User-Agent", "MultiRoute-Downloader/4.0");
                 if (etag != null && !etag.isBlank() && !etag.startsWith("W/")) request.header("If-Range", etag);
                 else if (modified != null && !modified.isBlank()) request.header("If-Range", modified);
-                SourceAuth.apply(request, current);
+                SourceAuth.apply(request, current,route);
                 HttpResponse<InputStream> response = client.send(
                         request.timeout(Duration.ofSeconds(60)).build(), HttpResponse.BodyHandlers.ofInputStream());
                 int status = response.statusCode();
@@ -102,12 +102,12 @@ public final class Transport {
             }
             throw new IOException("Too many redirects");
         } else if ("worker".equals(type)) {
-            if (SourceAuth.hasCredentials(url)) throw new NonRetryableException("Source authentication requires an application gateway");
+            if (!Main.str(route.get("site_profile_id")).isEmpty() || SourceAuth.hasCredentials(url)) throw new NonRetryableException("Source authentication requires an application gateway");
             URI endpoint = workerEndpoint(field(route, "endpoint"));
             String base = endpoint.toString().replaceAll("/+$", "");
             request = HttpRequest.newBuilder(uri(base + "/range"))
                     .header("Content-Type", "application/json")
-                    .header("User-Agent", "MultiRoute-Resume/1.8")
+                    .header("User-Agent", "MultiRoute-Downloader/4.0")
                     .POST(HttpRequest.BodyPublishers.ofString(Json.stringify(Map.of(
                             "url", url, "start", start, "end", end,
                             "etag", etag == null ? "" : etag,
@@ -124,8 +124,8 @@ public final class Transport {
         HttpClient client=originClient(route);URI current=uri(url);
         for(int redirects=0;redirects<=5;redirects++){
             HttpRequest.Builder builder=HttpRequest.newBuilder(current).GET().timeout(Duration.ofSeconds(60))
-                    .header("Accept-Encoding","identity").header("User-Agent","MultiRoute-Resume/3.0");
-            SourceAuth.apply(builder,current);
+                    .header("Accept-Encoding","identity").header("User-Agent","MultiRoute-Downloader/4.0");
+            SourceAuth.apply(builder,current,route);
             HttpRequest request=builder.build();
             HttpResponse<InputStream> response=client.send(request,HttpResponse.BodyHandlers.ofInputStream());int status=response.statusCode();
             if(status!=301&&status!=302&&status!=303&&status!=307&&status!=308)return response;
@@ -239,9 +239,9 @@ public final class Transport {
                 HttpRequest.Builder builder = HttpRequest.newBuilder(current).GET()
                         .header("Accept-Encoding", "identity")
                         .header("Cache-Control", "no-transform")
-                        .header("User-Agent", "MultiRoute-Resume/1.8")
+                        .header("User-Agent", "MultiRoute-Downloader/4.0")
                         .timeout(Duration.ofSeconds(30));
-                SourceAuth.apply(builder,current);
+                SourceAuth.apply(builder,current,route);
                 HttpRequest request=builder.build();
                 HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
                 int status = response.statusCode();
@@ -252,7 +252,7 @@ public final class Transport {
             throw new UnsafeRedirectException("Too many sidecar redirects");
         }
         if ("worker".equals(type)) {
-            if (SourceAuth.hasCredentials(url)) throw new NonRetryableException("Source authentication requires an application gateway");
+            if (!Main.str(route.get("site_profile_id")).isEmpty() || SourceAuth.hasCredentials(url)) throw new NonRetryableException("Source authentication requires an application gateway");
             URI endpoint = workerEndpoint(field(route, "endpoint"));
             String base = endpoint.toString().replaceAll("/+$", "");
             HttpRequest.Builder request = HttpRequest.newBuilder(uri(base + "/small"))
@@ -278,10 +278,10 @@ public final class Transport {
         HttpClient client=originClient(route);URI current=uri(url);
         for(int redirects=0;redirects<=5;redirects++){
             HttpRequest.Builder builder=HttpRequest.newBuilder(current).timeout(Duration.ofSeconds(60))
-                    .header("Accept-Encoding","identity").header("User-Agent","MultiRoute-Resume/3.0")
+                    .header("Accept-Encoding","identity").header("User-Agent","MultiRoute-Downloader/4.0")
                     .method(method,body==null?HttpRequest.BodyPublishers.noBody():HttpRequest.BodyPublishers.ofString(body,StandardCharsets.UTF_8));
             for(var header:headers.entrySet())builder.header(header.getKey(),header.getValue());
-            SourceAuth.apply(builder,current);
+            SourceAuth.apply(builder,current,route);
             HttpResponse<InputStream> response=client.send(builder.build(),HttpResponse.BodyHandlers.ofInputStream());
             int status=response.statusCode();
             if(status!=301&&status!=302&&status!=303&&status!=307&&status!=308)return response;

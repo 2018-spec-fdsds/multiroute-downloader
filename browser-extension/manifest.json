@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "4.0.0",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsiZgEOjl+3ga4MLm+t3K8vv2D8Hqx30CYvNdyplfFGitABwo0fBzGcqWazm1IB1s/jQpWcknwPUqW5aBKRXHg3B92ar+E7v4FXzcnmFqVBa4ozZM6w0fhhHQtFLwZsphjLTYVfPrPBcpK3vuBM1pbSM7OQ6skLNeAsxy3sUoD8ju7dGD8BwZhRHueIsmKB4ldQPmA/iX+yPVdXHra9v2z6bK1cAcFhiu47wdNqdakQObiBtoS0/UwTYIUwjYVrzJW4Y45cBybFiAK2buILSXWM2m36vs3F4Km7W/EdS4XjsvhMsHMa3dyDNoRPQb5MV4gZqFyxhVv/cJzlQcvBPIBQIDAQAB",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "__MSG_extensionName__"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

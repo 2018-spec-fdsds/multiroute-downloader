@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Envíe enlaces al descargador de escritorio mediante las puertas de enlace seleccionadas."
+  },
+  "downloadLink": {
+    "message": "Descargar con MultiRoute"
+  },
+  "popupHint": {
+    "message": "Envíe la página actual o pegue un enlace a un archivo."
+  },
+  "urlLabel": {
+    "message": "Enlace de descarga"
+  },
+  "portLabel": {
+    "message": "Puerto de la API de la aplicación"
+  },
+  "sendButton": {
+    "message": "Enviar a MultiRoute"
+  },
+  "setupHint": {
+    "message": "Mantenga abierta la aplicación de escritorio y active la integración con Chrome / Edge en sus ajustes. Se utilizarán la carpeta, las puertas de enlace y el perfil de sitio actuales."
+  },
+  "helpLink": {
+    "message": "Instrucciones de configuración"
+  },
+  "invalidUrl": {
+    "message": "Use un enlace HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV o magnet sin contraseña incorporada."
+  },
+  "invalidPort": {
+    "message": "Introduzca un puerto de API entre 1 y 65535."
+  },
+  "enableIntegration": {
+    "message": "Active la integración con Chrome / Edge en la aplicación de escritorio."
+  },
+  "openApplication": {
+    "message": "Abra la aplicación de escritorio MultiRoute y compruebe su puerto de API."
+  },
+  "sendFailed": {
+    "message": "No se pudo enviar el enlace."
+  },
+  "sending": {
+    "message": "Enviando…"
+  },
+  "sent": {
+    "message": "Se envió el enlace a la aplicación de escritorio. Es posible que deba seleccionar archivos allí."
+  }
+}

@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 
 /** Shared desktop palette. Download and network state never depend on the chosen appearance. */
 final class DesktopTheme {
+    private static final String SCRIPT_SAMPLE="下载한국어العربيةफ़ाइलें日本語Tiếng ViệtРусский";
     private static boolean dark;
     private DesktopTheme() { }
 
@@ -62,6 +63,16 @@ final class DesktopTheme {
     private static void color(String key, Color value) {
         // UIResource lets updateComponentTreeUI replace old theme defaults on existing widgets.
         UIManager.put(key, new javax.swing.plaf.ColorUIResource(value));
+    }
+
+    /** Composite fonts keep mixed-script filenames readable, including Windows Devanagari fallback. */
+    static java.awt.Font readableFont(java.awt.Font original) {
+        if(original==null||original.canDisplayUpTo(SCRIPT_SAMPLE)<0)return original;
+        for(String family:java.util.List.of(original.getFamily(),"Nirmala UI","Noto Sans Devanagari","Kohinoor Devanagari","Devanagari Sangam MN",java.awt.Font.DIALOG)) {
+            java.awt.Font candidate=javax.swing.text.StyleContext.getDefaultStyleContext().getFont(family,original.getStyle(),Math.round(original.getSize2D()));
+            if(candidate.canDisplayUpTo(SCRIPT_SAMPLE)<0)return candidate.deriveFont(original.getSize2D());
+        }
+        return original;
     }
 
     static boolean isDark() { return dark; }

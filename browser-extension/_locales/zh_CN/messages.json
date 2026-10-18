@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "通过所选互联网网关将链接发送到桌面下载器。"
+  },
+  "downloadLink": {
+    "message": "使用 MultiRoute 下载"
+  },
+  "popupHint": {
+    "message": "发送当前页面，或粘贴文件链接。"
+  },
+  "urlLabel": {
+    "message": "下载链接"
+  },
+  "portLabel": {
+    "message": "应用程序 API 端口"
+  },
+  "sendButton": {
+    "message": "发送到 MultiRoute"
+  },
+  "setupHint": {
+    "message": "请保持桌面应用运行，并在其设置中启用 Chrome / Edge 集成。将使用当前文件夹、网关和网站配置。"
+  },
+  "helpLink": {
+    "message": "设置说明"
+  },
+  "invalidUrl": {
+    "message": "请输入不含内嵌密码的 HTTP、HTTPS、FTP、FTPS、SFTP、WebDAV 或 magnet 链接。"
+  },
+  "invalidPort": {
+    "message": "请输入 1 到 65535 之间的 API 端口。"
+  },
+  "enableIntegration": {
+    "message": "请在桌面应用中启用 Chrome / Edge 集成。"
+  },
+  "openApplication": {
+    "message": "请打开 MultiRoute 桌面应用并检查其 API 端口。"
+  },
+  "sendFailed": {
+    "message": "无法发送链接。"
+  },
+  "sending": {
+    "message": "正在发送…"
+  },
+  "sent": {
+    "message": "链接已发送到桌面应用。可能需要在应用窗口中选择文件。"
+  }
+}

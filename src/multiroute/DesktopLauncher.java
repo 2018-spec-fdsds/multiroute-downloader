@@ -29,12 +29,12 @@ public final class DesktopLauncher {
 
     static String setupErrorText(Exception failure) {
         return failure instanceof SetupFailure ? failure.getMessage()
-                : "Unable to prepare MultiRoute Resume. Reinstall the complete application and try again.";
+                : "Unable to prepare MultiRoute Downloader. Reinstall the complete application and try again.";
     }
 
     /** Optional convenience link, under the logged-in user's existing Desktop. */
     static void createDesktopShortcutIfAbsent(Path desktop, Path application) {
-        Path link = desktop.resolve("MultiRoute Resume.app");
+        Path link = desktop.resolve(Brand.NAME + ".app");
         try {
             if (!Files.isDirectory(desktop) || Files.isSymbolicLink(desktop) || !Files.isDirectory(application)
                     || Files.exists(link, java.nio.file.LinkOption.NOFOLLOW_LINKS)) return;
@@ -51,12 +51,16 @@ public final class DesktopLauncher {
         Path home = Path.of(System.getProperty("user.home"));
         if (os.contains("win")) {
             String local = System.getenv("LOCALAPPDATA");
-            return (local == null || local.isBlank() ? home.resolve("AppData/Local") : Path.of(local))
-                    .resolve("MultiRoute Resume").toAbsolutePath().normalize();
+            Path base = local == null || local.isBlank() ? home.resolve("AppData/Local") : Path.of(local);
+            return Brand.savedProfile(base.resolve(Brand.NAME), base.resolve("MultiRoute Resume")).toAbsolutePath().normalize();
         }
-        if (os.contains("mac")) return home.resolve("Library/Application Support/MultiRoute Resume");
+        if (os.contains("mac")) {
+            Path base = home.resolve("Library/Application Support");
+            return Brand.savedProfile(base.resolve(Brand.NAME), base.resolve("MultiRoute Resume"));
+        }
         String data = System.getenv("XDG_DATA_HOME");
-        return (data == null || data.isBlank() ? home.resolve(".local/share") : Path.of(data)).resolve("MultiRouteResume");
+        Path base = data == null || data.isBlank() ? home.resolve(".local/share") : Path.of(data);
+        return Brand.savedProfile(base.resolve("MultiRouteDownloader"), base.resolve("MultiRouteResume"));
     }
 
     static Path applicationRoot() throws Exception {
@@ -90,7 +94,7 @@ public final class DesktopLauncher {
             Main.restoreStartupLanguage(args);
             if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
                 if (gui) SwingUtilities.invokeAndWait(() -> {
-                    JFrame window = new JFrame("MultiRoute Resume");
+                    JFrame window = new JFrame(Brand.NAME);
                     window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                     JLabel label = new JLabel(SETUP_STATUS);
                     label.setBorder(javax.swing.BorderFactory.createEmptyBorder(18,18,18,18));
@@ -104,7 +108,7 @@ public final class DesktopLauncher {
             if (gui && System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("mac")
                     && !"root".equals(System.getProperty("user.name")))
                 createDesktopShortcutIfAbsent(Path.of(System.getProperty("user.home"), "Desktop"),
-                        Path.of("/Applications/MultiRoute Resume.app"));
+                        Path.of("/Applications/" + Brand.NAME + ".app"));
             if (progress[0] != null) SwingUtilities.invokeAndWait(progress[0]::dispose);
             Main.main(args);
         } catch (Exception failure) {

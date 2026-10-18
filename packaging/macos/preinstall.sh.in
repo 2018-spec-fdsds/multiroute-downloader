@@ -4,7 +4,7 @@ set -euo pipefail
 PATH=/usr/bin:/bin:/usr/sbin:/sbin
 export PATH
 [ "$(id -u)" = 0 ] || exit 1
-[ "${3:-}" = / ] || { printf '%s\n' 'Install MultiRoute Resume on the active system volume.' >&2; exit 1; }
+[ "${3:-}" = / ] || { printf '%s\n' 'Install MultiRoute Downloader on the active system volume.' >&2; exit 1; }
 
 verify_directory() {
     [ -d "$1" ] && [ ! -L "$1" ] || return 1
@@ -28,8 +28,8 @@ for component in /Library/PrivilegedHelperTools/MultiRouteResume/@VERSION@/gatew
     fi
 done
 [ -d /Applications ] && [ ! -L /Applications ] && [ "$(stat -f '%u' /Applications)" = 0 ] || exit 1
-if [ -e '/Applications/MultiRoute Resume.app' ] || [ -L '/Applications/MultiRoute Resume.app' ]; then
-    [ -d '/Applications/MultiRoute Resume.app' ] && [ ! -L '/Applications/MultiRoute Resume.app' ] || exit 1
+if [ -e '/Applications/MultiRoute Downloader.app' ] || [ -L '/Applications/MultiRoute Downloader.app' ]; then
+    [ -d '/Applications/MultiRoute Downloader.app' ] && [ ! -L '/Applications/MultiRoute Downloader.app' ] || exit 1
 fi
 # No root user-home writes, launchctl changes, sudoers entries, BPF permission changes,
 # system routes, Java installation outside the bundle, or app launch as root.

@@ -12,7 +12,7 @@ javac=args.javac or (str(Path(os.environ['JAVA_HOME'])/'bin'/('javac.exe' if os.
 if not javac:parser.error('JDK 17+ is required; set JAVA_HOME or use --javac.')
 sources=sorted((root/'src/multiroute').glob('*.java'))
 resources=sorted((root/'src/multiroute/i18n').glob('*.json'))
-if {path.stem for path in resources}!={'zh','ko','ar','it'}:parser.error('The four additional UTF-8 language catalogs are required.')
+if {path.stem for path in resources}!={'zh','ko','ar','it','ja','hi','vi'}:parser.error('The seven additional UTF-8 language catalogs are required.')
 libraries=sorted((root/'lib').glob('*.jar'))
 if not sources or not libraries:parser.error('Extract/clone the complete repository including src/ and lib/.')
 verification=root/'scripts/dependencies.sha256.json'
@@ -27,7 +27,7 @@ def attribute(name,value):
     line=name+': '+value;chunks=[line[:70]];line=line[70:]
     while line:chunks.append(' '+line[:69]);line=line[69:]
     return '\r\n'.join(chunks)+'\r\n'
-target=root/'MultiRoute-Resume.jar'
+target=root/'MultiRoute-Downloader.jar'
 with tempfile.TemporaryDirectory(prefix='multiroute-java-build-') as folder:
     classes=Path(folder)/'classes';classes.mkdir()
     subprocess.run([str(javac),'--release','17','-encoding','UTF-8','-cp',os.pathsep.join(map(str,libraries)),'-d',str(classes),*map(str,sources)],check=True)
@@ -36,7 +36,7 @@ with tempfile.TemporaryDirectory(prefix='multiroute-java-build-') as folder:
     version=re.search(r'static final String VERSION = "([0-9.]+)";', (root/'src/multiroute/Main.java').read_text(encoding='utf-8')).group(1)
     manifest='Manifest-Version: 1.0\r\nMain-Class: multiroute.Main\r\nImplementation-Version: '+version+'\r\n'
     manifest+=attribute('Class-Path',' '.join('lib/'+p.name for p in selected))+'\r\n'
-    candidate=Path(folder)/'MultiRoute-Resume.jar'
+    candidate=Path(folder)/'MultiRoute-Downloader.jar'
     with zipfile.ZipFile(candidate,'w',zipfile.ZIP_DEFLATED) as archive:
         archive.writestr('META-INF/MANIFEST.MF',manifest)
         for file in compiled:archive.write(file,file.relative_to(classes).as_posix())
@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='multiroute-java-build-') as folder:
             archive.write(file,'multiroute/i18n/'+file.name)
     # Existing local builds remain recoverable; the verified distribution is not touched.
     if target.exists():
-        backup=target.with_name('MultiRoute-Resume.previous-'+hashlib.sha256(target.read_bytes()).hexdigest()[:12]+'.jar')
+        backup=target.with_name('MultiRoute-Downloader.previous-'+hashlib.sha256(target.read_bytes()).hexdigest()[:12]+'.jar')
         if not backup.exists():shutil.copy2(target,backup)
     shutil.copyfile(candidate,target)
 print('Built '+str(target))

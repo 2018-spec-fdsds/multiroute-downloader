@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -13,6 +14,7 @@ import re
 import shlex
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import urllib.error
@@ -23,7 +25,7 @@ import xml.etree.ElementTree as ET
 
 REQUIRED = {"java.base", "java.desktop", "java.net.http", "java.xml", "jdk.httpserver"}
 ROOT = Path(__file__).resolve().parents[2]
-LANGUAGES = ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it")
+LANGUAGES = ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it", "ja", "hi", "vi")
 SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png", "tray-speeds-3.3.png",
                "desktop-4.0-light-en.png", "desktop-4.0-dark-en.png")
 
@@ -34,7 +36,7 @@ def verify_documentation(app_dir: Path, report: dict) -> None:
                 "TEST-REPORT.json", "DEPLOYMENT-TEST-REPORT.json", "native/source/BUILD-README.txt"}
     required.update("docs/" + language + ".md" for language in LANGUAGES)
     required.update("docs/images/" + name for name in SCREENSHOTS)
-    assert required.issubset(hashes), "The app must contain five local guides, READMEs, compatibility information and screenshots."
+    assert required.issubset(hashes), "The app must contain twelve local guides, READMEs, compatibility information and screenshots."
     for name, expected in hashes.items():
         relative = PurePosixPath(name)
         assert not relative.is_absolute() and ".." not in relative.parts, "Invalid documentation manifest path."
@@ -69,10 +71,37 @@ def verify_relative_markdown_links(app_dir: Path) -> int:
     return count
 
 
+def verify_browser_extension(app_dir: Path, report: dict) -> int:
+    expected = report["browser_extension_sha256"]
+    actual = {path.relative_to(app_dir).as_posix() for path in (app_dir / "browser-extension").rglob("*") if path.is_file()}
+    assert actual == set(expected) and len(actual) >= 20
+    for name, digest in expected.items():
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest
+        assert hashlib.sha256((app_dir / name).read_bytes()).hexdigest() == digest
+    manifest = json.loads((app_dir / "browser-extension/manifest.json").read_text(encoding="utf-8"))
+    assert manifest["manifest_version"] == 3 and manifest["version"] == report["version"] + ".0"
+    assert set(manifest["permissions"]) == {"contextMenus", "activeTab", "storage"}
+    assert manifest["host_permissions"] == ["http://127.0.0.1/*"]
+    key = hashlib.sha256(base64.b64decode(manifest["key"], validate=True)).digest()[:16].hex()
+    extension_id = "".join(chr(ord("a") + int(character, 16)) for character in key)
+    assert extension_id == "ljdklefabmaecjalfhjoicmgedmjjkbl"
+    assert {path.name for path in (app_dir / "browser-extension/_locales").iterdir() if path.is_dir()} == set(LANGUAGES) - {"zh"} | {"zh_CN"}
+    return len(actual)
+
+
 def run(command, **kwargs):
     if kwargs.get("text") or kwargs.get("universal_newlines"):
         kwargs.setdefault("encoding", "utf-8")
-    return subprocess.run([str(value) for value in command], check=True, **kwargs)
+    try:
+        return subprocess.run([str(value) for value in command], check=True, **kwargs)
+    except subprocess.CalledProcessError as failed:
+        # These are owned package fixtures. Preserve the actual assertion in CI
+        # instead of losing captured output when the temporary folder is removed.
+        for label, value in (("stdout", failed.stdout), ("stderr", failed.stderr)):
+            if value:
+                decoded = value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value
+                print("Owned command " + label + ":\n" + decoded, file=sys.stderr, flush=True)
+        raise
 
 
 def desktop_shortcut_fragment(script: str) -> str:
@@ -105,17 +134,17 @@ def verify_desktop_shortcut(script: str, owned: Path) -> int:
         return result
 
     fresh = home("fresh normal user")
-    shortcut = fresh / "Desktop/MultiRoute Resume.app"
+    shortcut = fresh / "Desktop/MultiRoute Downloader.app"
     assert invoke(fresh).returncode == 0 and shortcut.is_symlink()
     assert os.readlink(shortcut) == str(application) and shortcut.lstat().st_uid == uid
     original = shortcut.lstat().st_ino
     assert invoke(fresh).returncode == 0 and shortcut.lstat().st_ino == original
     regular = home("existing regular item")
-    existing = regular / "Desktop/MultiRoute Resume.app"
+    existing = regular / "Desktop/MultiRoute Downloader.app"
     existing.write_text("keep this owned item", encoding="utf-8")
     assert invoke(regular).returncode == 0 and existing.read_text(encoding="utf-8") == "keep this owned item"
     linked = home("existing broken link")
-    existing_link = linked / "Desktop/MultiRoute Resume.app"
+    existing_link = linked / "Desktop/MultiRoute Downloader.app"
     existing_link.symlink_to(fixtures / "not-present.app")
     original_target = os.readlink(existing_link)
     assert invoke(linked).returncode == 0 and os.readlink(existing_link) == original_target
@@ -125,13 +154,13 @@ def verify_desktop_shortcut(script: str, owned: Path) -> int:
     other = fixtures / "other owned directory"
     other.mkdir()
     (redirected / "Desktop").symlink_to(other)
-    assert invoke(redirected).returncode != 0 and not (other / "MultiRoute Resume.app").exists()
+    assert invoke(redirected).returncode != 0 and not (other / "MultiRoute Downloader.app").exists()
     wrong_uid = home("wrong uid")
     assert invoke(wrong_uid, expected_uid=0).returncode != 0
-    assert not (wrong_uid / "Desktop/MultiRoute Resume.app").exists()
+    assert not (wrong_uid / "Desktop/MultiRoute Downloader.app").exists()
     absent_app = home("missing app")
     assert invoke(absent_app, target=fixtures / "missing app target").returncode != 0
-    assert not (absent_app / "Desktop/MultiRoute Resume.app").exists()
+    assert not (absent_app / "Desktop/MultiRoute Downloader.app").exists()
     return 8
 
 
@@ -380,16 +409,16 @@ def main() -> None:
     architecture = report["architecture"]
     if architecture != platform.machine():
         parser.error("Verify the installer on a matching native CPU runner.")
-    app = directory / "MultiRoute Resume.app"
+    app = directory / "MultiRoute Downloader.app"
     contents = app / "Contents"
     with (contents / "Info.plist").open("rb") as stream:
         metadata = plistlib.load(stream)
     assert metadata["CFBundleIdentifier"] == "local.multiroute.resume"
     assert metadata["LSMinimumSystemVersion"] == report["minimum_macos"]
-    assert set(metadata["CFBundleLocalizations"]) == {"en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it"}
+    assert set(metadata["CFBundleLocalizations"]) == {"en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it", "ja", "hi", "vi"}
     assert metadata["MultiRouteProjectOwnerURL"] == report["project_owner_url"]
     assert report["setup_language"] == "en"
-    assert report["desktop_shortcut"]["target"] == "/Applications/MultiRoute Resume.app"
+    assert report["desktop_shortcut"]["target"] == "/Applications/MultiRoute Downloader.app"
     assert report["desktop_shortcut"]["existing_desktop_items_replaced"] is False
     executable = contents / "MacOS" / metadata["CFBundleExecutable"]
     assert executable.is_file() and not executable.read_bytes().startswith(b"#!"), "The Finder launcher must be native code."
@@ -407,13 +436,17 @@ def main() -> None:
     assert ("Project owner: " + report["project_owner_url"]).encode("utf-8") in license_bytes
     assert (app_dir / "THIRD-PARTY-NOTICES.txt").is_file()
     verify_documentation(app_dir, report)
+    browser_extension_count = verify_browser_extension(app_dir, report)
     app_markdown_links = verify_relative_markdown_links(app_dir)
-    jars = [app_dir / "MultiRoute-Resume.jar", *sorted((app_dir / "lib").glob("*.jar"))]
+    jars = [app_dir / "MultiRoute-Downloader.jar", *sorted((app_dir / "lib").glob("*.jar"))]
     classpath = os.pathsep.join(str(path) for path in jars)
     jdk = Path(os.environ["JAVA_HOME"])
-    checks = ["native Finder launcher", "bundle metadata and five language prompts", "bundled Java modules"]
+    checks = ["native Finder launcher", "bundle metadata and twelve language prompts", "bundled Java modules"]
+    checks.append("complete fixed-ID twelve-language Manifest V3 browser extension payload matches saved source hashes in the app image and expanded package, with only explicit link delivery permissions and loopback host access")
     with tempfile.TemporaryDirectory(prefix="multiroute-macos-verify-") as temporary:
-        owned = Path(temporary)
+        # macOS /var is a system symlink to /private/var. Resolve only our newly
+        # created fixture root; retain production checks against symlink paths.
+        owned = Path(temporary).resolve(strict=True)
         probe = owned / "NativeProbe.java"
         probe.write_text('''
 public final class NativeProbe {
@@ -449,18 +482,18 @@ public final class NativeDesktopFixture {
         Path root = Files.createDirectories(Path.of(args[0]));
         Path app = Files.createDirectory(root.resolve("Owned Native.app"));
         Path desktop = Files.createDirectory(root.resolve("fresh Desktop"));
-        Path link = desktop.resolve("MultiRoute Resume.app");
+        Path link = desktop.resolve("MultiRoute Downloader.app");
         DesktopLauncher.createDesktopShortcutIfAbsent(desktop, app);
         check(Files.isSymbolicLink(link) && Files.readSymbolicLink(link).equals(app.toAbsolutePath()), "Native Mac shortcut creation");
         DesktopLauncher.createDesktopShortcutIfAbsent(desktop, app);
         check(Files.readSymbolicLink(link).equals(app.toAbsolutePath()), "Retry preserves the existing shortcut");
         Path regularDesktop = Files.createDirectory(root.resolve("existing regular Desktop"));
-        Path regular = regularDesktop.resolve("MultiRoute Resume.app");
+        Path regular = regularDesktop.resolve("MultiRoute Downloader.app");
         Files.writeString(regular, "keep this owned item");
         DesktopLauncher.createDesktopShortcutIfAbsent(regularDesktop, app);
         check(Files.readString(regular).equals("keep this owned item"), "Existing file retained");
         Path linkedDesktop = Files.createDirectory(root.resolve("existing broken shortcut"));
-        Path broken = linkedDesktop.resolve("MultiRoute Resume.app");
+        Path broken = linkedDesktop.resolve("MultiRoute Downloader.app");
         Path absent = root.resolve("not-present.app");
         Files.createSymbolicLink(broken, absent);
         DesktopLauncher.createDesktopShortcutIfAbsent(linkedDesktop, app);
@@ -469,10 +502,10 @@ public final class NativeDesktopFixture {
         Path redirected = root.resolve("redirected Desktop");
         Files.createSymbolicLink(redirected, other);
         DesktopLauncher.createDesktopShortcutIfAbsent(redirected, app);
-        check(!Files.exists(other.resolve("MultiRoute Resume.app")), "Redirected Desktop rejected");
+        check(!Files.exists(other.resolve("MultiRoute Downloader.app")), "Redirected Desktop rejected");
         Path noAppDesktop = Files.createDirectory(root.resolve("missing app Desktop"));
         DesktopLauncher.createDesktopShortcutIfAbsent(noAppDesktop, absent);
-        check(!Files.exists(noAppDesktop.resolve("MultiRoute Resume.app")), "Missing application rejected");
+        check(!Files.exists(noAppDesktop.resolve("MultiRoute Downloader.app")), "Missing application rejected");
         Path missingDesktop = root.resolve("missing Desktop");
         DesktopLauncher.createDesktopShortcutIfAbsent(missingDesktop, app);
         check(!Files.exists(missingDesktop), "Desktop is never created implicitly");
@@ -611,11 +644,45 @@ public final class NativeDesktopFixture {
         run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / "locales-home"),
              "-cp", classpath + os.pathsep + str(owned), "multiroute.LocalesTest40", owned / "locales"], capture_output=True, text=True)
         locales = json.loads((owned / "locales/LOCALES-TESTS.json").read_text(encoding="utf-8"))
-        assert locales["status"] == "PASS" and locales["checks"] == 19835
-        assert locales["version"] == report["version"] and locales["catalog_entries"] == 1234
+        assert locales["status"] == "PASS" and locales["checks"] >= 39523
+        assert locales["version"] == report["version"] and locales["catalog_entries"] >= 1407
         assert set(locales["languages"]) == set(LANGUAGES) and locales["arabic_rtl_and_ltr_data_fields"]
         assert locales["network_calls"] == 0 and not locales["user_data_read"]
-        checks.append("nine-language catalog checks cover all 1234 messages in Chinese, Korean, Arabic and Italian, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
+        checks.append("twelve-language catalog checks cover the complete current message catalog including Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
+
+        for fixture_name in ("SiteProfilesTest40", "ArchivePreviewTest40", "TransfersApiTest40", "ProfileRoutesTest40", "ScheduleQueueTest40", "BrowserBridgeTest40"):
+            fixture_source = ROOT / "packaging/tests" / (fixture_name + ".java")
+            run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, fixture_source])
+            run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / (fixture_name + "-home")),
+                 "-Djava.io.tmpdir=" + str(owned), "-cp", classpath + os.pathsep + str(owned),
+                 "multiroute." + fixture_name, owned / fixture_name], capture_output=True, text=True)
+        site_profiles = json.loads((owned / "SiteProfilesTest40/SITE-PROFILES-TESTS.json").read_text(encoding="utf-8"))
+        assert site_profiles["status"] == "PASS" and site_profiles["checks"] == 94
+        assert site_profiles["network_calls"] == 0 and not site_profiles["user_data_read"] and not site_profiles["remote_files_modified"]
+        assert site_profiles["same_origin_accounts_isolated"] and site_profiles["encrypted_atomic_vault_and_nonce_rotation"]
+        checks.append("ninety-four packaged site profile checks verify independent same-origin accounts, explicit profile route binding, AES-GCM nonce rotation and tamper rejection, atomic owner-only storage, Unicode credentials and secret-free public metadata")
+        archive_preview = json.loads((owned / "ArchivePreviewTest40/ARCHIVE-PREVIEW-TESTS.json").read_text(encoding="utf-8"))
+        assert archive_preview["status"] == "PASS" and archive_preview["checks"] >= 68
+        assert archive_preview["real_proxy_requests"] > 0 and not archive_preview["external_network"] and not archive_preview["user_files_read"]
+        checks.append("packaged generated archive checks list ZIP, TAR, 7Z, RAR4 and RAR5 through an owned loopback proxy, preserve Unicode, verify stable range identity, metadata and cancellation limits and reject unsupported encrypted RAR headers without extraction")
+        transfers_api = json.loads((owned / "TransfersApiTest40/TRANSFERS-API-TESTS.json").read_text(encoding="utf-8"))
+        assert transfers_api["status"] == "PASS" and transfers_api["checks"] >= 81
+        assert transfers_api["actual_controller_handler"] and not transfers_api["external_network"] and not transfers_api["user_profile_read"]
+        checks.append("packaged transfer API checks exercise actual HTTP handlers for profile isolation and normalization, upload creation and pause/resume/removal, origin rejection, Unicode JSON and compatible reuse of saved legacy profile data")
+        profile_routes = json.loads((owned / "ProfileRoutesTest40/PROFILE-ROUTES-TESTS.json").read_text(encoding="utf-8"))
+        assert profile_routes["status"] == "PASS" and profile_routes["checks"] == 53
+        assert profile_routes["network_calls"] == 0 and not profile_routes["user_data_read"] and not profile_routes["os_routes_changed"]
+        checks.append("fifty-three packaged profile route checks verify canonical saved profile identity, no credential fallback across accounts, preservation through source preparation and runtime gateway changes, rejection of conflicting route profiles and compatibility of prior saved jobs")
+        schedule_queue = json.loads((owned / "ScheduleQueueTest40/SCHEDULE-QUEUE-TESTS.json").read_text(encoding="utf-8"))
+        assert schedule_queue["status"] == "PASS" and schedule_queue["checks"] == 61
+        assert schedule_queue["network_calls"] == 0 and not schedule_queue["user_data_read"]
+        assert schedule_queue["actual_verified_files"] == 6 and schedule_queue["owned_range_opens"] > 0
+        checks.append("sixty-one packaged schedule and priority checks exercise actual queue ordering, daily and overnight windows, one-time delay, cancellation and continuation, manual pauses, persisted Unicode settings and six checksum-verified owned files without networking")
+        browser_bridge = json.loads((owned / "BrowserBridgeTest40/BROWSER-BRIDGE-TESTS.json").read_text(encoding="utf-8"))
+        assert browser_bridge["status"] == "PASS" and browser_bridge["checks"] == 107
+        assert browser_bridge["external_network_calls"] == browser_bridge["source_network_calls"] == browser_bridge["download_jobs_created"] == 0
+        assert browser_bridge["actual_loopback_http"] and not browser_bridge["user_data_read"]
+        checks.append("one-hundred-seven packaged browser bridge checks use actual loopback HTTP handlers to verify default-disabled and persisted opt-in, exact fixed extension origin, scoped preflight, unchanged ordinary API guards, strict URL-only bodies and Unicode desktop callback delivery")
 
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
@@ -690,10 +757,11 @@ public final class MacAuthorizationFixture {
         run(["/bin/bash", "-n", postinstall_scripts[0]])
         shortcut_checks = verify_desktop_shortcut(postinstall_scripts[0].read_text(encoding="utf-8"), owned)
         checks.append("eight owned normal-user Desktop shortcut fixtures pass; installer switches to a validated console user and preserves existing items")
-        installed_apps = list(expanded.rglob("MultiRoute Resume.app"))
+        installed_apps = list(expanded.rglob("MultiRoute Downloader.app"))
         assert len(installed_apps) == 1, "The installer must contain exactly one application bundle."
         installed_app_dir = installed_apps[0] / "Contents" / "app"
         verify_documentation(installed_app_dir, report)
+        assert verify_browser_extension(installed_app_dir, report) == browser_extension_count
         installed_markdown_links = verify_relative_markdown_links(installed_app_dir)
         assert installed_markdown_links == app_markdown_links
         assert (installed_app_dir / "LICENSE.txt").read_bytes() == license_bytes
@@ -720,7 +788,7 @@ public final class MacAuthorizationFixture {
         checks.append("capture monitor drained 1MiB with a 64KiB bound, preserved exit codes and tolerated a closed consumer")
         checks.append("controlled root monitor fixture permanently dropped UID/GID and could not regain root")
         distribution = ET.parse(expanded / "Distribution").getroot()
-        assert distribution.find("title").text == "MultiRoute Resume"
+        assert distribution.find("title").text == "MultiRoute Downloader"
         license_element = distribution.find("license")
         assert license_element is not None and license_element.get("file") == "LICENSE.txt" and license_element.get("mime-type") == "text/plain"
         installer_license = expanded / "Resources" / license_element.get("file")
@@ -746,6 +814,13 @@ public final class MacAuthorizationFixture {
         "download_history40_fixture_checks": download_history["checks"],
         "modern_desktop40_fixture_checks": modern_desktop["checks"],
         "locales40_fixture_checks": locales["checks"],
+        "site_profiles40_fixture_checks": site_profiles["checks"],
+        "archive_preview40_fixture_checks": archive_preview["checks"],
+        "transfers_api40_fixture_checks": transfers_api["checks"],
+        "profile_routes40_fixture_checks": profile_routes["checks"],
+        "schedule_queue40_fixture_checks": schedule_queue["checks"],
+        "browser_extension_files_verified": browser_extension_count,
+        "browser_bridge40_fixture_checks": browser_bridge["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

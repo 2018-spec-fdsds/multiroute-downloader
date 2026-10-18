@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Deploy MultiRoute Resume
+Name=Deploy MultiRoute Downloader
 Comment=Resumable downloads through selected gateways
 Exec=/bin/bash -c "exec /bin/bash \\"\\$(dirname -- \\"\\$1\\")/Deploy-Linux.sh\\"" multiroute %k
 Terminal=true

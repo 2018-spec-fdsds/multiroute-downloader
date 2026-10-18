@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: MultiRoute Resume local API
+  title: MultiRoute Downloader local API
   version: '4.0'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
@@ -46,6 +46,11 @@ paths:
                     require type=gateway.
                   items:
                     $ref: '#/components/schemas/Route'
+                site_profile_id:
+                  type: string
+                  format: uuid
+                  description: Explicit saved site profile. Credentials are isolated by profile and exact origin;
+                    no global credential fallback for a selected profile.
       responses:
         '200':
           description: Source metadata or file choices.
@@ -846,6 +851,249 @@ paths:
                     type: boolean
         '400':
           $ref: '#/components/responses/Error'
+  /api/v1/site-profiles:
+    get:
+      operationId: listSiteProfiles
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfiles'
+    post:
+      operationId: saveSiteProfile
+      description: Create or edit a flat encrypted site profile. Public response omits credentials. Profiles
+        sharing an origin remain isolated. Blank secrets preserve prior values only on same-origin/same-type
+        edits unless replace_credentials=true. At most 128 profiles. No network operation is performed by saving.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteProfileInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfile'
+        '400': &id003
+          $ref: '#/components/responses/Error'
+    put:
+      operationId: replaceSiteProfile
+      description: Create or edit a flat encrypted site profile. Public response omits credentials. Profiles
+        sharing an origin remain isolated. Blank secrets preserve prior values only on same-origin/same-type
+        edits unless replace_credentials=true. At most 128 profiles. No network operation is performed by saving.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteProfileInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfile'
+        '400':
+          $ref: '#/components/responses/Error'
+  /api/v1/site-profiles/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    delete:
+      operationId: deleteSiteProfile
+      description: Remove only the profile and its stored credentials. Jobs and local/remote files are retained.
+        A dependent task retains the original profile binding and cannot switch accounts in place; recreate
+        it with a valid profile if the original was removed.
+      responses:
+        '200':
+          description: Profile removed; returns ok=true.
+        '400': *id003
+  /api/v1/uploads:
+    get:
+      operationId: listUploads
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uploads'
+    post:
+      operationId: createUpload
+      description: Queue a verified FTP, explicit FTPS or SFTP upload through selected gateways. Uses a temporary
+        remote file, compares an existing prefix before resume and requires full SHA-256 remote readback before
+        publication. Remote read/write/rename permissions are needed; verification consumes download traffic.
+        One file uses one gateway; independent uploads run in parallel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpload'
+      responses:
+        '201':
+          description: Upload queued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+  /api/v1/uploads/{id}:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    get:
+      operationId: getUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+    delete:
+      operationId: removeUpload
+      description: Stop and remove the upload task. Keeps the local source and all remote final/partial files.
+      responses:
+        '200':
+          description: Returns id, removed=true, local_files_kept=true and remote_files_kept=true.
+        '400': *id003
+  /api/v1/uploads/{id}/pause:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: pauseUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+  /api/v1/uploads/{id}/resume:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: resumeUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+  /api/v1/remote/list:
+    post:
+      operationId: listRemoteFiles
+      description: Read a bounded FTP/explicit-FTPS/SFTP directory through a selected application gateway.
+        Requires MLSD or supported Unix LIST for FTP; Unicode FTP paths require UTF-8 support. Does not upload
+        or remove files.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteListRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteListing'
+        '400': *id003
+  /api/v1/archives/preview:
+    post:
+      operationId: previewArchive
+      description: 'List remote ZIP/TAR/7Z/RAR4/RAR5 metadata without extraction or execution. Requires selected
+        gateway, byte ranges and stable ETag or Last-Modified. Limits: 16 MiB fetched metadata, 10000 entries,
+        60 seconds; 7z header memory 64 MiB. Truncation is explicit. Encrypted RAR headers are unsupported/password-required;
+        archive passwords are not persisted. This is a listing, not content integrity verification.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchivePreviewRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchivePreview'
+        '400': *id003
+  /api/v1/browser/status:
+    parameters:
+    - &id004
+      name: Origin
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl
+    get:
+      operationId: statusFromBrowserExtension
+      description: Opt-in bridge reserved for the bundled fixed-ID Chrome/Edge extension. Disabled by default;
+        exact Origin is mandatory. Only this scoped bridge permits extension CORS. Ordinary local API browser-origin
+        guards are unchanged. The desktop application must already be running; a headless-only controller has
+        no graphical receiver.
+      responses:
+        '200':
+          description: Application/version/ready state.
+        '403':
+          description: Disabled bridge or different/missing extension origin.
+        '503':
+          description: No live desktop receiver.
+    options:
+      description: Scoped preflight for the fixed extension origin; only GET/POST and Content-Type are allowed.
+      responses:
+        '204':
+          description: Allowed preflight.
+        '403':
+          description: Origin, method or requested headers are not allowed.
+  /api/v1/browser/download:
+    parameters:
+    - *id004
+    post:
+      operationId: downloadFromBrowserExtension
+      description: Opt-in bridge reserved for the bundled fixed-ID Chrome/Edge extension. Disabled by default;
+        exact Origin is mandatory. Only this scoped bridge permits extension CORS. Ordinary local API browser-origin
+        guards are unchanged. The desktop application must already be running; a headless-only controller has
+        no graphical receiver.
+      responses:
+        '202':
+          description: URL delivered to the desktop flow, accepted=true; not proof of completed download.
+        '403':
+          description: Disabled bridge or different/missing extension origin.
+        '503':
+          description: No live desktop receiver.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrowserLink'
+    options:
+      description: Scoped preflight for the fixed extension origin; only GET/POST and Content-Type are allowed.
+      responses:
+        '204':
+          description: Allowed preflight.
+        '403':
+          description: Origin, method or requested headers are not allowed.
 components:
   parameters:
     JobId:
@@ -909,6 +1157,11 @@ components:
         last_error:
           type: string
           readOnly: true
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
     RouteMetrics:
       allOf:
       - $ref: '#/components/schemas/Route'
@@ -989,14 +1242,14 @@ components:
         expected_md5:
           type: string
           pattern: ^$|^[a-fA-F0-9]{32}$
-          description: Optional expected whole-file MD5. It detects accidental corruption and does not
-            replace strong source identity, mirror trust or BitTorrent piece verification. Manual whole-file
-            checksums require exactly one selected file.
+          description: Optional expected whole-file MD5. It detects accidental corruption and does not replace
+            strong source identity, mirror trust or BitTorrent piece verification. Manual whole-file checksums
+            require exactly one selected file.
         expected_sha512:
           type: string
           pattern: ^$|^[a-fA-F0-9]{128}$
-          description: Optional expected whole-file SHA-512. Every supplied or discovered checksum must
-            match before publishing the completed file. Legacy expected_sha256 remains supported.
+          description: Optional expected whole-file SHA-512. Every supplied or discovered checksum must match
+            before publishing the completed file. Legacy expected_sha256 remains supported.
         url:
           type: string
           description: HTTP/HTTPS/FTP/explicit FTPS/SFTP file, webdavs:// source, HTTPS Metalink, Hugging Face,
@@ -1101,6 +1354,11 @@ components:
           exclusiveMinimum: true
           maximum: 100
           default: 1.0
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
     CreateSourceDownload:
       allOf:
       - $ref: '#/components/schemas/CreateJob'
@@ -1285,7 +1543,13 @@ components:
               type: string
     DownloadLifecycleEvent:
       type: object
-      required: [event_id, job_id, kind, time, filename, path]
+      required:
+      - event_id
+      - job_id
+      - kind
+      - time
+      - filename
+      - path
       properties:
         event_id:
           type: string
@@ -1295,7 +1559,13 @@ components:
           pattern: ^[a-f0-9]{12}$
         kind:
           type: string
-          enum: [started, resumed, paused, completed, recovered, failed]
+          enum:
+          - started
+          - resumed
+          - paused
+          - completed
+          - recovered
+          - failed
         time:
           type: string
           format: date-time
@@ -1313,7 +1583,10 @@ components:
           description: Absolute selected-file destination paths for a torrent job, when present.
         reason:
           type: string
-          enum: [pause, shutdown, maintenance]
+          enum:
+          - pause
+          - shutdown
+          - maintenance
           description: Optional pause reason.
       additionalProperties: false
     Job:
@@ -1327,7 +1600,8 @@ components:
         first_started_at:
           type: string
           format: date-time
-          description: First observed execution start in ISO 8601 UTC. Absent before execution or when an old job has no observed original start.
+          description: First observed execution start in ISO 8601 UTC. Absent before execution or when an old
+            job has no observed original start.
         last_resumed_at:
           type: string
           format: date-time
@@ -1335,11 +1609,13 @@ components:
         completed_at:
           type: string
           format: date-time
-          description: Observed successful completion after verification and publication. Recovery of an older published file does not invent this timestamp.
+          description: Observed successful completion after verification and publication. Recovery of an older
+            published file does not invent this timestamp.
         lifecycle_history:
           type: array
           readOnly: true
-          description: Persisted observed lifecycle events for this job. Queued jobs have no execution-start event yet; historical timestamps of legacy jobs are never guessed.
+          description: Persisted observed lifecycle events for this job. Queued jobs have no execution-start
+            event yet; historical timestamps of legacy jobs are never guessed.
           items:
             $ref: '#/components/schemas/DownloadLifecycleEvent'
         expected_md5:
@@ -1351,17 +1627,17 @@ components:
         md5:
           type: string
           pattern: ^$|^[a-f0-9]{32}$
-          description: Calculated local whole-file MD5; empty before calculation. Calculation alone is
-            distinct from comparison with a publisher or manual reference.
+          description: Calculated local whole-file MD5; empty before calculation. Calculation alone is distinct
+            from comparison with a publisher or manual reference.
         sha512:
           type: string
           pattern: ^$|^[a-f0-9]{128}$
-          description: Calculated local whole-file SHA-512; empty before calculation. Multiple selected
-            torrent files expose their individual values in files.
+          description: Calculated local whole-file SHA-512; empty before calculation. Multiple selected torrent
+            files expose their individual values in files.
         checksum_sources:
           type: object
-          description: Reference provenance per algorithm. Only algorithms with a known reference appear;
-            a calculated local hash without a reference does not receive a publisher source label.
+          description: Reference provenance per algorithm. Only algorithms with a known reference appear; a
+            calculated local hash without a reference does not receive a publisher source label.
           additionalProperties:
             type: string
           properties:
@@ -1373,9 +1649,9 @@ components:
               type: string
         checksum_warnings:
           type: object
-          description: Optional reference lookup warnings keyed by algorithm, replaced on each metadata
-            probe. A missing reference is never reported as a successful publisher comparison. Supplied
-            references still must match, and published conflicts remain fatal.
+          description: Optional reference lookup warnings keyed by algorithm, replaced on each metadata probe.
+            A missing reference is never reported as a successful publisher comparison. Supplied references
+            still must match, and published conflicts remain fatal.
           additionalProperties:
             type: string
           properties:
@@ -1596,6 +1872,11 @@ components:
             format: uri
           description: Trusted alternative file URLs; requires expected_sha256. Publisher Metalink provides
             these automatically.
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
     QueueOptions:
       type: object
       additionalProperties: false
@@ -1932,3 +2213,430 @@ components:
         host_key_sha256:
           type: string
       description: No password, token, username, cookie or custom header values are returned.
+    SiteProfileInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Omit to create; provide the existing UUID to edit.
+        name:
+          type: string
+          description: Required when creating a new profile.
+        base_url:
+          type: string
+          description: Absolute HTTP/HTTPS/webdavs/FTP/FTPS/SFTP base URL without userinfo, query or fragment.
+            Relative transfer URLs are resolved as children of this base.
+        download_directory:
+          type: string
+          description: Absolute local download folder, or empty.
+        remote_directory:
+          type: string
+          description: Optional remote folder default.
+        gateways:
+          type: array
+          maxItems: 32
+          uniqueItems: true
+          items:
+            type: string
+            format: ipv4
+        type:
+          type: string
+          enum: &id005
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          default: none
+        auth_type:
+          type: string
+          enum: *id005
+          description: Alias used when type is omitted.
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          writeOnly: true
+        cookie:
+          type: string
+          writeOnly: true
+        headers:
+          type: object
+          minProperties: 1
+          maxProperties: 5
+          additionalProperties:
+            type: string
+            writeOnly: true
+          description: Only authorization, cookie, referer, x-api-key, x-auth-token; no control characters.
+          writeOnly: true
+        host_key_sha256:
+          type: string
+          pattern: ^SHA256:[A-Za-z0-9+/]{43}=?$
+          description: SFTP requires a fingerprint verified independently; mismatching host keys are rejected.
+        replace_credentials:
+          type: boolean
+          default: false
+          description: For same-origin/same-type edits, blank or omitted secret fields keep old credentials.
+            True replaces the complete set; required credential fields must then be supplied.
+    SiteProfile:
+      type: object
+      required:
+      - id
+      - name
+      - base_url
+      - origin
+      - type
+      - credentials_configured
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Omit to create; provide the existing UUID to edit.
+        name:
+          type: string
+          description: Required when creating a new profile.
+        base_url:
+          type: string
+          description: Absolute HTTP/HTTPS/webdavs/FTP/FTPS/SFTP base URL without userinfo, query or fragment.
+            Relative transfer URLs are resolved as children of this base.
+        download_directory:
+          type: string
+          description: Absolute local download folder, or empty.
+        remote_directory:
+          type: string
+          description: Optional remote folder default.
+        gateways:
+          type: array
+          maxItems: 32
+          uniqueItems: true
+          items:
+            type: string
+            format: ipv4
+        type:
+          type: string
+          enum:
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          default: none
+        auth_type:
+          type: string
+          enum:
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          description: Alias used when type is omitted.
+        origin:
+          type: string
+          description: Canonical origin, including effective scheme/port.
+        credentials_configured:
+          type: boolean
+        host_key_sha256:
+          type: string
+          description: Previously verified SFTP host-key fingerprint; not a password.
+    SiteProfiles:
+      type: object
+      required:
+      - profiles
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/SiteProfile'
+    RemoteListRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: Absolute remote URL, or relative to a selected site profile base.
+        route:
+          $ref: '#/components/schemas/Route'
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
+    RemoteEntry:
+      type: object
+      required:
+      - name
+      - path
+      - url
+      - directory
+      - size
+      - modified
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        url:
+          type: string
+        directory:
+          type: boolean
+        size:
+          type: integer
+          format: int64
+        modified:
+          type: string
+    RemoteListing:
+      type: object
+      required:
+      - url
+      - entries
+      properties:
+        url:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteEntry'
+    CreateUpload:
+      type: object
+      required:
+      - local_path
+      - target_url
+      properties:
+        local_path:
+          type: string
+          description: Absolute path of an existing regular local file. The file must not change while uploading.
+        target_url:
+          type: string
+          description: Complete remote FTP/explicit-FTPS/SFTP file URL; a directory URL is insufficient. Relative
+            paths use the selected profile base.
+        routes:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            $ref: '#/components/schemas/Route'
+          description: At least one enabled type=gateway route is required after applying profile defaults.
+            May be omitted when the selected profile supplies gateways. One file uses one gateway at a time;
+            independent files run in parallel.
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
+        overwrite:
+          type: boolean
+          default: false
+          description: Opt-in replacement. Server protocols do not universally provide atomic no-replace publication
+            against external clients.
+    Upload:
+      type: object
+      required:
+      - id
+      - filename
+      - local_path
+      - target_url
+      - status
+      - size
+      - uploaded_bytes
+      - speed_bps
+      - elapsed_ms
+      - eta_seconds
+      - routes
+      properties:
+        id:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+        filename:
+          type: string
+        local_path:
+          type: string
+        target_url:
+          type: string
+        remote_filename:
+          type: string
+        status:
+          type: string
+          description: Queued, transfer, verification, pause, failure or completion state.
+        size:
+          type: integer
+          format: int64
+        uploaded_bytes:
+          type: integer
+          format: int64
+        speed_bps:
+          type: integer
+          format: int64
+          description: Current bytes per second, not bits per second.
+        elapsed_ms:
+          type: integer
+          format: int64
+        eta_seconds:
+          type: integer
+          format: int64
+          description: -1 while unknown.
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+        overwrite:
+          type: boolean
+        error:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_resumed_at:
+          type: string
+          format: date-time
+        paused_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        sha256:
+          type: string
+          pattern: ^[a-fA-F0-9]{64}$
+        verified:
+          type: boolean
+        verification:
+          type: string
+          description: sha256-readback after full remote verification.
+        first_started_at:
+          type: string
+          format: date-time
+    Uploads:
+      type: object
+      required:
+      - uploads
+      properties:
+        uploads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Upload'
+    ArchivePreviewRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: Absolute remote URL, or relative to a selected site profile base.
+        route:
+          $ref: '#/components/schemas/Route'
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no
+            global credential fallback for a selected profile.
+        password:
+          type: string
+          maxLength: 1024
+          writeOnly: true
+          description: Optional supported encrypted-header password. Not persisted.
+        charset:
+          type: string
+          description: Optional original filename charset; default UTF-8.
+    ArchiveEntry:
+      type: object
+      required:
+      - name
+      - path
+      - size
+      - compressed_size
+      - directory
+      - encrypted
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        size:
+          type: integer
+          format: int64
+          description: -1 when unknown.
+        compressed_size:
+          type: integer
+          format: int64
+          description: -1 when unknown.
+        directory:
+          type: boolean
+        encrypted:
+          type: boolean
+    ArchivePreview:
+      type: object
+      required:
+      - url
+      - format
+      - entries
+      - metadata_budget_bytes
+      - bytes_fetched
+      - truncated
+      - range_supported
+      properties:
+        url:
+          type: string
+        format:
+          type: string
+          enum:
+          - ''
+          - ZIP
+          - TAR
+          - 7Z
+          - RAR4
+          - RAR5
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArchiveEntry'
+        metadata_budget_bytes:
+          type: integer
+          enum:
+          - 16777216
+        bytes_fetched:
+          type: integer
+          format: int64
+        truncated:
+          type: boolean
+        range_supported:
+          type: boolean
+        password_required:
+          type: boolean
+        message:
+          type: string
+    BrowserLink:
+      type: object
+      additionalProperties: false
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          maxLength: 16384
+          description: One explicit HTTP(S)/FTP/FTPS/SFTP/webdavs/magnet link without embedded credentials
+            or fragment. No cookies, headers or arbitrary job options.

@@ -1,8 +1,8 @@
-# MultiRoute Resume 4.0 — English guide
+# MultiRoute Downloader 4.0 — English guide
 
-**English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md)
+**English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
-MultiRoute Resume is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
+MultiRoute Downloader is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
 
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -16,7 +16,7 @@ If your network has several independent Internet connections, such as a fixed br
 
 The speed gain depends on independent upstream capacity and source-server limits. Resuming and reassigning segments require a source and protocol that support safe resumption.
 
-**Portable ZIP 3.0 only:** download the package for your platform from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases) and extract **the entire package**. Keep the JAR, libraries, launchers and native files together. GitHub's “Source code” archive contains source files: build it first or use a ready-to-run release. The deployment scripts report missing application binaries before downloading prerequisites.
+**Portable ZIP 3.0 only:** download the package for your platform from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases) and extract **the entire package**. Keep the JAR, libraries, launchers and native files together. GitHub's “Source code” archive contains source files: build it first or use a ready-to-run release. The deployment scripts report missing application binaries before downloading prerequisites.
 
 ## Screenshots
 
@@ -66,20 +66,20 @@ The selected language also needs installed fonts covering its script. On minimal
 
 ## Native installers 4.0: Windows and macOS
 
-Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
+Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` | **MultiRoute Downloader** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0-macOS-arm64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.0-macOS-x86_64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
 
-The nine language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md` or `it.md` in a text or Markdown viewer.
+The twelve language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` or `vi.md` in a text or Markdown viewer.
 
 ### Windows: install and open the application
 
 1. Download the `.exe` and check it against the release's published SHA-256. Open it and follow the installation wizard. Installation is for your user account; select the offered shortcut options.
-2. Open **MultiRoute Resume** from the Start menu or shortcut. It opens as a normal desktop application, without a command window. Java is included; you do not need to install Java separately.
+2. Open **MultiRoute Downloader** from the Start menu or shortcut. It opens as a normal desktop application, without a command window. Java is included; you do not need to install Java separately.
 3. The application checks Npcap. If the driver is missing, approve its download in the application. It obtains the fixed official installer, verifies SHA-256 and its Authenticode publisher, then opens Npcap's normal installer. Read the licence and approve its Windows UAC request. If a restart is required, restart Windows and open MultiRoute again. Npcap is a separate driver, **not embedded or silently installed**; Internet is needed for this step when Npcap is missing.
 
 The application and installer are not publisher-signed. SmartScreen may identify an unknown publisher: verify the official release and file before deciding whether to use **More info → Run anyway**, if that option is offered. A malware detection is a different case. Do not disable antivirus or create an exception as an installation step. An AdminOnly Npcap installation can require another capture-authorization prompt. Open the Java application normally, rather than running the whole application as administrator.
@@ -88,7 +88,7 @@ The application and installer are not publisher-signed. SmartScreen may identify
 
 1. Use the `.pkg` matching the **native** processor: arm64 for Apple Silicon, x86_64 for Intel. The new packages require macOS **26+ on Apple Silicon** or **15+ on Intel**, including torrent/magnet support. The older portable HTTP-only minimum does not apply to these packages.
 2. Download the `.pkg`, check the published SHA-256 and open it in Apple's Installer. Confirm installation and the administrator authorization for placing the protected network component.
-3. Open **`/Applications/MultiRoute Resume.app`** in Finder or Spotlight. You can add its icon to the Dock. Java and the compiled network component are included: **Terminal, Command Line Tools, Homebrew and a separate Java installation are not required** for this package.
+3. Open **`/Applications/MultiRoute Downloader.app`** in Finder or Spotlight. You can add its icon to the Dock. Java and the compiled network component are included: **Terminal, Command Line Tools, Homebrew and a separate Java installation are not required** for this package.
 4. When requested, confirm the standard macOS administrator dialog so the protected component can open the Ethernet BPF device. It drops privileges after opening capture devices; the Java window runs under your normal user. No Terminal session is needed during operation.
 
 #### macOS security confirmations for the native package
@@ -197,7 +197,7 @@ Speed tests transfer up to **16 MiB or 5 seconds**; connection preparation can t
 
 ## 4. Download, resume and manage
 
-1. New profiles use **English**. The language selector also offers Russian, German, Spanish, French, Chinese, Korean, Arabic and Italian; saved preferences are preserved.
+1. New profiles use **English**. The language selector also offers Russian, German, Spanish, French, Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese; saved preferences are preserved.
 2. Paste a URL in the long field with **Ctrl+V**, or **Cmd+V** on macOS. A paste button is also available. You can enter a magnet link or open a `.torrent` file.
 3. Choose the download folder through your OS folder picker. New profiles initially use your user's `Downloads` folder; confirm the actual saved destination.
 4. Select gateways and click **Start download** beside the URL. For a Hugging Face repository, WebDAV listing or Metalink, preview and select the files.
@@ -270,8 +270,8 @@ Set network configuration in the window or with `POST /network` first. See the e
 
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
-| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
+| Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, with Java included | Included x64 component; Npcap installed separately |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -281,7 +281,7 @@ Close the application before updating with a new installer. Windows removal uses
 | --- | --- | --- | --- |
 | Windows | `data/` under the launch folder, unless overridden by `data-location.config` or `--data-dir` | `runtime/` in the application folder | `native/windows-x64/gateway-net.exe` in the package; Npcap is a separately installed driver |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/runtime` | `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `~/Library/Application Support/MultiRoute Resume/runtime` | `/Library/PrivilegedHelperTools/MultiRouteResume/3.0/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `~/Library/Application Support/MultiRoute Downloader/runtime` | `/Library/PrivilegedHelperTools/MultiRouteResume/3.0/gateway-net` |
 
 Downloads are in the destination you select, which may be outside these folders. Linux's menu entry is `~/.local/share/applications/MultiRouteResume.desktop`; macOS's application is `~/Applications/MultiRoute Resume.app`.
 
@@ -376,8 +376,40 @@ The application retains all download protocols, selectable gateways, the virtual
 
 The data folder contains `logs/downloads-history.jsonl` (UTF-8, one JSON object per line) and `logs/downloads-history.log` (readable dated entries). They are appended across restarts and retained when a job is removed; removing a job or its downloaded files does not erase this audit history. The human log keeps the language used when an event was written; the UI renders stored events in the currently selected language. The log window reads only a bounded tail of up to 1,000 events / 2 MiB; the complete journal stays on disk. It grows with use, so archive it separately when needed. Names and full destination paths are retained; source URLs, passwords and access tokens are not included in these lifecycle events. Review paths before sharing a log.
 
-Native Windows: `%LOCALAPPDATA%\MultiRoute Resume\data\logs\`. Native macOS: `~/Library/Application Support/MultiRoute Resume/data/logs/`. Linux/portable profiles use the data folder described above; `--data-dir` selects another folder.
+Native Windows: `%LOCALAPPDATA%\MultiRoute Downloader\data\logs\`. Native macOS: `~/Library/Application Support/MultiRoute Downloader/data/logs/`. Linux/portable profiles use the data folder described above; `--data-dir` selects another folder.
 
 `GET /api/v1/jobs` and an individual job response expose `lifecycle_history`. Each entry has `event_id`, `job_id`, `kind`, `time`, `filename` and `path`; torrent entries may also have `paths`, and pause entries may have `reason`. Kinds are `started`, `resumed`, `paused`, `completed`, `recovered` and `failed`. Timestamps use ISO 8601 UTC (for example `2026-10-18T12:34:56.123Z`); readable logs include a full local date, time and UTC offset. Optional `first_started_at`, `last_resumed_at` and `completed_at` summarize observed events. Queued jobs have no start date until execution actually begins; completion is recorded after verification and publication. `recovered` means a previously published file was verified now, not that its original completion time is known. Existing jobs are not assigned guessed historical dates. All existing API operations remain available; no separate history endpoint is required.
 
 The global **Log** window separates **Application events** from **Download history**. Use the history tab to review dated events across jobs, including removed jobs; the selected download’s History tab shows only that job.
+
+## Name and existing profiles
+
+MultiRoute Downloader was previously named MultiRoute Resume. Fresh profiles use the new data paths above. If no new-name data folder exists and an earlier MultiRoute Resume profile is available, the application reuses that saved profile without moving or deleting its files. Previous Windows data can remain at `%LOCALAPPDATA%\MultiRoute Resume\data` and macOS data at `~/Library/Application Support/MultiRoute Resume/data`. The protected `MultiRouteResume` helper directory, Windows upgrade identifier, internal API identity and port are retained for compatibility. After installing, use the MultiRoute Downloader shortcut or `.app`. Previous release assets keep their original filenames.
+
+## Saved sites, uploads and archive previews (4.0)
+
+Open **Site profiles…** to create/edit a profile, then choose it in the site selector on **Downloads** or **Uploads**. Network and virtual-IP controls are on **Network settings**. On **Uploads**, enter the remote **folder URL** and use **Choose files and upload…** to choose one or several local files with the system picker. The UI appends each filename; the API `target_url` below instead names one complete remote file. Paste an archive URL into the main URL field and click **Archive contents…**; the preview lists metadata without starting a download.
+
+Save a site profile with a name, base URL, local download folder, remote folder and selected gateways. Profiles support anonymous access, HTTP Basic/Bearer/Cookie/custom headers, FTP credentials and SFTP credentials with a previously verified SHA-256 host key. Several profiles may use the same server with different accounts. Selecting a profile supplies its folders, gateways and credentials; explicit request settings can override folder/gateway defaults. Relative download or upload URLs are resolved against the profile base URL. Secrets are encrypted in the owner-only `site-profiles/vault.bin` using the local `site-profiles/key.bin`; this protects storage from casual inspection, not from someone controlling your account and its key. Public API responses omit credentials. Blank credential fields retain saved credentials only when the origin and authentication type are unchanged; `replace_credentials:true` deliberately replaces them. A foreign HTTP redirect never receives the profile credentials. Deleting a profile leaves jobs and local/remote files intact; a dependent task retains its original profile binding and cannot switch accounts in place; recreate the task with a valid profile if the original profile was removed.
+
+Uploads and remote directory browsing support **FTP, explicit FTPS and SFTP** through selected application gateways. Select a regular local file and a full remote file URL (`target_url`); a directory URL alone is insufficient. Uploads use a temporary remote file and can continue from a verified matching prefix. Completion requires a full remote SHA-256 readback: the account needs remote **read, write and rename** permissions. Reading the uploaded file again consumes bandwidth. A readback mismatch or denied read permission is an error, not successful completion. Each file uses one gateway at a time; independent files run in parallel and are distributed over the selected gateways. A stopped gateway can be replaced by another selected gateway after the idle limit. This is not parallel splitting of one upload across gateways. Pause/resume and progress are retained across restarts. Removing an upload task preserves both the local file and remote final/partial files.
+
+Overwrite is off by default. Enable it only when replacing the remote destination is intended. Standard FTP/SFTP servers do not universally provide an atomic “rename only if destination is absent”; an external client changing the same target can race the final rename. Coordinate shared remote destinations. Directory browsing does not upload or delete files.
+
+Archive preview lists names, paths, sizes, directory flags and encryption flags for remote **ZIP, TAR, 7Z, RAR4 and RAR5** archives without extraction or execution. It requires a selected gateway, byte-range support and a stable ETag or Last-Modified validator. The metadata budget is 16 MiB, at most 10,000 entries and 60 seconds; 7z header decoding is limited to 64 MiB of memory. The preview can be truncated and is not an integrity check of archive contents. Supply the original filename charset if decoding fails. A password may be used for supported encrypted 7z headers; it is not persisted. Encrypted RAR headers are reported as unsupported/password-required. Split volumes and unsupported/encrypted headers may produce an incomplete listing.
+
+The local API accepts `site_profile_id` for downloads, uploads, remote listings and archive previews. `GET /api/v1/site-profiles` returns `{profiles:[...]}`; `POST` (or `PUT`) saves a flat profile object and returns public metadata. `DELETE /api/v1/site-profiles/{id}` removes only that profile. `POST /api/v1/uploads` accepts `local_path`, `target_url`, `routes`, optional `site_profile_id` and `overwrite:false`; it returns HTTP 201. `GET /api/v1/uploads` returns `{uploads:[...]}`. Individual GET/DELETE and POST `/{id}/pause` / `/{id}/resume` operate on uploads. `POST /api/v1/remote/list` takes `url` and `route`/`routes`; `POST /api/v1/archives/preview` also accepts optional `password` and `charset`. See [openapi.yaml](../openapi.yaml) for typed schemas. Upload manifests are UTF-8 files under `data/uploads/`; they reference a profile ID, not a password. Archive previews do not create a download job.
+
+## Download scheduling and priority
+
+Use the queue/schedule controls to set `max_active_jobs` (1–32), global or gateway speed limits and a daily download window (`schedule_enabled`, `schedule_start`, `schedule_end`, HH:mm). Times use the computer’s local timezone, also reported as `schedule_timezone`; a window may cross midnight, and equal start/end means all day. Outside the enabled window, downloads return to the queue and continue when allowed. A manually paused job remains paused. In a selected download’s priority/schedule settings, `priority` ranges from -100 to 100: higher queued jobs start first; equal priorities use creation order. Changing priority does not interrupt an already active download. `start_after_ms` is an optional earliest Unix-epoch start time in milliseconds; 0 removes the one-time delay. These settings persist across restarts. They govern the download queue, not the independent upload queue. Keep the application running (the tray is sufficient) and the computer awake; this is not an OS wake-up scheduler. The existing `GET`/`PUT`/`POST /api/v1/queue` and `PUT`/`POST /api/v1/jobs/{id}/options` expose the same controls.
+
+## Chrome and Edge integration
+
+Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](../browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.0-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
+
+Keep MultiRoute running, including in the tray. Right-click a link and choose the MultiRoute download action, or use the extension popup to send a URL. The desktop uses the currently selected folder, gateways and site profile; repository/torrent choices still appear when needed. The popup port defaults to 8765; set it to the application’s actual local API port if changed. Only the URL is sent: browser cookies/passwords are not copied and ordinary browser downloads are not intercepted. Configure required source access in the application. If the browser requests permission for the local connection, approve it only for this chosen extension.
+
+The bridge is off by default and accepts only this extension’s fixed origin `chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl` at `/api/v1/browser/status` and `/api/v1/browser/download`; other local API browser-origin rules remain unchanged. HTTP 202 means the URL reached the desktop flow, not that a file completed. A headless server alone cannot open the required desktop selection flow. Remove the extension on the browser’s extensions page or disable its desktop integration to stop link delivery.
+
+[Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world) · [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).

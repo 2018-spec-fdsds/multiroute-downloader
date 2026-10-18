@@ -33,7 +33,17 @@ public final class SourceAuth {
         return result;
     }
     public static synchronized Map<String,Object> save(Map<String,Object> input) throws IOException {
-        load(); String origin = origin(text(input,"origin",true));
+        load(); Map<String,Object> value=validateCredentials(input);
+        String origin=(String)value.get("origin");
+        Map<String,Object> prior=entries.get(origin);
+        value.put("id",prior==null?UUID.randomUUID().toString():prior.get("id"));
+        if (prior==null && entries.size()>=128) throw new IOException("Too many saved source credentials");
+        Map<String,Map<String,Object>> updated=new LinkedHashMap<>(entries); updated.put(origin,value);
+        persist(updated); entries.clear();entries.putAll(updated); return publicEntry(value);
+    }
+    /** Validation only: site profiles reuse the protocol rules without altering the global vault. */
+    static Map<String,Object> validateCredentials(Map<String,Object> input) throws IOException {
+        String origin = origin(text(input,"origin",true));
         String type = text(input,"type",true).toLowerCase(Locale.ROOT);
         if (!Set.of("basic","bearer","cookie","headers","sftp","ftp").contains(type))
             throw new IOException("Unsupported source authentication type");
@@ -44,8 +54,6 @@ public final class SourceAuth {
         if (!Set.of("sftp","ftp").contains(type) && !Set.of("http","https").contains(scheme))
             throw new IOException("HTTP credentials require an HTTP or HTTPS origin");
         Map<String,Object> value = new LinkedHashMap<>();
-        Map<String,Object> prior = entries.get(origin);
-        value.put("id", prior == null ? UUID.randomUUID().toString() : prior.get("id"));
         value.put("origin",origin); value.put("type",type);
         value.put("name",text(input,"name",false));
         if (Set.of("basic","sftp","ftp").contains(type)) {
@@ -76,9 +84,7 @@ public final class SourceAuth {
             catch (IllegalArgumentException error) { throw new IOException("Invalid SSH host-key fingerprint"); }
             value.put("host_key_sha256",fingerprint.replaceAll("=+$",""));
         }
-        if (prior==null && entries.size()>=128) throw new IOException("Too many saved source credentials");
-        Map<String,Map<String,Object>> updated=new LinkedHashMap<>(entries); updated.put(origin,value);
-        persist(updated); entries.clear();entries.putAll(updated); return publicEntry(value);
+        return value;
     }
     public static synchronized void delete(String id) throws IOException {
         load(); Map<String,Map<String,Object>> updated=new LinkedHashMap<>(entries);
@@ -88,10 +94,22 @@ public final class SourceAuth {
     }
     static synchronized Map<String,Object> forUri(URI uri) throws IOException {
         load(); Map<String,Object> value=entries.get(origin(uri.toString()));
-        return value==null ? Map.of() : new LinkedHashMap<>(value);
+        return value==null ? Map.of() : credentialCopy(value);
+    }
+    static Map<String,Object> forUri(URI uri, Map<String,Object> route) throws IOException {
+        Object profile=route==null?null:route.get("site_profile_id");
+        if (profile instanceof String id && !id.isBlank()) return SiteProfiles.authFor(id,uri);
+        if (profile!=null && !(profile instanceof String)) throw new IOException("Invalid site profile identifier");
+        return forUri(uri);
     }
     static void apply(HttpRequest.Builder request, URI uri) throws IOException {
-        Map<String,Object> value=forUri(uri); String type=(String)value.getOrDefault("type","");
+        applyCredentials(request,forUri(uri));
+    }
+    static void apply(HttpRequest.Builder request, URI uri, Map<String,Object> route) throws IOException {
+        applyCredentials(request,forUri(uri,route));
+    }
+    private static void applyCredentials(HttpRequest.Builder request, Map<String,Object> value) throws IOException {
+        String type=(String)value.getOrDefault("type","");
         switch (type) {
             case "basic" -> request.header("Authorization","Basic "+Base64.getEncoder().encodeToString(
                     (value.get("username")+":"+value.get("password")).getBytes(StandardCharsets.UTF_8)));
@@ -100,6 +118,11 @@ public final class SourceAuth {
             case "headers" -> { for (var entry:((Map<String,Object>)value.get("headers")).entrySet()) request.header(entry.getKey(),headerText((String)entry.getValue())); }
             default -> { }
         }
+    }
+    static Map<String,Object> credentialCopy(Map<String,Object> value) {
+        Map<String,Object> result=new LinkedHashMap<>(value);
+        if(value.get("headers") instanceof Map<?,?> headers)result.put("headers",new LinkedHashMap<>(headers));
+        return result;
     }
     public static boolean hasCredentials(String url) throws IOException { return !forUri(URI.create(url)).isEmpty(); }
     public static String origin(String value) throws IOException {
@@ -158,17 +181,17 @@ public final class SourceAuth {
             Arrays.fill(keyBytes,(byte)0);
         }catch(Exception error){throw new IOException("Cannot save the protected source credential store");}
     }
-    private static void writePrivate(Path file,byte[] bytes,boolean replace)throws IOException {
+    static void writePrivate(Path file,byte[] bytes,boolean replace)throws IOException {
         Set<PosixFilePermission> permissions=PosixFilePermissions.fromString("rw-------");
         if(Files.getFileStore(file.getParent()).supportsFileAttributeView("posix"))Files.createFile(file,PosixFilePermissions.asFileAttribute(permissions));
         else Files.createFile(file);
         privateAccess(file,false);Files.write(file,bytes,StandardOpenOption.WRITE);
     }
-    private static void checkFile(Path file,long max)throws IOException {
+    static void checkFile(Path file,long max)throws IOException {
         if(!Files.isRegularFile(file,LinkOption.NOFOLLOW_LINKS)||Files.isSymbolicLink(file)||Files.size(file)>max)throw new IOException();
         privateAccess(file,false);
     }
-    private static void privateAccess(Path path,boolean dir)throws IOException {
+    static void privateAccess(Path path,boolean dir)throws IOException {
         PosixFileAttributeView posix=Files.getFileAttributeView(path,PosixFileAttributeView.class,LinkOption.NOFOLLOW_LINKS);
         if(posix!=null){posix.setPermissions(PosixFilePermissions.fromString(dir?"rwx------":"rw-------"));return;}
         AclFileAttributeView acl=Files.getFileAttributeView(path,AclFileAttributeView.class,LinkOption.NOFOLLOW_LINKS);

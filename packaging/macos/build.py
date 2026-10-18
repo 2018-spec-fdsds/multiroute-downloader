@@ -20,7 +20,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
-APP_NAME = "MultiRoute Resume"
+APP_NAME = "MultiRoute Downloader"
 BUNDLE_ID = "local.multiroute.resume"
 REQUIRED_MODULES = {"java.base", "java.desktop", "java.net.http", "java.xml", "jdk.httpserver"}
 
@@ -80,15 +80,18 @@ def script_templates(destination: Path, version: str, digest: str, launcher_dige
 
 def localize_network_prompt(contents: Path) -> None:
     values = {
-        "en": "MultiRoute Resume connects to your selected local gateways and downloads through them without changing system routes.",
-        "ru": "MultiRoute Resume подключается к выбранным шлюзам локальной сети и скачивает через них, не меняя системные маршруты.",
-        "de": "MultiRoute Resume verbindet sich mit Ihren gewählten lokalen Gateways und lädt über sie herunter, ohne Systemrouten zu ändern.",
-        "es": "MultiRoute Resume se conecta a las puertas de enlace locales seleccionadas y descarga a través de ellas sin cambiar las rutas del sistema.",
-        "fr": "MultiRoute Resume se connecte aux passerelles locales sélectionnées et télécharge via celles-ci sans modifier les routes du système.",
-        "zh-Hans": "MultiRoute Resume 连接到您选择的本地网关，通过这些网关下载文件，不会更改系统路由。",
-        "ko": "MultiRoute Resume는 선택한 로컬 게이트웨이에 연결하여 시스템 경로를 변경하지 않고 파일을 다운로드합니다.",
-        "ar": "يتصل MultiRoute Resume ببوابات الشبكة المحلية التي تختارها وينزّل الملفات عبرها دون تغيير مسارات النظام.",
-        "it": "MultiRoute Resume si collega ai gateway locali selezionati e scarica tramite essi senza modificare le route di sistema.",
+        "en": "MultiRoute Downloader connects to your selected local gateways and downloads through them without changing system routes.",
+        "ru": "MultiRoute Downloader подключается к выбранным шлюзам локальной сети и скачивает через них, не меняя системные маршруты.",
+        "de": "MultiRoute Downloader verbindet sich mit Ihren gewählten lokalen Gateways und lädt über sie herunter, ohne Systemrouten zu ändern.",
+        "es": "MultiRoute Downloader se conecta a las puertas de enlace locales seleccionadas y descarga a través de ellas sin cambiar las rutas del sistema.",
+        "fr": "MultiRoute Downloader se connecte aux passerelles locales sélectionnées et télécharge via celles-ci sans modifier les routes du système.",
+        "zh-Hans": "MultiRoute Downloader 连接到您选择的本地网关，通过这些网关下载文件，不会更改系统路由。",
+        "ko": "MultiRoute Downloader는 선택한 로컬 게이트웨이에 연결하여 시스템 경로를 변경하지 않고 파일을 다운로드합니다.",
+        "ar": "يتصل MultiRoute Downloader ببوابات الشبكة المحلية التي تختارها وينزّل الملفات عبرها دون تغيير مسارات النظام.",
+        "it": "MultiRoute Downloader si collega ai gateway locali selezionati e scarica tramite essi senza modificare le route di sistema.",
+        "ja": "MultiRoute Downloader は選択したローカルゲートウェイに接続してダウンロードします。システムの経路は変更しません。",
+        "hi": "MultiRoute Downloader चुने गए स्थानीय गेटवे से डाउनलोड करता है और सिस्टम के मार्ग नहीं बदलता।",
+        "vi": "MultiRoute Downloader kết nối các cổng mạng cục bộ đã chọn để tải xuống mà không thay đổi định tuyến hệ thống.",
     }
     for language, text in values.items():
         directory = contents / "Resources" / (language + ".lproj")
@@ -162,7 +165,7 @@ def main() -> None:
     minimum = "26.0" if architecture == "arm64" else "15.0"
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
-    output = args.output / f"MultiRoute-Resume-{version}-macOS-{architecture}.pkg"
+    output = args.output / f"MultiRoute-Downloader-{version}-macOS-{architecture}.pkg"
     if output.exists() or (args.output / (APP_NAME + ".app")).exists():
         parser.error("An installer already exists at the output path; use a fresh output directory.")
     run([sys.executable, ROOT / "scripts/build-java.py", "--javac", jdk / "bin/javac", "--platform", "macos"])
@@ -179,7 +182,7 @@ def main() -> None:
         (input_dir / "lib").mkdir(parents=True)
         for path in jars:
             shutil.copy2(path, input_dir / "lib" / path.name)
-        write_platform_jar(ROOT / "MultiRoute-Resume.jar", input_dir / "MultiRoute-Resume.jar", jars, version)
+        write_platform_jar(ROOT / "MultiRoute-Downloader.jar", input_dir / "MultiRoute-Downloader.jar", jars, version)
         documentation_names = ("README.md", "README.ru.md", "CHECKS.ru.md", "TEST-REPORT.json",
                                "DEPLOYMENT-TEST-REPORT.json", "native/source/BUILD-README.txt")
         for name in ("LICENSE.txt", "LICENSING.md", "THIRD-PARTY-NOTICES.txt", "API.ru.txt", "openapi.yaml", *documentation_names):
@@ -187,6 +190,8 @@ def main() -> None:
                 (input_dir / name).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / name, input_dir / name)
         shutil.copytree(ROOT / "docs", input_dir / "docs")
+        shutil.copytree(ROOT / "browser-extension", input_dir / "browser-extension")
+        browser_extension_hashes = {path.relative_to(ROOT).as_posix(): sha256(path) for path in sorted((ROOT / "browser-extension").rglob("*")) if path.is_file()}
         documentation_files = [ROOT / name for name in documentation_names]
         documentation_files.extend(path for path in sorted((ROOT / "docs").rglob("*")) if path.is_file())
         documentation_hashes = {path.relative_to(ROOT).as_posix(): sha256(path) for path in documentation_files}
@@ -201,7 +206,7 @@ def main() -> None:
         run([runtime / "bin/java", "--validate-modules"])
         images = stage / "images"
         run([jdk / "bin/jpackage", "--type", "app-image", "--name", APP_NAME,
-             "--input", input_dir, "--main-jar", "MultiRoute-Resume.jar", "--main-class", "multiroute.DesktopLauncher",
+             "--input", input_dir, "--main-jar", "MultiRoute-Downloader.jar", "--main-class", "multiroute.DesktopLauncher",
              "--runtime-image", runtime, "--dest", images, "--app-version", version,
              "--vendor", "2018-spec-fdsds", "--description", "Parallel resumable downloads through your selected LAN gateways",
              "--mac-package-identifier", BUNDLE_ID, "--mac-app-category", "public.app-category.utilities",
@@ -212,8 +217,8 @@ def main() -> None:
         with plist_path.open("rb") as stream:
             metadata = plistlib.load(stream)
         metadata["LSMinimumSystemVersion"] = minimum
-        metadata["NSLocalNetworkUsageDescription"] = "MultiRoute Resume uses your selected local Internet gateways without changing system routes."
-        metadata["CFBundleLocalizations"] = ["en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it"]
+        metadata["NSLocalNetworkUsageDescription"] = "MultiRoute Downloader uses your selected local Internet gateways without changing system routes."
+        metadata["CFBundleLocalizations"] = ["en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it", "ja", "hi", "vi"]
         metadata["MultiRouteProjectOwnerURL"] = owner_url
         plist_write(plist_path, metadata)
         localize_network_prompt(contents)
@@ -267,7 +272,7 @@ def main() -> None:
         plist_write(components, component_data)
         package_dir = stage / "packages"
         package_dir.mkdir()
-        component_package = package_dir / "MultiRoute-Resume-component.pkg"
+        component_package = package_dir / "MultiRoute-Downloader-component.pkg"
         run(["/usr/bin/pkgbuild", "--root", payload, "--identifier", BUNDLE_ID, "--version", version,
              "--ownership", "recommended", "--install-location", "/", "--component-plist", components,
              "--scripts", installer_scripts, component_package])
@@ -297,13 +302,14 @@ def main() -> None:
             "license_sha256": sha256(license_file), "project_owner_url": owner_url,
             "installer_displays_license": True,
             "bundled_documentation_sha256": documentation_hashes,
+            "browser_extension_sha256": browser_extension_hashes,
             "bundled_java": int(found.group(1)), "modules": sorted(present),
             "dependencies": {path.name: sha256(path) for path in jars},
             "developer_id_signed": bool(args.signing_user), "notarized": bool(args.notarize_profile),
             "terminal_required_for_installed_application": False,
             "setup_language": "en",
             "desktop_shortcut": {
-                "name": "MultiRoute Resume.app", "target": "/Applications/MultiRoute Resume.app",
+                "name": "MultiRoute Downloader.app", "target": "/Applications/MultiRoute Downloader.app",
                 "installer_creation_context": "validated console user via sudo, never a root home write",
                 "existing_desktop_items_replaced": False,
                 "failure_policy": "best effort during setup; normal-user first GUI launch retries",

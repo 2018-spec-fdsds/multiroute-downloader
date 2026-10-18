@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /** UTF-8 language resources shared by interface bindings and canonical diagnostic templates. */
 final class LocalizedCatalog {
-    static final List<String> EXTRA = List.of("zh", "ko", "ar", "it");
+    static final List<String> EXTRA = List.of("zh", "ko", "ar", "it", "ja", "hi", "vi");
     private static final Map<String,Map<String,String>> CACHE = new ConcurrentHashMap<>();
     private LocalizedCatalog() { }
 

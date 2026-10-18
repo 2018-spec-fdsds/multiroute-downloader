@@ -25,6 +25,8 @@ ready-*.json
 *.o
 *.pdb
 /MultiRoute-Resume.jar
+/MultiRoute-Downloader.jar
+/MultiRoute-Downloader.previous-*.jar
 /MultiRoute-Resume.previous-*.jar
 /MultiRoute-Resume.previous-*.jar
 *.zip

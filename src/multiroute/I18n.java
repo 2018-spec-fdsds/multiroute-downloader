@@ -20,7 +20,7 @@ import javax.swing.text.JTextComponent;
 
 /** Desktop languages; bindings always retain the source template and raw arguments. */
 public final class I18n {
-    private static final List<String> CODES = List.of("ru", "en", "de", "es", "fr", "zh", "ko", "ar", "it");
+    private static final List<String> CODES = List.of("ru", "en", "de", "es", "fr", "zh", "ko", "ar", "it", "ja", "hi", "vi");
     private static final String TEXT = "multiroute.i18n.text";
     private static final String TOOLTIP = "multiroute.i18n.tooltip";
     private static final String TITLE = "multiroute.i18n.title";
@@ -52,6 +52,9 @@ public final class I18n {
             case "ko" -> "한국어";
             case "ar" -> "العربية";
             case "it" -> "Italiano";
+            case "ja" -> "日本語";
+            case "hi" -> "हिन्दी";
+            case "vi" -> "Tiếng Việt";
             default -> "English";
         };
     }
@@ -93,6 +96,7 @@ public final class I18n {
         String selected = code != null && CODES.contains(code) ? code : DEFAULT_LANGUAGE;
         String[] row = ROWS.get(source);
         String translated = row == null ? DiagnosticText.translation(selected, source) : row[CODES.indexOf(selected)];
+        if (row != null) translated = Brand.display(translated);
         Object[] values = args.clone();
         for (int i = 0; i < values.length; i++)
             if (values[i] instanceof DiagnosticText.Arg value) values[i] = DiagnosticText.renderFor(selected, value.raw());
@@ -127,6 +131,9 @@ public final class I18n {
     }
     public static void refresh(Component component) {
         component.setLocale(locale());
+        // Custom bold headings/buttons must share the same script coverage as theme defaults.
+        java.awt.Font font=component.getFont(),readable=DesktopTheme.readableFont(font);
+        if(readable!=font)component.setFont(readable);
         // URLs, paths, IPs and checksums keep their logical order when the surrounding UI is Arabic.
         component.setComponentOrientation(component instanceof javax.swing.JTextField
                 ? java.awt.ComponentOrientation.LEFT_TO_RIGHT : java.awt.ComponentOrientation.getOrientation(locale()));
@@ -595,6 +602,75 @@ public final class I18n {
         row("Ранее сохранённый файл проверен", "Previously saved file verified", "Zuvor gespeicherte Datei geprüft", "Archivo guardado previamente verificado", "Fichier précédemment enregistré vérifié");
         row("Загрузка начата", "Download started", "Download gestartet", "Descarga iniciada", "Téléchargement démarré");
         row("Загрузка завершена", "Download completed", "Download abgeschlossen", "Descarga completada", "Téléchargement terminé");
+        row("SHA-256 после обратного чтения с сервера", "SHA-256 verified by reading back from the server", "SHA-256 nach erneutem Lesen vom Server geprüft", "SHA-256 verificado mediante lectura del servidor", "SHA-256 vérifié par relecture depuis le serveur");
+        row("Адрес назначения:", "Destination URL:", "Ziel-URL:", "URL de destino:", "URL de destination :");
+        row("Адрес назначения: ", "Destination URL: ", "Ziel-URL: ", "URL de destino: ", "URL de destination : ");
+        row("Адрес сайта", "Site URL", "Website-URL", "URL del sitio", "URL du site");
+        row("Без профиля", "No profile", "Kein Profil", "Sin perfil", "Aucun profil");
+        row("Выберите локальные файлы явно. Отправки используют выбранные шлюзы; несколько файлов могут идти одновременно. Существующие файлы на сервере не заменяются. Передача одного файла идёт через один шлюз за попытку.", "Choose local files explicitly. Uploads use selected gateways; multiple files can run in parallel. Existing server files are not replaced. Each file uses one gateway per attempt.", "Wählen Sie lokale Dateien ausdrücklich aus. Uploads nutzen ausgewählte Gateways; mehrere Dateien können parallel laufen. Vorhandene Serverdateien werden nicht ersetzt. Jede Datei nutzt ein Gateway pro Versuch.", "Seleccione los archivos locales. Las subidas usan las puertas seleccionadas; varios archivos pueden ir en paralelo. No se reemplazan archivos existentes. Cada archivo usa una puerta por intento.", "Sélectionnez explicitement les fichiers locaux. Les envois utilisent les passerelles choisies ; plusieurs fichiers peuvent partir en parallèle. Les fichiers existants ne sont pas remplacés. Un fichier utilise une passerelle par tentative.");
+        row("Выберите отправку", "Select an upload", "Upload auswählen", "Seleccione una subida", "Sélectionnez un envoi");
+        row("Выберите отправку для просмотра локального пути, адреса назначения и результата проверки.", "Select an upload to view its local path, destination URL and verification result.", "Wählen Sie einen Upload für lokalen Pfad, Ziel-URL und Prüfergebnis.", "Seleccione una subida para ver su ruta local, URL de destino y verificación.", "Sélectionnez un envoi pour afficher son chemin local, sa destination et sa vérification.");
+        row("Выберите файлы для отправки", "Select files to upload", "Dateien zum Hochladen auswählen", "Seleccione archivos para subir", "Sélectionnez les fichiers à envoyer");
+        row("Выбрать профиль", "Select profile", "Profil auswählen", "Seleccionar perfil", "Sélectionner le profil");
+        row("Выбрать файлы и отправить…", "Choose files and upload…", "Dateien auswählen und hochladen…", "Elegir archivos y subir…", "Choisir les fichiers et envoyer…");
+        row("Для чтения заголовков нужен пароль архива.", "An archive password is required to read the headers.", "Zum Lesen der Archivköpfe wird ein Passwort benötigt.", "Se necesita la contraseña del archivo para leer las cabeceras.", "Un mot de passe est nécessaire pour lire les en-têtes de l’archive.");
+        row("Добавлено отправок: %d", "Uploads added: %d", "Uploads hinzugefügt: %d", "Subidas añadidas: %d", "Envois ajoutés : %d");
+        row("Добавлено отправок: %d. Ошибка: %s", "Uploads added: %d. Error: %s", "Uploads hinzugefügt: %d. Fehler: %s", "Subidas añadidas: %d. Error: %s", "Envois ajoutés : %d. Erreur : %s");
+        row("Завершено: ", "Completed: ", "Abgeschlossen: ", "Finalizado: ", "Terminé : ");
+        row("Заменить сохранённые учётные данные", "Replace saved credentials", "Gespeicherte Zugangsdaten ersetzen", "Reemplazar credenciales guardadas", "Remplacer les identifiants enregistrés");
+        row("Зашифрован", "Encrypted", "Verschlüsselt", "Cifrado", "Chiffré");
+        row("Изменить профиль", "Edit profile", "Profil bearbeiten", "Editar perfil", "Modifier le profil");
+        row("Изменить…", "Edit…", "Bearbeiten…", "Editar…", "Modifier…");
+        row("Локальный файл: ", "Local file: ", "Lokale Datei: ", "Archivo local: ", "Fichier local : ");
+        row("Начало: ", "Started: ", "Gestartet: ", "Iniciado: ", "Démarré : ");
+        row("Не удалось открыть содержимое архива: %s", "Could not preview the archive: %s", "Archivvorschau fehlgeschlagen: %s", "No se pudo ver el archivo: %s", "Impossible de prévisualiser l’archive : %s");
+        row("Не удалось прочитать профили сайтов: %s", "Could not read site profiles: %s", "Website-Profile konnten nicht gelesen werden: %s", "No se pudieron leer los perfiles: %s", "Impossible de lire les profils de sites : %s");
+        row("Новый профиль", "New profile", "Neues Profil", "Nuevo perfil", "Nouveau profil");
+        row("Новый профиль…", "New profile…", "Neues Profil…", "Nuevo perfil…", "Nouveau profil…");
+        row("Отправки", "Uploads", "Uploads", "Subidas", "Envois");
+        row("Отправлено: %s из %s", "Uploaded: %s of %s", "Hochgeladen: %s von %s", "Subido: %s de %s", "Envoyé : %s sur %s");
+        row("Отправок: %d · Активных: %d · Завершено: %d · Общая скорость: %s", "Uploads: %d · Active: %d · Complete: %d · Total speed: %s", "Uploads: %d · Aktiv: %d · Fertig: %d · Gesamtgeschwindigkeit: %s", "Subidas: %d · Activas: %d · Completadas: %d · Velocidad total: %s", "Envois : %d · Actifs : %d · Terminés : %d · Vitesse totale : %s");
+        row("Папка для скачивания", "Download folder", "Download-Ordner", "Carpeta de descarga", "Dossier de téléchargement");
+        row("Папка на сервере", "Server folder", "Serverordner", "Carpeta del servidor", "Dossier du serveur");
+        row("Папка на сервере — URL FTP/FTPS/SFTP", "Server folder — FTP/FTPS/SFTP URL", "Serverordner — FTP/FTPS/SFTP-URL", "Carpeta del servidor — URL FTP/FTPS/SFTP", "Dossier du serveur — URL FTP/FTPS/SFTP");
+        row("Пароль архива (не сохраняется)", "Archive password (not saved)", "Archivpasswort (wird nicht gespeichert)", "Contraseña del archivo (no se guarda)", "Mot de passe de l’archive (non enregistré)");
+        row("Показана только часть содержимого архива.", "Only part of the archive contents is shown.", "Nur ein Teil des Archivinhalts wird angezeigt.", "Solo se muestra parte del contenido del archivo.", "Seule une partie du contenu de l’archive est affichée.");
+        row("Показать список файлов архива, читая ограниченные метаданные через выбранный шлюз. Без распаковки и запуска файлов.", "List archive files by reading limited metadata through the selected gateway. No extraction or execution.", "Archivdateien durch begrenztes Lesen von Metadaten über das ausgewählte Gateway anzeigen. Kein Entpacken oder Ausführen.", "Mostrar archivos leyendo metadatos limitados por la puerta seleccionada. Sin extraer ni ejecutar.", "Afficher les fichiers en lisant des métadonnées limitées via la passerelle sélectionnée. Aucune extraction ni exécution.");
+        row("При редактировании пустые поля сохраняют прежний доступ, если адрес и тип не изменены. Для замены отметьте флажок. Для SFTP укажите проверенный отпечаток сервера. Пароль не добавляется в URL.", "When editing, blank fields keep existing access if the origin and type are unchanged. Check the box to replace credentials. SFTP requires a verified server fingerprint. Passwords are not added to URLs.", "Beim Bearbeiten behalten leere Felder den Zugang, wenn Ursprung und Typ gleich bleiben. Zum Ersetzen das Kästchen markieren. SFTP benötigt einen geprüften Serverfingerabdruck. Passwörter werden nicht in URLs eingefügt.", "Al editar, los campos vacíos conservan el acceso si el origen y tipo no cambian. Marque la casilla para reemplazar credenciales. SFTP requiere una huella verificada. No se añaden contraseñas a las URL.", "Lors de la modification, les champs vides conservent l’accès si l’origine et le type ne changent pas. Cochez la case pour remplacer les identifiants. SFTP exige une empreinte vérifiée. Les mots de passe ne sont pas ajoutés aux URL.");
+        row("Проверка: ", "Verification: ", "Prüfung: ", "Verificación: ", "Vérification : ");
+        row("Продолжено: ", "Resumed: ", "Fortgesetzt: ", "Reanudado: ", "Repris : ");
+        row("Просмотр архива не выполнен: %s", "Archive preview failed: %s", "Archivvorschau fehlgeschlagen: %s", "Falló la vista del archivo: %s", "Échec de la prévisualisation : %s");
+        row("Просмотр завершён без распаковки файлов.", "Preview completed without extracting files.", "Vorschau ohne Entpacken abgeschlossen.", "Vista completada sin extraer archivos.", "Prévisualisation terminée sans extraction.");
+        row("Просмотр читает только ограниченные метаданные. Архив не распаковывается; файлы не запускаются. Список может быть неполным, если формат или шифрование не позволяют прочитать заголовки.", "Preview reads only limited metadata. It does not extract or execute files. The list may be incomplete if the format or encryption prevents reading the headers.", "Die Vorschau liest nur begrenzte Metadaten. Sie entpackt keine Dateien und führt nichts aus. Die Liste kann unvollständig sein, wenn Format oder Verschlüsselung das Lesen der Köpfe verhindern.", "La vista solo lee metadatos limitados. No extrae ni ejecuta archivos. La lista puede estar incompleta si el formato o cifrado impide leer las cabeceras.", "La prévisualisation ne lit que des métadonnées limitées. Elle n’extrait ni n’exécute de fichiers. La liste peut être incomplète si le format ou le chiffrement empêche la lecture des en-têtes.");
+        row("Профили сайтов", "Site profiles", "Website-Profile", "Perfiles de sitios", "Profils de sites");
+        row("Профили сайтов…", "Site profiles…", "Website-Profile…", "Perfiles de sitios…", "Profils de sites…");
+        row("Профиль сайта", "Site profile", "Website-Profil", "Perfil de sitio", "Profil de site");
+        row("Профиль хранит адрес сайта, папки, выбранные шлюзы и доступ. Секреты не показываются в списке и не записываются в настройки окна.", "A profile stores the site URL, folders, selected gateways and access. Secrets are not displayed in lists or stored in window settings.", "Ein Profil speichert Website-URL, Ordner, Gateways und Zugang. Geheimnisse erscheinen weder in Listen noch in Fenstereinstellungen.", "Un perfil guarda URL, carpetas, puertas y acceso. Los secretos no aparecen en listas ni ajustes de la ventana.", "Un profil conserve l’URL, les dossiers, les passerelles et l’accès. Les secrets ne sont ni affichés dans les listes ni stockés dans les réglages de fenêtre.");
+        row("Сжатый размер", "Compressed size", "Komprimierte Größe", "Tamaño comprimido", "Taille compressée");
+        row("Содержимое архива", "Archive contents", "Archivinhalt", "Contenido del archivo", "Contenu de l’archive");
+        row("Содержимое архива…", "Archive contents…", "Archivinhalt…", "Contenido del archivo…", "Contenu de l’archive…");
+        row("Создано: ", "Created: ", "Erstellt: ", "Creado: ", "Créé : ");
+        row("Удалить выбранный профиль и его учётные данные?", "Delete the selected profile and its credentials?", "Ausgewähltes Profil und seine Zugangsdaten löschen?", "¿Eliminar el perfil seleccionado y sus credenciales?", "Supprimer le profil sélectionné et ses identifiants ?");
+        row("Удалить запись", "Remove entry", "Eintrag entfernen", "Eliminar entrada", "Supprimer l’entrée");
+        row("Удалить запись об отправке? Локальный и готовый удалённый файл сохранятся.", "Remove the upload entry? Local and completed remote files will be kept.", "Upload-Eintrag entfernen? Lokale und fertige entfernte Dateien bleiben erhalten.", "¿Eliminar la entrada de subida? Se conservan los archivos locales y remotos completados.", "Supprimer l’entrée d’envoi ? Les fichiers locaux et distants terminés seront conservés.");
+        row("Удалить профиль", "Delete profile", "Profil löschen", "Eliminar perfil", "Supprimer le profil");
+        row("Укажите URL папки FTP/FTPS/SFTP без пароля и параметров", "Enter an FTP/FTPS/SFTP folder URL without passwords or query parameters", "FTP/FTPS/SFTP-Ordner-URL ohne Passwort oder Parameter eingeben", "Introduzca una URL de carpeta FTP/FTPS/SFTP sin contraseñas ni parámetros", "Saisissez l’URL d’un dossier FTP/FTPS/SFTP sans mot de passe ni paramètres");
+        row("Формат: %s · Записей: %d · Метаданные: %s из %s · Чтение частей: %s", "Format: %s · Entries: %d · Metadata: %s of %s · Range reading: %s", "Format: %s · Einträge: %d · Metadaten: %s von %s · Bereichslesen: %s", "Formato: %s · Entradas: %d · Metadatos: %s de %s · Lectura por rangos: %s", "Format : %s · Entrées : %d · Métadonnées : %s sur %s · Lecture par plages : %s");
+        row("Читаем содержимое архива…", "Reading archive contents…", "Archivinhalt wird gelesen…", "Leyendo contenido del archivo…", "Lecture du contenu de l’archive…");
+        row("Шлюзы (через запятую)", "Gateways (comma separated)", "Gateways (kommagetrennt)", "Puertas de enlace (separadas por comas)", "Passerelles (séparées par des virgules)");
+        row("Без авторизации", "No authentication", "Ohne Anmeldung", "Sin autenticación", "Sans authentification");
+        row("Отправляется", "Uploading", "Wird hochgeladen", "Subiendo", "Envoi en cours");
+        row("Расписание и очередь…", "Schedule and queue…", "Zeitplan und Warteschlange…", "Horario y cola…", "Planification et file…");
+        row("Приоритет и расписание…", "Priority and schedule…", "Priorität und Zeitplan…", "Prioridad y horario…", "Priorité et planification…");
+        row("Запустить позже", "Start later", "Später starten", "Iniciar más tarde", "Démarrer plus tard");
+        row("Дата и время запуска", "Start date and time", "Startdatum und Uhrzeit", "Fecha y hora de inicio", "Date et heure de démarrage");
+        row("Время указано в часовом поясе компьютера. Выберите часть даты или времени и меняйте её стрелками.", "Times use the computer's time zone. Select part of the date or time and adjust it with the arrow buttons.", "Es gilt die Zeitzone des Computers. Wählen Sie einen Teil des Datums oder der Uhrzeit und ändern Sie ihn mit den Pfeiltasten.", "Se utiliza la zona horaria del equipo. Seleccione una parte de la fecha u hora y ajústela con las flechas.", "Les heures utilisent le fuseau horaire de l’ordinateur. Sélectionnez une partie de la date ou de l’heure et modifiez-la avec les flèches.");
+        row("Chrome / Edge…", "Chrome / Edge…", "Chrome / Edge…", "Chrome / Edge…", "Chrome / Edge…");
+        row("Очередь ссылок из браузера заполнена. Повторите отправку после создания текущих загрузок.", "The browser link queue is full. Send the link again after the current downloads are created.", "Die Warteschlange für Browserlinks ist voll. Senden Sie den Link erneut, sobald die aktuellen Downloads angelegt wurden.", "La cola de enlaces del navegador está llena. Vuelva a enviar el enlace cuando se hayan creado las descargas actuales.", "La file des liens du navigateur est pleine. Renvoyez le lien après la création des téléchargements en cours.");
+        row("Интеграция с Chrome / Edge", "Chrome / Edge integration", "Chrome-/Edge-Integration", "Integración con Chrome / Edge", "Intégration Chrome / Edge");
+        row("Разрешить расширению Chrome / Edge передавать ссылки", "Allow the Chrome / Edge extension to send links", "Der Chrome-/Edge-Erweiterung das Senden von Links erlauben", "Permitir que la extensión Chrome / Edge envíe enlaces", "Autoriser l’extension Chrome / Edge à envoyer des liens");
+        row("Открыть папку расширения", "Open extension folder", "Erweiterungsordner öffnen", "Abrir carpeta de la extensión", "Ouvrir le dossier de l’extension");
+        row("В Chrome откройте chrome://extensions, в Edge — edge://extensions. Включите режим разработчика, нажмите «Загрузить распакованное» и выберите папку расширения. Это нужно один раз. Затем нажимайте «Скачать через MultiRoute» в меню ссылки или кнопку расширения. Приложение должно быть запущено, в том числе в трее. Расширение не читает cookies и не перехватывает остальные загрузки браузера.", "In Chrome open chrome://extensions; in Edge open edge://extensions. Enable Developer mode, choose Load unpacked and select the extension folder. Do this once. Then use Download with MultiRoute in a link menu or the extension button. Keep the desktop application running, including in the tray. The extension does not read cookies or intercept other browser downloads.", "Öffnen Sie in Chrome chrome://extensions und in Edge edge://extensions. Aktivieren Sie den Entwicklermodus, wählen Sie „Entpackte Erweiterung laden“ und den Erweiterungsordner. Dies ist nur einmal nötig. Verwenden Sie danach „Mit MultiRoute herunterladen“ im Linkmenü oder die Erweiterungsschaltfläche. Die Desktop-Anwendung muss laufen, auch im Infobereich. Die Erweiterung liest keine Cookies und fängt keine anderen Browserdownloads ab.", "En Chrome abra chrome://extensions; en Edge, edge://extensions. Active el modo de desarrollador, elija Cargar descomprimida y seleccione la carpeta de la extensión. Solo es necesario una vez. Después use Descargar con MultiRoute en el menú del enlace o el botón de la extensión. Mantenga abierta la aplicación de escritorio, incluso en la bandeja. La extensión no lee cookies ni intercepta otras descargas del navegador.", "Dans Chrome, ouvrez chrome://extensions ; dans Edge, edge://extensions. Activez le mode développeur, choisissez Charger l’extension non empaquetée et sélectionnez le dossier de l’extension. Cette opération n’est nécessaire qu’une fois. Utilisez ensuite Télécharger avec MultiRoute dans le menu d’un lien ou le bouton de l’extension. L’application de bureau doit rester ouverte, y compris dans la zone de notification. L’extension ne lit pas les cookies et n’intercepte pas les autres téléchargements du navigateur.");
         // CAT_ROWS: source keys intentionally match UI prose, never user-provided data.
     }
 }

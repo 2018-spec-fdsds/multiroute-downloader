@@ -132,7 +132,7 @@ final class DesktopTray implements AutoCloseable {
 
     static String tooltip(long rate) {
         long safe = Math.max(0, rate);
-        return "MultiRoute Resume — " + (gigabitRate(safe)
+        return Brand.NAME + " — " + (gigabitRate(safe)
                 ? I18n.t("Все загрузки: %.2f Гбит/с (%d Б/с)", safe * 8.0 / 1_000_000_000, safe)
                 : I18n.t("Все загрузки: %.2f Мбит/с (%d Б/с)", safe * 8.0 / 1_000_000, safe));
     }

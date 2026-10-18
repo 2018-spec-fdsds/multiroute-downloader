@@ -84,6 +84,8 @@ public final class DesktopUI {
     private static final String DIRECTORY_POLICY = "current-user-downloads-v1";
     private static final String[] HEADERS = {"Файл", "Состояние", "Прогресс", "Скорость", "Прошло", "Осталось", "Шлюзы"};
     private final Main.Manager manager;
+    private final java.util.function.Consumer<String> browserDownloadHandler=this::acceptBrowserUrl;
+    private final java.util.ArrayDeque<String> pendingBrowserUrls=new java.util.ArrayDeque<>();
     private final Runnable onClose;
     private final ExecutorService background = Executors.newCachedThreadPool(task -> {
         Thread thread = new Thread(task, "desktop-ui-background");
@@ -152,7 +154,7 @@ public final class DesktopUI {
         }
     };
 
-    final JFrame frame = new JFrame("MultiRoute Resume " + Main.VERSION);
+    final JFrame frame = new JFrame(Brand.NAME + " " + Main.VERSION);
     final JTextField urlField = new JTextField(96);
     final JTextField filenameField = new JTextField(24);
     final JTextField directoryField = new JTextField(defaultDownloadDirectory().toString(), 24);
@@ -165,6 +167,11 @@ public final class DesktopUI {
     final JComboBox<String> themeCombo = new JComboBox<>(new String[]{"light", "dark", "system"});
     final JLabel summaryLabel = translatedLabel("Всего: 0 · Активных: 0 · Завершено: 0");
     final JLabel aggregateSpeedLabel = translatedLabel("Общая скорость: —");
+    final JButton archivePreviewButton = translatedButton("Содержимое архива…");
+    final JComboBox<Map<String,Object>> siteProfileCombo = SiteProfilesDialog.combo();
+    final JButton siteProfilesButton = translatedButton("Профили сайтов…");
+    UploadPanel uploadPanel;
+    private boolean refreshingSiteProfiles;
     final JButton logButton = translatedButton("Журнал…");
     final JButton instructionsButton = translatedButton("Инструкция");
     final JButton apiGuideButton = translatedButton("Работа с API");
@@ -200,9 +207,10 @@ public final class DesktopUI {
     final JButton addGatewayButton = translatedButton("Добавить шлюз…");
     final JButton virtualIpHelpButton = translatedButton("?");
     final JButton bulkButton = translatedButton("Список ссылок…");
-    final JButton queueButton = translatedButton("Очередь и ограничения…");
+    final JButton queueButton = translatedButton("Расписание и очередь…");
     final JButton sourceAccessButton = translatedButton("Доступ к источнику…");
-    final JButton optionsButton = translatedButton("Параметры загрузки…");
+    final JButton optionsButton = translatedButton("Приоритет и расписание…");
+    final JButton browserButton = translatedButton("Chrome / Edge…");
     final JButton openFolderButton = translatedButton("Открыть папку");
     final JTextField searchField = new JTextField(22);
     final JComboBox<String> jobFilter = new JComboBox<>(new String[]{"all","active","failed","complete"});
@@ -397,8 +405,9 @@ public final class DesktopUI {
         installShortcuts();
         if (networkSettingsProvider != null)
             configuredNetwork = networkSettingsInput(networkSettingsProvider.settings());
-        refreshTimer = new Timer(900, event -> refreshJobs());
+        refreshTimer = new Timer(900, event -> {refreshJobs();drainBrowserDownloads();});
         refreshTimer.start();
+        manager.browserDownload=browserDownloadHandler;
         if (autoDiscover) findGateways();
     }
 
@@ -425,11 +434,14 @@ public final class DesktopUI {
             @Override public void windowClosed(WindowEvent event) {
                 if (closing) return;
                 closing = true;
+                if(manager.browserDownload==browserDownloadHandler)manager.browserDownload=null;
+                pendingBrowserUrls.clear();
                 tray.close();
                 discoveryGeneration++;
                 speedUrlGeneration++;
                 for (RouteRow row : routes) if (row != null) row.generation++;
                 refreshTimer.stop();
+                if (uploadPanel != null) uploadPanel.close();
                 if (logDialog != null) logDialog.dispose();
                 stopLogRefresh();
                 saveSettings();
@@ -448,7 +460,7 @@ public final class DesktopUI {
         JPanel root = new JPanel(new BorderLayout());
         root.setBorder(BorderFactory.createEmptyBorder(14, 16, 12, 16));
         JPanel header = new JPanel(new BorderLayout());
-        JLabel title = new JLabel("MultiRoute Resume");
+        JLabel title = new JLabel(Brand.NAME);
         title.setFont(title.getFont().deriveFont(Font.BOLD, 23f));
         JTextArea subtitle = translatedArea("Докачка через выбранные шлюзы · MD5, SHA-256, SHA-512", 2, 28);
         subtitle.setEditable(false); subtitle.setOpaque(false); subtitle.setLineWrap(true); subtitle.setWrapStyleWord(true);
@@ -482,6 +494,8 @@ public final class DesktopUI {
         });
         I18n.tooltip(languageCombo, "Язык интерфейса");
         languageLine.add(languageCombo);
+        browserButton.addActionListener(event->manager.browser.open(frame));
+        languageLine.add(browserButton);
         logButton.addActionListener(event -> openLog());
         languageLine.add(logButton);
         exitButton.addActionListener(event -> requestExit());
@@ -532,6 +546,9 @@ public final class DesktopUI {
         urlLine.add(urlField, BorderLayout.CENTER);
         JPanel urlActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
         urlActions.add(pasteButton);
+        urlActions.add(archivePreviewButton);
+        archivePreviewButton.addActionListener(event -> previewArchive());
+        tip(archivePreviewButton, "Показать список файлов архива, читая ограниченные метаданные через выбранный шлюз. Без распаковки и запуска файлов.");
         createButton.setFont(createButton.getFont().deriveFont(Font.BOLD));
         createButton.addActionListener(event -> createJob());
         urlActions.add(createButton);
@@ -551,6 +568,9 @@ public final class DesktopUI {
         mainTabs.addTab(I18n.t("Загрузки"), columns);
         JScrollPane networkScroll = new JScrollPane(networkEditor);
         mainTabs.addTab(I18n.t("Настройки сети"), networkScroll);
+        uploadPanel = new UploadPanel(manager.uploads, frame, this::prepareTransferRoutes,
+                this::applyProfileGateways, error -> showError("%s", DiagnosticText.arg(error)));
+        mainTabs.addTab(I18n.t("Отправки"), uploadPanel);
         AtomicBoolean firstNetworkView=new AtomicBoolean(true);
         mainTabs.addChangeListener(event->{if(mainTabs.getSelectedIndex()==1&&firstNetworkView.getAndSet(false))
             SwingUtilities.invokeLater(()->networkScroll.getViewport().setViewPosition(new java.awt.Point(0,0)));});
@@ -571,6 +591,14 @@ public final class DesktopUI {
         c.insets = new Insets(0, 0, 8, 0);
         int row = 0;
         section(panel, c, row++, "Новая загрузка", "Адрес файла и место сохранения");
+        label(panel, c, row++, "Профиль сайта");
+        JPanel profileLine = new JPanel(new BorderLayout(7, 0));
+        siteProfileCombo.setMinimumSize(new Dimension(60, siteProfileCombo.getPreferredSize().height));
+        profileLine.add(siteProfileCombo, BorderLayout.CENTER); profileLine.add(siteProfilesButton, BorderLayout.LINE_END);
+        add(panel, c, row++, profileLine);
+        refreshSiteProfiles("");
+        siteProfileCombo.addActionListener(event -> { if (!restoring && !refreshingSiteProfiles) applySelectedSiteProfile(); });
+        siteProfilesButton.addActionListener(event -> manageSiteProfiles());
 
         JPanel torrentLine = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         torrentLine.add(torrentFileButton);
@@ -618,7 +646,7 @@ public final class DesktopUI {
         add(panel, c, row++, chunkLine);
 
         JPanel extras = new JPanel(new java.awt.GridLayout(0,1,0,5));
-        extras.add(bulkButton); extras.add(sourceAccessButton); extras.add(queueButton);
+        extras.add(bulkButton); extras.add(sourceAccessButton);
         bulkButton.addActionListener(event -> importLinks(null));
         sourceAccessButton.addActionListener(event -> SourceAccessDialog.open(frame, urlField.getText().trim(), this::showError));
         queueButton.addActionListener(event -> openQueueSettings());
@@ -725,7 +753,7 @@ public final class DesktopUI {
         JPanel overview = new JPanel(new BorderLayout(0, 3));
         overview.add(titleLine, BorderLayout.NORTH);
         summaryLabel.putClientProperty("multiroute.tone", "muted"); summaryLabel.setForeground(muted());
-        overview.add(summaryLabel, BorderLayout.SOUTH);
+        JPanel summaryLine=new JPanel(new BorderLayout(8,0));summaryLine.add(summaryLabel,BorderLayout.CENTER);summaryLine.add(queueButton,BorderLayout.LINE_END);overview.add(summaryLine, BorderLayout.SOUTH);
         heading.add(overview, BorderLayout.NORTH);
         JPanel filters = new JPanel(new BorderLayout(8,0));
         filters.add(searchField, BorderLayout.CENTER);
@@ -888,6 +916,7 @@ public final class DesktopUI {
         DesktopTheme.decorate(frame);
         if (logDialog != null) DesktopTheme.decorate(logDialog);
         jobsTable.setDefaultRenderer(DownloadProgress.class, new DownloadProgress.Renderer());
+        if (uploadPanel != null) uploadPanel.refreshTheme();
         themeCombo.repaint();
         renderDetails(jobs.get(selectedId));
         frame.validate();
@@ -1070,6 +1099,9 @@ public final class DesktopUI {
         I18n.refresh(frame.getContentPane());
         if(jobsTable.getComponentPopupMenu()!=null) I18n.refresh(jobsTable.getComponentPopupMenu());
         if(mainTabs.getTabCount()>1){mainTabs.setTitleAt(0,I18n.t("Загрузки"));mainTabs.setTitleAt(1,I18n.t("Настройки сети"));}
+        if (mainTabs.getTabCount() > 2) mainTabs.setTitleAt(2, I18n.t("Отправки"));
+        siteProfileCombo.repaint();
+        if (uploadPanel != null) uploadPanel.refreshLanguage();
         jobFilter.repaint(); themeCombo.repaint(); speedGraph.repaint();
         if (detailTabs.getTabCount() > 1) {
             detailTabs.setTitleAt(0, I18n.t("Подробности")); detailTabs.setTitleAt(1, I18n.t("История"));
@@ -1255,9 +1287,7 @@ public final class DesktopUI {
             Object value = defaults.get(key);
             if (value instanceof FontUIResource font) {
                 float size = Math.max(14f, font.getSize2D());
-                // Logical fonts use the platform fallback chain for Chinese, Korean and Arabic glyphs.
-                Font readable = font.canDisplayUpTo("下载한국어العربية") >= 0
-                        ? new Font(Font.DIALOG, font.getStyle(), Math.round(size)) : font.deriveFont(size);
+                Font readable = DesktopTheme.readableFont(font.deriveFont(size));
                 defaults.put(key, new FontUIResource(readable));
             }
         }
@@ -1994,6 +2024,8 @@ public final class DesktopUI {
         input.put("filename", filenameField.getText().trim());
         input.put("directory", directoryField.getText().trim());
         input.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
+        String profile = SiteProfilesDialog.selectedId(siteProfileCombo);
+        if (!profile.isBlank()) input.put("site_profile_id", profile);
         return input;
     }
 
@@ -2029,6 +2061,23 @@ public final class DesktopUI {
         SwingUtilities.invokeAndWait(() -> current.set(!closing && checksumsCurrent(input)
                 && (captured == null || captured.equals(checksumText()))));
         if (!current.get()) throw failure("Ссылка или настройки изменились; начните загрузку повторно");
+    }
+
+    /** Browser requests join the same creation flow; they never replace active form input mid-request. */
+    void acceptBrowserUrl(String url) {
+        Runnable accept=()->{
+            if(closing)return;
+            if(pendingBrowserUrls.size()>=32){status("Очередь ссылок из браузера заполнена. Повторите отправку после создания текущих загрузок.");return;}
+            pendingBrowserUrls.addLast(url);
+            frame.setVisible(true);frame.setExtendedState(frame.getExtendedState()&~JFrame.ICONIFIED);frame.toFront();
+            drainBrowserDownloads();
+        };
+        if(SwingUtilities.isEventDispatchThread())accept.run();else SwingUtilities.invokeLater(accept);
+    }
+
+    private void drainBrowserDownloads(){
+        if(closing||createRunning||pendingBrowserUrls.isEmpty())return;
+        urlField.setText(pendingBrowserUrls.removeFirst());createJob();
     }
 
     private void createJob() {
@@ -2190,6 +2239,7 @@ public final class DesktopUI {
                     || !Main.str(input.get("url")).equals(urlField.getText().trim())
                     || !Main.str(input.get("filename")).equals(filenameField.getText().trim())
                     || !Main.str(input.get("directory")).equals(directoryField.getText().trim())
+                    || !Main.str(input.get("site_profile_id")).equals(SiteProfilesDialog.selectedId(siteProfileCombo))
                     || !checksumsCurrent(input)
                     || (capturedChecksums != null && !capturedChecksums.equals(checksumText()))
                     || Main.num(input.get("chunk_mb"), 0) != ((Number) chunkSpinner.getValue()).longValue())
@@ -2728,7 +2778,7 @@ public final class DesktopUI {
     private void installJobMenu() {
         JPopupMenu menu=new JPopupMenu();
         JButton[] controls={pauseButton,resumeButton,changeGatewaysButton,optionsButton,openFolderButton,removeButton};
-        String[] sources={"Пауза","Продолжить","Изменить шлюзы…","Параметры загрузки…","Открыть папку","Удалить задание"};
+        String[] sources={"Пауза","Продолжить","Изменить шлюзы…","Приоритет и расписание…","Открыть папку","Удалить задание"};
         for(int i=0;i<controls.length;i++){JButton control=controls[i];JMenuItem item=new JMenuItem();I18n.text(item,sources[i]);item.addActionListener(event->control.doClick());menu.add(item);}
         menu.addSeparator();
         JMenuItem copyPath = new JMenuItem(); I18n.text(copyPath, "Копировать полный путь");
@@ -2752,10 +2802,91 @@ public final class DesktopUI {
         });
     }
 
+    private void refreshSiteProfiles(String selected) {
+        refreshingSiteProfiles = true;
+        try { SiteProfilesDialog.refresh(siteProfileCombo, selected); }
+        catch (Exception error) { status("Не удалось прочитать профили сайтов: %s", errorArgument(error)); }
+        finally { refreshingSiteProfiles = false; }
+    }
+
+    private void manageSiteProfiles() {
+        String selected = SiteProfilesDialog.choose(frame, SiteProfilesDialog.selectedId(siteProfileCombo));
+        refreshSiteProfiles(selected == null ? SiteProfilesDialog.selectedId(siteProfileCombo) : selected);
+        if (selected != null) applySelectedSiteProfile();
+        if (uploadPanel != null) uploadPanel.refreshProfiles(SiteProfilesDialog.selectedId(uploadPanel.profileCombo));
+    }
+
+    private void applySelectedSiteProfile() {
+        Object raw = siteProfileCombo.getSelectedItem();
+        if (!(raw instanceof Map<?,?>) || Main.str(Main.obj(raw).get("id")).isBlank()) { saveSettings(); return; }
+        Map<String,Object> profile = Main.obj(raw);
+        String directory = Main.str(profile.get("download_directory"));
+        if (!directory.isBlank()) directoryField.setText(directory);
+        if (urlField.getText().isBlank()) urlField.setText(Main.str(profile.get("base_url")));
+        applyProfileGateways(profile); saveSettings();
+    }
+
+    private void applyProfileGateways(Map<String,Object> profile) {
+        if (!(profile.get("gateways") instanceof List<?> gateways) || gateways.isEmpty()) return;
+        for (RouteRow row : routes) row.checkBox.setSelected(gateways.contains(row.gateway));
+        updateSelectionStatus(); saveSettings();
+    }
+
+    /** Capture Swing controls on the EDT, then configure only the application's transport off the EDT. */
+    List<Map<String,Object>> prepareTransferRoutes() throws Exception {
+        if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Prepare transfer routes outside the UI thread");
+        AtomicReference<List<SpeedTarget>> captured = new AtomicReference<>();
+        AtomicReference<NetworkInput> network = new AtomicReference<>(); AtomicReference<Exception> invalid = new AtomicReference<>();
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                if (closing) throw failure("Приложение завершает работу");
+                List<SpeedTarget> selected = new ArrayList<>();
+                for (RouteRow row : routes) if (row.checkBox.isSelected()) {
+                    String problem = gatewayProblem(row);
+                    if (problem != null) throw failure("Шлюз %s: %s", row.gateway, DiagnosticText.arg(problem));
+                    selected.add(new SpeedTarget(row));
+                }
+                if (selected.isEmpty()) throw failure("Выберите хотя бы один шлюз");
+                captured.set(List.copyOf(selected)); network.set(networkInput());
+            } catch (Exception error) { invalid.set(error); }
+        });
+        if (invalid.get() != null) throw invalid.get();
+        ensureNetwork(network.get()); List<Map<String,Object>> result = new ArrayList<>();
+        for (SpeedTarget target : captured.get()) {
+            Map<String,Object> resolved = resolveGateway(target.gateway, target.endpoint, SpeedTest.DEFAULT_URL);
+            if (!Main.yes(resolved.get("available"))) throw failure("Шлюз %s: %s", target.gateway, resolvedReason(resolved));
+            Map<String,Object> route = transportRoute(resolved); route.put("name", target.name()); route.put("enabled", true); result.add(route);
+        }
+        AtomicBoolean current = new AtomicBoolean();
+        SwingUtilities.invokeAndWait(() -> {
+            try { current.set(!closing && network.get().equals(networkInput()) && captured.get().stream()
+                    .allMatch(target -> target.row.checkBox.isSelected() && target.row.gateway.equals(target.gateway))
+                    && routes.stream().filter(row -> row.checkBox.isSelected()).count() == captured.get().size()); }
+            catch (Exception ignored) { }
+        });
+        if (!current.get()) throw failure("Адреса изменились; повторите действие после настройки сети");
+        return List.copyOf(result);
+    }
+
+    private void previewArchive() {
+        String url = urlField.getText().strip(), profile = SiteProfilesDialog.selectedId(siteProfileCombo);
+        if (url.isBlank()) { showError("Укажите ссылку на файл"); return; }
+        archivePreviewButton.setEnabled(false);
+        background.execute(() -> {
+            try {
+                List<Map<String,Object>> selected = prepareTransferRoutes();
+                Map<String,Object> input = new LinkedHashMap<>(); input.put("url", url); input.put("route", selected.get(0));
+                if (!profile.isBlank()) input.put("site_profile_id", profile);
+                SwingUtilities.invokeLater(() -> { if (!closing) ArchivePreviewDialog.open(frame, input); });
+            } catch (Exception error) { SwingUtilities.invokeLater(() -> { if (!closing) showError("Не удалось открыть содержимое архива: %s", errorArgument(error)); }); }
+            finally { SwingUtilities.invokeLater(() -> { if (!closing) archivePreviewButton.setEnabled(true); }); }
+        });
+    }
+
     static URI documentationUri(String language, boolean api) {
         String selected = I18n.codes().contains(language == null ? "" : language)
                 ? language : I18n.DEFAULT_LANGUAGE;
-        return URI.create("https://github.com/2018-spec-fdsds/multiroute-resume/blob/v" + Main.VERSION
+        return URI.create(Brand.REPOSITORY + "/blob/v" + Main.VERSION
                 + "/docs/" + selected + ".md" + (api ? "#multiroute-api" : ""));
     }
 
@@ -2831,6 +2962,7 @@ public final class DesktopUI {
         List<SpeedTarget> selected=routes.stream().filter(row->row.checkBox.isSelected()&&gatewayProblem(row)==null).map(SpeedTarget::new).toList();
         if(selected.isEmpty()){showError("Выберите хотя бы один шлюз");return;}
         String directory=directoryField.getText().trim();long chunk=((Number)chunkSpinner.getValue()).longValue();
+        String siteProfileId=SiteProfilesDialog.selectedId(siteProfileCombo);
         createRunning=true;createButton.setEnabled(false);bulkButton.setEnabled(false);status("Подготавливаем список загрузок…");
         background.execute(()->{try{
             ensureNetwork(network);List<Object> selectedRoutes=new ArrayList<>();
@@ -2841,6 +2973,7 @@ public final class DesktopUI {
             for(int sourceIndex=0;sourceIndex<urls.size();sourceIndex++){
                 String url=urls.get(sourceIndex);Map<String,Object> input=new LinkedHashMap<>();input.put("url",url);input.put("directory",directory);input.put("chunk_mb",chunk);input.put("routes",selectedRoutes);
                 input.putAll(expectedChecksums);
+                if (!siteProfileId.isBlank()) input.put("site_profile_id", siteProfileId);
                 try{
                     boolean torrent=TorrentSource.isTorrentSource(url),hub=HubSource.isListingUrl(url),generic=Metalink.isMetalink(url)||WebDav.isWebDav(url);
                     if(torrent||hub||generic){
@@ -3049,6 +3182,7 @@ public final class DesktopUI {
             if (SELECTION_POLICY.equals(settings.get("gateway_selection_policy"))
                     && savedSelected instanceof List<?> selected && selected.size() == routes.size())
                 for (int i = 0; i < routes.size(); i++) routes.get(i).checkBox.setSelected(Boolean.TRUE.equals(selected.get(i)));
+            refreshSiteProfiles(Main.str(settings.get("site_profile_id")));
             status("Настройки восстановлены; шлюзы нужно проверить повторно");
         } catch (Exception error) {
             status("Настройки окна не прочитаны: %s", errorArgument(error));
@@ -3076,6 +3210,7 @@ public final class DesktopUI {
         }
         settings.put("language", I18n.language());
         settings.put("theme", DesktopTheme.normalize(Main.str(themeCombo.getSelectedItem())));
+        settings.put("site_profile_id", SiteProfilesDialog.selectedId(siteProfileCombo));
         settings.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
         String virtualIp = virtualIpField.getText().trim();
         settings.put("virtual_ip", ipv4(virtualIp) ? virtualIp :
@@ -3171,7 +3306,7 @@ public final class DesktopUI {
     private void showError(String source, Object... args) {
         String value = new UiText(source, args).toString();
         AppLog.error(source, logArguments(args));
-        if (frame.isShowing()) JOptionPane.showMessageDialog(frame, value, "MultiRoute Resume", JOptionPane.ERROR_MESSAGE);
+        if (frame.isShowing()) JOptionPane.showMessageDialog(frame, value, Brand.NAME, JOptionPane.ERROR_MESSAGE);
         else I18n.text(statusLabel, "%s", new UiText(source, args));
     }
 }

@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "선택한 인터넷 게이트웨이를 통해 데스크톱 다운로더로 링크를 보냅니다."
+  },
+  "downloadLink": {
+    "message": "MultiRoute로 다운로드"
+  },
+  "popupHint": {
+    "message": "현재 페이지를 보내거나 파일 링크를 붙여 넣으세요."
+  },
+  "urlLabel": {
+    "message": "다운로드 링크"
+  },
+  "portLabel": {
+    "message": "애플리케이션 API 포트"
+  },
+  "sendButton": {
+    "message": "MultiRoute로 보내기"
+  },
+  "setupHint": {
+    "message": "데스크톱 애플리케이션을 실행한 상태에서 설정의 Chrome / Edge 연동을 켜세요. 현재 폴더, 게이트웨이 및 사이트 프로필을 사용합니다."
+  },
+  "helpLink": {
+    "message": "설정 안내"
+  },
+  "invalidUrl": {
+    "message": "비밀번호가 포함되지 않은 HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV 또는 magnet 링크를 사용하세요."
+  },
+  "invalidPort": {
+    "message": "1~65535 범위의 API 포트를 입력하세요."
+  },
+  "enableIntegration": {
+    "message": "데스크톱 애플리케이션에서 Chrome / Edge 연동을 켜세요."
+  },
+  "openApplication": {
+    "message": "MultiRoute 데스크톱 애플리케이션을 열고 API 포트를 확인하세요."
+  },
+  "sendFailed": {
+    "message": "링크를 보낼 수 없습니다."
+  },
+  "sending": {
+    "message": "보내는 중…"
+  },
+  "sent": {
+    "message": "링크를 데스크톱 애플리케이션으로 보냈습니다. 해당 창에서 파일을 선택해야 할 수 있습니다."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Envoyez des liens au gestionnaire de bureau via les passerelles Internet sélectionnées."
+  },
+  "downloadLink": {
+    "message": "Télécharger avec MultiRoute"
+  },
+  "popupHint": {
+    "message": "Envoyez la page actuelle ou collez un lien de fichier."
+  },
+  "urlLabel": {
+    "message": "Lien de téléchargement"
+  },
+  "portLabel": {
+    "message": "Port de l’API de l’application"
+  },
+  "sendButton": {
+    "message": "Envoyer à MultiRoute"
+  },
+  "setupHint": {
+    "message": "Laissez l’application de bureau ouverte et activez l’intégration Chrome / Edge dans ses paramètres. Le dossier, les passerelles et le profil de site actuels seront utilisés."
+  },
+  "helpLink": {
+    "message": "Instructions de configuration"
+  },
+  "invalidUrl": {
+    "message": "Utilisez un lien HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV ou magnet sans mot de passe intégré."
+  },
+  "invalidPort": {
+    "message": "Saisissez un port API compris entre 1 et 65535."
+  },
+  "enableIntegration": {
+    "message": "Activez l’intégration Chrome / Edge dans l’application de bureau."
+  },
+  "openApplication": {
+    "message": "Ouvrez l’application de bureau MultiRoute et vérifiez son port API."
+  },
+  "sendFailed": {
+    "message": "Impossible d’envoyer le lien."
+  },
+  "sending": {
+    "message": "Envoi…"
+  },
+  "sent": {
+    "message": "Le lien a été envoyé à l’application de bureau. Vous devrez peut-être y sélectionner des fichiers."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "أرسل الروابط إلى تطبيق التنزيل المكتبي عبر بوابات الإنترنت المحددة."
+  },
+  "downloadLink": {
+    "message": "التنزيل باستخدام MultiRoute"
+  },
+  "popupHint": {
+    "message": "أرسل الصفحة الحالية أو الصق رابط ملف."
+  },
+  "urlLabel": {
+    "message": "رابط التنزيل"
+  },
+  "portLabel": {
+    "message": "منفذ API التطبيق"
+  },
+  "sendButton": {
+    "message": "إرسال إلى MultiRoute"
+  },
+  "setupHint": {
+    "message": "أبقِ تطبيق سطح المكتب قيد التشغيل وفعّل تكامل Chrome / Edge في إعداداته. سيُستخدم المجلد والبوابات وملف الموقع الحالية."
+  },
+  "helpLink": {
+    "message": "تعليمات الإعداد"
+  },
+  "invalidUrl": {
+    "message": "استخدم رابط HTTP أو HTTPS أو FTP أو FTPS أو SFTP أو WebDAV أو magnet دون كلمة مرور مضمنة."
+  },
+  "invalidPort": {
+    "message": "أدخل منفذ API بين 1 و65535."
+  },
+  "enableIntegration": {
+    "message": "فعّل تكامل Chrome / Edge في تطبيق سطح المكتب."
+  },
+  "openApplication": {
+    "message": "افتح تطبيق MultiRoute المكتبي وتحقق من منفذ API الخاص به."
+  },
+  "sendFailed": {
+    "message": "تعذر إرسال الرابط."
+  },
+  "sending": {
+    "message": "جارٍ الإرسال…"
+  },
+  "sent": {
+    "message": "أُرسل الرابط إلى تطبيق سطح المكتب. قد يُطلب منك اختيار الملفات هناك."
+  }
+}

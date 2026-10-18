@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Gửi liên kết tới trình tải xuống trên máy tính qua các cổng Internet đã chọn."
+  },
+  "downloadLink": {
+    "message": "Tải xuống bằng MultiRoute"
+  },
+  "popupHint": {
+    "message": "Gửi trang hiện tại hoặc dán liên kết tệp."
+  },
+  "urlLabel": {
+    "message": "Liên kết tải xuống"
+  },
+  "portLabel": {
+    "message": "Cổng API của ứng dụng"
+  },
+  "sendButton": {
+    "message": "Gửi tới MultiRoute"
+  },
+  "setupHint": {
+    "message": "Giữ ứng dụng máy tính đang chạy và bật tích hợp Chrome / Edge trong cài đặt. Thư mục, cổng mạng và hồ sơ trang web hiện tại sẽ được sử dụng."
+  },
+  "helpLink": {
+    "message": "Hướng dẫn thiết lập"
+  },
+  "invalidUrl": {
+    "message": "Dùng liên kết HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV hoặc magnet không chứa mật khẩu."
+  },
+  "invalidPort": {
+    "message": "Nhập cổng API từ 1 đến 65535."
+  },
+  "enableIntegration": {
+    "message": "Bật tích hợp Chrome / Edge trong ứng dụng máy tính."
+  },
+  "openApplication": {
+    "message": "Mở ứng dụng MultiRoute trên máy tính và kiểm tra cổng API."
+  },
+  "sendFailed": {
+    "message": "Không thể gửi liên kết."
+  },
+  "sending": {
+    "message": "Đang gửi…"
+  },
+  "sent": {
+    "message": "Đã gửi liên kết tới ứng dụng máy tính. Bạn có thể cần chọn tệp trong cửa sổ ứng dụng."
+  }
+}

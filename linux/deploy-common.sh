@@ -4,7 +4,7 @@ MR_RELEASE=3.4
 MR_HELPER_ROOT=/usr/local/libexec/MultiRouteResume/3.4
 MR_JRE_ROOT='jdk-21.0.12.1+1-jre'
 mr_note(){ printf '%s\n' "$*"; }
-mr_die(){ printf '\nMultiRoute Resume: %s\n' "$*" >&2; exit 1; }
+mr_die(){ printf '\nMultiRoute Downloader: %s\n' "$*" >&2; exit 1; }
 mr_cleanup(){
     if [ -n "${MR_TEMP:-}" ] && [ -d "$MR_TEMP" ]; then
         case "$MR_TEMP" in "$MR_USER_ROOT"/.install-*|"$MR_USER_ROOT"/.build-*) rm -rf -- "$MR_TEMP";; esac
@@ -34,7 +34,7 @@ mr_environment(){
     MR_RUNTIME_ROOT="$MR_USER_ROOT/runtime"
     mkdir -p -- "$MR_USER_ROOT" "$MR_RUNTIME_ROOT" "$MR_DATA" || mr_die 'Cannot create application directories.'
     [ -w "$MR_USER_ROOT" ] || mr_die 'The application directory is not writable.'
-    [ -f "$MR_SOURCE/MultiRoute-Resume.jar" ] || mr_die 'MultiRoute-Resume.jar is missing. Extract the full distribution.'
+    [ -f "$MR_SOURCE/MultiRoute-Downloader.jar" ] || mr_die 'MultiRoute-Downloader.jar is missing. Extract the full distribution.'
     command -v sudo >/dev/null || mr_die 'sudo is required to install and authorize the protected network helper.'
     mr_note "Linux $MR_ARCH; application data: $MR_DATA"
     mr_torrent_compatibility
@@ -221,7 +221,7 @@ LAUNCH
     quoted=${quoted//\\/\\\\};quoted=${quoted//%/%%}
     entry="$applications/MultiRouteResume.desktop"
     {
-        printf '%s\n' '[Desktop Entry]' 'Version=1.0' 'Type=Application' 'Name=MultiRoute Resume' 'Comment=Resumable downloads through selected gateways' 'Comment[ru]=Докачка через выбранные шлюзы'
+        printf '%s\n' '[Desktop Entry]' 'Version=1.0' 'Type=Application' 'Name=MultiRoute Downloader' 'Comment=Resumable downloads through selected gateways' 'Comment[ru]=Докачка через выбранные шлюзы'
         printf 'Exec=/bin/bash "%s"\n' "$quoted"
         printf '%s\n' 'TryExec=/bin/bash' 'Terminal=true' 'Icon=folder-download' 'Categories=Network;FileTransfer;'
     } > "$entry"
@@ -235,5 +235,5 @@ mr_launch(){
     sudo -n -- "$MR_HELPER_ROOT/gateway-net" --self-test || mr_die 'Helper authorization or offline self-test failed.'
     mr_note 'Keep this terminal open while downloading; Java itself runs without administrator privileges.'
     cd -- "$MR_SOURCE"
-    "$MR_JAVA" -jar "$MR_SOURCE/MultiRoute-Resume.jar" --data-dir "$MR_DATA" "$@"
+    "$MR_JAVA" -jar "$MR_SOURCE/MultiRoute-Downloader.jar" --data-dir "$MR_DATA" "$@"
 }

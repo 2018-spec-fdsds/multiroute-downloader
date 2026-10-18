@@ -89,6 +89,7 @@ public final class ModernDesktopTest40 {
         check(button.isVisible()&&button.getWidth()>=button.getPreferredSize().width,"Control text clipped: "+button);
         check(new Rectangle(0,0,ui.frame.getContentPane().getWidth(),ui.frame.getContentPane().getHeight()).contains(bounds),"Header control outside frame: "+button);
         check(((JComponent)button).getVisibleRect().contains(new Rectangle(0,0,button.getWidth(),button.getHeight())),"Control clipped by ancestor: "+button);
+        if(button instanceof AbstractButton action)check(action.getFont().canDisplayUpTo(action.getText())<0,"Control has missing translated glyphs: "+action.getText());
     }
     static void capture(DesktopUI ui,Path own,String theme,String language) throws Exception {
         BufferedImage image=new BufferedImage(ui.frame.getContentPane().getWidth(),ui.frame.getContentPane().getHeight(),BufferedImage.TYPE_INT_ARGB);
@@ -148,6 +149,10 @@ public final class ModernDesktopTest40 {
                 ui.frame.setSize(1080,700);if(visible)ui.frame.setVisible(true);else ui.frame.addNotify();
                 ui.frame.validate();layout(ui.frame.getContentPane());
             });drain();DesktopUI ui=ref.get();
+            check(manager.browserDownload!=null,"Desktop did not attach its browser intake");
+            edt(()->{Field running=DesktopUI.class.getDeclaredField("createRunning");running.setAccessible(true);running.setBoolean(ui,true);});
+            manager.browserDownload.accept("https://example.invalid/owned-first");manager.browserDownload.accept("https://example.invalid/owned-second");drain();
+            edt(()->{Deque<?> queued=(Deque<?>)field(ui,"pendingBrowserUrls");check(queued.size()==2&&queued.getFirst().equals("https://example.invalid/owned-first"),"Browser links were dropped while download creation was busy");queued.clear();Field running=DesktopUI.class.getDeclaredField("createRunning");running.setAccessible(true);running.setBoolean(ui,false);});
             List<Object> snapshots=new ArrayList<>();
             snapshots.add(job(own,"owned-unicode",unicodeName,"running",1250000000L));
             snapshots.add(job(own,"owned-html","<img src='owned'> & \"file\".gguf","complete",0));
@@ -195,7 +200,7 @@ public final class ModernDesktopTest40 {
                     edt(()->{ui.themeCombo.setSelectedItem(theme);ui.frame.validate();layout(ui.frame.getContentPane());});drain();
                     edt(()->{
                         buttonVisible(ui,ui.instructionsButton);buttonVisible(ui,ui.apiGuideButton);buttonVisible(ui,ui.languageCombo);
-                        buttonVisible(ui,ui.logButton);buttonVisible(ui,ui.exitButton);buttonVisible(ui,ui.themeCombo);buttonVisible(ui,ui.createButton);
+                        buttonVisible(ui,ui.logButton);buttonVisible(ui,ui.exitButton);buttonVisible(ui,ui.themeCombo);buttonVisible(ui,ui.createButton);buttonVisible(ui,ui.browserButton);buttonVisible(ui,ui.queueButton);
                         check(contrast(ui.jobsTable.getForeground(),ui.jobsTable.getBackground())>=9,"Themed table contrast is unreadable");
                         check(ui.jobsTable.getBackground().equals(DesktopTheme.surface()),"Actual table retained an old theme background");
                         check(ui.frame.getContentPane().getBackground().equals(DesktopTheme.background()),"Actual root panel retained an old theme background");
@@ -217,11 +222,11 @@ public final class ModernDesktopTest40 {
                         check(ui.detailTabs.getVisibleRect().height>=Math.min(35,ui.detailTabs.getHeight()),"Detail/history tabs are not reachable by scrolling the details pane");
                         check(!ui.summaryLabel.getText().contains("\ufffd")&&!ui.historyArea.getText().contains("\ufffd"),"UI text contains Unicode replacement characters");
                         ui.detailScroll.getViewport().setViewPosition(new Point(0,0));
-                        if(List.of("en","zh","ko","ar","it").contains(language))capture(ui,own,theme,language);
+                        if(List.of("en","zh","ko","ar","it","ja","hi","vi").contains(language))capture(ui,own,theme,language);
                     });
                 }
             }
-            cases.add("nine_languages_visible_header_actions_at_1080x700_in_light_and_dark");
+            cases.add("twelve_languages_visible_header_actions_at_1080x700_in_light_and_dark");
             historyLog(ui,own);
             for(String theme:List.of("light","dark")) {
                 edt(()->{
@@ -259,7 +264,7 @@ public final class ModernDesktopTest40 {
             cases.add("theme_switch_preserves_selected_job_scroll_forms_history_and_utf8_settings");
         } finally {
             if(ref.get()!=null){edt(()->ref.get().frame.dispose());check(closed.await(8,TimeUnit.SECONDS),"Owned UI workers did not close");}
-            manager.shutdown();AppLog.close();
+            check(manager.browserDownload==null,"Closed desktop retained its browser intake");manager.shutdown();AppLog.close();
         }
         String settings=Files.readString(own.resolve("owned-profile/desktop-settings.config"),StandardCharsets.UTF_8);
         check(!settings.contains("\ufffd")&&settings.contains("Папка_日本語_🚀"),"UTF-8 settings lost Unicode data");

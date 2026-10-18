@@ -1,4 +1,4 @@
-Set-StrictMode -Version 2.0
+﻿Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 $script:JavaUrl = 'https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jre_x64_windows_hotspot_21.0.12.1_1.zip'
 $script:JavaSha256 = 'd35f31e712f0fcf6ac5a093edc90204fbff22f720ba3950bd09d331d5e621636'
@@ -40,7 +40,7 @@ function Assert-MrWindows {
 
 function Assert-MrPayload([string]$Root) {
     Assert-MrSafePath $Root | Out-Null
-    foreach ($relative in @('MultiRoute-Resume.jar','native\windows-x64\gateway-net.exe')) {
+    foreach ($relative in @('MultiRoute-Downloader.jar','native\windows-x64\gateway-net.exe')) {
         $file = Assert-MrSafePath (Join-Path $Root $relative) $Root
         if (-not [IO.File]::Exists($file)) { Stop-MrSetup 'The runnable release is incomplete. Download and extract the Windows distribution from GitHub Releases, or build the Java JAR and native Windows helper from source. A source-only checkout is not a ready-to-run release.' }
     }
@@ -294,7 +294,7 @@ function Install-MrNpcap([string]$Root) {
 }
 
 function Start-MrApplication([string]$Root, [string]$Java, [string[]]$ApplicationArguments) {
-    $arguments = @('-jar',(Join-Path $Root 'MultiRoute-Resume.jar')) + $ApplicationArguments
+    $arguments = @('-jar',(Join-Path $Root 'MultiRoute-Downloader.jar')) + $ApplicationArguments
     $gui = Join-Path ([IO.Path]::GetDirectoryName($Java)) 'javaw.exe'
     if ($ApplicationArguments.Count -eq 0 -and [IO.File]::Exists($gui)) {
         Start-Process -FilePath $gui -ArgumentList (ConvertTo-MrNativeArguments $arguments) -WorkingDirectory $Root | Out-Null
@@ -313,7 +313,7 @@ function Invoke-MrBootstrap([string]$Root, [string]$Mode, [string[]]$Application
     if (-not $npcap.Present) { $npcap = Install-MrNpcap $Root }
     if (-not $npcap.Ready) { Stop-MrSetup 'Npcap is installed but its driver service is not running. Check Npcap or restart Windows; no service/security policy was changed by this launcher.' }
     if ($npcap.AdminOnly) { Write-Host 'Npcap access is restricted to Administrators. Authorize its UAC capture prompt when checking a gateway; Java itself runs as your normal user.' }
-    Write-Host 'Environment checks completed. Starting MultiRoute Resume as your normal user.'
+    Write-Host 'Environment checks completed. Starting MultiRoute Downloader as your normal user.'
     return (Start-MrApplication $Root $java $ApplicationArguments)
 }
 

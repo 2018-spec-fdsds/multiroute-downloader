@@ -1,14 +1,14 @@
-# MultiRoute Resume 4.0 — 한국어 안내서
+# MultiRoute Downloader 4.0 — 한국어 안내서
 
-[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md)
+[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
 프로젝트 소유자: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 ## 1. 용도와 동작
 
-MultiRoute Resume는 같은 로컬 Ethernet 네트워크의 여러 인터넷 **게이트웨이**로 파일을 나누어 받는 Java 데스크톱 프로그램입니다. 예를 들어 유선 인터넷과 모바일 4G/5G 회선을 함께 사용할 수 있습니다. 선택한 사용 가능한 게이트웨이가 공유 대기열에서 조각을 가져가므로 빠른 회선이 더 많은 조각을 처리합니다. 회선 하나가 끊겨도 나머지는 계속하고, 미완료 조각은 대기열로 돌아가며 검증된 데이터는 보존됩니다. URL 목록 일괄 가져오기와 다른 프로그램을 위한 로컬 API도 제공합니다.
+MultiRoute Downloader는 같은 로컬 Ethernet 네트워크의 여러 인터넷 **게이트웨이**로 파일을 나누어 받는 Java 데스크톱 프로그램입니다. 예를 들어 유선 인터넷과 모바일 4G/5G 회선을 함께 사용할 수 있습니다. 선택한 사용 가능한 게이트웨이가 공유 대기열에서 조각을 가져가므로 빠른 회선이 더 많은 조각을 처리합니다. 회선 하나가 끊겨도 나머지는 계속하고, 미완료 조각은 대기열로 돌아가며 검증된 데이터는 보존됩니다. URL 목록 일괄 가져오기와 다른 프로그램을 위한 로컬 API도 제공합니다.
 
-속도 향상은 독립적인 상위 회선 용량, 서버 제한과 프로토콜의 안전한 이어받기 지원에 달려 있습니다. 게이트웨이 수만큼 항상 빨라지지는 않습니다. 웹 인터페이스가 아닌 독립 데스크톱 앱입니다. 새 프로필의 기본 언어는 영어이며 러시아어, 독일어, 스페인어, 프랑스어, 중국어, 한국어, 아랍어, 이탈리아어도 선택할 수 있습니다. 선택한 언어는 저장되고 등록된 상태/로그/도움말에 적용됩니다. 외부 서버나 라이브러리의 원문 오류는 번역되지 않을 수 있습니다. 파일명, 경로, URL, JSON 키는 변경하지 않습니다.
+속도 향상은 독립적인 상위 회선 용량, 서버 제한과 프로토콜의 안전한 이어받기 지원에 달려 있습니다. 게이트웨이 수만큼 항상 빨라지지는 않습니다. 웹 인터페이스가 아닌 독립 데스크톱 앱입니다. 새 프로필의 기본 언어는 영어이며 러시아어, 독일어, 스페인어, 프랑스어, 중국어, 한국어, 아랍어, 이탈리아어, 일본어, 힌디어, 베트남어도 선택할 수 있습니다. 선택한 언어는 저장되고 등록된 상태/로그/도움말에 적용됩니다. 외부 서버나 라이브러리의 원문 오류는 번역되지 않을 수 있습니다. 파일명, 경로, URL, JSON 키는 변경하지 않습니다.
 
 ## 2. 필요한 컴퓨터 환경
 
@@ -27,11 +27,11 @@ Java에는 `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` 모듈�
 
 ## 3. 설치와 보안 확인
 
-[4.0 릴리스](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v4.0)에 첨부된 경우 시스템에 맞는 하나의 설치 파일을 받고 공개 SHA-256과 비교합니다.
+[4.0 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0)에 첨부된 경우 시스템에 맞는 하나의 설치 파일을 받고 공개 SHA-256과 비교합니다.
 
-- Windows: `MultiRoute-Resume-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Resume-4.0-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Resume-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -43,7 +43,7 @@ EXE를 열어 현재 사용자용 설치를 마치고 시작 메뉴나 바탕 �
 
 ### macOS
 
-CPU에 맞는 PKG를 Apple Installer에서 열고 보호된 네트워크 구성 요소 설치를 위한 관리자 요청을 승인합니다. `/Applications/MultiRoute Resume.app`을 Finder/Spotlight/Dock에서 엽니다. 이 기본 패키지에는 별도 Java, Terminal, Command Line Tools, Homebrew가 필요 없습니다.
+CPU에 맞는 PKG를 Apple Installer에서 열고 보호된 네트워크 구성 요소 설치를 위한 관리자 요청을 승인합니다. `/Applications/MultiRoute Downloader.app`을 Finder/Spotlight/Dock에서 엽니다. 이 기본 패키지에는 별도 Java, Terminal, Command Line Tools, Homebrew가 필요 없습니다.
 
 Ethernet BPF 장치를 열어야 할 때 정상적인 macOS 관리자 인증이 나타납니다. 네트워크 구성 요소는 캡처 장치를 연 뒤 권한을 낮추고 Java 창은 일반 사용자로 실행됩니다. PKG와 앱은 **Developer ID 서명 및 공증이 없습니다**. 개발자를 확인할 수 없다는 알림에 예외가 제공된다면 출처와 SHA-256을 검증한 후에만 **시스템 설정 → 개인정보 보호 및 보안 → 확인 없이 열기**, 이어서 “열기”를 선택하십시오. [Apple 공식 안내](https://support.apple.com/en-us/102445)를 참고하고 관리형 Mac의 제한을 따릅니다.
 
@@ -53,7 +53,7 @@ Ethernet BPF 장치를 열어야 할 때 정상적인 macOS 관리자 인증이 
 
 완전한 ZIP을 풀고 Linux 최초에는 `bash ./Deploy-Linux.sh`, 이후에는 `bash ./Start-Linux.sh`를 실행합니다. Windows portable은 `Deploy-Windows.cmd` 다음 `Start-Windows.cmd`, macOS portable은 `Deploy-macOS.command`와 `Start-macOS.command`를 사용합니다. 구형 ZIP은 스크립트 실행 방식이며 4.0 기본 설치 패키지와 별개입니다. Linux에서는 배포판의 컴파일러/libpcap 의존성이 필요하고 macOS portable은 Apple Command Line Tools와 sudo를 요청할 수 있습니다. 해당 권한 터미널을 유지하고 전체 Java를 root로 실행하지 마십시오. Alpine/musl은 포함되지 않으며 배포가 운영체제나 glibc를 교체하지 않습니다.
 
-설치에는 아홉 언어의 오프라인 설명서가 포함됩니다. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: 앱의 “패키지 내용 보기”에서 `Contents/app/docs/ko.md`를 엽니다. 브라우저의 릴리스 설명서 링크는 인터넷이 필요합니다.
+설치에는 열두 언어의 오프라인 설명서가 포함됩니다. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: 앱의 “패키지 내용 보기”에서 `Contents/app/docs/ko.md`를 엽니다. 브라우저의 릴리스 설명서 링크는 인터넷이 필요합니다.
 
 ## 4. 게이트웨이와 가상 IP
 
@@ -182,8 +182,8 @@ print(job["id"])
 
 | 시스템 | 데이터 | 앱/런타임 |
 | --- | --- | --- |
-| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App` |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app` |
+| Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
 macOS 기본 보호 구성 요소는 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`입니다. Windows portable 3.0은 실행 폴더의 `data/`이며 `data-location.config`/`--data-dir`로 바꿀 수 있습니다. Linux 전용 Java는 `~/.local/share/MultiRouteResume/runtime`, 보호 구성 요소는 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`입니다. 다운로드 파일은 사용자가 고른 별도 위치에 있습니다.
@@ -208,3 +208,35 @@ API `lifecycle_history`에는 `event_id`, `job_id`, `kind`, `time`, `filename`, 
 ## 10. 라이선스
 
 원본 앱은 개인/조직 및 업무에서 무료로 사용할 수 있습니다. 별도 허가 없이 앱 판매, 라이선스 요금 청구나 유료 배포는 금지합니다. 사용자 정의 라이선스는 일반적인 수정/재배포 권한을 주지 않으며 OSI 승인 오픈소스 라이선스가 아닙니다. 영어 [LICENSE.txt](../LICENSE.txt)가 우선합니다. FlatLaf(Apache-2.0) 등 타사 구성 요소는 각자 라이선스를 유지합니다. 소유자: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
+
+## 이름과 기존 프로필 호환
+
+MultiRoute Downloader의 이전 이름은 MultiRoute Resume입니다. 새 프로필은 위의 새 경로를 쓰지만 새 데이터 폴더가 없고 이전 프로필이 있으면 파일 이동/삭제 없이 그대로 재사용합니다. 이전 Windows 데이터는 `%LOCALAPPDATA%\MultiRoute Resume\data`, Mac 데이터는 `~/Library/Application Support/MultiRoute Resume/data`에 남을 수 있습니다. 보호 디렉터리 `MultiRouteResume`, Windows 업그레이드 ID, 내부 API 식별자/포트는 호환성을 유지합니다. 설치 후 새 MultiRoute Downloader 바로 가기나 앱을 사용합니다. 과거 릴리스 파일명은 그대로입니다.
+
+## 저장한 사이트, 업로드와 압축 파일 미리 보기 (4.0)
+
+**사이트 프로필…**에서 프로필을 만들거나 수정한 뒤 **다운로드** 또는 **업로드**에서 선택합니다. 게이트웨이와 가상 IP는 **네트워크 설정**에 있습니다. **업로드**에서 **원격 폴더 URL**을 입력하고 **파일을 선택하여 업로드…**로 시스템 선택기에서 한 개 이상의 로컬 파일을 선택합니다. 화면은 파일명을 붙이지만 API `target_url`은 전체 원격 파일 URL을 사용합니다. 압축 파일 URL을 기본 입력란에 붙이고 **압축 파일 내용…**를 누르면 다운로드 없이 미리 봅니다.
+
+사이트 프로필에 이름, 기본 URL, 로컬 다운로드 폴더, 원격 폴더와 게이트웨이를 저장합니다. 익명 접근, HTTP Basic/Bearer/Cookie/사용자 헤더, FTP 및 사전에 확인한 서버 SHA-256 키를 사용하는 SFTP를 지원합니다. 같은 서버의 여러 계정도 별도로 보관합니다. 명시한 폴더/게이트웨이가 기본값보다 우선하며 상대 URL은 기본 URL을 기준으로 합니다. 비밀 정보는 소유자 전용 `site-profiles/vault.bin`에 암호화되고 키는 `site-profiles/key.bin`에 있습니다. 계정과 키를 장악한 사람으로부터는 보호하지 못합니다. 공개 API는 비밀을 반환하지 않습니다. 출처와 인증 방식이 같을 때만 빈 입력은 이전 비밀을 유지하며 `replace_credentials:true`로 교체합니다. 다른 출처로 HTTP 리디렉션하면 자격 증명을 보내지 않습니다. 프로필 삭제는 작업이나 로컬/원격 파일을 삭제하지 않으며 연결된 작업은 원래 프로필 연결을 유지하며 계정을 바꿀 수 없으므로 삭제했다면 필요에 따라 유효한 프로필로 작업을 다시 만드십시오.
+
+업로드와 원격 폴더 탐색은 선택한 게이트웨이를 통한 **FTP, 명시적 FTPS, SFTP**를 지원합니다. 일반 로컬 파일과 폴더가 아닌 전체 원격 파일 URL(`target_url`)을 선택합니다. 원격 임시 파일의 기존 접두부를 비교한 뒤 이어 올릴 수 있습니다. 완료하려면 원격 파일 전체를 다시 읽어 SHA-256을 비교하므로 **읽기·쓰기·이름 변경** 권한이 필요하며 추가 트래픽이 발생합니다. 불일치나 읽기 거부는 실패입니다. 한 파일은 한 번에 한 게이트웨이를 사용하고 여러 파일은 게이트웨이에 나뉘어 병렬 전송됩니다. 유휴 제한 후 다른 게이트웨이로 바꿀 수 있지만 한 업로드를 동시에 분할하지는 않습니다. 일시 중지/재개와 진행률은 재시작 후에도 유지됩니다. 작업 삭제는 로컬 파일과 원격 완성/임시 파일을 남깁니다.
+
+덮어쓰기는 기본으로 꺼져 있습니다. FTP/SFTP는 대상이 없을 때만 원자적으로 이름을 바꾸는 기능을 항상 제공하지 않으므로 외부 클라이언트와 최종 대상이 충돌할 수 있습니다. 공유 대상을 조정하십시오. 폴더 탐색은 파일을 올리거나 삭제하지 않습니다.
+
+**ZIP, TAR, 7Z, RAR4, RAR5** 미리 보기는 이름, 경로, 크기, 폴더/암호화 표시만 읽고 압축 해제나 실행은 하지 않습니다. 선택한 게이트웨이, 바이트 범위 및 안정적인 ETag 또는 Last-Modified가 필요합니다. 메타데이터 16 MiB, 10,000개, 60초 제한이며 7z 헤더 해독 메모리는 64 MiB입니다. 목록은 잘릴 수 있고 내용의 무결성을 확인하지 않습니다. 이름 오류에는 원래 문자셋을 지정하십시오. 지원하는 암호화 7z 헤더에는 저장하지 않는 암호를 사용할 수 있습니다. 암호화 RAR 헤더는 미지원/암호 필요로 표시되며 분할 볼륨은 일부만 보일 수 있습니다.
+
+다운로드·업로드·목록·미리 보기 API는 `site_profile_id`를 받습니다. `GET /api/v1/site-profiles`는 `{profiles:[...]}`, `POST`/`PUT`는 평면 프로필 저장과 공개 메타데이터 반환, `DELETE /api/v1/site-profiles/{id}`는 프로필만 삭제합니다. `POST /api/v1/uploads`는 `local_path`, `target_url`, `routes`, 선택적 `site_profile_id`, `overwrite:false`를 받아 HTTP 201을 반환합니다. GET은 `{uploads:[...]}`를 반환하며 개별 GET/DELETE, POST `/{id}/pause` / `/{id}/resume`도 지원합니다. `POST /api/v1/remote/list`는 `url`과 `route`/`routes`, `POST /api/v1/archives/preview`는 추가로 선택적 `password`, `charset`을 받습니다. [openapi.yaml](../openapi.yaml)을 참조하십시오. `data/uploads/`의 UTF-8 매니페스트에는 암호 대신 프로필 ID가 있습니다. 미리 보기는 다운로드 작업을 만들지 않습니다.
+
+## 다운로드 일정과 우선순위
+
+큐/일정에서 `max_active_jobs`(1–32), 전체/게이트웨이 속도 제한, 일일 시간대(`schedule_enabled`, `schedule_start`, `schedule_end`, HH:mm)를 설정합니다. 컴퓨터 현지 시간대이며 `schedule_timezone`으로 확인할 수 있습니다. 자정을 넘길 수 있고 시작/끝이 같으면 하루 종일입니다. 시간대 밖에서는 큐로 돌아가며 수동 일시 중지는 유지됩니다. `priority` -100~100에서 높은 대기 작업부터, 같으면 생성 순서로 시작하며 실행 중인 작업을 중단하지 않습니다. `start_after_ms`는 Unix 밀리초 기준 가장 이른 시작 시각이고 0은 지연 해제입니다. 재시작 후 유지되며 다운로드에만 적용되고 업로드 큐는 별개입니다. 앱과 컴퓨터가 깨어 있어야 하며 OS 깨우기는 지원하지 않습니다. API: `GET`/`PUT`/`POST /api/v1/queue`, `PUT`/`POST /api/v1/jobs/{id}/options`.
+
+## Chrome 및 Edge 통합
+
+앱의 **Chrome / Edge** 통합에서 링크 전달을 켜고 확장 폴더를 엽니다. 한 번 `chrome://extensions` 또는 `edge://extensions`에서 개발자 모드를 켜고 “압축해제된 확장 프로그램 로드”로 `manifest.json`이 있는 `browser-extension`을 선택합니다. 네이티브 설치본은 JAR 옆에 포함하며 소스에도 [browser-extension/](../browser-extension/)이 있습니다. 폴더를 옮기지 마십시오. 별도 `MultiRoute-Downloader-4.0-Chrome-Edge.zip`은 먼저 풉니다. 스토어 게시본은 아닙니다.
+
+MultiRoute가 실행 중이어야 하며 트레이여도 됩니다. 링크 메뉴 또는 확장 팝업에서 URL을 보냅니다. 현재 폴더, 게이트웨이, 사이트 프로필을 사용하며 필요한 저장소/torrent 선택은 계속 나타납니다. 기본 포트 8765를 API 포트와 맞추십시오. URL만 보내며 브라우저 쿠키/암호를 복사하거나 다른 다운로드를 가로채지 않습니다. 원본 인증은 앱에서 설정합니다. 로컬 연결 권한 요청은 이 확장에만 허용하십시오.
+
+기본으로 꺼진 브리지는 `chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl`의 `/api/v1/browser/status`, `/api/v1/browser/download`만 허용하며 다른 API 규칙을 바꾸지 않습니다. HTTP 202는 화면 전달이지 다운로드 완료가 아닙니다. headless 서버만으로는 화면 선택이 열리지 않습니다. 브라우저에서 확장을 삭제하거나 앱 통합을 끄면 중단됩니다.
+
+[Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world) · [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).

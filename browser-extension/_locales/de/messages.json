@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "Links über ausgewählte Internet-Gateways an die Desktop-Anwendung senden."
+  },
+  "downloadLink": {
+    "message": "Mit MultiRoute herunterladen"
+  },
+  "popupHint": {
+    "message": "Aktuelle Seite senden oder einen Dateilink einfügen."
+  },
+  "urlLabel": {
+    "message": "Download-Link"
+  },
+  "portLabel": {
+    "message": "API-Port der Anwendung"
+  },
+  "sendButton": {
+    "message": "An MultiRoute senden"
+  },
+  "setupHint": {
+    "message": "Die Desktop-Anwendung muss laufen. Aktivieren Sie dort die Chrome-/Edge-Integration. Der aktuelle Ordner, die Gateways und das Websiteprofil werden verwendet."
+  },
+  "helpLink": {
+    "message": "Einrichtungsanleitung"
+  },
+  "invalidUrl": {
+    "message": "Verwenden Sie einen HTTP-, HTTPS-, FTP-, FTPS-, SFTP-, WebDAV- oder Magnet-Link ohne eingebettetes Passwort."
+  },
+  "invalidPort": {
+    "message": "Geben Sie einen API-Port zwischen 1 und 65535 ein."
+  },
+  "enableIntegration": {
+    "message": "Aktivieren Sie die Chrome-/Edge-Integration in der Desktop-Anwendung."
+  },
+  "openApplication": {
+    "message": "Öffnen Sie die MultiRoute-Desktop-Anwendung und prüfen Sie ihren API-Port."
+  },
+  "sendFailed": {
+    "message": "Der Link konnte nicht gesendet werden."
+  },
+  "sending": {
+    "message": "Wird gesendet…"
+  },
+  "sent": {
+    "message": "Der Link wurde an die Desktop-Anwendung gesendet. Dort ist eventuell eine Dateiauswahl nötig."
+  }
+}

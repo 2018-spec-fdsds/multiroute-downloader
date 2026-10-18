@@ -1,4 +1,8 @@
 {
+  "commons-codec-1.23.0.jar": "47504a3ce71d73a1b0af07675546b8d8c5af87f82ef12b6381f9eb3c17dd5a5b",
+  "commons-compress-1.28.0.jar": "e1522945218456f3649a39bc4afd70ce4bd466221519dba7d378f2141a4642ca",
+  "commons-io-2.22.0.jar": "2b9a7b1f726fb86216dbd2c8321eabe0221dbd5b1be81c18e1cb53811b104758",
+  "commons-lang3-3.21.0.jar": "a2af247ec4db6eb8947e18e23e0433e4871a7c5d0a40e1f92e46ede54ae1defe",
   "flatlaf-3.7.2.jar": "917aff3963c88d797d0fd9b9ccbd70f7681c101df9d11c59e2bc7a3a6c0fabf4",
   "jlibtorrent-2.0.12.9.jar": "c96316e640397249ecfbbe56c355afef472190b8d47d51a94a03e47eb60c219a",
   "jlibtorrent-linux-arm64-2.0.12.9.jar": "1e6996c4677b20fb0b5f0ef3a100a03ac9b72eed5c5bb107fc97c9d727c01e2b",
@@ -6,5 +10,6 @@
   "jlibtorrent-macosx-arm64-2.0.12.9.jar": "d5d58e81491cae4483aa2a8a2fac2c79d422132a3afa310dff48581fdacca196",
   "jlibtorrent-macosx-x86_64-2.0.12.9.jar": "cbe2ff76ca7f5aa56b516a9244c26c6ec40b59d6a78abeea85b78d4a73ed076b",
   "jlibtorrent-windows-2.0.12.9.jar": "65d12b22c6005cec550ac3bb0b22d91cc580abdde1367f76f5f3cba23415246f",
-  "jsch-2.28.8.jar": "2afca1357d816028f2ac33f22407d2488a68406682973949cebb1b8ea6688a8b"
+  "jsch-2.28.8.jar": "2afca1357d816028f2ac33f22407d2488a68406682973949cebb1b8ea6688a8b",
+  "xz-1.12.jar": "3e158a87bd73d8afb4b6e8239c013b7d049c48563f45860ce99cd2e448cf4a6b"
 }

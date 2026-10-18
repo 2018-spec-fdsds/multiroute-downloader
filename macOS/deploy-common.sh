@@ -6,7 +6,7 @@ MR_JRE_ROOT='jdk-21.0.12.1+1-jre'
 MR_HELPER_ROOT='/Library/PrivilegedHelperTools/MultiRouteResume/3.4'
 
 mr_note() { printf '%s\n' "$*"; }
-mr_die() { printf '\nMultiRoute Resume: %s\n' "$*" >&2; exit 1; }
+mr_die() { printf '\nMultiRoute Downloader: %s\n' "$*" >&2; exit 1; }
 
 mr_environment() {
     [ "$(id -u)" != 0 ] || mr_die 'Run this launcher as your normal macOS account, without sudo. Only the protected gateway component is authorized separately.'
@@ -25,7 +25,7 @@ mr_environment() {
     MR_DATA="$MR_USER_ROOT/data"
     MR_RUNTIME_ROOT="$MR_USER_ROOT/runtime"
     MR_APPLICATIONS="$HOME/Applications"
-    MR_INSTALLED_APP="$MR_APPLICATIONS/MultiRoute Resume.app"
+    MR_INSTALLED_APP="$MR_APPLICATIONS/MultiRoute Downloader.app"
     mkdir -p "$MR_USER_ROOT" "$MR_RUNTIME_ROOT" "$MR_APPLICATIONS" || mr_die 'Cannot create the application folders in your home directory.'
     [ -w "$MR_USER_ROOT" ] && [ -w "$MR_APPLICATIONS" ] || mr_die 'The application and data folders are not writable.'
     MR_FREE_KB=$(df -Pk "$MR_USER_ROOT" | awk 'END {print $4}')
@@ -37,7 +37,7 @@ mr_environment() {
             mr_note 'Warning: less than 512 MiB is free in the application folder. Check free space before starting new downloads.'
         fi
     fi
-    [ -f "$MR_SOURCE/MultiRoute-Resume.jar" ] || mr_die 'MultiRoute-Resume.jar is missing. Extract the entire distribution before launching.'
+    [ -f "$MR_SOURCE/MultiRoute-Downloader.jar" ] || mr_die 'MultiRoute-Downloader.jar is missing. Extract the entire distribution before launching.'
     mr_note "macOS $MR_MAC_VERSION, native architecture $MR_ARCH; data: $MR_DATA"
     mr_torrent_compatibility
     mr_gui_check
@@ -272,7 +272,7 @@ mr_copy_payload() {
     destination=$1
     mkdir -p "$destination" || mr_die 'Cannot create application resources.'
     # Distribution allowlist: user downloads/data are never copied into a new app.
-    for entry in MultiRoute-Resume.jar lib native src macOS docs README.md Start-macOS.command Deploy-macOS.command README-macOS.en.txt README-macOS.ru.txt API.ru.txt API.en.txt openapi.yaml; do
+    for entry in MultiRoute-Downloader.jar lib native src macOS docs README.md Start-macOS.command Deploy-macOS.command README-macOS.en.txt README-macOS.ru.txt API.ru.txt API.en.txt openapi.yaml; do
         if [ -e "$MR_SOURCE/$entry" ]; then cp -R "$MR_SOURCE/$entry" "$destination/" || mr_die "Cannot copy application component: $entry"; fi
     done
     chmod 755 "$destination/Start-macOS.command" "$destination/Deploy-macOS.command" "$destination/macOS/launch-app.sh" "$destination/macOS/install-helper.sh" || mr_die 'Cannot set launcher permissions.'
@@ -283,17 +283,17 @@ mr_app_install() {
     staged=$(mktemp -d "$MR_APPLICATIONS/.MultiRoute-Resume-XXXXXXXX") || mr_die 'Cannot stage the desktop application.'
     previous=''
     MR_APP_TEMP=$staged
-    resources="$staged/MultiRoute Resume.app/Contents/Resources/app"
-    mkdir -p "$staged/MultiRoute Resume.app/Contents/MacOS" || mr_die 'Cannot create the macOS app bundle.'
+    resources="$staged/MultiRoute Downloader.app/Contents/Resources/app"
+    mkdir -p "$staged/MultiRoute Downloader.app/Contents/MacOS" || mr_die 'Cannot create the macOS app bundle.'
     mr_copy_payload "$resources"
-    cp "$MR_SOURCE/macOS/launch-app.sh" "$staged/MultiRoute Resume.app/Contents/MacOS/MultiRoute" || mr_die 'Cannot install the Finder launcher.'
-    chmod 755 "$staged/MultiRoute Resume.app/Contents/MacOS/MultiRoute" || mr_die 'Cannot make the Finder launcher executable.'
-    cat > "$staged/MultiRoute Resume.app/Contents/Info.plist" <<'PLIST'
+    cp "$MR_SOURCE/macOS/launch-app.sh" "$staged/MultiRoute Downloader.app/Contents/MacOS/MultiRoute" || mr_die 'Cannot install the Finder launcher.'
+    chmod 755 "$staged/MultiRoute Downloader.app/Contents/MacOS/MultiRoute" || mr_die 'Cannot make the Finder launcher executable.'
+    cat > "$staged/MultiRoute Downloader.app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-<key>CFBundleName</key><string>MultiRoute Resume</string>
-<key>CFBundleDisplayName</key><string>MultiRoute Resume</string>
+<key>CFBundleName</key><string>MultiRoute Downloader</string>
+<key>CFBundleDisplayName</key><string>MultiRoute Downloader</string>
 <key>CFBundleIdentifier</key><string>local.multiroute.resume</string>
 <key>CFBundleExecutable</key><string>MultiRoute</string>
 <key>CFBundlePackageType</key><string>APPL</string>
@@ -301,17 +301,17 @@ mr_app_install() {
 <key>CFBundleVersion</key><string>3.4</string>
 <key>LSMinimumSystemVersion</key><string>11.0</string>
 <key>NSHighResolutionCapable</key><true/>
-<key>NSLocalNetworkUsageDescription</key><string>MultiRoute Resume communicates with the gateways you select on your local network and uses an unused application virtual IP to download without changing system routes.</string>
+<key>NSLocalNetworkUsageDescription</key><string>MultiRoute Downloader communicates with the gateways you select on your local network and uses an unused application virtual IP to download without changing system routes.</string>
 </dict></plist>
 PLIST
-    plutil -lint "$staged/MultiRoute Resume.app/Contents/Info.plist" >/dev/null || mr_die 'The Finder application manifest is invalid.'
+    plutil -lint "$staged/MultiRoute Downloader.app/Contents/Info.plist" >/dev/null || mr_die 'The Finder application manifest is invalid.'
     if [ -e "$MR_INSTALLED_APP" ] || [ -L "$MR_INSTALLED_APP" ]; then
         [ ! -L "$MR_INSTALLED_APP" ] || mr_die 'The installed app destination must not be a symbolic link.'
-        previous="$MR_APPLICATIONS/MultiRoute Resume.previous-$(date '+%Y%m%d%H%M%S')-$$.app"
+        previous="$MR_APPLICATIONS/MultiRoute Downloader.previous-$(date '+%Y%m%d%H%M%S')-$$.app"
         mv "$MR_INSTALLED_APP" "$previous" || mr_die 'Cannot preserve the previous desktop app.'
         mr_note "Previous app kept for rollback: $previous"
     fi
-    if ! mv "$staged/MultiRoute Resume.app" "$MR_INSTALLED_APP"; then
+    if ! mv "$staged/MultiRoute Downloader.app" "$MR_INSTALLED_APP"; then
         if [ -n "$previous" ]; then mv "$previous" "$MR_INSTALLED_APP" || true; fi
         mr_die 'Cannot commit the desktop app installation. The previous app was restored when possible.'
     fi
@@ -357,7 +357,7 @@ mr_launch() {
     mr_authorize
     cd "$MR_SOURCE" || mr_die 'Cannot open the application folder.'
     mr_note 'Starting the user-level Java desktop application. Leave this Terminal session open while it runs.'
-    "$MR_JAVA" -Xdock:name='MultiRoute Resume' -jar "$MR_SOURCE/MultiRoute-Resume.jar" --data-dir "$MR_DATA" "$@"
+    "$MR_JAVA" -Xdock:name='MultiRoute Downloader' -jar "$MR_SOURCE/MultiRoute-Downloader.jar" --data-dir "$MR_DATA" "$@"
 }
 
 mr_lock() {

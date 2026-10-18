@@ -3,7 +3,7 @@
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 The original application code and documentation use the custom
-[MultiRoute Resume License](LICENSE.txt): **free use is allowed; selling the
+[MultiRoute Downloader License](LICENSE.txt): **free use is allowed; selling the
 application, charging for its licence or distributing it for payment is not**.
 Personal use and use within organizations, including business activities, are
 allowed without a licence fee. General modification or redistribution rights

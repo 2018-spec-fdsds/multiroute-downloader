@@ -2,6 +2,7 @@
 """Verify native Windows payload and inspect the embedded MSI without installing."""
 from pathlib import Path
 import argparse
+import base64
 import collections
 import hashlib
 import json
@@ -76,7 +77,7 @@ def main():
     args = parser.parse_args()
     build = args.build_dir.resolve()
     original = json.loads((build/"BUILD-REPORT.json").read_text(encoding="utf-8"))
-    image = build/"image/MultiRoute Resume"
+    image = build/"image/MultiRoute Downloader"
     checks = []
     def check(name, condition):
         checks.append({"name": name, "passed": bool(condition)})
@@ -86,13 +87,24 @@ def main():
         check("image SHA-256 "+name, sha256(image/name) == expected)
     filenames = {p.relative_to(image).as_posix() for p in image.rglob("*") if p.is_file()}
     check("image inventory exact", filenames == set(original["app_image_files"]))
+    extension_hashes = original["browser_extension_sha256"]
+    extension_names = {path.relative_to(image/"app").as_posix() for path in (image/"app/browser-extension").rglob("*") if path.is_file()}
+    check("complete browser extension payload inventoried", extension_names == set(extension_hashes) and len(extension_names) >= 20)
+    for name, expected in extension_hashes.items():
+        check("browser extension SHA-256 " + name, sha256(image/"app"/name) == expected and sha256(Path(__file__).resolve().parents[2]/name) == expected)
+    extension_manifest = json.loads((image/"app/browser-extension/manifest.json").read_text(encoding="utf-8"))
+    check("browser extension is current Manifest V3", extension_manifest["manifest_version"] == 3 and extension_manifest["version"] == original["application_version"] + ".0")
+    check("browser extension only explicit link permissions", set(extension_manifest["permissions"]) == {"contextMenus", "activeTab", "storage"} and extension_manifest["host_permissions"] == ["http://127.0.0.1/*"])
+    extension_key = hashlib.sha256(base64.b64decode(extension_manifest["key"], validate=True)).digest()[:16].hex()
+    extension_id = "".join(chr(ord("a") + int(character, 16)) for character in extension_key)
+    check("browser extension fixed identity matches dedicated bridge", extension_id == "ljdklefabmaecjalfhjoicmgedmjjkbl")
     check("no profile or download state bundled", not any(p.startswith("app/data/") or p.endswith((".config", ".part", ".log", ".instance")) for p in filenames))
-    machine, subsystem, launcher_resources = pe((image/"MultiRoute Resume.exe").read_bytes())
+    machine, subsystem, launcher_resources = pe((image/"MultiRoute Downloader.exe").read_bytes())
     check("native launcher is x64 PE", machine == 0x8664)
     check("native launcher is GUI without console", subsystem == 2)
     manifests = [data.decode("utf-8", errors="replace") for names, data in launcher_resources if names[0] == "24"]
     check("native launcher requests ordinary user privileges", len(manifests) == 1 and 'level="asInvoker"' in manifests[0])
-    config = (image/"app/MultiRoute Resume.cfg").read_text(encoding="utf-8")
+    config = (image/"app/MultiRoute Downloader.cfg").read_text(encoding="utf-8")
     check("entry point matches build", "app.mainclass="+original["entry_point"] in config)
     check("native package Java flag set", "-Dmultiroute.native.desktop=true" in config or "-Dmultiroute.native.package=true" in config)
     check("private full licensed runtime bundled", (image/"runtime/bin/java.exe").is_file() and (image/"runtime/legal/java.base/LICENSE").is_file())
@@ -101,6 +113,18 @@ def main():
     appearance = image/"app/lib/flatlaf-3.7.2.jar"
     check("pinned FlatLaf appearance dependency bundled", appearance.is_file() and sha256(appearance) == pinned[appearance.name])
     check("FlatLaf license retained", (image/"app/lib/licenses/FLATLAF-3.7.2-LICENSE").is_file())
+    for filename, license_name in (
+        ("commons-compress-1.28.0.jar", "COMMONS-COMPRESS-1.28.0-LICENSE.txt"),
+        ("commons-io-2.22.0.jar", "COMMONS-IO-2.22.0-LICENSE.txt"),
+        ("commons-lang3-3.21.0.jar", "COMMONS-LANG3-3.21.0-LICENSE.txt"),
+        ("commons-codec-1.23.0.jar", "COMMONS-CODEC-1.23.0-LICENSE.txt"),
+        ("xz-1.12.jar", "XZ-1.12-LICENSE.txt"),
+    ):
+        dependency = image/"app/lib"/filename
+        check("pinned archive dependency " + filename, dependency.is_file() and sha256(dependency) == pinned[filename])
+        license_file = image/"app/lib/licenses"/license_name
+        saved_license = Path(__file__).resolve().parents[2]/"lib/licenses"/license_name
+        check("archive dependency license " + filename, license_file.is_file() and sha256(license_file) == sha256(saved_license))
     installer_info = original["installer"]
     installer = build/"installer"/installer_info["name"]
     check("installer SHA-256 matches", sha256(installer) == installer_info["sha256"])
@@ -137,10 +161,10 @@ def main():
         cursor = row["Parent"]
     check("installer defaults to user LocalAppData", any(row["Directory"] == "LocalAppDataFolder" for row in install_chain))
     if original["entry_point"] == "multiroute.DesktopLauncher":
-        check("installer separates app files from user profile", directory_table["INSTALLDIR"]["DefaultDir"].split("|")[-1] == "MultiRoute Resume App")
+        check("installer separates app files from user profile", directory_table["INSTALLDIR"]["DefaultDir"].split("|")[-1] == "MultiRoute Downloader App")
         check("original project license included in installed files", (image/"app/LICENSE.txt").is_file())
         check("third-party notices included in installed files", (image/"app/THIRD-PARTY-NOTICES.txt").is_file() and (image/"app/THIRD-PARTY-NOTICES.txt").stat().st_size > 0)
-        check("all nine offline language guides included", all((image/"app/docs"/(language+".md")).is_file() for language in ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it")))
+        check("all twelve offline language guides included", all((image/"app/docs"/(language+".md")).is_file() for language in ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it", "ja", "hi", "vi")))
         check("offline compatibility audit included", (image/"app/docs/COMPATIBILITY.json").is_file())
         check("Russian documentation entry included", (image/"app/README.ru.md").is_file())
         app_root = (image/"app").resolve()
@@ -161,7 +185,7 @@ def main():
     check("desktop shortcut declared", "DesktopFolder" in shortcut_paths)
     check("Start menu shortcut declared", len(shortcut_paths-{"DesktopFolder"}) > 0)
     msi_files = {item["File"]: item["FileName"].split("|")[-1] for item in msi["files"]}
-    check("all shortcuts launch native EXE", all(item["Target"].startswith("[#") and msi_files.get(item["Target"][2:-1]) == "MultiRoute Resume.exe" for item in msi["shortcuts"]))
+    check("all shortcuts launch native EXE", all(item["Target"].startswith("[#") and msi_files.get(item["Target"][2:-1]) == "MultiRoute Downloader.exe" for item in msi["shortcuts"]))
     # jpackage replaces its build-image marker .jpackage.xml with .package in MSI.
     file_lengths = sorted(int(item["FileSize"]) for item in msi["files"] if item["FileName"].split("|")[-1] != ".package")
     payload_names = {name for name in filenames if name != "app/.jpackage.xml"}

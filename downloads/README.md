@@ -1,4 +1,4 @@
-# MultiRoute Resume installers
+# MultiRoute Downloader installers
 
 **Latest:** [version 4.0](v4.0/). [Version 3.9](v3.9/) is also available. [Version 3.8](v3.8/) is also available. [Version 3.7](v3.7/) is also available. [Version 3.6](v3.6/) is also available. [Version 3.5](v3.5/) is also available. [Version 3.4](v3.4/) is also available. [Version 3.3](v3.3/) is also available. [Version 3.2](v3.2/) is also available. The files below are the previous 3.1 release.
 
@@ -16,9 +16,9 @@ Java and the compiled gateway component are included. After installation, open *
 
 Instructions and security confirmations:
 
-[English](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/en.md) · [Русский](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/ru.md) · [Deutsch](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/de.md) · [Español](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/es.md) · [Français](https://github.com/2018-spec-fdsds/multiroute-resume/blob/v3.1/docs/fr.md).
+[English](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v3.1/docs/en.md) · [Русский](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v3.1/docs/ru.md) · [Deutsch](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v3.1/docs/de.md) · [Español](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v3.1/docs/es.md) · [Français](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/v3.1/docs/fr.md).
 
-[SHA-256 checksums](SHA256SUMS.txt) · [Verification report](https://github.com/2018-spec-fdsds/multiroute-resume/releases/download/v3.1/NATIVE-INSTALLER-TESTS.json) · [Release 3.1](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.1).
+[SHA-256 checksums](SHA256SUMS.txt) · [Verification report](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v3.1/NATIVE-INSTALLER-TESTS.json) · [Release 3.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v3.1).
 
 These files are identical to the release assets. Version 3.1 is a prerelease; end-user installation/security dialogs and physical gateway transfers remain unverified. Packages are not publisher-signed, and macOS packages are not notarized.
 

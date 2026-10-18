@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "MultiRoute Downloader"
+  },
+  "extensionDescription": {
+    "message": "चुने हुए इंटरनेट गेटवे से डेस्कटॉप डाउनलोडर को लिंक भेजें।"
+  },
+  "downloadLink": {
+    "message": "MultiRoute से डाउनलोड करें"
+  },
+  "popupHint": {
+    "message": "मौजूदा पेज भेजें या फ़ाइल का लिंक चिपकाएँ।"
+  },
+  "urlLabel": {
+    "message": "डाउनलोड लिंक"
+  },
+  "portLabel": {
+    "message": "ऐप का API पोर्ट"
+  },
+  "sendButton": {
+    "message": "MultiRoute को भेजें"
+  },
+  "setupHint": {
+    "message": "डेस्कटॉप ऐप चालू रखें और उसकी सेटिंग में Chrome / Edge एकीकरण सक्षम करें। मौजूदा फ़ोल्डर, गेटवे और साइट प्रोफ़ाइल का उपयोग होगा।"
+  },
+  "helpLink": {
+    "message": "सेटअप के निर्देश"
+  },
+  "invalidUrl": {
+    "message": "पासवर्ड के बिना HTTP, HTTPS, FTP, FTPS, SFTP, WebDAV या magnet लिंक दें।"
+  },
+  "invalidPort": {
+    "message": "1 से 65535 के बीच API पोर्ट दर्ज करें।"
+  },
+  "enableIntegration": {
+    "message": "डेस्कटॉप ऐप में Chrome / Edge एकीकरण सक्षम करें।"
+  },
+  "openApplication": {
+    "message": "MultiRoute डेस्कटॉप ऐप खोलें और उसका API पोर्ट जाँचें।"
+  },
+  "sendFailed": {
+    "message": "लिंक नहीं भेजा जा सका।"
+  },
+  "sending": {
+    "message": "भेजा जा रहा है…"
+  },
+  "sent": {
+    "message": "लिंक डेस्कटॉप ऐप को भेज दिया गया। वहाँ फ़ाइलें चुनने की आवश्यकता हो सकती है।"
+  }
+}

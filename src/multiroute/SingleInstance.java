@@ -33,7 +33,6 @@ public final class SingleInstance {
     public static final String APP_ID = "multiroute-resume";
     public static final String STOP_HEADER = "X-Instance-Key";
     private static final String VERSION = Main.VERSION;
-    private static final String JAR_NAME = "MultiRoute-Resume.jar";
     private static final long DEADLINE_MS = 20_000;
     private static final SecureRandom RANDOM = new SecureRandom();
 
@@ -321,7 +320,7 @@ public final class SingleInstance {
         }
         int jarIndex = -1;
         for (int i = 0; i + 1 < args.length; i++) if (args[i].equals("-jar")) { jarIndex = i + 1; break; }
-        if (jarIndex < 0 || !Path.of(args[jarIndex]).getFileName().toString().equalsIgnoreCase(JAR_NAME)) return null;
+        if (jarIndex < 0 || !Brand.applicationJar(Path.of(args[jarIndex]).getFileName().toString())) return null;
         if (Arrays.asList(args).contains("--worker")) return null;
         int actualPort = 8765;
         Path dataDir = null;
@@ -345,7 +344,7 @@ public final class SingleInstance {
             if (!jar.isAbsolute()) jar = workingDir.resolve(jar).normalize();
             if (!explicitData) dataDir = workingDir.resolve("data");
         }
-        if (!Files.isRegularFile(jar) || !jar.getFileName().toString().equalsIgnoreCase(JAR_NAME))
+        if (!Files.isRegularFile(jar) || !Brand.applicationJar(jar.getFileName().toString()))
             throw new IOException("JAR прежнего контроллера не подтверждён: " + jar);
         try (JarFile archive = new JarFile(jar.toFile())) {
             if (archive.getManifest() == null ||
@@ -388,7 +387,7 @@ public final class SingleInstance {
         if (!Files.isDirectory(cwd)) throw new IOException("Рабочий каталог прежнего контроллера недоступен");
         Path cp = Path.of(classpath);
         cp = cp.isAbsolute() ? cp.normalize() : cwd.resolve(cp).normalize();
-        if (!Files.isRegularFile(cp) || !cp.getFileName().toString().equalsIgnoreCase(JAR_NAME))
+        if (!Files.isRegularFile(cp) || !Brand.applicationJar(cp.getFileName().toString()))
             throw new IOException("Classpath прежнего контроллера не подтвердил JAR");
         String prefix = javaCommand.startsWith("\"" + classpath + "\"") ? "\"" + classpath + "\"" : classpath;
         if (!javaCommand.startsWith(prefix) ||

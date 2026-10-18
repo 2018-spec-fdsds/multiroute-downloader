@@ -164,7 +164,7 @@ public final class Main {
                     long bytes = num(previous.get("bytes"), 0) + num(route.get("bytes"), 0);
                     long chunks = num(previous.get("chunks"), 0) + num(route.get("chunks"), 0);
                     if (yes(previous.get("enabled")) && yes(route.get("enabled")) &&
-                            !str(previous.get("virtual_ip")).equals(str(route.get("virtual_ip"))))
+                            (!str(previous.get("virtual_ip")).equals(str(route.get("virtual_ip"))) || !str(previous.get("site_profile_id")).equals(str(route.get("site_profile_id")))))
                         throw new IllegalArgumentException("Повторный шлюз имеет разные настройки адреса приложения: " + gateway);
                     if (!yes(previous.get("enabled")) && yes(route.get("enabled"))) previous.putAll(route);
                     previous.put("enabled", yes(previous.get("enabled")) || yes(route.get("enabled")));
@@ -1096,6 +1096,9 @@ public final class Main {
         volatile boolean closing;
         final ConcurrentMap<String,Job> jobs = new ConcurrentHashMap<>();
         final QueueController queue;
+        final UploadManager uploads;
+        final BrowserIntegration browser;
+        volatile java.util.function.Consumer<String> browserDownload;
         final APIEvents events = new APIEvents();
         final ScheduledExecutorService queueTimer=Executors.newSingleThreadScheduledExecutor(task->{Thread t=new Thread(task,"job-queue");t.setDaemon(true);return t;});
         final Map<String,Object> idempotency = new LinkedHashMap<>();
@@ -1118,6 +1121,9 @@ public final class Main {
             this.sourceInspector = Objects.requireNonNull(sourceInspector);
             this.spaceProbe = Objects.requireNonNull(spaceProbe);
             this.dataDir = normalized(dataDir); Files.createDirectories(this.dataDir);
+            SiteProfiles.configure(this.dataDir);
+            uploads=new UploadManager(this.dataDir);
+            browser=new BrowserIntegration(this.dataDir);
             queue=new QueueController(this.dataDir);idempotencyFile=this.dataDir.resolve("idempotency.config");
             if(Files.isRegularFile(idempotencyFile,LinkOption.NOFOLLOW_LINKS)){safePath(idempotencyFile);if(Files.size(idempotencyFile)>2*1024*1024)throw new IOException("Idempotency registry is too large");idempotency.putAll(obj(Json.parse(Files.readString(idempotencyFile, StandardCharsets.UTF_8))));}
             recoverInterruptedRemovals();
@@ -1160,6 +1166,7 @@ public final class Main {
             if (required > free) throw new IOException(spaceError(directory, required, free));
         }
         synchronized Map<String,Object> create(Map<String,Object> input) throws Exception {
+            input=SiteProfiles.apply(input);
             String key=str(input.get("idempotency_key"));
             if(key.isEmpty())return createOnce(input);
             if(!key.matches("[A-Za-z0-9_.:-]{1,128}"))throw new IllegalArgumentException("Invalid idempotency key");
@@ -1183,6 +1190,7 @@ public final class Main {
 
         /** Resolve a repository explicitly; server metadata supplies all sizes/checksums. */
         synchronized Map<String,Object> createFromSource(Map<String,Object> input) throws Exception {
+            input=SiteProfiles.apply(input);
             if (closing) throw new IllegalStateException("Приложение завершает работу");
             Map<String,String> manualHashes = Checksums.expected(input);
             if (isTorrentInput(input)) {
@@ -1278,6 +1286,7 @@ public final class Main {
         }
 
         Map<String,Object> inspectSource(Map<String,Object> input) throws Exception {
+            input=SiteProfiles.apply(input);
             if (isTorrentInput(input)) {
                 Map<String,Object> route = firstSourceRoute(input);
                 if (!"gateway".equals(route.get("type"))) throw new IOException("Для torrent и magnet выберите шлюз");
@@ -1318,6 +1327,7 @@ public final class Main {
             Path target = normalized(requested);
             for (Job job : jobs.values()) synchronized (job) {
                 if ("torrent".equals(job.state.get("kind"))) continue;
+                if(!str(job.state.get("site_profile_id")).equals(str(input.get("site_profile_id"))))continue;
                 Path other = normalized(Path.of(str(job.state.get("directory"))).resolve(str(job.state.get("filename"))));
                 if (!target.toString().equalsIgnoreCase(other.toString())) continue;
                 String priorSha = str(job.state.get("source_sha256"));
@@ -1348,6 +1358,12 @@ public final class Main {
             return null;
         }
 
+        private static void copyProfile(Map<String,Object> input,Map<String,Object> source,Map<String,Object> route)throws IOException {
+            String profile=str(input.get("site_profile_id")),from=str(source.get("site_profile_id"));
+            if(!profile.isEmpty()&&!from.isEmpty()&&!profile.equals(from))throw new IOException("Invalid site profile identifier");
+            if(profile.isEmpty())profile=from;
+            if(!profile.isEmpty()){try{if(!UUID.fromString(profile).toString().equalsIgnoreCase(profile))throw new IllegalArgumentException();}catch(RuntimeException invalid){throw new IOException("Invalid site profile identifier");}route.put("site_profile_id",profile);}
+        }
         private record PreparedHttp(Job job, boolean reused) { }
         private List<Object> commitHttp(List<PreparedHttp> prepared) {
             List<Job> saved = new ArrayList<>();
@@ -1384,6 +1400,7 @@ public final class Main {
                 route.put("type", "gateway"); route.put("gateway", gateway); route.put("enabled", true);
                 route.put("name", str(from.get("name")).isBlank() ? "Шлюз " + gateway : str(from.get("name")));
                 route.put("virtual_ip", str(from.get("virtual_ip")).isBlank() ? GatewayNetwork.settings().get("virtual_ip") : from.get("virtual_ip"));
+                copyProfile(input,from,route);
                 route.put("bytes", 0); route.put("chunks", 0); route.put("last_error", "");
                 routeChecker.check(route,true); routes.add(route);
             }
@@ -1431,6 +1448,7 @@ public final class Main {
             String id = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
             Map<String,Object> state = new LinkedHashMap<>();
             state.put("id", id); state.put("url", str(input.get("url"))); state.put("kind", "torrent");
+            if(input.containsKey("site_profile_id"))state.put("site_profile_id",input.get("site_profile_id"));
             state.put("filename", filename(str(metadata.get("name")))); state.put("directory", base.toString());
             state.put("size", size); state.put("downloaded", 0); Checksums.initialize(state,expectedHashes);
             state.put("checksum_source", "bittorrent-piece-hashes"); state.put("torrent_metadata", metadata.get("torrent_metadata"));
@@ -1474,6 +1492,8 @@ public final class Main {
                 Map<String,Object> route = new LinkedHashMap<>();
                 route.put("name", str(source.get("name")).isEmpty() ? type : str(source.get("name")));
                 route.put("type", type); route.put("gateway", str(source.get("gateway"))); route.put("endpoint", endpoint); route.put("token", token); route.put("enabled", enabled);
+                copyProfile(input,source,route);
+                if(type.equals("worker")&&!str(route.get("site_profile_id")).isEmpty())throw new IOException("Source authentication requires an application gateway");
                 if (type.equals("gateway")) {
                     route.put("virtual_ip", str(source.get("virtual_ip")).isBlank()
                             ? GatewayNetwork.settings().get("virtual_ip") : str(source.get("virtual_ip")));
@@ -1500,6 +1520,7 @@ public final class Main {
             String id = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
             Map<String,Object> state = new LinkedHashMap<>();
             state.put("id", id); state.put("url", url); state.put("filename", name); state.put("directory", directory.toString());
+            if(input.containsKey("site_profile_id"))state.put("site_profile_id",input.get("site_profile_id"));
             Checksums.initialize(state,expectedHashes);
             if (origin != null) {
                 state.put("source_url", origin.get("source_url")); state.put("source_path", origin.get("path"));
@@ -1659,8 +1680,10 @@ public final class Main {
                 throw new IOException("Choose between 1 and 32 gateways");
             LinkedHashMap<String,Map<String,Object>> desired = new LinkedHashMap<>();
             boolean torrent;
+            Map<String,Object> profileBinding;
             synchronized (job) {
                 requireRouteChangeAllowed(job); torrent = "torrent".equals(job.state.get("kind"));
+                profileBinding=SiteProfiles.apply(job.state);
                 for (Object raw : arr(job.state.get("routes"))) {
                     Map<String,Object> existing = obj(raw);
                     if ("gateway".equals(existing.get("type")) && !str(existing.get("virtual_ip")).isBlank() &&
@@ -1684,6 +1707,8 @@ public final class Main {
                 candidate.put("name", str(from.get("name")).isBlank() ? "Шлюз " + gateway : str(from.get("name")));
                 candidate.put("bytes", 0L); candidate.put("received_bytes", 0L); candidate.put("chunks", 0L);
                 candidate.put("last_error", "");
+                if(from.containsKey("site_profile_id")&&!str(from.get("site_profile_id")).equals(str(profileBinding.get("site_profile_id"))))throw new IOException("Invalid site profile identifier");
+                copyProfile(profileBinding,Map.of(),candidate);
                 routeChecker.check(candidate, torrent); desired.put(gateway, candidate);
             }
             if (desired.isEmpty()) throw new IOException("Choose between 1 and 32 gateways");
@@ -1709,6 +1734,8 @@ public final class Main {
                     if (!enabled) { route.put("active", false); route.put("stalled", false); }
                     if (enabled) desired.remove(str(route.get("gateway")));
                 }
+                boolean hadProfile=job.state.containsKey("site_profile_id");Object previousProfile=job.state.get("site_profile_id");
+                if(!str(profileBinding.get("site_profile_id")).isEmpty())job.state.put("site_profile_id",profileBinding.get("site_profile_id"));
                 routes.addAll(desired.values()); job.state.put("routes", routes);
                 try { job.persist(); }
                 catch (RuntimeException failure) {
@@ -1717,7 +1744,8 @@ public final class Main {
                         for (String field : List.of("enabled", "active", "stalled")) route.remove(field);
                         route.putAll(flags.get(Job.routeKey(route)));
                     }
-                    job.state.put("routes", old); job.disabledEpochs.clear(); job.disabledEpochs.putAll(epochs); throw failure;
+                    job.state.put("routes", old);if(hadProfile)job.state.put("site_profile_id",previousProfile);else job.state.remove("site_profile_id");
+                    job.disabledEpochs.clear(); job.disabledEpochs.putAll(epochs); throw failure;
                 }
                 job.routesRevision++;
             }
@@ -1971,7 +1999,7 @@ public final class Main {
         void shutdown() {
             List<Job> saved;
             synchronized (this) { closing = true; saved = new ArrayList<>(jobs.values()); }
-            queueTimer.shutdownNow();events.close();
+            queueTimer.shutdownNow();events.close();uploads.shutdown();browserDownload=null;
             for (Job job : saved) try { job.stopForShutdown(); }
             catch (Exception error) { AppLog.error("Не удалось сохранить задание: %s", DiagnosticText.arg(error.getMessage())); }
             long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
@@ -2057,13 +2085,15 @@ public final class Main {
             int localPort = exchange.getLocalAddress().getPort();
             Set<String> localHosts = Set.of("127.0.0.1:" + localPort, "localhost:" + localPort, "[::1]:" + localPort);
             if (!localHosts.contains(host)) { json(exchange, 403, Map.of("error", "Недопустимый Host")); return; }
+            // Only this narrow opt-in endpoint accepts our fixed extension origin.
+            if(path.startsWith("/api/v1/browser/")){manager.browser.handle(exchange,manager);return;}
             String origin = exchange.getRequestHeaders().getFirst("Origin");
             if (origin != null && !Set.of("http://127.0.0.1:" + localPort,
                                         "http://localhost:" + localPort, "http://[::1]:" + localPort).contains(origin.toLowerCase(Locale.ROOT))) {
                 json(exchange, 403, Map.of("error", "Недопустимый Origin")); return;
             }
             if ((path.equals("/") || path.equals("/index.html")) && method.equals("GET")) {
-                json(exchange, 200, Map.of("application", "MultiRoute Resume", "interface", "desktop", "version", VERSION, "api", "/api/v1"));
+                json(exchange, 200, Map.of("application", Brand.NAME, "interface", "desktop", "version", VERSION, "api", "/api/v1"));
                 return;
             }
             if (path.equals("/api/v1/instance") && method.equals("GET")) {
@@ -2083,6 +2113,28 @@ public final class Main {
             }
             if (path.equals("/api/jobs") && method.equals("POST")) { json(exchange, 201, manager.create(jobRequest(exchange))); return; }
             if (path.equals("/api/v1/health") && method.equals("GET")) { json(exchange, 200, Map.of("ok", true, "version", VERSION)); return; }
+            if(path.equals("/api/v1/site-profiles")) {
+                if(method.equals("GET")){json(exchange,200,Map.of("profiles",SiteProfiles.listPublic()));return;}
+                if(method.equals("POST")||method.equals("PUT")){json(exchange,200,SiteProfiles.save(request(exchange)));return;}
+            }
+            if(path.matches("/api/v1/site-profiles/[a-fA-F0-9-]{36}")&&method.equals("DELETE")){SiteProfiles.delete(path.substring(path.lastIndexOf('/')+1));json(exchange,200,Map.of("ok",true));return;}
+            if(path.equals("/api/v1/uploads")) {
+                if(method.equals("GET")){json(exchange,200,manager.uploads.state());return;}
+                if(method.equals("POST")){json(exchange,201,manager.uploads.create(SiteProfiles.apply(request(exchange))));return;}
+            }
+            Matcher upload=Pattern.compile("/api/v1/uploads/([a-f0-9]{12})(?:/(pause|resume))?").matcher(path);
+            if(upload.matches()) {
+                String id=upload.group(1),action=upload.group(2);
+                if(action==null&&method.equals("GET")){json(exchange,200,manager.uploads.snapshot(id));return;}
+                if(action==null&&method.equals("DELETE")){json(exchange,200,manager.uploads.remove(id));return;}
+                if(action!=null&&method.equals("POST")){json(exchange,200,action.equals("pause")?manager.uploads.pause(id):manager.uploads.resume(id));return;}
+            }
+            if(path.equals("/api/v1/remote/list")&&method.equals("POST")) {
+                Map<String,Object> input=SiteProfiles.apply(request(exchange));
+                Map<String,Object> route=input.get("route") instanceof Map<?,?>?obj(input.get("route")):manager.firstSourceRoute(input);
+                json(exchange,200,SourceTransfer.listRemote(route,str(input.get("url"))));return;
+            }
+            if(path.equals("/api/v1/archives/preview")&&method.equals("POST")){json(exchange,200,ArchivePreview.inspect(request(exchange)));return;}
             if (path.equals("/api/v1/sources/inspect") && method.equals("POST")) {
                 Map<String,Object> input = request(exchange);
                 json(exchange, 200, manager.inspectSource(input)); return;
@@ -2259,6 +2311,7 @@ public final class Main {
             }
             GatewayNetwork.initialize(instance.dataDir());
             SourceAuth.configure(instance.dataDir());
+            SiteProfiles.configure(instance.dataDir());
             manager = new Manager(instance.dataDir());
             final Manager active = manager;
             final HttpServer listening = server;

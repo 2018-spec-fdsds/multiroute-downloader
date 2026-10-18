@@ -42,7 +42,7 @@ TOOLS = {
         "root": "",
     },
 }
-APP_NAME = "MultiRoute Resume"
+APP_NAME = "MultiRoute Downloader"
 UPGRADE_UUID = "fa8e2b12-2c41-4662-9c07-9c9fafbc3e1f"
 
 
@@ -109,7 +109,7 @@ def fetch_tool(tool, folder):
     folder.mkdir(parents=True, exist_ok=True)
     if not archive.exists():
         temporary = archive.with_suffix(".download")
-        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Resume-build/4.0"})
+        request = urllib.request.Request(metadata["url"], headers={"User-Agent": "MultiRoute-Downloader-build/4.0"})
         with urllib.request.urlopen(request, timeout=60) as incoming, temporary.open("xb") as outgoing:
             if not incoming.url.startswith("https://"):
                 raise ValueError("Build tool redirect must use HTTPS")
@@ -163,7 +163,7 @@ def copy_file(source, target):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--version", default="4.0")
-    parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Resume.jar")
+    parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Downloader.jar")
     parser.add_argument("--native-helper", type=Path, default=ROOT / "native/windows-x64/gateway-net.exe")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build/windows-package")
     parser.add_argument("--tools-dir", type=Path, default=ROOT / "build/windows-tools")
@@ -211,14 +211,17 @@ def main():
         if not any(line.split("@", 1)[0] == module for line in modules.splitlines()):
             raise ValueError("Bundled Java runtime is missing " + module)
     run([args.runtime / "bin/java.exe", "--validate-modules"])
-    copy_file(args.jar, inputs / "MultiRoute-Resume.jar")
+    copy_file(args.jar, inputs / "MultiRoute-Downloader.jar")
     dependencies = json.loads((ROOT / "scripts/dependencies.sha256.json").read_text(encoding="utf-8"))
-    for name in ("jlibtorrent-2.0.12.9.jar", "jlibtorrent-windows-2.0.12.9.jar", "jsch-2.28.8.jar", "flatlaf-3.7.2.jar"):
+    for name in ("jlibtorrent-2.0.12.9.jar", "jlibtorrent-windows-2.0.12.9.jar", "jsch-2.28.8.jar", "flatlaf-3.7.2.jar",
+                 "commons-compress-1.28.0.jar", "commons-io-2.22.0.jar", "commons-lang3-3.21.0.jar",
+                 "commons-codec-1.23.0.jar", "xz-1.12.jar"):
         source = ROOT / "lib" / name
         if sha256(source) != dependencies[name]:
             raise ValueError("Dependency SHA-256 mismatch: " + name)
         copy_file(source, inputs / "lib" / name)
     shutil.copytree(ROOT / "lib/licenses", inputs / "lib/licenses")
+    shutil.copytree(ROOT / "browser-extension", inputs / "browser-extension")
     copy_file(ROOT / "native/source/lwip/COPYING", inputs / "native/LICENSE-lwIP.txt")
     copy_file(ROOT / "native/source/BUILD-README.txt", inputs / "native/source/BUILD-README.txt")
     copy_file(ROOT / "THIRD-PARTY-NOTICES.txt", inputs / "THIRD-PARTY-NOTICES.txt")
@@ -231,14 +234,14 @@ def main():
     for source in (ROOT / "README.md", ROOT / "README.ru.md", ROOT / "LICENSE.txt", ROOT / "LICENSING.md", ROOT / "API.ru.txt", ROOT / "openapi.yaml", ROOT / "CHECKS.ru.md", ROOT / "TEST-REPORT.json", ROOT / "DEPLOYMENT-TEST-REPORT.json"):
         if source.is_file():
             copy_file(source, inputs / source.name)
-    app_icon = build / "MultiRoute-Resume.ico"
+    app_icon = build / "MultiRoute-Downloader.ico"
     icon(app_icon)
     image_folder = build / "image"
     image_folder.mkdir()
     image_args = [args.jpackage, "-J-Duser.language=en", "-J-Duser.country=US", "--type", "app-image", "--input", inputs, "--dest", image_folder,
                   "--name", APP_NAME, "--app-version", args.version,
                   "--vendor", "2018-spec-fdsds", "--description", "Downloads over multiple LAN Internet gateways",
-                  "--main-jar", "MultiRoute-Resume.jar", "--main-class", args.main_class,
+                  "--main-jar", "MultiRoute-Downloader.jar", "--main-class", args.main_class,
                   "--runtime-image", args.runtime, "--icon", app_icon,
                   "--java-options", "-Dmultiroute.native.desktop=true"]
     run(image_args, build / "jpackage-image.log")
@@ -258,6 +261,7 @@ def main():
         "java_jar_sha256": sha256(args.jar),
         "native_helper_sha256": sha256(args.native_helper),
         "launcher_sha256": sha256(executable),
+        "browser_extension_sha256": {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted((ROOT / "browser-extension").rglob("*")) if p.is_file()},
         "driver_bundled": False,
         "installation_scope": "Current user, Start menu and desktop shortcuts by default; Windows uninstall entry",
         "installer_language": "English (en-US, Windows Installer language 1033)",
@@ -275,17 +279,17 @@ def main():
         package_args = [args.jpackage, "-J-Duser.language=en", "-J-Duser.country=US", "--verbose", "--type", "exe", "--app-image", image,
                         "--dest", installer_folder, "--name", APP_NAME, "--app-version", args.version,
                         "--vendor", "2018-spec-fdsds", "--description", "Downloads over multiple LAN Internet gateways",
-                        "--win-per-user-install", "--install-dir", "MultiRoute Resume App", "--win-dir-chooser", "--win-menu", "--win-menu-group", APP_NAME,
+                        "--win-per-user-install", "--install-dir", "MultiRoute Downloader App", "--win-dir-chooser", "--win-menu", "--win-menu-group", APP_NAME,
                         "--win-shortcut", "--win-upgrade-uuid", UPGRADE_UUID,
                         "--license-file", ROOT / "LICENSE.txt",
-                        "--about-url", "https://github.com/2018-spec-fdsds/multiroute-resume",
-                        "--win-help-url", "https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/docs/en.md"]
+                        "--about-url", "https://github.com/2018-spec-fdsds/multiroute-downloader",
+                        "--win-help-url", "https://github.com/2018-spec-fdsds/multiroute-downloader/blob/main/docs/en.md"]
         run(package_args, build / "jpackage-installer.log", env=env)
         packages = sorted(installer_folder.glob("*.exe"))
         if len(packages) != 1:
             raise ValueError("Expected one native EXE installer")
         installer = packages[0]
-        public_name = installer.with_name("MultiRoute-Resume-" + args.version + "-Windows-x64-Setup.exe")
+        public_name = installer.with_name("MultiRoute-Downloader-" + args.version + "-Windows-x64-Setup.exe")
         installer.rename(public_name)
         report["installer"] = {"name": public_name.name, "size": public_name.stat().st_size, "sha256": sha256(public_name)}
     (build / "BUILD-REPORT.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

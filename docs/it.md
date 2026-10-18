@@ -1,14 +1,14 @@
-# MultiRoute Resume 4.0 — Guida in italiano
+# MultiRoute Downloader 4.0 — Guida in italiano
 
-[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md)
+[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
 Proprietario del progetto: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 ## 1. Scopo e funzionamento
 
-MultiRoute Resume è un’applicazione desktop Java per scaricare file usando contemporaneamente più **gateway Internet** nella stessa rete Ethernet locale. Per esempio, un router può usare una linea fissa e un altro una connessione mobile 4G/5G. I gateway selezionati prelevano segmenti da una coda condivisa: quelli più veloci possono scaricarne di più. Se una connessione si interrompe, gli altri continuano; i segmenti incompleti tornano alla coda e i dati già verificati rimangono disponibili. È possibile importare gruppi di link o creare lavori tramite l’API locale.
+MultiRoute Downloader è un’applicazione desktop Java per scaricare file usando contemporaneamente più **gateway Internet** nella stessa rete Ethernet locale. Per esempio, un router può usare una linea fissa e un altro una connessione mobile 4G/5G. I gateway selezionati prelevano segmenti da una coda condivisa: quelli più veloci possono scaricarne di più. Se una connessione si interrompe, gli altri continuano; i segmenti incompleti tornano alla coda e i dati già verificati rimangono disponibili. È possibile importare gruppi di link o creare lavori tramite l’API locale.
 
-L’aumento di velocità dipende dalla capacità indipendente delle linee, dai limiti del server e dal supporto alla ripresa sicura. Non è garantito un moltiplicatore pari al numero di router. L’interfaccia è un’app desktop, non una pagina web. Il nuovo profilo parte in inglese; sono disponibili russo, tedesco, spagnolo, francese, cinese, coreano, arabo e italiano. La scelta viene salvata e applicata a messaggi registrati, log e suggerimenti. Un errore grezzo di un server o di una libreria esterna può restare nella lingua originale. Nomi, percorsi, URL e chiavi JSON non vengono tradotti.
+L’aumento di velocità dipende dalla capacità indipendente delle linee, dai limiti del server e dal supporto alla ripresa sicura. Non è garantito un moltiplicatore pari al numero di router. L’interfaccia è un’app desktop, non una pagina web. Il nuovo profilo parte in inglese; sono disponibili russo, tedesco, spagnolo, francese, cinese, coreano, arabo, italiano, giapponese, hindi e vietnamita. La scelta viene salvata e applicata a messaggi registrati, log e suggerimenti. Un errore grezzo di un server o di una libreria esterna può restare nella lingua originale. Nomi, percorsi, URL e chiavi JSON non vengono tradotti.
 
 ## 2. Ambiente necessario
 
@@ -27,11 +27,11 @@ La lingua scelta richiede font installati che coprano i suoi caratteri. Su Linux
 
 ## 3. Installazione e conferme di sicurezza
 
-Scegliere un solo installer dalla [release 4.0](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v4.0), se allegato, e confrontarlo con lo SHA-256 pubblicato:
+Scegliere un solo installer dalla [release 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0), se allegato, e confrontarlo con lo SHA-256 pubblicato:
 
-- Windows: `MultiRoute-Resume-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Resume-4.0-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Resume-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -43,7 +43,7 @@ L’app e l’installer non hanno firma del produttore. Se SmartScreen indica au
 
 ### macOS
 
-Aprire il PKG per il processore nativo in Apple Installer e autorizzare il componente protetto con la normale richiesta amministrativa. Avviare `/Applications/MultiRoute Resume.app` da Finder, Spotlight o Dock. Questo pacchetto non richiede Terminale, Command Line Tools, Homebrew o Java separato.
+Aprire il PKG per il processore nativo in Apple Installer e autorizzare il componente protetto con la normale richiesta amministrativa. Avviare `/Applications/MultiRoute Downloader.app` da Finder, Spotlight o Dock. Questo pacchetto non richiede Terminale, Command Line Tools, Homebrew o Java separato.
 
 Quando il componente deve aprire Ethernet BPF, compare la normale autorizzazione macOS. Dopo l’apertura dei dispositivi di cattura riduce i privilegi; Java rimane nell’account ordinario. Pacchetto e app **non sono firmati Developer ID né autenticati tramite notarizzazione**. Per un avviso di sviluppatore non verificabile con eccezione disponibile, controllare prima origine e SHA-256, poi seguire [Apple](https://support.apple.com/en-us/102445): Impostazioni di Sistema → Privacy e Sicurezza → Apri comunque, quindi Apri. Un Mac gestito può vietare l’eccezione.
 
@@ -53,7 +53,7 @@ L’autorizzazione all’installazione, quella al componente di rete e l’eccez
 
 Estrarre uno ZIP completo. In Linux eseguire prima `bash ./Deploy-Linux.sh`, poi `bash ./Start-Linux.sh`. Nel portable Windows usare `Deploy-Windows.cmd` e poi `Start-Windows.cmd`; nel portable macOS `Deploy-macOS.command` e `Start-macOS.command`. Queste distribuzioni precedenti conservano gli script e sono separate dagli installer nativi 4.0. Linux può installare le dipendenze compilatore/libpcap dai repository; il portable macOS può richiedere Apple Command Line Tools e sudo. Conservare la sessione Terminale necessaria, senza avviare tutta Java come root. Alpine/musl non è incluso. Il deploy non aggiorna il sistema né sostituisce glibc.
 
-Le nove guide sono disponibili offline. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: Mostra contenuto pacchetto sull’app, poi `Contents/app/docs/it.md`. I collegamenti di aiuto nel browser richiedono Internet.
+Le dodici guide sono disponibili offline. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: Mostra contenuto pacchetto sull’app, poi `Contents/app/docs/it.md`. I collegamenti di aiuto nel browser richiedono Internet.
 
 ## 4. Gateway e indirizzo virtuale
 
@@ -182,8 +182,8 @@ print(job["id"])
 
 | Sistema | Dati | Applicazione/runtime |
 | --- | --- | --- |
-| Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App` |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app` |
+| Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
 Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
@@ -208,3 +208,35 @@ Segnalare versione, OS/CPU, fase ed errore esatto, eliminando password, token, l
 ## 10. Licenza
 
 L’applicazione originale può essere usata gratuitamente da privati e organizzazioni, anche in attività commerciali. Sono vietati vendita, addebito della licenza e distribuzione a pagamento senza permesso separato. La licenza personalizzata non concede diritti generali di modifica/ridistribuzione e non è una licenza open source approvata OSI. Fa fede l’inglese [LICENSE.txt](../LICENSE.txt). FlatLaf (Apache-2.0) e gli altri componenti mantengono le proprie licenze. Proprietario: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
+
+## Nome e profili precedenti
+
+MultiRoute Downloader si chiamava MultiRoute Resume. I nuovi profili usano i percorsi sopra; se la cartella nuova manca e un vecchio profilo esiste, viene riutilizzato senza spostare o cancellare file. I dati precedenti possono restare in `%LOCALAPPDATA%\MultiRoute Resume\data` o `~/Library/Application Support/MultiRoute Resume/data`. Restano compatibili directory protetta `MultiRouteResume`, ID di aggiornamento Windows, identità interna API e porta. Dopo l’installazione usare il nuovo collegamento o l’app MultiRoute Downloader. Le versioni storiche mantengono i vecchi nomi dei file.
+
+## Siti salvati, caricamenti e anteprima archivi (4.0)
+
+Aprire **Profili dei siti…**, creare/modificare il profilo e sceglierlo in **Download** o **Caricamenti**. Gateway e IP virtuale sono in **Impostazioni di rete**. In **Caricamenti** inserire l’**URL della cartella remota** e usare **Scegli file e carica…** per scegliere uno o più file locali con il selettore di sistema. L’interfaccia aggiunge i nomi; API `target_url` indica invece un file remoto completo. Incollare l’URL dell’archivio nel campo principale e usare **Contenuto dell’archivio…** per l’anteprima, senza avviare il download.
+
+Un profilo salva nome, URL di base, cartella locale, cartella remota e gateway. Supporta accesso anonimo, HTTP Basic/Bearer/Cookie/intestazioni proprie, FTP e SFTP con impronta SHA-256 del server verificata prima. Più account dello stesso server restano separati. Cartelle/gateway espliciti prevalgono; gli URL relativi usano la base. I segreti sono cifrati in `site-profiles/vault.bin` con la chiave locale `site-profiles/key.bin` e permessi del proprietario. Chi controlla account e chiave può leggerli. L’API pubblica non restituisce segreti. Campi vuoti conservano le credenziali solo a origine e tipo invariati; `replace_credentials:true` le sostituisce. Una redirezione HTTP verso un’altra origine non riceve le credenziali. Eliminare il profilo conserva attività e file locali/remoti; l’attività conserva il legame al profilo originale e non cambia account; se è stato eliminato, ricreare l’attività con un profilo valido quando necessario.
+
+Caricamento ed esplorazione remota supportano **FTP, FTPS esplicito e SFTP** tramite gateway scelti. Selezionare un file locale normale e un URL completo del file remoto (`target_url`), non una sola cartella. Un file temporaneo permette di riprendere dopo il confronto del prefisso. Il successo richiede rilettura remota completa e SHA-256: servono permessi di **lettura, scrittura e rinomina**, con traffico aggiuntivo. Una somma diversa o lettura negata è un errore. Ogni file usa un gateway per volta; più file vengono distribuiti e caricati in parallelo. Dopo il limite di inattività può subentrare un altro gateway; un singolo invio non viene suddiviso in parallelo. Pausa/ripresa e avanzamento persistono. Rimuovere l’attività conserva il file locale e i file remoti finali/temporanei.
+
+La sovrascrittura è disattivata. FTP/SFTP non garantiscono ovunque una rinomina atomica soltanto se il destinatario non esiste; un altro client può modificarlo durante la pubblicazione. Coordinare i percorsi condivisi. Elencare cartelle non invia né elimina file.
+
+L’anteprima di **ZIP, TAR, 7Z, RAR4 e RAR5** mostra nomi, percorsi, dimensioni, cartelle e cifratura senza estrarre o eseguire. Richiede un gateway, intervalli di byte ed ETag o Last-Modified stabile. Limiti: 16 MiB di metadati, 10.000 elementi, 60 secondi; decodifica intestazioni 7z fino a 64 MiB di memoria. L’elenco può essere parziale e non verifica l’integrità dei contenuti. Specificare la codifica originale se i nomi sono errati. Le intestazioni 7z cifrate supportate accettano una password non salvata. Le intestazioni RAR cifrate sono segnalate non supportate/password necessaria; archivi multivolume possono essere incompleti.
+
+L’API accetta `site_profile_id` per scaricare, caricare, elencare e visualizzare. `GET /api/v1/site-profiles` restituisce `{profiles:[...]}`; `POST`/`PUT` salva un oggetto piatto e restituisce metadati pubblici; `DELETE /api/v1/site-profiles/{id}` elimina solo il profilo. `POST /api/v1/uploads` riceve `local_path`, `target_url`, `routes`, `site_profile_id` facoltativo e `overwrite:false`, con HTTP 201. GET restituisce `{uploads:[...]}`; sono disponibili GET/DELETE singoli e POST `/{id}/pause` / `/{id}/resume`. `POST /api/v1/remote/list` usa `url` e `route`/`routes`; `POST /api/v1/archives/preview` accetta anche `password` e `charset`. Vedere [openapi.yaml](../openapi.yaml). I manifesti UTF-8 in `data/uploads/` usano ID del profilo, non password. L’anteprima non crea un download.
+
+## Pianificazione e priorità dei download
+
+Nei controlli coda/orario impostare `max_active_jobs` (1–32), limiti globali/per gateway e finestra giornaliera (`schedule_enabled`, `schedule_start`, `schedule_end`, HH:mm). Si usa il fuso locale, restituito come `schedule_timezone`; può attraversare mezzanotte e orari uguali significano tutto il giorno. Fuori finestra i download tornano in coda; le pause manuali restano. `priority` da -100 a 100 ordina gli elementi in attesa, valore alto prima poi creazione, senza interrompere quelli attivi. `start_after_ms` è l’istante minimo Unix in millisecondi, 0 rimuove il ritardo. Persiste ai riavvii e riguarda i download, non la coda upload indipendente. Applicazione e computer devono restare attivi; non viene programmato il risveglio OS. API: `GET`/`PUT`/`POST /api/v1/queue`, `PUT`/`POST /api/v1/jobs/{id}/options`.
+
+## Integrazione Chrome ed Edge
+
+Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.0-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
+
+MultiRoute deve funzionare, anche nella tray. Inviare l’URL dal menu del link o dal popup. Usa cartella, gateway e profilo attuali; restano le selezioni repository/torrent. La porta predefinita è 8765, da adattare se l’API cambia. Viene inviato solo l’URL, senza cookie/password e senza intercettare altri download. Configurare l’accesso alla fonte nell’app. Concedere l’eventuale permesso di connessione locale soltanto a questa estensione scelta.
+
+Il ponte è disattivato e accetta solo `chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl` su `/api/v1/browser/status` e `/api/v1/browser/download`; le altre regole API non cambiano. HTTP 202 indica consegna all’interfaccia, non file completato. Un server headless da solo non apre la selezione desktop. Rimuovere l’estensione o disabilitare l’integrazione per interrompere l’invio.
+
+[Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world) · [Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).

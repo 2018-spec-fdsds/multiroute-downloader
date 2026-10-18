@@ -20,5 +20,5 @@ if [ -z "$MR_JAVA" ]; then mr_java_install; fi
 mr_helper_deploy
 mr_desktop_install
 mr_java_save
-mr_note 'Deployment is complete. Starting MultiRoute Resume as your normal user.'
+mr_note 'Deployment is complete. Starting MultiRoute Downloader as your normal user.'
 mr_launch "$@"

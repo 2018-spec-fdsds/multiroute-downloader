@@ -308,3 +308,28 @@ Official source: https://github.com/JFormDesigner/FlatLaf
 Official artifacts: https://repo.maven.apache.org/maven2/com/formdev/flatlaf/3.7.2/
 SHA256: 917aff3963c88d797d0fd9b9ccbd70f7681c101df9d11c59e2bc7a3a6c0fabf4
 Full license: lib/licenses/FLATLAF-3.7.2-LICENSE. The distributed JAR contains no separate NOTICE.
+
+Archive preview: commons-compress 1.28.0 (Apache-2.0).
+Official artifact: https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.28.0/commons-compress-1.28.0.jar
+SHA256: e1522945218456f3649a39bc4afd70ce4bd466221519dba7d378f2141a4642ca
+License/notice files: lib/licenses/COMMONS-COMPRESS-1.28.0-LICENSE.txt, lib/licenses/COMMONS-COMPRESS-1.28.0-NOTICE.txt
+
+Archive preview: commons-io 2.22.0 (Apache-2.0).
+Official artifact: https://repo.maven.apache.org/maven2/commons-io/commons-io/2.22.0/commons-io-2.22.0.jar
+SHA256: 2b9a7b1f726fb86216dbd2c8321eabe0221dbd5b1be81c18e1cb53811b104758
+License/notice files: lib/licenses/COMMONS-IO-2.22.0-LICENSE.txt, lib/licenses/COMMONS-IO-2.22.0-NOTICE.txt
+
+Archive preview: commons-lang3 3.21.0 (Apache-2.0).
+Official artifact: https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.21.0/commons-lang3-3.21.0.jar
+SHA256: a2af247ec4db6eb8947e18e23e0433e4871a7c5d0a40e1f92e46ede54ae1defe
+License/notice files: lib/licenses/COMMONS-LANG3-3.21.0-LICENSE.txt, lib/licenses/COMMONS-LANG3-3.21.0-NOTICE.txt
+
+Archive preview: commons-codec 1.23.0 (Apache-2.0).
+Official artifact: https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.23.0/commons-codec-1.23.0.jar
+SHA256: 47504a3ce71d73a1b0af07675546b8d8c5af87f82ef12b6381f9eb3c17dd5a5b
+License/notice files: lib/licenses/COMMONS-CODEC-1.23.0-LICENSE.txt, lib/licenses/COMMONS-CODEC-1.23.0-NOTICE.txt
+
+Archive preview: xz 1.12 (0BSD).
+Official artifact: https://repo.maven.apache.org/maven2/org/tukaani/xz/1.12/xz-1.12.jar
+SHA256: 3e158a87bd73d8afb4b6e8239c013b7d049c48563f45860ce99cd2e448cf4a6b
+License/notice files: lib/licenses/XZ-1.12-LICENSE.txt
