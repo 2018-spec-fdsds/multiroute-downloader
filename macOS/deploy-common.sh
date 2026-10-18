@@ -272,7 +272,7 @@ mr_copy_payload() {
     destination=$1
     mkdir -p "$destination" || mr_die 'Cannot create application resources.'
     # Distribution allowlist: user downloads/data are never copied into a new app.
-    for entry in MultiRoute-Downloader.jar lib native src macOS docs README.md Start-macOS.command Deploy-macOS.command README-macOS.en.txt README-macOS.ru.txt API.ru.txt API.en.txt openapi.yaml; do
+    for entry in MultiRoute-Downloader.jar lib native src macOS browser-extension docs README.md Start-macOS.command Deploy-macOS.command README-macOS.en.txt README-macOS.ru.txt API.ru.txt API.en.txt openapi.yaml; do
         if [ -e "$MR_SOURCE/$entry" ]; then cp -R "$MR_SOURCE/$entry" "$destination/" || mr_die "Cannot copy application component: $entry"; fi
     done
     chmod 755 "$destination/Start-macOS.command" "$destination/Deploy-macOS.command" "$destination/macOS/launch-app.sh" "$destination/macOS/install-helper.sh" || mr_die 'Cannot set launcher permissions.'

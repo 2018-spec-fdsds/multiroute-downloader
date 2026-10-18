@@ -179,7 +179,7 @@ def main():
                 check("offline link "+document.relative_to(app_root).as_posix()+" -> "+parsed.path,
                       local.is_relative_to(app_root) and local.exists())
         check("installer license confirmation dialog included", any(row["Dialog"] == "LicenseAgreementDlg" for row in msi["dialogs"]))
-        check("installer displays the project's license text", any(row["Type"] == "ScrollableText" and "MULTIROUTE RESUME LICENSE" in row["Text"] for row in msi["license_controls"]))
+        check("installer displays the project's license text", any(row["Type"] == "ScrollableText" and "MULTIROUTE DOWNLOADER LICENSE" in row["Text"] for row in msi["license_controls"]))
     check("Windows uninstall entry enabled", properties.get("ARPNOREMOVE") != "1")
     shortcut_paths = {item["Directory"] for item in msi["shortcuts"]}
     check("desktop shortcut declared", "DesktopFolder" in shortcut_paths)

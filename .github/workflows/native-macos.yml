@@ -24,6 +24,7 @@ jobs:
           # Installer binaries in downloads/ are outputs, not build inputs.
           sparse-checkout: |
             .github
+            browser-extension
             docs
             lib
             linux
