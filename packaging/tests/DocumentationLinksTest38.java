@@ -83,7 +83,7 @@ public final class DocumentationLinksTest38 {
             }
         }
         cases.add("five_languages_current_version_https_guides_and_exact_api_fragments");
-        for (String input : Arrays.asList(null, "", "ja", "EN", " en", "../ru", "en?other", "en#other", "https://example.invalid/")) {
+        for (String input : Arrays.asList(null, "", "pt", "EN", " en", "../ru", "en?other", "en#other", "https://example.invalid/")) {
             verifyUri(input, "en", false); verifyUri(input, "en", true);
             for (int key = 0; key < keys.length; key++) {
                 String actual = key == 4 ? I18n.tFor(input, keys[key], "owned error", "owned link") : I18n.tFor(input, keys[key]);
