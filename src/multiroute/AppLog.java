@@ -66,6 +66,16 @@ public final class AppLog {
     public static void info(String source, Object... args) { record("INFO", "application", source, args); }
     public static void error(String source, Object... args) { record("ERROR", "application", source, args); }
     public static void nativeLine(String raw) { record("INFO", "network", raw, new Object[0]); }
+    /** Lifecycle timestamps describe the observed transition, not a later refresh of the log. */
+    static void downloadEvent(Map<String,Object> entry) {
+        try {
+            Event event = new Event(String.valueOf(entry.get("time")), "INFO", "application",
+                    sanitizeTemplate(DownloadHistory.template(String.valueOf(entry.get("kind")))),
+                    List.copyOf(encodeArguments(DownloadHistory.arguments(entry).toArray(), 0, new int[]{MAX_EVENT_TEXT})));
+            Session current = session;
+            if (current != null && current.accepting && !current.queue.offer(event)) current.dropped.incrementAndGet();
+        } catch (RuntimeException ignored) { /* the durable history remains independent of UI diagnostics */ }
+    }
     /** Nested presentation text retains its template; ordinary strings remain user data. */
     public record Message(String source, Object[] args) {
         public Message { args = args.clone(); }
@@ -220,7 +230,7 @@ public final class AppLog {
         void restore() {
             try {
                 if (!Files.isRegularFile(canonical) || Files.size(canonical) > MAX_CANONICAL_FILE) return;
-                Object parsed = Json.parse(Files.readString(canonical));
+                Object parsed = Json.parse(Files.readString(canonical, StandardCharsets.UTF_8));
                 if (!(parsed instanceof Map<?,?> root) || !Long.valueOf(1).equals(root.get("format")) ||
                         !(root.get("events") instanceof List<?> events)) return;
                 for (Object raw : events) {

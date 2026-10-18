@@ -1,15 +1,19 @@
 # MultiRoute Resume
 
 Java desktop download manager with resumable segments through selectable LAN
-gateways and a localhost API. Native installer version: **3.9**; portable ZIP
+gateways and a localhost API. Native installer version: **4.0**; portable ZIP
 distributions for **3.0** remain available.
 
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
 [Español](docs/es.md) · [Français](docs/fr.md)
 
+[中文](docs/zh.md) · [한국어](docs/ko.md) · [العربية](docs/ar.md) · [Italiano](docs/it.md)
+
 Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
-**New in 3.9:** startup no longer depends on deleting temporary command-output files after a process lookup times out. Output is collected through bounded pipes; identity checks for replacing an earlier MultiRoute instance remain in place.
+**New in 4.0:** a refreshed FlatLaf desktop with System/Light/Dark themes, queue totals and keyboard shortcuts. Hover over any download for its full file name and absolute path; right-click to copy the path. Dated download history records start, continuation and completion events and remains available after restarting the application.
+
+**Retained from 3.9:** startup no longer depends on deleting temporary command-output files after a process lookup times out. Output is collected through bounded pipes; identity checks for replacing an earlier MultiRoute instance remain in place.
 
 **Retained from 3.8:** visible **Instructions** and **API guide** buttons at the upper right open the versioned guide in your selected language using the default browser. The API button goes directly to its API section.
 
@@ -21,7 +25,7 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v3.9).
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-resume/tree/main/downloads/v4.0).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 
@@ -47,6 +51,12 @@ The speed gain depends on independent upstream capacity and source-server
 limits; it is not a guaranteed multiple of the number of gateways.
 
 ## Screenshots
+
+Version 4.0, light and dark appearances. These are actual desktop components rendered with an isolated own demo profile, Unicode filenames and synthetic job counters. The speeds are illustrative, not an Internet benchmark.
+
+![MultiRoute Resume 4.0 with the light theme](docs/images/desktop-4.0-light-en.png)
+
+![MultiRoute Resume 4.0 with the dark theme](docs/images/desktop-4.0-dark-en.png)
 
 Version 3.5: progress bars for individual downloads and columns filling the panel. This own demo uses synthetic jobs and counters.
 
@@ -79,18 +89,18 @@ Batch import: one URL per line, preview before submission.
 
 ## Download and install
 
-### Native Windows and macOS installers (3.9)
+### Native Windows and macOS installers (4.0)
 
-Choose a single installer file from [release 3.9](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v3.9).
+Choose a single installer file from [release 4.0](https://github.com/2018-spec-fdsds/multiroute-resume/releases/tag/v4.0).
 The application, full Java runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
 | Platform | Installer | Installed application |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.9-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.9-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.9-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** in Start or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | `/Applications/MultiRoute Resume.app` |
+| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | `/Applications/MultiRoute Resume.app` |
 
 Windows checks Npcap from the application. If missing, it offers a verified
 download of the official installer and a normal interactive UAC installation;
@@ -99,7 +109,7 @@ installed Java, Command Line Tools or Homebrew. Its protected network component
 requests administrator authorization through a standard macOS dialog while the
 Java application remains under your normal user account.
 
-These installers are not publisher/Developer ID signed or notarized. The five
+These installers are not publisher/Developer ID signed or notarized. The nine
 language guides explain SmartScreen/Gatekeeper, administrator, Local Network and
 folder-access confirmations without disabling system protections. macOS native
 packages have the strict 26+/15+ minimum above; the older ZIP's HTTP-only minimum
@@ -128,7 +138,7 @@ native `.pkg` application uses graphical authorization instead.
 ## Computer and network requirements
 
 - A full Java 17+ runtime for the native CPU architecture, including
-  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 3.9
+  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 4.0
   installers include a suitable runtime; portable/Linux deployment checks or
   downloads one when necessary.
 - Wired Ethernet in the same IPv4 LAN as the selected Internet gateways.
@@ -162,7 +172,7 @@ requirements were checked from the actual ELF/Mach-O binary metadata. See
   assembled file. A locally calculated hash alone is not a publisher verification.
 - Source authentication, trusted mirrors and a versioned local JSON API with
   batch creation and server-sent events.
-- English, Russian, German, Spanish and French; English by default.
+- English, Russian, German, Spanish, French, Chinese, Korean, Arabic and Italian; English by default.
 
 The gateway transport uses an application-owned lwIP stack. Its virtual address
 and gateway selection leave the OS routing table unchanged. The local API is
@@ -190,7 +200,7 @@ built Java JAR before it downloads prerequisites.
 ## API, verification and limitations
 
 - [API reference and examples](API.ru.txt); [OpenAPI schema](openapi.yaml).
-- [Native installer checks for 3.9](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
+- [Native installer checks for 4.0](https://github.com/2018-spec-fdsds/multiroute-resume/blob/main/NATIVE-INSTALLER-TESTS.json), including
   package hashes, Windows native startup and both macOS architectures.
 - Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
   [application report](TEST-REPORT.json) and
@@ -199,10 +209,10 @@ built Java JAR before it downloads prerequisites.
   helper fixtures were checked on real GitHub Mac runners. Windows native
   startup, instance replacement and profile retention were checked separately.
   End-user installation/security dialogs, BPF capture and physical gateway WAN
-  transfers remain unverified. Version 3.9 is a prerelease. The packages are
+  transfers remain unverified. Version 4.0 is a prerelease. The packages are
   unsigned with a publisher identity; macOS packages are not notarised.
 - Installer payloads contain the instructions as saved at the package source
-  commit recorded in the 3.9 report. Current verification results are published
+  commit recorded in the 4.0 report. Current verification results are published
   in that report and the release notes.
 - The native gateway transport supports public IPv4. Wi-Fi-only/VPN-only
   adapters, IPv6-only sources and local LAN torrent peers are outside this mode.

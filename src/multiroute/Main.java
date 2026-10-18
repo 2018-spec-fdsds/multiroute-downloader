@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.channels.FileChannel;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -22,7 +23,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "3.9";
+    static final String VERSION = "4.0";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -194,6 +195,7 @@ public final class Main {
         final List<Thread> routeThreads = new CopyOnWriteArrayList<>();
         final Set<Lease> openStreams = ConcurrentHashMap.newKeySet();
         final DownloadMetrics metrics;
+        final DownloadHistory history;
         @FunctionalInterface interface HttpOpener {
             java.net.http.HttpResponse<InputStream> open(Map<String,Object> route, String url, long start,
                     long end, String etag, String modified) throws Exception;
@@ -257,6 +259,7 @@ public final class Main {
             state.put("routes", normalizeRoutes(arr(state.get("routes"))));
             this.metrics = new DownloadMetrics(state);
             this.manifest = dataDir.resolve(str(state.get("id")) + ".json");
+            this.history = new DownloadHistory(dataDir, state);
         }
         synchronized void persist() {
             metrics.checkpoint(state);
@@ -271,6 +274,7 @@ public final class Main {
             }
             catch (IOException error) { throw new UncheckedIOException(error); }
             finally { if (interrupted) Thread.currentThread().interrupt(); }
+            history.checkpoint(state);
             String status = str(state.get("status"));
             String error = str(state.get("error"));
             if (!status.equals(loggedStatus)) {
@@ -286,6 +290,7 @@ public final class Main {
         synchronized Map<String,Object> snapshot() {
             Map<String,Object> copy = new LinkedHashMap<>(state);
             copy.remove("chunks"); copy.remove("etag"); copy.remove("modified"); copy.remove("part_path");
+            copy.remove("lifecycle_run_open");
             copy.remove("torrent_metadata"); copy.remove("target_paths"); copy.remove("idempotency_fingerprint"); copy.remove("idempotency_key");
             List<Object> routes = new ArrayList<>();
             for (Object item : arr(state.get("routes"))) {
@@ -297,6 +302,7 @@ public final class Main {
                 routes.add(route);
             }
             copy.put("routes", routes);
+            copy.put("lifecycle_history", DownloadHistory.events(state));
             copy.keySet().removeIf(key -> key.startsWith("probe_"));
             metrics.decorate(copy);
             return copy;
@@ -328,6 +334,7 @@ public final class Main {
                 if ("complete".equals(state.get("status"))) return;
                 restart = false; stop = true;
                 metrics.stop(); METRIC_JOBS.remove(this);
+                DownloadHistory.pause(state, "pause");
                 state.put("status", "paused"); persist();
             }
             for (HttpAttempt attempt : activeAttempts) attempt.cancel();
@@ -340,6 +347,7 @@ public final class Main {
             synchronized (this) {
                 shuttingDown = true; restart = false; stop = true;
                 metrics.stop(); METRIC_JOBS.remove(this);
+                DownloadHistory.pause(state, "shutdown");
                 running = thread;
             }
             for (HttpAttempt attempt : activeAttempts) attempt.cancel();
@@ -355,6 +363,7 @@ public final class Main {
             synchronized (this) {
                 maintenance = true; restart = false; stop = true; running = thread;
                 metrics.stop(); METRIC_JOBS.remove(this);
+                DownloadHistory.pause(state, "maintenance");
                 if (!"complete".equals(state.get("status"))) state.put("status", "paused");
                 try { persist(); } catch (RuntimeException error) { maintenance = false; throw error; }
             }
@@ -867,7 +876,7 @@ public final class Main {
                         catch (AtomicMoveNotSupportedException unavailable) { Files.move(part(), finalPath); }
                     }
                 }
-                state.put("status", "complete"); state.put("error", ""); persist();
+                state.put("status", "complete"); state.put("error", ""); DownloadHistory.complete(state); persist();
             }
             try { Files.deleteIfExists(part()); } catch (IOException ignored) { }
         }
@@ -923,7 +932,7 @@ public final class Main {
             Checksums.verify(actual, Checksums.expected(state));
             synchronized (this) {
                 if (stop) return true;
-                state.putAll(actual); state.put("status", "complete"); state.put("error", ""); persist();
+                state.putAll(actual); state.put("status", "complete"); state.put("error", ""); DownloadHistory.recovered(state); persist();
             }
             try { Files.deleteIfExists(part()); } catch (IOException ignored) { }
             return true;
@@ -933,7 +942,11 @@ public final class Main {
             try {
                 if ("torrent".equals(state.get("kind"))) {
                     Map<String,Object> input;
-                    synchronized (this) { input = obj(Json.parse(Json.stringify(state))); }
+                    synchronized (this) {
+                        if (stop) return;
+                        DownloadHistory.begin(state); persist();
+                        input = obj(Json.parse(Json.stringify(state)));
+                    }
                     Map<String,Object> result = TorrentEngine.runControlled(input,
                             manifest.getParent().resolve("torrents").resolve(str(state.get("id"))), () -> stop,
                             this::torrentUpdate, this::enabledRoutesSnapshot, this::optionsSnapshot, transferLimits);
@@ -941,6 +954,10 @@ public final class Main {
                     return;
                 }
                 if (recoverPublished()) return;
+                synchronized (this) {
+                    if (stop) return;
+                    DownloadHistory.begin(state); persist();
+                }
                 long total = 0;
                 while (!stop) {
                     try { total = metadata()[0]; break; }
@@ -1012,6 +1029,7 @@ public final class Main {
                 synchronized (this) {
                     if (!stop) {
                         metrics.stop(); METRIC_JOBS.remove(this);
+                        DownloadHistory.failed(state);
                         state.put("status", "failed"); state.put("error", error.getMessage()); persist();
                     }
                 }
@@ -1056,6 +1074,8 @@ public final class Main {
             }
             if (stop) { persist(); return; }
             state.putAll(update);
+            if (List.of("seeding", "complete").contains(str(delta.get("status")))) DownloadHistory.complete(state);
+            else if ("failed".equals(delta.get("status"))) DownloadHistory.failed(state);
             if (List.of("paused", "verifying", "complete", "failed").contains(str(delta.get("status")))) {
                 metrics.stop(); METRIC_JOBS.remove(this);
             }
@@ -1099,11 +1119,11 @@ public final class Main {
             this.spaceProbe = Objects.requireNonNull(spaceProbe);
             this.dataDir = normalized(dataDir); Files.createDirectories(this.dataDir);
             queue=new QueueController(this.dataDir);idempotencyFile=this.dataDir.resolve("idempotency.config");
-            if(Files.isRegularFile(idempotencyFile,LinkOption.NOFOLLOW_LINKS)){safePath(idempotencyFile);if(Files.size(idempotencyFile)>2*1024*1024)throw new IOException("Idempotency registry is too large");idempotency.putAll(obj(Json.parse(Files.readString(idempotencyFile))));}
+            if(Files.isRegularFile(idempotencyFile,LinkOption.NOFOLLOW_LINKS)){safePath(idempotencyFile);if(Files.size(idempotencyFile)>2*1024*1024)throw new IOException("Idempotency registry is too large");idempotency.putAll(obj(Json.parse(Files.readString(idempotencyFile, StandardCharsets.UTF_8))));}
             recoverInterruptedRemovals();
             try (DirectoryStream<Path> files = Files.newDirectoryStream(dataDir, "*.json")) {
                 for (Path path : files) try {
-                    Map<String,Object> state = obj(Json.parse(Files.readString(path)));
+                    Map<String,Object> state = obj(Json.parse(Files.readString(path, StandardCharsets.UTF_8)));
                     String id = str(state.get("id"));
                     if (!id.matches("[a-f0-9]{12}") || !path.getFileName().toString().equals(id + ".json") || Files.isSymbolicLink(path))
                         throw new IOException("Некорректный файл задания");
@@ -1120,7 +1140,7 @@ public final class Main {
                     safePath(tombstone);
                     if (!Files.isRegularFile(tombstone, LinkOption.NOFOLLOW_LINKS) || Files.size(tombstone) > 64L*1024*1024)
                         throw new IOException("Некорректная запись незавершённого удаления");
-                    Map<String,Object> saved = obj(Json.parse(Files.readString(tombstone)));
+                    Map<String,Object> saved = obj(Json.parse(Files.readString(tombstone, StandardCharsets.UTF_8)));
                     String id = str(saved.get("id"));
                     if (!id.matches("[a-f0-9]{12}") || !tombstone.getFileName().toString().equals(id + ".removing"))
                         throw new IOException("Идентификатор записи удаления не совпадает");
@@ -1417,7 +1437,7 @@ public final class Main {
             state.put("info_hash_v1", metadata.get("info_hash_v1")); state.put("info_hash_v2", metadata.get("info_hash_v2"));
             state.put("selected_files", selected); state.put("target_paths", targets); state.put("files", metadata.get("files"));
             state.put("routes", routes); state.put("status", "queued"); state.put("error", ""); state.put("chunks", new LinkedHashMap<>());
-            state.put("created_at", Instant.now().toString()); stampIdempotency(state,input);
+            state.put("created_at", Instant.now().toString()); DownloadHistory.initialize(state); stampIdempotency(state,input);
             Job job = ownedJob(state); applyJobOptions(job,input,false); jobs.put(id, job); job.persist(); enqueue(job); return job.snapshot();
         }
 
@@ -1496,6 +1516,7 @@ public final class Main {
             state.put("sha256", ""); state.put("chunk_size", chunkMb * 1024 * 1024);
             state.put("size", 0); state.put("downloaded", 0); state.put("status", "queued"); state.put("error", "");
             state.put("created_at", Instant.now().toString()); state.put("routes", routes); state.put("etag", ""); state.put("modified", "");
+            DownloadHistory.initialize(state);
             state.put("chunks", new LinkedHashMap<>()); state.put("part_path", directory.resolve("." + name + "." + id + ".part").toString());
             stampIdempotency(state,input);Job job=ownedJob(state);applyJobOptions(job,input,false);return new PreparedHttp(job,false);
         }
@@ -1606,7 +1627,7 @@ public final class Main {
             }
             Path settingsPath=dataDir.resolve("desktop-settings.config");safePath(settingsPath);
             boolean settingsExisted=Files.isRegularFile(settingsPath,LinkOption.NOFOLLOW_LINKS);
-            Map<String,Object> oldSettings=settingsExisted?new LinkedHashMap<>(obj(Json.parse(Files.readString(settingsPath)))):new LinkedHashMap<>();
+            Map<String,Object> oldSettings=settingsExisted?new LinkedHashMap<>(obj(Json.parse(Files.readString(settingsPath, StandardCharsets.UTF_8)))):new LinkedHashMap<>();
             Map<String,Object> nextSettings=new LinkedHashMap<>(oldSettings);nextSettings.put("virtual_ip",ip);nextSettings.put("gateways",gateways);
             try {
                 for(Job job:previous.keySet())synchronized(job){
@@ -1767,7 +1788,7 @@ public final class Main {
             if (Files.exists(checkpoint, LinkOption.NOFOLLOW_LINKS)) {
                 if (!Files.isRegularFile(checkpoint, LinkOption.NOFOLLOW_LINKS) || Files.size(checkpoint) > 64L*1024*1024)
                     throw new IOException("Некорректный checkpoint torrent");
-                Map<String,Object> saved = obj(Json.parse(Files.readString(checkpoint)));
+                Map<String,Object> saved = obj(Json.parse(Files.readString(checkpoint, StandardCharsets.UTF_8)));
                 if (!directory.toString().equals(str(saved.get("root")))) throw new IOException("Папка checkpoint torrent не совпадает с заданием");
                 if (saved.get("published") instanceof Map<?,?>) proofs.putAll(obj(saved.get("published")));
             }
@@ -1872,7 +1893,7 @@ public final class Main {
                     if (Files.exists(checkpoint, LinkOption.NOFOLLOW_LINKS)) {
                         if (!Files.isRegularFile(checkpoint, LinkOption.NOFOLLOW_LINKS) || Files.size(checkpoint) > 64L*1024*1024)
                             throw new IOException("Некорректный checkpoint torrent");
-                        oldCheckpoint = obj(Json.parse(Files.readString(checkpoint)));
+                        oldCheckpoint = obj(Json.parse(Files.readString(checkpoint, StandardCharsets.UTF_8)));
                         if (oldCheckpoint.containsKey("root") && !oldDirectory.toString().equals(str(oldCheckpoint.get("root"))))
                             throw new IOException("Сохранённая папка torrent не совпадает с заданием");
                     }
@@ -2147,7 +2168,17 @@ public final class Main {
         }
     }
 
+    /** Java 17 on Windows otherwise inherits the console code page for redirected diagnostics. */
+    static synchronized void configureUtf8Console() {
+        if (utf8ConsoleConfigured) return;
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
+        utf8ConsoleConfigured = true;
+    }
+    private static boolean utf8ConsoleConfigured;
+
     public static void main(String[] args) {
+        configureUtf8Console();
         boolean showError = !Arrays.asList(args).contains("--worker") && !Arrays.asList(args).contains("--headless") && !Arrays.asList(args).contains("--no-browser");
         try { start(args); }
         catch (Exception error) {
@@ -2176,12 +2207,12 @@ public final class Main {
             }
             Path profile = (DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot() : launch).resolve("data-location.config");
             if (!explicit && Files.isRegularFile(profile) && Files.size(profile) < 65536) {
-                String saved = Files.readString(profile).trim();
+                String saved = Files.readString(profile, StandardCharsets.UTF_8).trim();
                 if (!saved.isEmpty()) directory = launch.resolve(Path.of(saved)).normalize();
             }
             Path settings = directory.resolve("desktop-settings.config");
             if (!Files.isRegularFile(settings) || Files.size(settings) > 1024 * 1024) return;
-            Object parsed = Json.parse(Files.readString(settings));
+            Object parsed = Json.parse(Files.readString(settings, StandardCharsets.UTF_8));
             if (parsed instanceof Map<?,?> saved && saved.get("language") instanceof String language)
                 I18n.setLanguage(language);
         } catch (Exception ignored) { /* startup's original failure remains the reported error */ }
@@ -2206,7 +2237,7 @@ public final class Main {
         Path profile = (DesktopLauncher.nativeDesktop() ? DesktopLauncher.userRoot() : launchDirectory).resolve("data-location.config");
         if (DesktopLauncher.nativeDesktop()) Files.createDirectories(DesktopLauncher.userRoot());
         if (!explicitData && Files.isRegularFile(profile)) {
-            String saved = Files.readString(profile).trim();
+            String saved = Files.readString(profile, StandardCharsets.UTF_8).trim();
             if (!saved.isEmpty()) data = launchDirectory.resolve(Path.of(saved)).normalize();
         }
         SingleInstance.Guard instance = SingleInstance.acquire(data.toAbsolutePath().normalize(), bind, port, !explicitData);
@@ -2215,7 +2246,7 @@ public final class Main {
         try {
             Path desktopSettings = instance.dataDir().resolve("desktop-settings.config");
             if (Files.isRegularFile(desktopSettings)) {
-                try { I18n.setLanguage(str(obj(Json.parse(Files.readString(desktopSettings))).get("language"))); }
+                try { I18n.setLanguage(str(obj(Json.parse(Files.readString(desktopSettings, StandardCharsets.UTF_8))).get("language"))); }
                 catch (IOException | IllegalArgumentException invalidSettings) { /* the UI can repair its settings */ }
             }
             AppLog.initialize(instance.dataDir());
@@ -2224,7 +2255,7 @@ public final class Main {
                 Path location;
                 try { location = launchDirectory.relativize(instance.dataDir()); }
                 catch (IllegalArgumentException differentDrive) { location = instance.dataDir(); }
-                Files.writeString(profile, location.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                Files.writeString(profile, location.toString(), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             }
             GatewayNetwork.initialize(instance.dataDir());
             SourceAuth.configure(instance.dataDir());

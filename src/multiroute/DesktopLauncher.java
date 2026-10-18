@@ -66,6 +66,7 @@ public final class DesktopLauncher {
     }
 
     public static void main(String[] args) {
+        Main.configureUtf8Console();
         System.setProperty("multiroute.native.desktop", "true");
         JFrame[] progress = new JFrame[1];
         boolean gui = !GraphicsEnvironment.isHeadless() && !Arrays.asList(args).contains("--headless")

@@ -1,6 +1,6 @@
-# MultiRoute Resume 3.9 — Anleitung auf Deutsch
+# MultiRoute Resume 4.0 — Anleitung auf Deutsch
 
-[Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md)
+[Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md)
 
 Projektinhaber: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -12,7 +12,7 @@ Das ist besonders nützlich, wenn mehrere unabhängige Internetanschlüsse vorha
 
 Bei segmentierten Downloads können die übrigen Gateways weiterarbeiten, wenn ein einzelner Anschluss ausfällt. Noch nicht vollständig geladene Teile werden anderen verfügbaren Gateways zugewiesen; bereits geprüfte Daten bleiben erhalten. Außerdem unterstützt das Programm den gemeinsamen Download mehrerer Dateien: URL-Listen und eine Warteschlange erlauben Gruppen von Downloads, die sich auch über die lokale API aus anderen Anwendungen anlegen lassen.
 
-Das Programm besitzt eine eigene Swing-Oberfläche, einen systemüblichen Ordnerdialog und eine lokale HTTP-API für andere Programme. Ein Webbrowser ist für die Bedienung nicht erforderlich. Die Oberfläche, registrierte Statusmeldungen und Hilfetexte sind in **Englisch, Russisch, Deutsch, Spanisch und Französisch** verfügbar. Bei einem neuen Profil ist Englisch voreingestellt. Die Sprachwahl wird gespeichert und sofort angewendet; Dateinamen, URLs und JSON-Schlüssel bleiben unverändert. Nicht registrierte Meldungen externer Server oder Bibliotheken können in ihrer ursprünglichen Sprache erscheinen.
+Das Programm besitzt eine eigene Swing-Oberfläche, einen systemüblichen Ordnerdialog und eine lokale HTTP-API für andere Programme. Ein Webbrowser ist für die Bedienung nicht erforderlich. Die Oberfläche, registrierte Statusmeldungen und Hilfetexte sind in **Englisch, Russisch, Deutsch, Spanisch, Französisch, Chinesisch, Koreanisch, Arabisch und Italienisch** verfügbar. Bei einem neuen Profil ist Englisch voreingestellt. Die Sprachwahl wird gespeichert und sofort angewendet; Dateinamen, URLs und JSON-Schlüssel bleiben unverändert. Nicht registrierte Meldungen externer Server oder Bibliotheken können in ihrer ursprünglichen Sprache erscheinen.
 
 ## Screenshots
 
@@ -88,13 +88,15 @@ Vorhandenes passendes Java 17+ wird wiederverwendet. Andernfalls wird eine festg
 
 **Zusätzliche Voraussetzung für BitTorrent/magnet:** Die tatsächlich mitgelieferten Torrent-Bibliotheken haben höhere macOS-Ziele: **Apple Silicon benötigt macOS 26 oder neuer; Intel benötigt macOS 15 oder neuer**. macOS 11+ bedeutet daher nicht, dass alle Protokolle dieser Ausgabe dort verfügbar sind. Der Starter erkennt diese Versionsgrenze, warnt bei einem älteren System und erlaubt die Java-/HTTP-Bereitstellung, ohne macOS zu aktualisieren. Eine erfolgreiche Installation bestätigt keine tatsächlich geladene Torrent-Bibliothek. Betriebssystem und Architektur lassen sich mit `sw_vers -productVersion` und `uname -m` prüfen; die tatsächliche Ausführung auf einem Mac bleibt noch zu verifizieren.
 
-Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 3.9-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
+Das erzeugte `.app` ist in diesem Release **nicht mit Developer ID signiert und nicht notarisiert**. Der portable Finder/Gatekeeper-Ablauf 3.0 wurde auf einem Benutzer-Mac nicht geprüft. Native 4.0-Builds und Launcher/API wurden auf echten GitHub-Mac-Runnern geprüft; Sicherheitsdialoge beim Benutzer und BPF-Aufzeichnung bleiben ungeprüft. Die macOS-Sicherheitsabfragen und nötigen Bestätigungen sind unten separat erklärt.
 
 ### Was die Starter automatisch prüfen
 
 Die Bereitstellung prüft Betriebssystem, native CPU-Architektur, Schreibrechte, freien Platz und eine vollständige passende Java-Laufzeit. Linux/macOS prüfen außerdem die vorstehenden BitTorrent-Versionsgrenzen und untersuchen vorhandene Netzwerklinks ausschließlich lesend. Ein Ethernet-formatierter Link ist nur ein Kandidat; daraus folgt noch keine bestätigte physische Gateway-Verbindung. Die endgültige Adapter- und Subnetzprüfung führt der Netzwerkhelfer vor der Übertragung aus. Eine VM mit geeigneter überbrückter Ethernet-Verbindung wird nicht allein wegen ihrer virtuellen Hardware vom Installer ausgeschlossen.
 
 Fehlende Java-Laufzeiten werden aus festgelegten offiziellen Quellen geladen und vor der Nutzung geprüft. Unter Linux werden fehlende Compiler-/libpcap-/Runtime-Pakete über den Paketmanager angefordert; unter macOS werden fehlende Apple-Werkzeuge über Apples sichtbaren Installer angefordert. Eine ungeeignete verkleinerte Java-Laufzeit wird unter Linux/macOS übersprungen; falls nötig wird die vollständige private Laufzeit installiert. Administrator-, Lizenz- und Datenschutzabfragen müssen Sie selbst bestätigen. Bei Download-, Hash- oder Modulfehlern bricht der betreffende Installationsschritt ab.
+
+Für die gewählte Sprache müssen passende Schriftzeichen installiert sein. Installieren Sie unter minimalem Linux geeignete Distributionspakete, etwa Noto CJK für Chinesisch/Koreanisch und eine arabische Noto-Schrift. Java nutzt die Schrift-Fallbacks der Plattform; das Programm installiert oder bündelt keine Schriftpakete. Die Abdeckung kann je nach Rechner variieren.
 
 ## Netzwerk und virtuelle IP-Adresse
 
@@ -115,17 +117,17 @@ WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transpo
 
 DNS-Anfragen laufen über das ausgewählte Gateway: zunächst zum Router, dann bei Bedarf zu `1.1.1.1` oder `8.8.8.8` über denselben Weg. Es gibt keinen Rückfall auf den DNS-Resolver des Betriebssystems. DNSSEC, DoH und ein TCP-Rückfall bei gekürzten DNS-Antworten sind in diesem Release nicht implementiert.
 
-## Native Installationspakete 3.9: Windows und macOS
+## Native Installationspakete 4.0: Windows und macOS
 
 Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), sofern es dort angehängt ist. Jedes Paket ist **eine Installationsdatei** mit Anwendung, nativem Starter, vollständiger Java-Laufzeit und passendem Netzwerkhelfer. Quellcode und portable ZIPs der Version 3.0 sind separate Angebote.
 
 | System | Installationsdatei | Start nach der Installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.9-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.9-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.9-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | **MultiRoute Resume** in Programme, Spotlight oder Dock |
 
-Die fünf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md` oder `fr.md` in einem Text- oder Markdown-Programm öffnen.
+Die neun Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md` oder `it.md` in einem Text- oder Markdown-Programm öffnen.
 
 ### Windows: installieren und öffnen
 
@@ -320,12 +322,12 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
-### Native Pakete 3.9
+### Native Pakete 4.0
 
 | System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, einschließlich Java | Enthaltener x64-Helfer; Npcap separat installiert |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.9/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
 
 Schließen Sie die Anwendung vor einem Update mit einem neuen Installer. Unter Windows erfolgt die Entfernung über **Einstellungen → Apps → Installierte Apps**. Unter macOS löscht das Entfernen der `.app` nicht automatisch den Verlauf und den separat geschützten Helfer. Heruntergeladene Dateien bleiben im gewählten Ordner; löschen Sie ihn nicht nur zur Deinstallation. Der Datenpfad unterscheidet sich vom Windows-ZIP 3.0; sichern Sie ein früheres Profil vor einer Migration.
 
@@ -358,11 +360,11 @@ Für ein Update der portablen Pakete 3.0 unter Linux/macOS führen Sie den jewei
 
 ## Umfang der Release-Prüfung
 
-Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 3.9-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 3.9 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
+Java-, API-, Protokoll-, Oberflächen- und native Offline-Prüfungen sowie eigene synthetische Netzwerkfälle wurden ausgeführt. Sie belegen **keine tatsächliche Übertragung über Ihre physischen Router**. Native 4.0-Pakete wurden auf GitHub-Runnern mit Apple Silicon/macOS 26 und Intel/macOS 15 gebaut und geprüft: Launcher/API, Torrent-JNI, Paketinhalt und Helfer-Testfälle. Installation beim Benutzer, Finder-/Sicherheitsdialoge und BPF-Aufzeichnung bleiben ungeprüft. Nur das portable Paket 3.0 kompiliert den Helfer lokal beim Benutzer; native Pakete 4.0 enthalten separate vorkompilierte Intel-/Apple-Silicon-Komponenten, ohne Developer-ID-Signatur oder Notarisierung. Paket- oder CI-Prüfungen beweisen nicht die Funktion auf Ihrem Mac. Prüfen Sie nach Installation jedes Gateway mit einer echten Datei, bevor Sie sich auf die kombinierte Bandbreite verlassen.
 
 Prüfberichte: [CHECKS.ru.md](../CHECKS.ru.md), [TEST-REPORT.json](../TEST-REPORT.json). Drittanbieter-Komponenten und ihre Lizenzen: [THIRD-PARTY-NOTICES.txt](../THIRD-PARTY-NOTICES.txt).
 
-## Systemtray und Beenden (3.9)
+## Systemtray und Beenden (4.0)
 
 Beim Schließen des Hauptfensters laufen Anwendung und Downloads im Systemtray weiter. Das Symbol zeigt den gesamten Download-Durchsatz **aller Aufträge**, unabhängig von Auswahl und Tabellenfilter. Die Tooltip-Anzeige enthält den genauen Wert in Mbit/s oder Gbit/s (ab 1 Gbit/s) und Byte/s, auch bis 10 Gbit/s; das kleine Symbol rundet ihn. Im Tray-Menü **Anwendung öffnen** wählen, um das Fenster wiederherzustellen. Unter Windows/Linux öffnet auch ein Klick auf das Symbol das Fenster. **Anwendung beenden** im Tray-Menü oder Fenster speichert den Zustand und beendet das Programm. Vor einem Update diese Funktion verwenden.
 
@@ -374,7 +376,7 @@ Das Setup erstellt standardmäßig eine Desktopverknüpfung und unter Windows ei
 
 Die Originalanwendung darf kostenlos installiert und privat sowie in Organisationen einschließlich geschäftlicher Tätigkeiten genutzt werden. **Verkauf der Anwendung, kostenpflichtige Lizenzen und entgeltliche Weitergabe sind untersagt**, soweit keine separate Erlaubnis vorliegt. Die eigene Lizenz gewährt keine allgemeinen Änderungs- oder Weitergaberechte und ist keine von OSI anerkannte Open-Source-Lizenz. Drittanbieter behalten ihre eigenen Lizenzbedingungen. Dies ist eine übersetzte Zusammenfassung; maßgeblich ist der englische Text in [LICENSE.txt](../LICENSE.txt).
 
-In 3.9 hat das Geschwindigkeitssymbol einen transparenten Hintergrund mit schwarzen Ziffern und Einheiten, auch bei 10 Gbit/s. Gesamtrate und Tray-Befehle bleiben erhalten.
+In 4.0 hat das Geschwindigkeitssymbol einen transparenten Hintergrund mit schwarzen Ziffern und Einheiten, auch bei 10 Gbit/s. Gesamtrate und Tray-Befehle bleiben erhalten.
 
 ## Prüfung mit MD5, SHA-256 und SHA-512
 
@@ -388,7 +390,7 @@ Torrent-Teile werden weiterhin zwingend geprüft. Die Summen der zusammengesetzt
 
 Die lokale API akzeptiert `expected_md5`, `expected_sha256` und `expected_sha512` in `POST /api/v1/jobs`. Ergebnisse enthalten `md5`, `sha256`, `sha512` und Referenzquellen in `checksum_sources`. Bestehende Anfragen mit `expected_sha256` bleiben kompatibel.
 
-## Fortschritt einzelner Downloads (3.9)
+## Fortschritt einzelner Downloads (4.0)
 
 Jeder Download hat einen eigenen Balken in der Spalte Fortschritt. Die Spalten füllen die Breite des Downloadbereichs. Bei vielen Aufgaben wird die Liste vertikal gescrollt; schmale Bereiche bieten auch horizontales Scrollen, ohne die Spalten unlesbar zu verkleinern. Beim Aktualisieren bleibt die erste sichtbare Aufgabe erhalten. Sortierung und Filter ordnen jeden Balken weiterhin seinem Download zu. Bei unbekannter Gesamtgröße werden empfangene Daten statt eines Prozentsatzes angezeigt; der Tooltip zeigt Größe, Status und Fehlerdetails. Die ausgewählte Zeile zeigt weiterhin ausführlichen Fortschritt, Zeiten und Gateway-Geschwindigkeiten.
 
@@ -409,3 +411,25 @@ Die Schaltflächen **Anleitung** und **API-Anleitung** befinden sich oben rechts
 ## Befehlsverarbeitung beim Start (3.9)
 
 Version 3.9 behebt einen Startfehler, wenn eine Prozessabfrage ihr Zeitlimit überschreitet und ihre temporäre Ausgabedatei unter Windows gesperrt bleibt. Die Ausgabe wird nun über Pipes mit begrenztem Puffer statt über temporäre Dateien gelesen. Bei Zeitüberschreitung oder Unterbrechung wird der Abfragebefehl beendet und auf sein Ende gewartet. Ein früherer MultiRoute-Prozess wird weiterhin nur nach bestätigter Anwendungsidentität ersetzt. Downloadprotokolle und Vertrag der lokalen API bleiben unverändert.
+
+## Desktopoberfläche und Downloadverlauf (4.0)
+
+Die Desktopoberfläche verwendet FlatLaf mit den Designs **System**, **Hell** und **Dunkel**. Die Auswahl im Kopfbereich wird gespeichert. Die Warteschlange behält einzelne Fortschrittsbalken, Spalten über die gesamte Breite sowie Sortierung und Filter. Eine Übersicht zeigt alle, aktive und abgeschlossene Aufträge sowie die Gesamtgeschwindigkeit aller Aufträge, unabhängig vom Tabellenfilter.
+
+Bewegen Sie den Zeiger über eine laufende oder abgeschlossene Downloadzeile: Der Tooltip zeigt den **vollständigen Dateinamen und absoluten Zielpfad**, auch nach Sortierung oder Filterung. Der Titel des ausgewählten Downloads hat denselben Tooltip. Im Kontextmenü kopiert **Vollständigen Pfad kopieren** das Ziel.
+
+**Strg+L** unter Windows/Linux oder **Cmd+L** unter macOS fokussiert die Downloadadresse; **Strg+F** oder **Cmd+F** die Suche; **Escape** leert die Suche. Strg+V/Cmd+V zum Einfügen bleibt verfügbar.
+
+Der ausgewählte Download hat die Register **Details** und **Verlauf**. Der Verlauf enthält Ereignisse mit Datum und Uhrzeit, darunter den ersten Start, jede Fortsetzung und den erfolgreichen Abschluss. Für alte Aufträge ohne aufgezeichnete Zeiten werden keine Daten erfunden. Speicherorte und API-Felder stehen unten.
+
+Alle bisherigen Protokolle, Gateways, virtuelle IP, Geschwindigkeitstests, Stapelimport, Quellenzugang, MD5/SHA-256/SHA-512, Tray, lokale API und das Scrollverhalten von Protokoll und Details bleiben erhalten. Das neue Design ändert keine Systemrouten.
+
+### Speicherung des Verlaufs und API
+
+Im Datenordner stehen `logs/downloads-history.jsonl` (UTF-8, ein JSON-Objekt je Zeile) und `logs/downloads-history.log` (lesbare Einträge mit Datum). Beide werden über Neustarts hinweg ergänzt und beim Entfernen eines Auftrags oder seiner Dateien nicht gelöscht. Das Textprotokoll behält die Sprache zum Schreibzeitpunkt; die Oberfläche zeigt gespeicherte Ereignisse in der aktuell gewählten Sprache. Das Protokollfenster lädt nur die letzten bis zu 1.000 Ereignisse / 2 MiB; das vollständige Journal bleibt auf der Festplatte und wächst mit der Nutzung. Archivieren Sie es bei Bedarf separat. Namen und vollständige Zielpfade sind enthalten, Quell-URLs, Kennwörter und Zugangstokens jedoch nicht. Prüfen Sie die Pfade vor dem Weitergeben.
+
+Native Windows: `%LOCALAPPDATA%\MultiRoute Resume\data\logs\`. Natives macOS: `~/Library/Application Support/MultiRoute Resume/data/logs/`. Linux und portable Profile verwenden den oben beschriebenen Datenordner; `--data-dir` wählt einen anderen.
+
+`GET /api/v1/jobs` und einzelne Auftragsantworten enthalten `lifecycle_history`. Ein Ereignis hat `event_id`, `job_id`, `kind`, `time`, `filename` und `path`; Torrent-Einträge können `paths`, Pausen `reason` enthalten. Arten: `started`, `resumed`, `paused`, `completed`, `recovered`, `failed`. Zeitstempel sind ISO 8601 UTC, etwa `2026-10-18T12:34:56.123Z`; das Textprotokoll zeigt lokales Datum, Uhrzeit und UTC-Offset. Optionale `first_started_at`, `last_resumed_at`, `completed_at` fassen beobachtete Ereignisse zusammen. Ein Auftrag in der Warteschlange hat noch keine Startzeit. Abschluss bedeutet erfolgreiche Prüfung und Veröffentlichung. `recovered` bezeichnet die heutige Prüfung einer früher veröffentlichten Datei, keine bekannte frühere Abschlusszeit. Für alte Aufträge werden keine Daten erfunden. Die bisherigen API-Operationen bleiben verfügbar; ein eigener Verlauf-Endpunkt ist nicht erforderlich.
+
+Das allgemeine **Protokoll** trennt **Anwendungsereignisse** und **Downloadverlauf**. Der Verlauf zeigt datierte Ereignisse verschiedener, auch entfernter Aufträge; der Verlauf beim ausgewählten Download enthält nur dessen Ereignisse.

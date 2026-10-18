@@ -23,8 +23,9 @@ import xml.etree.ElementTree as ET
 
 REQUIRED = {"java.base", "java.desktop", "java.net.http", "java.xml", "jdk.httpserver"}
 ROOT = Path(__file__).resolve().parents[2]
-LANGUAGES = ("en", "ru", "de", "es", "fr")
-SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png", "tray-speeds-3.3.png")
+LANGUAGES = ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it")
+SCREENSHOTS = ("desktop-downloads-en.png", "desktop-network-en.png", "desktop-bulk-import-en.png", "tray-speeds-3.3.png",
+               "desktop-4.0-light-en.png", "desktop-4.0-dark-en.png")
 
 
 def verify_documentation(app_dir: Path, report: dict) -> None:
@@ -69,6 +70,8 @@ def verify_relative_markdown_links(app_dir: Path) -> int:
 
 
 def run(command, **kwargs):
+    if kwargs.get("text") or kwargs.get("universal_newlines"):
+        kwargs.setdefault("encoding", "utf-8")
     return subprocess.run([str(value) for value in command], check=True, **kwargs)
 
 
@@ -383,7 +386,7 @@ def main() -> None:
         metadata = plistlib.load(stream)
     assert metadata["CFBundleIdentifier"] == "local.multiroute.resume"
     assert metadata["LSMinimumSystemVersion"] == report["minimum_macos"]
-    assert set(metadata["CFBundleLocalizations"]) == {"en", "ru", "de", "es", "fr"}
+    assert set(metadata["CFBundleLocalizations"]) == {"en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it"}
     assert metadata["MultiRouteProjectOwnerURL"] == report["project_owner_url"]
     assert report["setup_language"] == "en"
     assert report["desktop_shortcut"]["target"] == "/Applications/MultiRoute Resume.app"
@@ -424,6 +427,11 @@ public final class NativeProbe {
         native = run([java, "-cp", str(owned) + os.pathsep + classpath, "NativeProbe"], capture_output=True, text=True)
         assert "NATIVE_TORRENT_OK" in native.stdout, "The bundled native torrent library must load on its advertised OS/CPU."
         checks.append("bundled torrent JNI loaded without any peers or downloads")
+        appearance = app_dir / "lib/flatlaf-3.7.2.jar"
+        pinned = json.loads((ROOT / "scripts/dependencies.sha256.json").read_text(encoding="utf-8"))
+        assert hashlib.sha256(appearance.read_bytes()).hexdigest() == pinned[appearance.name]
+        assert (app_dir / "lib/licenses/FLATLAF-3.7.2-LICENSE").is_file()
+        checks.append("pinned FlatLaf desktop appearance dependency and its full Apache license are bundled")
         desktop_fixture = owned / "NativeDesktopFixture.java"
         desktop_fixture.write_text('''
 package multiroute;
@@ -578,6 +586,37 @@ public final class NativeDesktopFixture {
         assert startup_commands["network_calls"] == 0 and not startup_commands["user_profile_or_logs_read"]
         checks.append("thirty-two packaged startup command checks validate bounded pipe output, byte preservation, delayed final output, timeout, interruption, helper cleanup and independence from temporary output files")
 
+        history_fixture = ROOT / "packaging/tests/HistoryLifecycleTest40.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, history_fixture])
+        run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / "history-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.HistoryLifecycleTest40", owned / "download-history"], capture_output=True, text=True)
+        download_history = json.loads((owned / "download-history/HISTORY-LIFECYCLE-TESTS.json").read_text(encoding="utf-8"))
+        assert download_history["status"] == "PASS" and download_history["checks"] == 67
+        assert download_history["version"] == report["version"]
+        assert download_history["network_calls"] == 0
+        checks.append("sixty-seven packaged lifecycle checks verify assembled Unicode files, real start and resume transitions, verified completion, checksum failure, restart and removal retention, bounded history viewing, explicit UTF-8 console bytes and independent durable logging")
+
+        modern_fixture = ROOT / "packaging/tests/ModernDesktopTest40.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, modern_fixture])
+        run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / "modern-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.ModernDesktopTest40", owned / "modern-desktop", "headless"], capture_output=True, text=True)
+        modern_desktop = json.loads((owned / "modern-desktop/MODERN-DESKTOP-TESTS.json").read_text(encoding="utf-8"))
+        assert modern_desktop["status"] == "PASS" and modern_desktop["checks"] == 17
+        assert modern_desktop["version"] == report["version"] and modern_desktop["mode"] == "headless"
+        assert modern_desktop["network_calls"] == modern_desktop["clipboard_actions_executed"] == 0
+        checks.append("seventeen packaged appearance checks load FlatLaf light and dark themes, validate contrast, Unicode full paths, escaped and wrapped long tooltips and local dated timeline formatting without claiming graphical Mac interaction")
+
+        locales_fixture = ROOT / "packaging/tests/LocalesTest40.java"
+        run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, locales_fixture])
+        run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / "locales-home"),
+             "-cp", classpath + os.pathsep + str(owned), "multiroute.LocalesTest40", owned / "locales"], capture_output=True, text=True)
+        locales = json.loads((owned / "locales/LOCALES-TESTS.json").read_text(encoding="utf-8"))
+        assert locales["status"] == "PASS" and locales["checks"] == 19835
+        assert locales["version"] == report["version"] and locales["catalog_entries"] == 1234
+        assert set(locales["languages"]) == set(LANGUAGES) and locales["arabic_rtl_and_ltr_data_fields"]
+        assert locales["network_calls"] == 0 and not locales["user_data_read"]
+        checks.append("nine-language catalog checks cover all 1234 messages in Chinese, Korean, Arabic and Italian, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
+
         checks.append("actual packaged row progress DTO handles known, unknown, zero, completed, failed and Long-sized values without an invented percentage or overflow; provided current-user profiles resolve Downloads safely on Windows, Linux and macOS")
         checks.append("actual packaged renderer reuses one progress bar, resets mixed row state and preserves row-specific accessibility after column reordering without opening a window")
         checks.append("JTable sorts and filters actual progress DTOs numerically and renders the correct visible row independently of the selected download")
@@ -659,7 +698,7 @@ public final class MacAuthorizationFixture {
         assert installed_markdown_links == app_markdown_links
         assert (installed_app_dir / "LICENSE.txt").read_bytes() == license_bytes
         assert (installed_app_dir / "THIRD-PARTY-NOTICES.txt").read_bytes() == (ROOT / "THIRD-PARTY-NOTICES.txt").read_bytes()
-        checks.append("five local language guides, both READMEs, compatibility information and four screenshots match saved sources in the app and expanded installer")
+        checks.append("nine local language guides, both READMEs, compatibility information and historical plus modern theme screenshots match saved sources in the app and expanded installer")
         checks.append("all relative Markdown links resolve within the app image and expanded installer, including baseline reports and native build instructions")
         candidates = [path for path in expanded.rglob("gateway-net") if "/Library/PrivilegedHelperTools/" in path.as_posix()]
         assert len(candidates) == 1
@@ -704,6 +743,9 @@ public final class MacAuthorizationFixture {
         "details_scroll37_fixture_checks": details_scroll["checks"],
         "documentation_links38_fixture_checks": documentation_links["checks"],
         "startup_command39_fixture_checks": startup_commands["checks"],
+        "download_history40_fixture_checks": download_history["checks"],
+        "modern_desktop40_fixture_checks": modern_desktop["checks"],
+        "locales40_fixture_checks": locales["checks"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

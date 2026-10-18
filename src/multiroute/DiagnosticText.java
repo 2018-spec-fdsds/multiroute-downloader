@@ -65,7 +65,7 @@ public final class DiagnosticText {
     }
     private static int index(String code) { int index = code == null ? -1 : I18n.codes().indexOf(code); return index < 0 ? I18n.codes().indexOf(I18n.DEFAULT_LANGUAGE) : index; }
     private static void row(String source, String ru, String en, String de, String es, String fr, String roles) {
-        Entry entry = new Entry(source, new String[]{ru.equals("=") ? source : ru,en,de,es,fr}, roles);
+        Entry entry = new Entry(source, LocalizedCatalog.extend(source, new String[]{ru.equals("=") ? source : ru,en,de,es,fr}), roles);
         if (ROWS.putIfAbsent(source, entry) != null) throw new IllegalStateException("Duplicate diagnostic source: " + source);
         addRule(entry);
     }

@@ -26,6 +26,8 @@ REQUIRED_MODULES = {"java.base", "java.desktop", "java.net.http", "java.xml", "j
 
 
 def run(command: list[str | Path], **kwargs) -> subprocess.CompletedProcess:
+    if kwargs.get("text") or kwargs.get("universal_newlines"):
+        kwargs.setdefault("encoding", "utf-8")
     return subprocess.run([str(part) for part in command], check=True, **kwargs)
 
 
@@ -83,6 +85,10 @@ def localize_network_prompt(contents: Path) -> None:
         "de": "MultiRoute Resume verbindet sich mit Ihren gewählten lokalen Gateways und lädt über sie herunter, ohne Systemrouten zu ändern.",
         "es": "MultiRoute Resume se conecta a las puertas de enlace locales seleccionadas y descarga a través de ellas sin cambiar las rutas del sistema.",
         "fr": "MultiRoute Resume se connecte aux passerelles locales sélectionnées et télécharge via celles-ci sans modifier les routes du système.",
+        "zh-Hans": "MultiRoute Resume 连接到您选择的本地网关，通过这些网关下载文件，不会更改系统路由。",
+        "ko": "MultiRoute Resume는 선택한 로컬 게이트웨이에 연결하여 시스템 경로를 변경하지 않고 파일을 다운로드합니다.",
+        "ar": "يتصل MultiRoute Resume ببوابات الشبكة المحلية التي تختارها وينزّل الملفات عبرها دون تغيير مسارات النظام.",
+        "it": "MultiRoute Resume si collega ai gateway locali selezionati e scarica tramite essi senza modificare le route di sistema.",
     }
     for language, text in values.items():
         directory = contents / "Resources" / (language + ".lproj")
@@ -207,7 +213,7 @@ def main() -> None:
             metadata = plistlib.load(stream)
         metadata["LSMinimumSystemVersion"] = minimum
         metadata["NSLocalNetworkUsageDescription"] = "MultiRoute Resume uses your selected local Internet gateways without changing system routes."
-        metadata["CFBundleLocalizations"] = ["en", "ru", "de", "es", "fr"]
+        metadata["CFBundleLocalizations"] = ["en", "ru", "de", "es", "fr", "zh-Hans", "ko", "ar", "it"]
         metadata["MultiRouteProjectOwnerURL"] = owner_url
         plist_write(plist_path, metadata)
         localize_network_prompt(contents)

@@ -97,6 +97,10 @@ def main():
     check("native package Java flag set", "-Dmultiroute.native.desktop=true" in config or "-Dmultiroute.native.package=true" in config)
     check("private full licensed runtime bundled", (image/"runtime/bin/java.exe").is_file() and (image/"runtime/legal/java.base/LICENSE").is_file())
     check("only Windows JNI dependency bundled", (image/"app/lib/jlibtorrent-windows-2.0.12.9.jar").is_file() and not any(p.name.startswith(("jlibtorrent-linux-", "jlibtorrent-macosx-")) for p in (image/"app/lib").glob("*.jar")))
+    pinned = json.loads((Path(__file__).resolve().parents[2]/"scripts/dependencies.sha256.json").read_text(encoding="utf-8"))
+    appearance = image/"app/lib/flatlaf-3.7.2.jar"
+    check("pinned FlatLaf appearance dependency bundled", appearance.is_file() and sha256(appearance) == pinned[appearance.name])
+    check("FlatLaf license retained", (image/"app/lib/licenses/FLATLAF-3.7.2-LICENSE").is_file())
     installer_info = original["installer"]
     installer = build/"installer"/installer_info["name"]
     check("installer SHA-256 matches", sha256(installer) == installer_info["sha256"])
@@ -136,7 +140,7 @@ def main():
         check("installer separates app files from user profile", directory_table["INSTALLDIR"]["DefaultDir"].split("|")[-1] == "MultiRoute Resume App")
         check("original project license included in installed files", (image/"app/LICENSE.txt").is_file())
         check("third-party notices included in installed files", (image/"app/THIRD-PARTY-NOTICES.txt").is_file() and (image/"app/THIRD-PARTY-NOTICES.txt").stat().st_size > 0)
-        check("all five offline language guides included", all((image/"app/docs"/(language+".md")).is_file() for language in ("en", "ru", "de", "es", "fr")))
+        check("all nine offline language guides included", all((image/"app/docs"/(language+".md")).is_file() for language in ("en", "ru", "de", "es", "fr", "zh", "ko", "ar", "it")))
         check("offline compatibility audit included", (image/"app/docs/COMPATIBILITY.json").is_file())
         check("Russian documentation entry included", (image/"app/README.ru.md").is_file())
         app_root = (image/"app").resolve()

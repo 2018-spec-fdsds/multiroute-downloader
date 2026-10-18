@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MultiRoute Resume local API
-  version: '3.9'
+  version: '4.0'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
 servers:
@@ -1283,6 +1283,39 @@ components:
               type: string
             revision:
               type: string
+    DownloadLifecycleEvent:
+      type: object
+      required: [event_id, job_id, kind, time, filename, path]
+      properties:
+        event_id:
+          type: string
+          format: uuid
+        job_id:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+        kind:
+          type: string
+          enum: [started, resumed, paused, completed, recovered, failed]
+        time:
+          type: string
+          format: date-time
+          description: Actual observed event time in ISO 8601 UTC.
+        filename:
+          type: string
+          description: Full display filename recorded when this event occurred.
+        path:
+          type: string
+          description: Absolute destination path recorded when this event occurred.
+        paths:
+          type: array
+          items:
+            type: string
+          description: Absolute selected-file destination paths for a torrent job, when present.
+        reason:
+          type: string
+          enum: [pause, shutdown, maintenance]
+          description: Optional pause reason.
+      additionalProperties: false
     Job:
       type: object
       required:
@@ -1291,6 +1324,24 @@ components:
       - filename
       - status
       properties:
+        first_started_at:
+          type: string
+          format: date-time
+          description: First observed execution start in ISO 8601 UTC. Absent before execution or when an old job has no observed original start.
+        last_resumed_at:
+          type: string
+          format: date-time
+          description: Latest observed continuation in ISO 8601 UTC; absent until a continuation is recorded.
+        completed_at:
+          type: string
+          format: date-time
+          description: Observed successful completion after verification and publication. Recovery of an older published file does not invent this timestamp.
+        lifecycle_history:
+          type: array
+          readOnly: true
+          description: Persisted observed lifecycle events for this job. Queued jobs have no execution-start event yet; historical timestamps of legacy jobs are never guessed.
+          items:
+            $ref: '#/components/schemas/DownloadLifecycleEvent'
         expected_md5:
           type: string
           pattern: ^$|^[a-fA-F0-9]{32}$

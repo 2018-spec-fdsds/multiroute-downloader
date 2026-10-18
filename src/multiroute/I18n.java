@@ -18,9 +18,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
-/** Five desktop languages; bindings always retain the source template and raw arguments. */
+/** Desktop languages; bindings always retain the source template and raw arguments. */
 public final class I18n {
-    private static final List<String> CODES = List.of("ru", "en", "de", "es", "fr");
+    private static final List<String> CODES = List.of("ru", "en", "de", "es", "fr", "zh", "ko", "ar", "it");
     private static final String TEXT = "multiroute.i18n.text";
     private static final String TOOLTIP = "multiroute.i18n.tooltip";
     private static final String TITLE = "multiroute.i18n.title";
@@ -48,6 +48,10 @@ public final class I18n {
             case "es" -> "Español";
             case "fr" -> "Français";
             case "ru" -> "Русский";
+            case "zh" -> "简体中文";
+            case "ko" -> "한국어";
+            case "ar" -> "العربية";
+            case "it" -> "Italiano";
             default -> "English";
         };
     }
@@ -123,6 +127,9 @@ public final class I18n {
     }
     public static void refresh(Component component) {
         component.setLocale(locale());
+        // URLs, paths, IPs and checksums keep their logical order when the surrounding UI is Arabic.
+        component.setComponentOrientation(component instanceof javax.swing.JTextField
+                ? java.awt.ComponentOrientation.LEFT_TO_RIGHT : java.awt.ComponentOrientation.getOrientation(locale()));
         if (component instanceof JComponent swing) {
             if (swing.getClientProperty(TEXT) instanceof Binding binding) applyText(swing, binding.render());
             if (swing.getClientProperty(TOOLTIP) instanceof Binding binding) swing.setToolTipText(binding.render());
@@ -214,7 +221,7 @@ public final class I18n {
     }
     private static void defaults(String key, String source) { UIManager.put(key, t(source)); }
     private static void row(String ru, String en, String de, String es, String fr) {
-        if (ROWS.putIfAbsent(ru, new String[]{ru, en, de, es, fr}) != null)
+        if (ROWS.putIfAbsent(ru, LocalizedCatalog.extend(ru, new String[]{ru, en, de, es, fr})) != null)
             throw new IllegalStateException("Duplicate localization key: " + ru);
     }
     private static void catalog() {
@@ -553,6 +560,41 @@ public final class I18n {
         row("Новая папка", "New folder", "Neuer Ordner", "Nueva carpeta", "Nouveau dossier");
         row("Новая папка.{0}", "New folder.{0}", "Neuer Ordner.{0}", "Nueva carpeta.{0}", "Nouveau dossier.{0}");
         row("Новая папка ({0})", "New folder ({0})", "Neuer Ordner ({0})", "Nueva carpeta ({0})", "Nouveau dossier ({0})");
+        row("Тема:", "Theme:", "Design:", "Tema:", "Thème :");
+        row("Светлая", "Light", "Hell", "Claro", "Clair");
+        row("Тёмная", "Dark", "Dunkel", "Oscuro", "Sombre");
+        row("Системная", "System", "System", "Sistema", "Système");
+        row("Выберите светлую, тёмную или системную тему. Настройка сохраняется; загрузки продолжаются.", "Choose a light, dark or system theme. Your choice is saved; downloads keep running.", "Wählen Sie ein helles, dunkles oder Systemdesign. Die Auswahl wird gespeichert; Downloads laufen weiter.", "Elija un tema claro, oscuro o del sistema. La elección se guarda; las descargas continúan.", "Choisissez le thème clair, sombre ou système. Le choix est enregistré ; les téléchargements continuent.");
+        row("Вставьте ссылку для загрузки", "Paste a download link", "Download-Link einfügen", "Pegue un enlace de descarga", "Collez un lien de téléchargement");
+        row("Поиск загрузок", "Search downloads", "Downloads suchen", "Buscar descargas", "Rechercher des téléchargements");
+        row("Поиск загрузки по имени файла, пути или ссылке. Ctrl/Cmd+F — поиск; Escape — очистить.", "Search downloads by file name, path or URL. Ctrl/Cmd+F to search; Escape to clear.", "Downloads nach Dateiname, Pfad oder URL suchen. Strg/Cmd+F zum Suchen; Escape zum Leeren.", "Buscar descargas por nombre, ruta o URL. Ctrl/Cmd+F para buscar; Escape para borrar.", "Rechercher par nom, chemin ou URL. Ctrl/Cmd+F pour rechercher ; Échap pour effacer.");
+        row("Всего: %d · Активных: %d · Завершено: %d", "All: %d · Active: %d · Complete: %d", "Alle: %d · Aktiv: %d · Fertig: %d", "Total: %d · Activas: %d · Completadas: %d", "Total : %d · En cours : %d · Terminés : %d");
+        row("Всего: 0 · Активных: 0 · Завершено: 0", "All: 0 · Active: 0 · Complete: 0", "Alle: 0 · Aktiv: 0 · Fertig: 0", "Total: 0 · Activas: 0 · Completadas: 0", "Total : 0 · En cours : 0 · Terminés : 0");
+        row("Полное имя файла:", "Full file name:", "Vollständiger Dateiname:", "Nombre completo del archivo:", "Nom complet du fichier :");
+        row("Полный путь:", "Full path:", "Vollständiger Pfad:", "Ruta completa:", "Chemin complet :");
+        row("История", "History", "Verlauf", "Historial", "Historique");
+        row("Загрузка восстановлена после перезапуска", "Download recovered after restart", "Download nach Neustart wiederhergestellt", "Descarga recuperada tras reiniciar", "Téléchargement récupéré après redémarrage");
+        row("Событие загрузки", "Download event", "Download-Ereignis", "Evento de descarga", "Événement du téléchargement");
+        row("История появится после начала загрузки. Старые даты не восстанавливаются предположительно.", "History appears after a download starts. Missing dates from older downloads are not guessed.", "Der Verlauf erscheint nach dem Start. Fehlende Daten älterer Downloads werden nicht geschätzt.", "El historial aparece al iniciar una descarga. No se estiman fechas que falten de descargas antiguas.", "L’historique apparaît au démarrage. Les dates manquantes des anciens téléchargements ne sont pas estimées.");
+        row("Копировать полный путь", "Copy full path", "Vollständigen Pfad kopieren", "Copiar ruta completa", "Copier le chemin complet");
+        row("Полный путь скопирован", "Full path copied", "Vollständiger Pfad kopiert", "Ruta completa copiada", "Chemin complet copié");
+        row("Не удалось скопировать путь: %s", "Could not copy the path: %s", "Pfad konnte nicht kopiert werden: %s", "No se pudo copiar la ruta: %s", "Impossible de copier le chemin : %s");
+        row("Загрузка начата: %s; полный путь: %s; задание: %s", "Download started: %s; full path: %s; job: %s", "Download gestartet: %s; vollständiger Pfad: %s; Auftrag: %s", "Descarga iniciada: %s; ruta completa: %s; tarea: %s", "Téléchargement démarré : %s ; chemin complet : %s ; tâche : %s");
+        row("Загрузка продолжена: %s; полный путь: %s; задание: %s", "Download resumed: %s; full path: %s; job: %s", "Download fortgesetzt: %s; vollständiger Pfad: %s; Auftrag: %s", "Descarga reanudada: %s; ruta completa: %s; tarea: %s", "Téléchargement repris : %s ; chemin complet : %s ; tâche : %s");
+        row("Загрузка приостановлена: %s; полный путь: %s; задание: %s", "Download paused: %s; full path: %s; job: %s", "Download pausiert: %s; vollständiger Pfad: %s; Auftrag: %s", "Descarga pausada: %s; ruta completa: %s; tarea: %s", "Téléchargement suspendu : %s ; chemin complet : %s ; tâche : %s");
+        row("Загрузка завершена и проверена: %s; полный путь: %s; задание: %s", "Download completed and verified: %s; full path: %s; job: %s", "Download abgeschlossen und geprüft: %s; vollständiger Pfad: %s; Auftrag: %s", "Descarga completada y verificada: %s; ruta completa: %s; tarea: %s", "Téléchargement terminé et vérifié : %s ; chemin complet : %s ; tâche : %s");
+        row("Ранее сохранённый файл проверен: %s; полный путь: %s; задание: %s", "Previously saved file verified: %s; full path: %s; job: %s", "Bereits gespeicherte Datei geprüft: %s; vollständiger Pfad: %s; Auftrag: %s", "Archivo guardado anteriormente verificado: %s; ruta completa: %s; tarea: %s", "Fichier précédemment enregistré vérifié : %s ; chemin complet : %s ; tâche : %s");
+        row("Загрузка завершилась ошибкой: %s; полный путь: %s; задание: %s", "Download failed: %s; full path: %s; job: %s", "Download fehlgeschlagen: %s; vollständiger Pfad: %s; Auftrag: %s", "La descarga falló: %s; ruta completa: %s; tarea: %s", "Échec du téléchargement : %s ; chemin complet : %s ; tâche : %s");
+        row("Не удалось записать историю загрузок: %s", "Could not write download history: %s", "Downloadverlauf konnte nicht geschrieben werden: %s", "No se pudo escribir el historial de descargas: %s", "Impossible d’écrire l’historique des téléchargements : %s");
+        row("История загрузок появится после начала первой загрузки.", "Download history will appear after the first download starts.", "Der Downloadverlauf erscheint nach dem Start des ersten Downloads.", "El historial aparecerá cuando comience la primera descarga.", "L’historique apparaîtra au démarrage du premier téléchargement.");
+        row("Последние записи истории: %d. Полная история: %s", "Recent history entries: %d. Complete history: %s", "Letzte Verlaufseinträge: %d. Vollständiger Verlauf: %s", "Entradas recientes del historial: %d. Historial completo: %s", "Entrées récentes de l’historique : %d. Historique complet : %s");
+        row("Не удалось прочитать историю загрузок.", "Could not read download history.", "Downloadverlauf konnte nicht gelesen werden.", "No se pudo leer el historial de descargas.", "Impossible de lire l’historique des téléchargements.");
+        row("История загрузок", "Download history", "Downloadverlauf", "Historial de descargas", "Historique des téléchargements");
+        row("События приложения", "Application events", "Anwendungsereignisse", "Eventos de la aplicación", "Événements de l’application");
+        row("Загрузка завершилась ошибкой", "Download failed", "Download fehlgeschlagen", "La descarga falló", "Échec du téléchargement");
+        row("Ранее сохранённый файл проверен", "Previously saved file verified", "Zuvor gespeicherte Datei geprüft", "Archivo guardado previamente verificado", "Fichier précédemment enregistré vérifié");
+        row("Загрузка начата", "Download started", "Download gestartet", "Descarga iniciada", "Téléchargement démarré");
+        row("Загрузка завершена", "Download completed", "Download abgeschlossen", "Descarga completada", "Téléchargement terminé");
         // CAT_ROWS: source keys intentionally match UI prose, never user-provided data.
     }
 }

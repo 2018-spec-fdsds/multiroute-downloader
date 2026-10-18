@@ -1,6 +1,6 @@
-# MultiRoute Resume 3.9 — English guide
+# MultiRoute Resume 4.0 — English guide
 
-**English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md)
+**English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md)
 
 MultiRoute Resume is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
 
@@ -62,17 +62,19 @@ Common requirements:
 
 Version 3.0's gateway transport uses IPv4 over Ethernet. Wi-Fi-only, VPN-only and IPv6-only sources are **not supported configurations** for it.
 
-## Native installers 3.9: Windows and macOS
+The selected language also needs installed fonts covering its script. On minimal Linux, install suitable fonts through the distribution, for example Noto CJK for Chinese/Korean and an Arabic Noto family. Java uses platform font fallback; this application does not install or bundle font packs. Coverage can differ between computers.
+
+## Native installers 4.0: Windows and macOS
 
 Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.9-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.9-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.9-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | **MultiRoute Resume** in Applications, Spotlight or the Dock |
 
-The five language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md` or `fr.md` in a text or Markdown viewer.
+The nine language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md` or `it.md` in a text or Markdown viewer.
 
 ### Windows: install and open the application
 
@@ -171,7 +173,7 @@ This release is **not signed with Developer ID or notarized**. After trying to o
 
 If macOS requests **Local Network** access for Terminal, Java or the application, allow it if you want to use the LAN gateways. Administrator authorization and Local Network access are separate from the developer warning. File access prompts may also appear for the folder you select; grant only the destination access you need.
 
-Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 3.9 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
+Do not disable Gatekeeper/SIP or remove quarantine attributes globally. A warning that a file contains malware or will damage your computer is not the normal unidentified-developer confirmation; stop and investigate it rather than treating it as an installation step. The installer does not disable these protections. The portable 3.0 Finder/permission flow remains unverified on an end-user Mac. Native 4.0 builds and launcher/API checks ran on real GitHub Mac runners; end-user security dialogs and BPF capture remain unverified.
 
 API-only launch from the extracted folder:
 
@@ -195,7 +197,7 @@ Speed tests transfer up to **16 MiB or 5 seconds**; connection preparation can t
 
 ## 4. Download, resume and manage
 
-1. New profiles use **English**. The language selector also offers Russian, German, Spanish and French; saved preferences are preserved.
+1. New profiles use **English**. The language selector also offers Russian, German, Spanish, French, Chinese, Korean, Arabic and Italian; saved preferences are preserved.
 2. Paste a URL in the long field with **Ctrl+V**, or **Cmd+V** on macOS. A paste button is also available. You can enter a magnet link or open a `.torrent` file.
 3. Choose the download folder through your OS folder picker. New profiles initially use your user's `Downloads` folder; confirm the actual saved destination.
 4. Select gateways and click **Start download** beside the URL. For a Hugging Face repository, WebDAV listing or Metalink, preview and select the files.
@@ -207,7 +209,7 @@ Pause/resume, change a running job's selected gateways, set priority/limits/sche
 
 Bulk import accepts link lists and text files. Search, status filters, context menus and torrent file selection are available. Seeding completed torrents is disabled by default; when enabled, set its time and ratio limits.
 
-When removing a job, the option to delete its files is **unchecked by default**. You can remove its history entry and retain the complete or partial file. Select file deletion only when you intend to remove that job's data.
+When removing a job, the option to delete its files is **unchecked by default**. You can remove it from the job list and retain the complete or partial file. Select file deletion only when you intend to remove that job's data.
 
 ## 5. Protocols and verification
 
@@ -264,12 +266,12 @@ Set network configuration in the window or with `POST /network` first. See the e
 
 ## 7. Data, updates and removal
 
-### Native installers 3.9
+### Native installers 4.0
 
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.9/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -308,9 +310,9 @@ When reporting an issue, include version, OS/CPU, stage and exact error. Remove 
 
 Release checks cover Java, protocols with synthetic fixtures, scheduling/resume logic, SHA-256 comparison and offline native self-tests on Windows/POSIX. Installer changes are checked with controlled fixtures; that does not establish successful live installation of every third-party package.
 
-Native 3.9 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 3.9 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
+Native 4.0 packages were built and checked on Apple Silicon/macOS 26 and Intel/macOS 15 GitHub runners, including launcher/API startup, torrent JNI, package contents and helper fixtures. The physical-router combination, end-user installation/Finder/security dialogs and BPF capture remain unverified. Portable macOS 3.0 builds its helper on the target computer. The native 4.0 packages include separate precompiled Intel/Apple Silicon helpers; they are not Developer ID signed or notarized, and neither packaging checks nor CI prove operation on your Mac. After installing, test a known small download through each gateway, then through the selected set, before relying on combined speed. Detailed check reports accompany the release. Treat this public release as a **pre-release**.
 
-## Tray and exit (3.9)
+## Tray and exit (4.0)
 
 Closing the main window keeps the application and downloads running in the system tray. The icon displays the total download speed of **all jobs**, independent of the selected job or table filter. Hover over it for the exact rate in Mbit/s or Gbit/s (from 1 Gbit/s), plus bytes/s, including speeds up to 10 Gbit/s; the small icon rounds the value. Choose **Open application** from the tray menu to restore the window. On Windows/Linux, clicking the icon also opens it. Choose **Exit application** in the tray menu or in the application window to save state and stop the program. Use this command before installing an update.
 
@@ -322,7 +324,7 @@ Setup creates a desktop shortcut by default. Windows also adds a Start menu entr
 
 You may install and use the original application free of charge for personal use and within organizations, including business activities. **Selling the application, charging for its licence or distributing it for payment is prohibited** without separate permission. The custom licence does not grant general modification or redistribution rights and is not an OSI-approved open-source licence. Third-party components retain their own licences. This is a summary; the controlling English terms are in [LICENSE.txt](../LICENSE.txt).
 
-In 3.9 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
+In 4.0 the speed icon has a transparent background with black digits and units, including 10 Gbit/s. The aggregate speed and tray controls are unchanged.
 
 ## MD5, SHA-256 and SHA-512 verification
 
@@ -336,7 +338,7 @@ Torrent piece verification remains mandatory. MD5/SHA-256/SHA-512 values for ass
 
 The local API accepts `expected_md5`, `expected_sha256` and `expected_sha512` in `POST /api/v1/jobs`. Results expose `md5`, `sha256`, `sha512` and reference provenance in `checksum_sources`. Existing `expected_sha256` requests remain compatible.
 
-## Individual download progress (3.9)
+## Individual download progress (4.0)
 
 Each download has its own bar in the Progress column. Columns expand to fill the downloads panel. The list scrolls vertically when it contains many jobs; narrow panels also scroll horizontally without squeezing columns below readable widths. Refresh preserves the first visible job. Sorting and filtering keep each bar linked to its own download. If a total size is unknown, the bar shows received bytes instead of a percentage; hover for size, status and error details. Selecting a row still shows its detailed progress, time and gateway speeds.
 
@@ -357,3 +359,25 @@ The **Instructions** and **API guide** buttons are at the upper right, on a sepa
 ## Startup command handling (3.9)
 
 Version 3.9 addresses a startup failure when a process lookup command times out and leaves its temporary output file locked on Windows. Command output now uses bounded pipes instead of temporary output files. Timed-out or interrupted lookup commands are stopped and awaited. Replacing an earlier MultiRoute instance still requires a verified application identity. The download protocols and local API contract are unchanged.
+
+## Desktop interface and download history (4.0)
+
+The desktop uses FlatLaf with **System**, **Light** and **Dark** themes. Choose the theme in the header; the choice is saved. The queue retains individual progress bars, full-width columns, sorting and filtering. A summary shows the total jobs, active jobs, completed jobs and aggregate speed across all jobs, independently of the current table filter.
+
+Hover over a download row, including an active or completed file, to see its **full file name and absolute destination path**. This also works after sorting or filtering. The selected file heading has the same tooltip. Right-click a row and choose **Copy full path** to copy its destination.
+
+Keyboard shortcuts: **Ctrl+L** (Windows/Linux) or **Cmd+L** (macOS) focuses the download URL; **Ctrl+F** or **Cmd+F** focuses the queue search; **Escape** clears the search. Normal Ctrl+V/Cmd+V paste remains available.
+
+The selected download has **Details** and **History** tabs. The history records dated download events, including the first start, each continuation and successful completion. Old jobs without recorded dates do not receive invented timestamps. See the history storage and API fields below.
+
+The application retains all download protocols, selectable gateways, the virtual IP, route speed tests, batch import, source access settings, MD5/SHA-256/SHA-512 checks, the tray, the local API and the existing log/details scroll behavior. The redesigned interface does not change system routes.
+
+### History storage and API
+
+The data folder contains `logs/downloads-history.jsonl` (UTF-8, one JSON object per line) and `logs/downloads-history.log` (readable dated entries). They are appended across restarts and retained when a job is removed; removing a job or its downloaded files does not erase this audit history. The human log keeps the language used when an event was written; the UI renders stored events in the currently selected language. The log window reads only a bounded tail of up to 1,000 events / 2 MiB; the complete journal stays on disk. It grows with use, so archive it separately when needed. Names and full destination paths are retained; source URLs, passwords and access tokens are not included in these lifecycle events. Review paths before sharing a log.
+
+Native Windows: `%LOCALAPPDATA%\MultiRoute Resume\data\logs\`. Native macOS: `~/Library/Application Support/MultiRoute Resume/data/logs/`. Linux/portable profiles use the data folder described above; `--data-dir` selects another folder.
+
+`GET /api/v1/jobs` and an individual job response expose `lifecycle_history`. Each entry has `event_id`, `job_id`, `kind`, `time`, `filename` and `path`; torrent entries may also have `paths`, and pause entries may have `reason`. Kinds are `started`, `resumed`, `paused`, `completed`, `recovered` and `failed`. Timestamps use ISO 8601 UTC (for example `2026-10-18T12:34:56.123Z`); readable logs include a full local date, time and UTC offset. Optional `first_started_at`, `last_resumed_at` and `completed_at` summarize observed events. Queued jobs have no start date until execution actually begins; completion is recorded after verification and publication. `recovered` means a previously published file was verified now, not that its original completion time is known. Existing jobs are not assigned guessed historical dates. All existing API operations remain available; no separate history endpoint is required.
+
+The global **Log** window separates **Application events** from **Download history**. Use the history tab to review dated events across jobs, including removed jobs; the selected download’s History tab shows only that job.

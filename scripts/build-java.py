@@ -11,6 +11,8 @@ args=parser.parse_args()
 javac=args.javac or (str(Path(os.environ['JAVA_HOME'])/'bin'/('javac.exe' if os.name=='nt' else 'javac')) if os.environ.get('JAVA_HOME') else shutil.which('javac'))
 if not javac:parser.error('JDK 17+ is required; set JAVA_HOME or use --javac.')
 sources=sorted((root/'src/multiroute').glob('*.java'))
+resources=sorted((root/'src/multiroute/i18n').glob('*.json'))
+if {path.stem for path in resources}!={'zh','ko','ar','it'}:parser.error('The four additional UTF-8 language catalogs are required.')
 libraries=sorted((root/'lib').glob('*.jar'))
 if not sources or not libraries:parser.error('Extract/clone the complete repository including src/ and lib/.')
 verification=root/'scripts/dependencies.sha256.json'
@@ -38,6 +40,9 @@ with tempfile.TemporaryDirectory(prefix='multiroute-java-build-') as folder:
     with zipfile.ZipFile(candidate,'w',zipfile.ZIP_DEFLATED) as archive:
         archive.writestr('META-INF/MANIFEST.MF',manifest)
         for file in compiled:archive.write(file,file.relative_to(classes).as_posix())
+        for file in resources:
+            json.loads(file.read_text(encoding='utf-8'))
+            archive.write(file,'multiroute/i18n/'+file.name)
     # Existing local builds remain recoverable; the verified distribution is not touched.
     if target.exists():
         backup=target.with_name('MultiRoute-Resume.previous-'+hashlib.sha256(target.read_bytes()).hexdigest()[:12]+'.jar')

@@ -45,6 +45,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFileChooser;
@@ -160,7 +161,10 @@ public final class DesktopUI {
     final JTextField sha512Field = new JTextField(24);
     final JCheckBox additionalChecksumsCheck = translatedCheckBox("Показать дополнительные эталоны", false);
     final JTextField virtualIpField = new JTextField("192.168.1.70", 15);
-    final JComboBox<String> languageCombo = new JComboBox<>(new String[]{"ru", "en", "de", "es", "fr"});
+    final JComboBox<String> languageCombo = new JComboBox<>(I18n.codes().toArray(String[]::new));
+    final JComboBox<String> themeCombo = new JComboBox<>(new String[]{"light", "dark", "system"});
+    final JLabel summaryLabel = translatedLabel("Всего: 0 · Активных: 0 · Завершено: 0");
+    final JLabel aggregateSpeedLabel = translatedLabel("Общая скорость: —");
     final JButton logButton = translatedButton("Журнал…");
     final JButton instructionsButton = translatedButton("Инструкция");
     final JButton apiGuideButton = translatedButton("Работа с API");
@@ -169,6 +173,11 @@ public final class DesktopUI {
     JDialog logDialog;
     JTextArea logArea;
     private LogView logView;
+    private LogView downloadLogView;
+    private JTabbedPane logTabs;
+    private String lastDownloadLogSnapshot = "";
+    private long lastDownloadLogSize = -1;
+    private String lastDownloadLogLanguage = "";
     private Timer logTimer;
     private String lastLogSnapshot = "";
     private long lastLogRevision = -1;
@@ -205,6 +214,14 @@ public final class DesktopUI {
     private boolean profileChangeRunning;
     private String graphJobId = "";
     final JTable jobsTable = new JTable(jobsModel) {
+        @Override public String getToolTipText(MouseEvent event) {
+            if (event.getX() < 0 || event.getY() < 0) return null;
+            Map<String,Object> job = jobAtViewRow(rowAtPoint(event.getPoint()));
+            if (job == null) return null;
+            int viewColumn = columnAtPoint(event.getPoint());
+            boolean progress = viewColumn >= 0 && convertColumnIndexToModel(viewColumn) == 2;
+            return jobTooltip(job, progress);
+        }
         @Override public boolean getScrollableTracksViewportWidth() {
             if (getParent() instanceof JViewport viewport) {
                 int minimumWidth = 0;
@@ -216,9 +233,14 @@ public final class DesktopUI {
         }
     };
     final JScrollPane jobsScroll = new JScrollPane(jobsTable);
+    final JScrollPane detailScroll = new JScrollPane();
     final JProgressBar progressBar = new JProgressBar(0, 1000);
     private final LogView detailsView = new LogView(false);
     final JTextArea detailsArea = detailsView.text;
+    final JTabbedPane detailTabs = new JTabbedPane();
+    private final LogView historyView = new LogView(false);
+    final JTextArea historyArea = historyView.text;
+    private String historyJobId = "";
     private String detailsJobId = "";
     final JButton pauseButton = translatedButton("Пауза");
     final JButton resumeButton = translatedButton("Продолжить");
@@ -249,8 +271,7 @@ public final class DesktopUI {
     public static void open(Main.Manager manager, Runnable onClose) throws Exception {
         if (manager == null || onClose == null) throw new IllegalArgumentException("Manager and close callback required");
         Runnable show = () -> {
-            try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-            catch (Exception ignored) { }
+            DesktopTheme.install("light");
             installReadableFonts();
             DesktopUI ui = new DesktopUI(manager, onClose);
             ui.frame.setVisible(true);
@@ -349,8 +370,16 @@ public final class DesktopUI {
         this.documentationOpener = documentationOpener;
         this.settingsPath = manager.dataDir.resolve("desktop-settings.config");
         I18n.setLanguage(savedLanguage(settingsPath));
+        String savedTheme = savedTheme(settingsPath);
+        DesktopTheme.install(savedTheme);
+        installReadableFonts();
         I18n.installSwingDefaults();
         buildWindow();
+        restoring = true;
+        try { themeCombo.setSelectedItem(savedTheme); }
+        finally { restoring = false; }
+        SwingUtilities.updateComponentTreeUI(frame);
+        DesktopTheme.decorate(frame);
         restoreSettings();
         restoring = true;
         try { languageCombo.setSelectedItem(I18n.language()); }
@@ -365,6 +394,7 @@ public final class DesktopUI {
         ToolTipManager.sharedInstance().setReshowDelay(200);
         ToolTipManager.sharedInstance().setDismissDelay(20000);
         installImports();
+        installShortcuts();
         if (networkSettingsProvider != null)
             configuredNetwork = networkSettingsInput(networkSettingsProvider.settings());
         refreshTimer = new Timer(900, event -> refreshJobs());
@@ -420,14 +450,21 @@ public final class DesktopUI {
         JPanel header = new JPanel(new BorderLayout());
         JLabel title = new JLabel("MultiRoute Resume");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 23f));
-        JLabel subtitle = translatedLabel("Докачка через выбранные шлюзы · MD5, SHA-256, SHA-512");
-        subtitle.setForeground(muted());
+        JTextArea subtitle = translatedArea("Докачка через выбранные шлюзы · MD5, SHA-256, SHA-512", 2, 28);
+        subtitle.setEditable(false); subtitle.setOpaque(false); subtitle.setLineWrap(true); subtitle.setWrapStyleWord(true);
+        subtitle.setFont(UIManager.getFont("Label.font"));
+        subtitle.setForeground(muted()); subtitle.putClientProperty("multiroute.tone", "muted");
+        subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        subtitle.setPreferredSize(new Dimension(355, 45));
+        subtitle.setMaximumSize(new Dimension(355, 45));
         JPanel brand = new JPanel();
         brand.setLayout(new BoxLayout(brand, BoxLayout.Y_AXIS));
         brand.add(title); brand.add(Box.createVerticalStrut(3)); brand.add(subtitle);
-        header.add(brand, BorderLayout.WEST);
+        brand.setPreferredSize(new Dimension(355, 78));
+        brand.setMinimumSize(new Dimension(260, 78));
+        header.add(brand, BorderLayout.LINE_START);
         JLabel mode = translatedLabel("Локальное приложение  •  Java 17");
-        mode.setForeground(muted());
+        mode.setForeground(muted()); mode.putClientProperty("multiroute.tone", "muted");
         JPanel preferences = new JPanel();
         preferences.setLayout(new BoxLayout(preferences, BoxLayout.Y_AXIS));
         mode.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -455,11 +492,26 @@ public final class DesktopUI {
         helpLine.setAlignmentX(Component.RIGHT_ALIGNMENT);
         instructionsButton.addActionListener(event -> openDocumentation(false));
         apiGuideButton.addActionListener(event -> openDocumentation(true));
+        helpLine.add(translatedLabel("Тема:"));
+        themeCombo.setRenderer(new DefaultListCellRenderer() {
+            @Override public Component getListCellRendererComponent(javax.swing.JList<?> list,
+                    Object value, int index, boolean selected, boolean focus) {
+                String source = switch (Main.str(value)) {
+                    case "dark" -> "Тёмная"; case "system" -> "Системная"; default -> "Светлая";
+                };
+                return super.getListCellRendererComponent(list, I18n.t(source), index, selected, focus);
+            }
+        });
+        tip(themeCombo, "Выберите светлую, тёмную или системную тему. Настройка сохраняется; загрузки продолжаются.");
+        themeCombo.addActionListener(event -> {
+            if (!restoring && !closing) { applyTheme(Main.str(themeCombo.getSelectedItem())); saveSettings(); }
+        });
+        helpLine.add(themeCombo);
         helpLine.add(instructionsButton);
         helpLine.add(apiGuideButton);
         preferences.add(Box.createVerticalStrut(5));
         preferences.add(helpLine);
-        header.add(preferences, BorderLayout.EAST);
+        header.add(preferences, BorderLayout.LINE_END);
         languageCombo.addActionListener(event -> {
             if (restoring || closing) return;
             I18n.setLanguage(Main.str(languageCombo.getSelectedItem()));
@@ -472,7 +524,10 @@ public final class DesktopUI {
         sourceBar.add(translatedLabel("Ссылка HTTP/HTTPS, FTP/FTPS, SFTP, WebDAV, magnet или torrent"), BorderLayout.NORTH);
         JPanel urlLine = new JPanel(new BorderLayout(7, 0));
         urlField.setMinimumSize(new Dimension(140, urlField.getPreferredSize().height));
-        urlField.setPreferredSize(new Dimension(900, urlField.getPreferredSize().height));
+        urlField.setPreferredSize(new Dimension(900, Math.max(34, urlField.getPreferredSize().height)));
+        urlField.putClientProperty("JTextField.placeholderText", I18n.t("Вставьте ссылку для загрузки"));
+        createButton.putClientProperty("JButton.buttonType", "roundRect");
+        createButton.putClientProperty("JButton.defaultButton", Boolean.TRUE);
         I18n.tooltip(urlField, "Вставьте полную ссылку; длина не ограничена 128 символами");
         urlLine.add(urlField, BorderLayout.CENTER);
         JPanel urlActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -480,7 +535,7 @@ public final class DesktopUI {
         createButton.setFont(createButton.getFont().deriveFont(Font.BOLD));
         createButton.addActionListener(event -> createJob());
         urlActions.add(createButton);
-        urlLine.add(urlActions, BorderLayout.EAST);
+        urlLine.add(urlActions, BorderLayout.LINE_END);
         sourceBar.add(urlLine, BorderLayout.CENTER);
         header.add(sourceBar, BorderLayout.SOUTH);
         pasteButton.addActionListener(event -> pasteUrl());
@@ -502,7 +557,7 @@ public final class DesktopUI {
         root.add(mainTabs, BorderLayout.CENTER);
 
         statusLabel.setBorder(BorderFactory.createEmptyBorder(10, 4, 0, 0));
-        statusLabel.setForeground(muted());
+        statusLabel.setForeground(muted()); statusLabel.putClientProperty("multiroute.tone", "muted");
         root.add(statusLabel, BorderLayout.SOUTH);
         frame.setContentPane(root);
     }
@@ -529,7 +584,7 @@ public final class DesktopUI {
         label(panel, c, row++, "Папка для файла");
         JPanel directoryLine = new JPanel(new BorderLayout(7, 0));
         directoryLine.add(directoryField, BorderLayout.CENTER);
-        directoryLine.add(browseButton, BorderLayout.EAST);
+        directoryLine.add(browseButton, BorderLayout.LINE_END);
         add(panel, c, row++, directoryLine);
         browseButton.addActionListener(event -> browseDirectory());
 
@@ -577,7 +632,7 @@ public final class DesktopUI {
         section(panel, c, row++, "Настройки сети", "Виртуальный адрес и ваши шлюзы");
         JPanel ipHeading = new JPanel(new BorderLayout());
         JLabel ipLabel = translatedLabel("Виртуальный IP приложения");
-        ipHeading.add(ipLabel, BorderLayout.CENTER); ipHeading.add(virtualIpHelpButton, BorderLayout.EAST);
+        ipHeading.add(ipLabel, BorderLayout.CENTER); ipHeading.add(virtualIpHelpButton, BorderLayout.LINE_END);
         tip(ipLabel, VIRTUAL_IP_HELP); tip(virtualIpHelpButton, VIRTUAL_IP_HELP);
         virtualIpHelpButton.addActionListener(event -> showVirtualIpHelp());
         add(panel, c, row++, ipHeading);
@@ -589,7 +644,7 @@ public final class DesktopUI {
         networkStatusLabel.setWrapStyleWord(true);
         networkStatusLabel.setOpaque(false);
         networkStatusLabel.setFont(UIManager.getFont("Label.font"));
-        networkStatusLabel.setForeground(muted());
+        networkStatusLabel.setForeground(muted()); networkStatusLabel.putClientProperty("multiroute.tone", "muted");
         add(panel, c, row++, networkStatusLabel);
         applyNetworkButton.addActionListener(event -> applyNetwork());
         virtualIpField.getDocument().addDocumentListener(new DocumentListener() {
@@ -661,14 +716,25 @@ public final class DesktopUI {
         JLabel title = translatedLabel("Загрузки");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
         JPanel heading = new JPanel(new BorderLayout(8,5));
-        heading.add(title, BorderLayout.NORTH);
+        JPanel titleLine = new JPanel(new BorderLayout(10, 0));
+        titleLine.add(title, BorderLayout.LINE_START);
+        aggregateSpeedLabel.putClientProperty("multiroute.tone", "accent");
+        aggregateSpeedLabel.setForeground(DesktopTheme.accent());
+        aggregateSpeedLabel.setFont(aggregateSpeedLabel.getFont().deriveFont(Font.BOLD));
+        titleLine.add(aggregateSpeedLabel, BorderLayout.LINE_END);
+        JPanel overview = new JPanel(new BorderLayout(0, 3));
+        overview.add(titleLine, BorderLayout.NORTH);
+        summaryLabel.putClientProperty("multiroute.tone", "muted"); summaryLabel.setForeground(muted());
+        overview.add(summaryLabel, BorderLayout.SOUTH);
+        heading.add(overview, BorderLayout.NORTH);
         JPanel filters = new JPanel(new BorderLayout(8,0));
         filters.add(searchField, BorderLayout.CENTER);
-        JPanel viewControls=new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));viewControls.add(graphCheck);viewControls.add(jobFilter);filters.add(viewControls, BorderLayout.EAST);
+        JPanel viewControls=new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));viewControls.add(graphCheck);viewControls.add(jobFilter);filters.add(viewControls, BorderLayout.LINE_END);
         speedGraph.setVisible(false);graphCheck.addActionListener(event->{speedGraph.setVisible(graphCheck.isSelected());frame.getContentPane().revalidate();});
         tip(graphCheck,"Показать историю общей скорости и скорости каждого используемого шлюза. График строится по полученным измерениям.");
         heading.add(filters, BorderLayout.SOUTH); panel.add(heading, BorderLayout.NORTH);
-        tip(searchField, "Поиск загрузки по имени файла или ссылке.");
+        tip(searchField, "Поиск загрузки по имени файла, пути или ссылке. Ctrl/Cmd+F — поиск; Escape — очистить.");
+        searchField.putClientProperty("JTextField.placeholderText", I18n.t("Поиск загрузок"));
         jobFilter.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(javax.swing.JList<?> list,Object value,int index,boolean selected,boolean focus) {
                 String source=switch(Main.str(value)){case "active"->"Активные";case "failed"->"Ошибки";case "complete"->"Завершённые";default->"Все загрузки";};
@@ -690,6 +756,11 @@ public final class DesktopUI {
         plaintext.putClientProperty("html.disable", Boolean.TRUE);
         jobsTable.setDefaultRenderer(Object.class, plaintext);
         jobsTable.setDefaultRenderer(DownloadProgress.class, new DownloadProgress.Renderer());
+        jobsTable.getColumnModel().getColumn(1).setCellRenderer(new StatusRenderer());
+        jobsTable.setShowGrid(false);
+        jobsTable.setIntercellSpacing(new Dimension(0, 0));
+        jobsTable.getTableHeader().setReorderingAllowed(true);
+        jobsTable.getTableHeader().setPreferredSize(new Dimension(400, 34));
         int[] widths = {210, 110, 160, 110, 80, 95, 70};
         int[] minimumWidths = {150, 85, 110, 90, 70, 85, 60};
         for (int column = 0; column < widths.length; column++) {
@@ -701,7 +772,7 @@ public final class DesktopUI {
             if (!updatingJobs && !event.getValueIsAdjusting()) selectCurrentJob();
         });
 
-        JPanel details = new JPanel(new BorderLayout(0, 8));
+        JPanel details = new DetailsPanel();
         details.setBorder(BorderFactory.createEmptyBorder(8, 3, 0, 3));
         JPanel detailTop = new JPanel(new BorderLayout(8, 8));
         selectionLabel.setFont(selectionLabel.getFont().deriveFont(Font.BOLD, 15f));
@@ -728,7 +799,7 @@ public final class DesktopUI {
         metrics.add(totalSpeedLabel); metrics.add(elapsedLabel); metrics.add(etaLabel);
         transferStatus.add(Box.createVerticalStrut(7));
         JPanel metricsColumns=new JPanel(new BorderLayout(15,0));
-        metricsColumns.setAlignmentX(Component.LEFT_ALIGNMENT);metricsColumns.add(metrics,BorderLayout.WEST);
+        metricsColumns.setAlignmentX(Component.LEFT_ALIGNMENT);metricsColumns.add(metrics,BorderLayout.LINE_START);
         gatewaySpeedsArea.setEditable(false);
         gatewaySpeedsArea.setOpaque(false);
         gatewaySpeedsArea.setLineWrap(true);
@@ -749,8 +820,9 @@ public final class DesktopUI {
         fileActions.add(optionsButton); fileActions.add(openFolderButton); fileActions.add(changeDirectoryButton); fileActions.add(removeButton);
         optionsButton.addActionListener(event -> openJobOptions());
         openFolderButton.addActionListener(event -> openSelectedFolder());
-        JPanel actionRows = new JPanel(new java.awt.GridLayout(2, 1, 0, 5));
-        actionRows.add(actions); actionRows.add(fileActions);
+        JPanel actionRows = new JPanel(new ResponsiveActionLayout());
+        for (Component action : actions.getComponents()) actionRows.add(action);
+        for (Component action : fileActions.getComponents()) actionRows.add(action);
         detailTop.add(actionRows, BorderLayout.SOUTH);
         details.add(detailTop, BorderLayout.NORTH);
         detailsArea.setEditable(false);
@@ -759,7 +831,12 @@ public final class DesktopUI {
         detailsArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
         detailsArea.setMargin(new Insets(9, 9, 9, 9));
         updateDetails("", I18n.t("После запуска здесь появятся сведения о шлюзах и проверке файла."));
-        details.add(detailsView, BorderLayout.CENTER);
+        historyArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        historyArea.setMargin(new Insets(9, 9, 9, 9));
+        detailTabs.addTab(I18n.t("Подробности"), detailsView);
+        detailTabs.addTab(I18n.t("История"), historyView);
+        details.add(detailTabs, BorderLayout.CENTER);
+        DesktopTheme.card(details);
         pauseButton.setEnabled(false); resumeButton.setEnabled(false); changeGatewaysButton.setEnabled(false);
         changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false);
         pauseButton.addActionListener(event -> changeJob(false));
@@ -768,15 +845,18 @@ public final class DesktopUI {
         changeDirectoryButton.addActionListener(event -> changeJobDirectory());
         removeButton.addActionListener(event -> removeJob());
 
-        int retryMessageHeight = transferMessageArea.getPreferredSize().height;
-        details.setMinimumSize(new Dimension(200, detailTop.getPreferredSize().height
-                + retryMessageHeight + details.getInsets().top + 12));
+        detailsView.setPreferredSize(new Dimension(400, 165));
+        historyView.setPreferredSize(new Dimension(400, 165));
+        detailScroll.setViewportView(details);
+        detailScroll.setBorder(null);
+        detailScroll.setMinimumSize(new Dimension(200, 130));
+        detailScroll.getVerticalScrollBar().setUnitIncrement(24);
         jobsScroll.setMinimumSize(new Dimension(200, 120));
         jobsScroll.getVerticalScrollBar().setUnitIncrement(jobsTable.getRowHeight());
-        JSplitPane rows = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsScroll, details) {
+        JSplitPane rows = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jobsScroll, detailScroll) {
             @Override public void doLayout() {
                 // Preserve the action rows when a retry reason appears or the window gets shorter.
-                int topLimit = getHeight() - getDividerSize() - details.getMinimumSize().height;
+                int topLimit = getHeight() - getDividerSize() - detailScroll.getMinimumSize().height;
                 if (getDividerLocation() > topLimit) setDividerLocation(Math.max(120, topLimit));
                 super.doLayout();
             }
@@ -788,9 +868,161 @@ public final class DesktopUI {
         return panel;
     }
 
-    private static Color muted() {
-        Color color = UIManager.getColor("Label.disabledForeground");
-        return color == null ? new Color(95, 103, 112) : color;
+    private static Color muted() { return DesktopTheme.muted(); }
+
+    private static String savedTheme(Path path) {
+        try {
+            if (Files.isRegularFile(path)) return DesktopTheme.normalize(Main.str(
+                    Main.obj(Json.parse(Files.readString(path, java.nio.charset.StandardCharsets.UTF_8))).get("theme")));
+        } catch (Exception ignored) { }
+        return "light";
+    }
+
+    /** Changing appearance leaves the selected job and scroll positions in place. */
+    void applyTheme(String selected) {
+        Map<JViewport,Point> positions = new LinkedHashMap<>();
+        rememberViewports(frame.getContentPane(), positions);
+        DesktopTheme.install(selected); installReadableFonts(); I18n.installSwingDefaults();
+        SwingUtilities.updateComponentTreeUI(frame);
+        if (logDialog != null) SwingUtilities.updateComponentTreeUI(logDialog);
+        DesktopTheme.decorate(frame);
+        if (logDialog != null) DesktopTheme.decorate(logDialog);
+        jobsTable.setDefaultRenderer(DownloadProgress.class, new DownloadProgress.Renderer());
+        themeCombo.repaint();
+        renderDetails(jobs.get(selectedId));
+        frame.validate();
+        for (var entry : positions.entrySet()) entry.getKey().setViewPosition(entry.getValue());
+        frame.repaint();
+    }
+
+    private static void rememberViewports(Component component, Map<JViewport,Point> positions) {
+        if (component instanceof JViewport viewport) positions.put(viewport, viewport.getViewPosition());
+        if (component instanceof java.awt.Container parent)
+            for (Component child : parent.getComponents()) rememberViewports(child, positions);
+    }
+
+    /** Flow into extra rows instead of clipping translated actions in a narrow detail pane. */
+    private static final class ResponsiveActionLayout extends FlowLayout {
+        ResponsiveActionLayout() { super(FlowLayout.RIGHT, 5, 4); }
+        @Override public Dimension preferredLayoutSize(java.awt.Container target) { return size(target); }
+        @Override public Dimension minimumLayoutSize(java.awt.Container target) { return size(target); }
+        private Dimension size(java.awt.Container target) {
+            int width = target.getWidth();
+            if (width <= 0 && target.getParent() != null) width = target.getParent().getWidth();
+            if (width <= 0) width = 640;
+            Insets insets = target.getInsets(); int available = Math.max(150, width - insets.left - insets.right - 10);
+            int rowWidth = 0, rowHeight = 0, height = 8, widest = 0;
+            for (Component child : target.getComponents()) if (child.isVisible()) {
+                Dimension preferred = child.getPreferredSize();
+                if (rowWidth > 0 && rowWidth + preferred.width + 5 > available) {
+                    widest = Math.max(widest, rowWidth); height += rowHeight + 4; rowWidth = 0; rowHeight = 0;
+                }
+                rowWidth += (rowWidth == 0 ? 0 : 5) + preferred.width; rowHeight = Math.max(rowHeight, preferred.height);
+            }
+            return new Dimension(Math.min(width, Math.max(widest, rowWidth) + 10), height + rowHeight + insets.top + insets.bottom);
+        }
+    }
+
+    /** A short window can scroll all detail controls, without squeezing them out of reach. */
+    private static final class DetailsPanel extends JPanel implements Scrollable {
+        DetailsPanel() { super(new BorderLayout(0, 8)); }
+        @Override public Dimension getPreferredScrollableViewportSize() { return getPreferredSize(); }
+        @Override public int getScrollableUnitIncrement(Rectangle visible, int orientation, int direction) { return 24; }
+        @Override public int getScrollableBlockIncrement(Rectangle visible, int orientation, int direction) {
+            return Math.max(24, visible.height - 24);
+        }
+        @Override public boolean getScrollableTracksViewportWidth() { return true; }
+        @Override public boolean getScrollableTracksViewportHeight() {
+            return getParent() != null && getPreferredSize().height < getParent().getHeight();
+        }
+    }
+
+    private Map<String,Object> jobAtViewRow(int row) {
+        if (row < 0 || row >= jobsTable.getRowCount()) return null;
+        int model = jobsTable.convertRowIndexToModel(row);
+        List<Map<String,Object>> values = new ArrayList<>(jobs.values());
+        return model >= 0 && model < values.size() ? values.get(model) : null;
+    }
+
+    static String fullJobPath(Map<String,Object> job) {
+        String directory = Main.str(job.get("directory")), name = Main.str(job.get("filename"));
+        try { return Path.of(directory).resolve(name).toAbsolutePath().normalize().toString(); }
+        catch (java.nio.file.InvalidPathException invalid) {
+            try { directory = Path.of(directory).toAbsolutePath().normalize().toString(); }
+            catch (java.nio.file.InvalidPathException ignored) { }
+            return directory + java.io.File.separator + name;
+        }
+    }
+
+    static String escapeTooltip(String text) {
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                .replace("\"", "&quot;").replace("'", "&#39;").replace("\n", "<br>");
+    }
+
+    /** Explicit line breaks also wrap long URLs and filenames without splitting surrogate pairs. */
+    static String wrapTooltipText(String text) {
+        StringBuilder output = new StringBuilder();
+        int start = 0;
+        while (start < text.length()) {
+            int remaining = text.codePointCount(start, text.length());
+            int end = remaining <= 48 ? text.length() : text.offsetByCodePoints(start, 48);
+            if (end < text.length()) {
+                int preferred = -1;
+                for (int cursor = start; cursor < end;) {
+                    int codePoint = text.codePointAt(cursor);
+                    cursor += Character.charCount(codePoint);
+                    if ((codePoint == '/' || codePoint == '\\') && text.codePointCount(start, cursor) >= 20) preferred = cursor;
+                }
+                if (preferred > start) end = preferred;
+            }
+            if (output.length() > 0) output.append("<br>");
+            output.append(escapeTooltip(text.substring(start, end))); start = end;
+        }
+        return output.toString();
+    }
+
+    private static String jobTooltip(Map<String,Object> job, boolean progress) {
+        String text = "<html><b>" + escapeTooltip(I18n.t("Полное имя файла:")) + "</b><br>"
+                + wrapTooltipText(Main.str(job.get("filename"))) + "<br><br><b>"
+                + escapeTooltip(I18n.t("Полный путь:")) + "</b><br>" + wrapTooltipText(fullJobPath(job));
+        if (progress) text += "<br><br>" + wrapTooltipText(DownloadProgress.from(job).tooltip());
+        return text + "</html>";
+    }
+
+    private final class StatusRenderer extends DefaultTableCellRenderer {
+        StatusRenderer() { putClientProperty("html.disable", Boolean.TRUE); setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 4)); }
+        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected,
+                boolean focused, int row, int column) {
+            super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            Map<String,Object> job = jobAtViewRow(row);
+            String state = job == null ? "" : Main.str(job.get("status"));
+            setForeground(switch (state) {
+                case "complete", "seeding" -> DesktopTheme.success();
+                case "failed" -> DesktopTheme.danger();
+                case "paused", "retrying" -> DesktopTheme.warning();
+                default -> DesktopTheme.accent();
+            });
+            setFont(table.getFont().deriveFont(Font.BOLD)); return this;
+        }
+    }
+
+    private void installShortcuts() {
+        int shortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+        bindShortcut(frame.getRootPane(), javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, shortcut),
+                "multiroute.focus-url", () -> { urlField.requestFocusInWindow(); urlField.selectAll(); });
+        bindShortcut(frame.getRootPane(), javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, shortcut),
+                "multiroute.focus-search", () -> { mainTabs.setSelectedIndex(0); searchField.requestFocusInWindow(); searchField.selectAll(); });
+        searchField.getInputMap().put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), "multiroute.clear-search");
+        searchField.getActionMap().put("multiroute.clear-search", new javax.swing.AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent event) { searchField.setText(""); }
+        });
+    }
+
+    private static void bindShortcut(JComponent component, javax.swing.KeyStroke key, String name, Runnable action) {
+        component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(key, name);
+        component.getActionMap().put(name, new javax.swing.AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent event) { action.run(); }
+        });
     }
 
     private static JLabel translatedLabel(String source) {
@@ -828,7 +1060,7 @@ public final class DesktopUI {
     private static String savedLanguage(Path settingsPath) {
         try {
             if (Files.isRegularFile(settingsPath))
-                return Main.str(Main.obj(Json.parse(Files.readString(settingsPath))).get("language"));
+                return Main.str(Main.obj(Json.parse(Files.readString(settingsPath, java.nio.charset.StandardCharsets.UTF_8))).get("language"));
         } catch (Exception ignored) { }
         return I18n.DEFAULT_LANGUAGE;
     }
@@ -838,7 +1070,12 @@ public final class DesktopUI {
         I18n.refresh(frame.getContentPane());
         if(jobsTable.getComponentPopupMenu()!=null) I18n.refresh(jobsTable.getComponentPopupMenu());
         if(mainTabs.getTabCount()>1){mainTabs.setTitleAt(0,I18n.t("Загрузки"));mainTabs.setTitleAt(1,I18n.t("Настройки сети"));}
-        jobFilter.repaint(); speedGraph.repaint();
+        jobFilter.repaint(); themeCombo.repaint(); speedGraph.repaint();
+        if (detailTabs.getTabCount() > 1) {
+            detailTabs.setTitleAt(0, I18n.t("Подробности")); detailTabs.setTitleAt(1, I18n.t("История"));
+        }
+        urlField.putClientProperty("JTextField.placeholderText", I18n.t("Вставьте ссылку для загрузки"));
+        searchField.putClientProperty("JTextField.placeholderText", I18n.t("Поиск загрузок"));
         fitEditorNotes(frame.getContentPane());
         for (RouteRow row : routes) if (row != null)
             row.reasonLabel.setRows(Math.max(2, (row.reasonLabel.getText().length() + 44) / 45));
@@ -874,7 +1111,11 @@ public final class DesktopUI {
         LogView view = new LogView();
         logView = view;
         logArea = view.text;
-        content.add(view, BorderLayout.CENTER);
+        downloadLogView = new LogView();
+        logTabs = new JTabbedPane();
+        logTabs.addTab(I18n.t("События приложения"), view);
+        logTabs.addTab(I18n.t("История загрузок"), downloadLogView);
+        content.add(logTabs, BorderLayout.CENTER);
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton refresh = translatedButton("Обновить");
         tip(refresh, "Обновить сообщения в журнале.");
@@ -897,6 +1138,9 @@ public final class DesktopUI {
         lastLogSnapshot = "";
         lastLogRevision = -1;
         lastLogLanguage = "";
+        lastDownloadLogSize = -1;
+        lastDownloadLogLanguage = "";
+        lastDownloadLogSnapshot = "";
         refreshLog();
         if (visible) logDialog.setVisible(true);
         else logDialog.addNotify();
@@ -906,6 +1150,7 @@ public final class DesktopUI {
         if (logDialog == null || logArea == null || logTimer == null) return;
         long revision = AppLog.snapshotRevision();
         String language = I18n.language();
+        refreshDownloadLog(language);
         if (revision == lastLogRevision && language.equals(lastLogLanguage)) return;
         String snapshot = AppLog.snapshotText();
         lastLogRevision = revision;
@@ -917,8 +1162,26 @@ public final class DesktopUI {
         }
     }
 
+    private void refreshDownloadLog(String language) {
+        if (downloadLogView == null) return;
+        logTabs.setTitleAt(0, I18n.t("События приложения"));
+        logTabs.setTitleAt(1, I18n.t("История загрузок"));
+        long size = -1;
+        try { size = Files.size(manager.dataDir.resolve("logs").resolve("downloads-history.jsonl")); }
+        catch (IOException ignored) { }
+        if (size == lastDownloadLogSize && language.equals(lastDownloadLogLanguage)) return;
+        String snapshot = DownloadHistory.snapshotText(manager.dataDir, language);
+        lastDownloadLogSize = size;
+        lastDownloadLogLanguage = language;
+        if (!snapshot.equals(lastDownloadLogSnapshot)) {
+            downloadLogView.updateSnapshot(snapshot);
+            lastDownloadLogSnapshot = snapshot;
+        }
+    }
+
     private void stopLogRefresh() {
         if (logView != null) logView.stop();
+        if (downloadLogView != null) downloadLogView.stop();
         if (logTimer != null) { logTimer.stop(); logTimer = null; }
         if (logLanguageListener != null) {
             I18n.removeLanguageListener(logLanguageListener); logLanguageListener = null;
@@ -990,8 +1253,13 @@ public final class DesktopUI {
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = defaults.get(key);
-            if (value instanceof FontUIResource font && font.getSize() < 14)
-                defaults.put(key, new FontUIResource(font.deriveFont(14f)));
+            if (value instanceof FontUIResource font) {
+                float size = Math.max(14f, font.getSize2D());
+                // Logical fonts use the platform fallback chain for Chinese, Korean and Arabic glyphs.
+                Font readable = font.canDisplayUpTo("下载한국어العربية") >= 0
+                        ? new Font(Font.DIALOG, font.getStyle(), Math.round(size)) : font.deriveFont(size);
+                defaults.put(key, new FontUIResource(readable));
+            }
         }
     }
 
@@ -1022,7 +1290,7 @@ public final class DesktopUI {
         label.setWrapStyleWord(true);
         label.setOpaque(false);
         label.setFont(UIManager.getFont("Label.font"));
-        label.setForeground(muted());
+        label.setForeground(muted()); label.putClientProperty("multiroute.tone", "muted");
         add(panel, c, row, label);
     }
 
@@ -1033,7 +1301,7 @@ public final class DesktopUI {
         title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
         box.add(title); box.add(Box.createVerticalStrut(2));
         JLabel subtitle = translatedLabel(subheading);
-        subtitle.setForeground(muted());
+        subtitle.setForeground(muted()); subtitle.putClientProperty("multiroute.tone", "muted");
         box.add(subtitle);
         box.setBorder(BorderFactory.createEmptyBorder(row == 0 ? 0 : 11, 0, 0, 0));
         add(panel, c, row, box);
@@ -1142,12 +1410,12 @@ public final class DesktopUI {
             JPanel identity = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
             identity.add(checkBox);
             identity.add(gatewayField);
-            top.add(identity, BorderLayout.WEST);
-            resultLabel.setForeground(muted());
+            top.add(identity, BorderLayout.LINE_START);
+            resultLabel.setForeground(muted()); resultLabel.putClientProperty("multiroute.tone", "muted");
             I18n.tooltip(resultLabel, "Шлюз не найден или ещё не проверен");
             JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));
             controls.add(resultLabel); controls.add(deleteGatewayButton);
-            top.add(controls, BorderLayout.EAST);
+            top.add(controls, BorderLayout.LINE_END);
             deleteGatewayButton.addActionListener(event -> removeGatewayProfile(this));
             installRouteTips(this);
             panel.add(top, BorderLayout.NORTH);
@@ -1156,11 +1424,11 @@ public final class DesktopUI {
             reasonLabel.setWrapStyleWord(true);
             reasonLabel.setOpaque(false);
             reasonLabel.setFont(UIManager.getFont("Label.font"));
-            reasonLabel.setForeground(muted());
+            reasonLabel.setForeground(muted()); reasonLabel.putClientProperty("multiroute.tone", "muted");
             panel.add(reasonLabel, BorderLayout.CENTER);
             JPanel speedLine = new JPanel(new BorderLayout(7, 0));
             speedButton.setEnabled(true);
-            speedLine.add(speedButton, BorderLayout.WEST);
+            speedLine.add(speedButton, BorderLayout.LINE_START);
             speedLine.add(speedLabel, BorderLayout.CENTER);
             panel.add(speedLine, BorderLayout.SOUTH);
             speedButton.addActionListener(event -> runSpeedTests(false, this));
@@ -1196,7 +1464,7 @@ public final class DesktopUI {
             I18n.text(resultLabel, statusText);
             diagnosticTip(resultLabel, new UiText(reason, args));
             setReason(reason, args);
-            resultLabel.setForeground(muted());
+            resultLabel.setForeground(muted()); resultLabel.putClientProperty("multiroute.tone", "muted");
             updateSelectionStatus();
         }
 
@@ -1208,7 +1476,7 @@ public final class DesktopUI {
             checkBox.setEnabled(gatewayProblem(this) == null);
             resultKey = "ОК";
             I18n.text(resultLabel, "ОК");
-            resultLabel.setForeground(new Color(28, 118, 67));
+            resultLabel.setForeground(DesktopTheme.success()); resultLabel.putClientProperty("multiroute.tone", "success");
             String reason = Main.str(resolved.get("message"));
             Object diagnostic = resolved.get("ui_diagnostic");
             if (diagnostic instanceof UiText text) {
@@ -2011,9 +2279,24 @@ public final class DesktopUI {
         if(visibleRow < 0 && jobsTable.getRowCount()>0) visibleRow=0;
         if (visibleRow >= 0) jobsTable.setRowSelectionInterval(visibleRow, visibleRow);
         updatingJobs = false;
+        renderSummary();
         if (visibleRow >= 0) selectCurrentJob();
         else { selectedId = null; renderDetails(null); }
         restoreJobsViewport(viewportPosition, anchorId, anchorOffset);
+    }
+
+    private void renderSummary() {
+        long rate = 0; int active = 0, completed = 0;
+        for (Map<String,Object> job : jobs.values()) {
+            String state = Main.str(job.get("status"));
+            if (List.of("running", "retrying", "queued", "verifying", "seeding").contains(state)) {
+                active++; long next = Math.max(0, Main.num(job.get("speed_bps"), 0));
+                rate = Long.MAX_VALUE - rate < next ? Long.MAX_VALUE : rate + next;
+            }
+            if ("complete".equals(state)) completed++;
+        }
+        I18n.text(summaryLabel, "Всего: %d · Активных: %d · Завершено: %d", jobs.size(), active, completed);
+        I18n.text(aggregateSpeedLabel, "Общая скорость: %s", speed(rate));
     }
 
     /** Keep the first visible job in place, even when sorting or appending jobs on refresh. */
@@ -2044,6 +2327,8 @@ public final class DesktopUI {
         if (job == null) {
             speedGraph.clear(); graphJobId="";
             I18n.text(selectionLabel, "Выберите загрузку");
+            selectionLabel.setToolTipText(null); detailsArea.setToolTipText(null);
+            updateHistory(null);
             progressBar.setValue(0); I18n.text(progressBar, "Нет выбранной загрузки");
             I18n.tooltip(progressBar, null);
             I18n.text(transferMessageArea, ""); transferMessageArea.setVisible(false);
@@ -2055,6 +2340,9 @@ public final class DesktopUI {
             changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false); return;
         }
         String status = Main.str(job.get("status"));
+        selectionLabel.setToolTipText(jobTooltip(job, false));
+        detailsArea.setToolTipText(jobTooltip(job, false));
+        updateHistory(job);
         String graphId=Main.str(job.get("id"));
         if(!graphId.equals(graphJobId)){speedGraph.clear();graphJobId=graphId;}
         speedGraph.observe(job);
@@ -2110,6 +2398,39 @@ public final class DesktopUI {
         updateDetails(Main.str(job.get("id")), info.toString());
     }
 
+    private void updateHistory(Map<String,Object> job) {
+        String id = job == null ? "" : Main.str(job.get("id"));
+        StringBuilder text = new StringBuilder();
+        if (job != null) for (Object raw : job.get("lifecycle_history") instanceof List<?> ? Main.arr(job.get("lifecycle_history")) : List.of()) {
+            Map<String,Object> event = Main.obj(raw);
+            String kind = switch (Main.str(event.get("kind"))) {
+                case "started" -> "Загрузка начата"; case "resumed" -> "Загрузка продолжена";
+                case "paused" -> "Загрузка приостановлена"; case "completed" -> "Загрузка завершена";
+                case "failed" -> "Загрузка завершилась ошибкой";
+                case "recovered" -> "Ранее сохранённый файл проверен"; default -> "Событие загрузки";
+            };
+            text.append(formatHistoryTime(Main.str(event.get("time")))).append("  ·  ").append(I18n.t(kind)).append('\n');
+            String file = Main.str(event.get("filename")), path = Main.str(event.get("path"));
+            if (!file.isBlank()) text.append(file).append('\n');
+            if (!path.isBlank()) text.append(path).append('\n');
+            for (Object rawPath : event.get("paths") instanceof List<?> ? Main.arr(event.get("paths")) : List.of()) {
+                String filePath = Main.str(rawPath);
+                if (!filePath.isBlank() && !filePath.equals(path)) text.append(filePath).append('\n');
+            }
+            text.append('\n');
+        }
+        if (text.isEmpty()) text.append(I18n.t("История появится после начала загрузки. Старые даты не восстанавливаются предположительно."));
+        if (!id.equals(historyJobId)) historyView.resetSnapshot(text.toString());
+        else historyView.updateSnapshot(text.toString());
+        historyJobId = id;
+    }
+
+    static String formatHistoryTime(String value) {
+        try { return java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss XXX", I18n.locale())
+                .format(java.time.Instant.parse(value).atZone(java.time.ZoneId.systemDefault())); }
+        catch (java.time.DateTimeException invalid) { return value; }
+    }
+
     /** Periodic snapshots keep the reader's position; selecting another download resets it. */
     private void updateDetails(String jobId, String snapshot) {
         boolean changedJob = !jobId.equals(detailsJobId);
@@ -2132,7 +2453,7 @@ public final class DesktopUI {
         I18n.text(transferMessageArea, text);
         transferMessageArea.setCaretPosition(0);
         transferMessageArea.setVisible(!text.isBlank());
-        transferMessageArea.setForeground("failed".equals(status) ? new Color(165, 38, 38) : UIManager.getColor("Label.foreground"));
+        transferMessageArea.setForeground("failed".equals(status) ? DesktopTheme.danger() : UIManager.getColor("Label.foreground"));
         String tooltip = error.isBlank() ? null : I18n.t("Причина: %s", conciseError(error, 360));
         I18n.tooltip(transferMessageArea, tooltip);
         I18n.tooltip(progressBar, tooltip);
@@ -2395,7 +2716,7 @@ public final class DesktopUI {
                 if("active".equals(filter)&&!List.of("running","retrying","queued","verifying","seeding").contains(status))return false;
                 if("failed".equals(filter)&&!"failed".equals(status))return false;
                 if("complete".equals(filter)&&!"complete".equals(status))return false;
-                return query.isEmpty()||(Main.str(job.get("filename"))+" "+Main.str(job.get("url"))).toLowerCase(java.util.Locale.ROOT).contains(query);
+                return query.isEmpty()||(Main.str(job.get("filename"))+" "+Main.str(job.get("directory"))+" "+Main.str(job.get("url"))).toLowerCase(java.util.Locale.ROOT).contains(query);
             }
         });
         if(!updatingJobs){
@@ -2409,17 +2730,30 @@ public final class DesktopUI {
         JButton[] controls={pauseButton,resumeButton,changeGatewaysButton,optionsButton,openFolderButton,removeButton};
         String[] sources={"Пауза","Продолжить","Изменить шлюзы…","Параметры загрузки…","Открыть папку","Удалить задание"};
         for(int i=0;i<controls.length;i++){JButton control=controls[i];JMenuItem item=new JMenuItem();I18n.text(item,sources[i]);item.addActionListener(event->control.doClick());menu.add(item);}
+        menu.addSeparator();
+        JMenuItem copyPath = new JMenuItem(); I18n.text(copyPath, "Копировать полный путь");
+        copyPath.addActionListener(event -> {
+            Map<String,Object> job = jobs.get(selectedId);
+            if (job == null) return;
+            try {
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new java.awt.datatransfer.StringSelection(fullJobPath(job)), null);
+                status("Полный путь скопирован");
+            } catch (Exception error) { showError("Не удалось скопировать путь: %s", errorArgument(error)); }
+        });
+        menu.add(copyPath);
         jobsTable.setComponentPopupMenu(menu);
         jobsTable.addMouseListener(new MouseAdapter(){
             private void select(MouseEvent e){if(e.isPopupTrigger()){int row=jobsTable.rowAtPoint(e.getPoint());if(row>=0)jobsTable.setRowSelectionInterval(row,row);
-                for(int i=0;i<controls.length;i++)menu.getComponent(i).setEnabled(controls[i].isEnabled());}}
+                for(int i=0;i<controls.length;i++)menu.getComponent(i).setEnabled(controls[i].isEnabled());
+                copyPath.setEnabled(jobs.containsKey(selectedId));}}
             @Override public void mousePressed(MouseEvent e){select(e);}@Override public void mouseReleased(MouseEvent e){select(e);}
             @Override public void mouseClicked(MouseEvent e){if(e.getClickCount()==2&&SwingUtilities.isLeftMouseButton(e))openSelectedFolder();}
         });
     }
 
     static URI documentationUri(String language, boolean api) {
-        String selected = List.of("en", "ru", "de", "es", "fr").contains(language == null ? "" : language)
+        String selected = I18n.codes().contains(language == null ? "" : language)
                 ? language : I18n.DEFAULT_LANGUAGE;
         return URI.create("https://github.com/2018-spec-fdsds/multiroute-resume/blob/v" + Main.VERSION
                 + "/docs/" + selected + ".md" + (api ? "#multiroute-api" : ""));
@@ -2478,7 +2812,7 @@ public final class DesktopUI {
                 if(support.isDataFlavorSupported(DataFlavor.javaFileListFlavor))for(Object raw:(List<?>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)){
                     Path path=((java.io.File)raw).toPath();
                     if(path.toString().toLowerCase(java.util.Locale.ROOT).endsWith(".torrent"))values.add(path.toUri().toString());
-                    else if(path.toString().toLowerCase(java.util.Locale.ROOT).endsWith(".txt")){if(Files.size(path)>1048576)throw new IOException("Список ссылок превышает 1 МиБ");values.add(Files.readString(path));}}
+                    else if(path.toString().toLowerCase(java.util.Locale.ROOT).endsWith(".txt")){if(Files.size(path)>1048576)throw new IOException("Список ссылок превышает 1 МиБ");values.add(Files.readString(path, java.nio.charset.StandardCharsets.UTF_8));}}
                 else values.add(Main.str(support.getTransferable().getTransferData(DataFlavor.stringFlavor)));
                 importLinks(String.join("\n",values));return true;
             }catch(Exception error){showError("Не удалось импортировать ссылки: %s",errorArgument(error));return false;}}
@@ -2690,7 +3024,7 @@ public final class DesktopUI {
         if (!Files.exists(settingsPath)) return;
         restoring = true;
         try {
-            Map<String,Object> settings = Main.obj(Json.parse(Files.readString(settingsPath)));
+            Map<String,Object> settings = Main.obj(Json.parse(Files.readString(settingsPath, java.nio.charset.StandardCharsets.UTF_8)));
             String savedDirectory = Main.str(settings.get("directory"));
             if (DIRECTORY_POLICY.equals(settings.get("directory_policy")))
                 directoryField.setText(defaultDownloadDirectory().toString());
@@ -2741,6 +3075,7 @@ public final class DesktopUI {
             settings.put("directory_policy", "custom");
         }
         settings.put("language", I18n.language());
+        settings.put("theme", DesktopTheme.normalize(Main.str(themeCombo.getSelectedItem())));
         settings.put("chunk_mb", ((Number) chunkSpinner.getValue()).longValue());
         String virtualIp = virtualIpField.getText().trim();
         settings.put("virtual_ip", ipv4(virtualIp) ? virtualIp :

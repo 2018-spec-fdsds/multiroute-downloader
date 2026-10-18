@@ -1,6 +1,6 @@
-# MultiRoute Resume 3.9 — Guía en español
+# MultiRoute Resume 4.0 — Guía en español
 
-[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md)
+[English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md)
 
 MultiRoute Resume es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
 
@@ -62,17 +62,19 @@ Requisitos comunes:
 
 La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión disponible solamente por VPN y fuentes accesibles únicamente por IPv6 **no son configuraciones admitidas** para este transporte. Tampoco promete sumar el ancho de banda si varios routers comparten la misma conexión, o si el servidor limita la descarga.
 
-## Instaladores nativos 3.9: Windows y macOS
+El idioma elegido necesita fuentes instaladas con sus caracteres. En Linux mínimo instale paquetes de la distribución, por ejemplo Noto CJK para chino/coreano y una familia Noto árabe. Java usa las fuentes de sustitución de la plataforma; la aplicación no instala ni incluye paquetes de fuentes. La cobertura depende del equipo.
+
+## Instaladores nativos 4.0: Windows y macOS
 
 Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-resume/releases), si está adjunto a la publicación. Cada paquete es **un solo archivo de instalación**, con aplicación, lanzador nativo, Java completo y componente de red. Las fuentes y los ZIP portátiles 3.0 son distribuciones distintas.
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Resume-3.9-Windows-x64-Setup.exe` | **MultiRoute Resume** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | `MultiRoute-Resume-3.9-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | `MultiRoute-Resume-3.9-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | `MultiRoute-Resume-4.0-Windows-x64-Setup.exe` | **MultiRoute Resume** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | `MultiRoute-Resume-4.0-macOS-arm64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | `MultiRoute-Resume-4.0-macOS-x86_64.pkg` | **MultiRoute Resume** en Aplicaciones, Spotlight o Dock |
 
-Las cinco guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md` o `fr.md` con un editor de texto o visor Markdown.
+Las nueve guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Resume App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md` o `it.md` con un editor de texto o visor Markdown.
 
 ### Windows: instalar y abrir
 
@@ -181,7 +183,7 @@ El paquete **no está firmado con Developer ID ni notarizado**. Tras intentar ab
 
 Si se solicita acceso a la **Red local** para Terminal, Java o la aplicación, permita el acceso para utilizar los routers LAN. La contraseña de administrador y el permiso de red local son confirmaciones distintas del aviso del desarrollador. Al elegir una carpeta puede aparecer un permiso de archivos: autorice el destino que necesita.
 
-No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. El flujo de Finder/permisos del paquete portátil 3.0 sigue sin verificarse en un Mac del usuario. Las compilaciones nativas 3.9 y el inicio/API se comprobaron en runners Mac reales de GitHub; los diálogos del usuario y la captura BPF siguen sin comprobarse.
+No desactive Gatekeeper/SIP ni quite atributos de cuarentena globalmente. Un aviso de malware o de daños al ordenador no es la confirmación normal de desarrollador desconocido: detenga la instalación e investigue la causa. El instalador no desactiva esas protecciones. El flujo de Finder/permisos del paquete portátil 3.0 sigue sin verificarse en un Mac del usuario. Las compilaciones nativas 4.0 y el inicio/API se comprobaron en runners Mac reales de GitHub; los diálogos del usuario y la captura BPF siguen sin comprobarse.
 
 Modo API, desde la carpeta extraída:
 
@@ -205,7 +207,7 @@ La prueba de velocidad usa hasta **16 MiB o 5 segundos de transferencia**; la pr
 
 ## 4. Descargar, reanudar y gestionar
 
-1. Elija **Español** en el selector de idioma. Los nuevos perfiles comienzan en inglés; también hay ruso, alemán y francés. Se conserva el idioma guardado.
+1. Elija **Español** en el selector de idioma. Los nuevos perfiles comienzan en inglés; también hay ruso, alemán, francés, chino, coreano, árabe e italiano. Se conserva el idioma guardado.
 2. Pegue la URL en el campo largo mediante **Ctrl+V**; en macOS también funciona **Cmd+V**. Existe además el botón de pegar. Puede introducir magnet o abrir un archivo `.torrent`.
 3. Elija la carpeta mediante el selector de su sistema. El destino inicial de nuevos perfiles es la carpeta `Downloads` de su usuario; confirme el destino antes de empezar.
 4. Seleccione las puertas de enlace y pulse el botón de iniciar junto a la URL. Para una página de Hugging Face, WebDAV o Metalink, revise la lista y seleccione los archivos que desee.
@@ -217,7 +219,7 @@ Puede pausar, continuar, cambiar las puertas de enlace de un trabajo activo, aju
 
 La importación masiva admite listas de enlaces y archivos de texto. También hay búsqueda, filtros, menú contextual y selección de archivos torrent. La distribución voluntaria de un torrent completado está desactivada por defecto; si la activa, configure sus límites de tiempo y proporción.
 
-Al eliminar un trabajo, la casilla para borrar sus archivos está **desmarcada por defecto**. Puede quitarlo del historial y conservar el archivo completo o incompleto; marque la casilla solo si desea borrar los datos de ese trabajo.
+Al eliminar un trabajo, la casilla para borrar sus archivos está **desmarcada por defecto**. Puede quitarlo de la lista de trabajos y conservar el archivo completo o incompleto; marque la casilla solo si desea borrar los datos de ese trabajo.
 
 ## 5. Protocolos y comprobación
 
@@ -274,12 +276,12 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## 7. Datos, actualización y desinstalación
 
-### Instaladores nativos 3.9
+### Instaladores nativos 4.0
 
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Resume\data` | `%LOCALAPPDATA%\MultiRoute Resume App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
-| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/3.9/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Resume/data` | `/Applications/MultiRoute Resume.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
 
 Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
 
@@ -316,11 +318,11 @@ Para informar de un fallo, indique versión, plataforma/arquitectura, etapa y me
 
 ## 9. Alcance de la verificación
 
-Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Los paquetes nativos 3.9 se compilaron y verificaron en runners de GitHub Apple Silicon/macOS 26 e Intel/macOS 15: inicio/API, torrent JNI, contenido y pruebas del componente de red. No se han comprobado sus routers físicos, la instalación del usuario, los diálogos Finder/seguridad ni la captura BPF.
+Las comprobaciones del lanzamiento incluyen Java, protocolos con datos sintéticos, lógica de reparto/reanudación, comprobación de SHA-256 y pruebas nativas sin captura de red en Windows y POSIX. Los cambios de instaladores se verifican con pruebas controladas; eso no demuestra la instalación real correcta de todos los paquetes externos. Los paquetes nativos 4.0 se compilaron y verificaron en runners de GitHub Apple Silicon/macOS 26 e Intel/macOS 15: inicio/API, torrent JNI, contenido y pruebas del componente de red. No se han comprobado sus routers físicos, la instalación del usuario, los diálogos Finder/seguridad ni la captura BPF.
 
-macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 3.9 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
+macOS portátil 3.0 requiere compilar el componente en el Mac de destino. Los paquetes nativos 4.0 incluyen componentes precompilados distintos para Intel/Apple Silicon, sin firma Developer ID ni notarización. Las comprobaciones de empaquetado o CI no demuestran su funcionamiento en su Mac. Tras instalar, pruebe una descarga pequeña conocida por cada puerta de enlace y después por el conjunto antes de confiar en su velocidad combinada. Los resultados detallados figuran en los informes de comprobación del paquete. Esta publicación tiene carácter de **versión preliminar**.
 
-## Bandeja del sistema y salida (3.9)
+## Bandeja del sistema y salida (4.0)
 
 Cerrar la ventana principal mantiene la aplicación y las descargas en la bandeja del sistema. El icono muestra la velocidad total de descarga de **todos los trabajos**, sin depender de la selección ni del filtro. La información al pasar el ratón muestra el valor exacto en Mbit/s o Gbit/s (desde 1 Gbit/s), además de bytes/s, hasta 10 Gbit/s; el icono pequeño lo redondea. Elija **Abrir aplicación** en el menú de la bandeja para restaurar la ventana. En Windows/Linux también puede pulsar el icono. **Salir de la aplicación**, en la bandeja o ventana, guarda el estado y termina el programa. Utilice esta opción antes de actualizar.
 
@@ -332,7 +334,7 @@ El setup crea un acceso directo de escritorio y, en Windows, una entrada de Inic
 
 Puede instalar y usar gratuitamente la aplicación original para uso personal o en organizaciones, incluidas actividades empresariales. **Se prohíbe vender la aplicación, cobrar por su licencia o distribuirla por dinero** sin permiso separado. La licencia propia no concede derechos generales de modificación o redistribución y no es una licencia de código abierto aprobada por OSI. Los componentes de terceros conservan sus licencias. Este texto es un resumen traducido; rige el texto inglés de [LICENSE.txt](../LICENSE.txt).
 
-En 3.9 el icono de velocidad tiene fondo transparente y cifras y unidades negras, incluso a 10 Gbit/s. Se mantienen la velocidad total y los comandos de la bandeja.
+En 4.0 el icono de velocidad tiene fondo transparente y cifras y unidades negras, incluso a 10 Gbit/s. Se mantienen la velocidad total y los comandos de la bandeja.
 
 ## Verificación MD5, SHA-256 y SHA-512
 
@@ -346,7 +348,7 @@ La verificación de piezas torrent sigue siendo obligatoria y es independiente d
 
 La API local acepta `expected_md5`, `expected_sha256` y `expected_sha512` en `POST /api/v1/jobs`. Los resultados incluyen `md5`, `sha256`, `sha512` y los orígenes de referencia en `checksum_sources`. Las peticiones existentes con `expected_sha256` siguen siendo compatibles.
 
-## Progreso de cada descarga (3.9)
+## Progreso de cada descarga (4.0)
 
 Cada descarga tiene su propia barra en la columna Progreso. Las columnas ocupan todo el ancho del panel de descargas. La lista permite desplazarse verticalmente cuando hay muchas tareas; los paneles estrechos también permiten desplazarse horizontalmente sin comprimir las columnas hasta hacerlas ilegibles. Al actualizar se mantiene la primera tarea visible. La ordenación y los filtros mantienen cada barra vinculada a su descarga. Si se desconoce el tamaño total, se muestran los datos recibidos en lugar de un porcentaje; la ayuda emergente muestra tamaño, estado y errores. La fila seleccionada sigue mostrando progreso detallado, tiempos y velocidades de las puertas de enlace.
 
@@ -367,3 +369,25 @@ Los botones **Instrucciones** y **Guía de la API** están arriba a la derecha, 
 ## Gestión de comandos al iniciar (3.9)
 
 La versión 3.9 corrige un fallo de inicio cuando una consulta de procesos supera su tiempo de espera y deja bloqueado su archivo temporal de salida en Windows. La salida se lee ahora mediante canales con búfer limitado, sin archivos temporales de salida. Los comandos que agotan el tiempo de espera o se interrumpen se detienen y se espera su finalización. La sustitución de una instancia anterior de MultiRoute sigue exigiendo verificar que el proceso pertenece a la aplicación. Los protocolos de descarga y el contrato de la API local no cambian.
+
+## Interfaz de escritorio e historial de descargas (4.0)
+
+La interfaz utiliza FlatLaf con temas **Sistema**, **Claro** y **Oscuro**. La elección en la cabecera se guarda. La cola mantiene barras individuales, columnas que llenan el ancho, ordenación y filtros. El resumen muestra todos los trabajos, los activos, los completados y la velocidad agregada de todos, independientemente del filtro.
+
+Pase el puntero sobre una fila activa o completada para ver el **nombre completo del archivo y su ruta de destino absoluta**, incluso después de ordenar o filtrar. La cabecera del archivo seleccionado ofrece la misma ayuda. **Copiar ruta completa** en el menú contextual copia el destino.
+
+**Ctrl+L** en Windows/Linux o **Cmd+L** en macOS enfoca la URL; **Ctrl+F** o **Cmd+F** enfoca la búsqueda; **Escape** borra la búsqueda. Se conserva pegar con Ctrl+V/Cmd+V.
+
+La descarga seleccionada tiene pestañas **Detalles** e **Historial**. El historial registra eventos con fecha y hora: primer inicio, cada reanudación y finalización correcta. No se inventan fechas para trabajos antiguos sin registros. Más abajo se describen el almacenamiento y los campos de la API.
+
+Se conservan los protocolos, selección de puertas de enlace, IP virtual, pruebas de velocidad, importación por lotes, acceso a fuentes, MD5/SHA-256/SHA-512, bandeja, API local y desplazamiento del registro y de los detalles. El nuevo diseño no cambia las rutas del sistema.
+
+### Almacenamiento del historial y API
+
+La carpeta de datos contiene `logs/downloads-history.jsonl` (UTF-8, un objeto JSON por línea) y `logs/downloads-history.log` (entradas legibles con fecha). Se añaden eventos tras reinicios y se conservan al eliminar un trabajo o sus archivos. El registro de texto mantiene el idioma al escribir el evento; la interfaz muestra los eventos guardados en el idioma actual. La ventana lee solo los últimos 1.000 eventos / 2 MiB como máximo; el archivo completo queda en disco y crece con el uso. Archívelo aparte si lo necesita. Contiene nombres y rutas de destino completas, pero no URL de origen, contraseñas ni tokens. Revise las rutas antes de compartirlo.
+
+Windows nativo: `%LOCALAPPDATA%\MultiRoute Resume\data\logs\`. macOS nativo: `~/Library/Application Support/MultiRoute Resume/data/logs/`. Linux y perfiles portátiles usan la carpeta de datos descrita arriba; `--data-dir` permite elegir otra.
+
+`GET /api/v1/jobs` y la respuesta de cada trabajo incluyen `lifecycle_history`. Cada evento tiene `event_id`, `job_id`, `kind`, `time`, `filename` y `path`; los torrents pueden añadir `paths` y las pausas `reason`. Tipos: `started`, `resumed`, `paused`, `completed`, `recovered`, `failed`. Las fechas usan ISO 8601 UTC, por ejemplo `2026-10-18T12:34:56.123Z`; el registro legible incluye fecha, hora local y desplazamiento UTC. Los campos opcionales `first_started_at`, `last_resumed_at`, `completed_at` resumen eventos observados. Estar en cola no cuenta como inicio. La finalización se registra tras verificar y publicar el archivo. `recovered` indica verificación actual de un archivo publicado antes, no una fecha histórica de finalización conocida. No se inventan fechas antiguas. Las operaciones existentes se conservan; no hace falta otro endpoint.
+
+La ventana general **Registro** separa **Eventos de la aplicación** e **Historial de descargas**. El historial muestra eventos fechados de distintos trabajos, incluidos los eliminados; el historial de la descarga seleccionada corresponde solo a ese trabajo.

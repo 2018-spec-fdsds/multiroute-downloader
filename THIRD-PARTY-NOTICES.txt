@@ -33,7 +33,7 @@ Copyright (c) 2003-2004 Leon Woestenberg <leon.woestenberg@axon.tv>
 Copyright (c) 2006 Axon Digital Design B.V., The Netherlands.
 Copyright (c) 2006 by Marc Boucher, Services Informatiques (MBSI) inc.
 Copyright (c) 2007 Dominik Spies <kontakt@dspies.de>
-Copyright (c) 2007-2009 FrГ©dГ©ric Bernon, Simon Goldschmidt
+Copyright (c) 2007-2009 Frédéric Bernon, Simon Goldschmidt
 Copyright (c) 2008 Paul Mackerras. All rights reserved.
 Copyright (c) 2010 Inico Technologies Ltd.
 Copyright (c) 2014 Simon Goldschmidt
@@ -68,7 +68,7 @@ Author: Dominik Spies <kontakt@dspies.de>
 Author: Elias Oenal <lwip@eliasoenal.com>
 Author: Erik Andersson
 Author: Erik Ekman <erik@kryo.se>
-Author: FrГ©dГ©ric Bernon, Simon Goldschmidt
+Author: Frédéric Bernon, Simon Goldschmidt
 Author: Ivan Delamer <delamer@inicotech.com>
 Author: Jani Monoses <jani@iv.ro>
 Author: Jasper Verschueren <jasper.verschueren@apart-audio.com>
@@ -300,3 +300,11 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Desktop appearance: FlatLaf 3.7.2 (Apache License 2.0).
+Developed by FormDev Software GmbH.
+Official source: https://github.com/JFormDesigner/FlatLaf
+Official artifacts: https://repo.maven.apache.org/maven2/com/formdev/flatlaf/3.7.2/
+SHA256: 917aff3963c88d797d0fd9b9ccbd70f7681c101df9d11c59e2bc7a3a6c0fabf4
+Full license: lib/licenses/FLATLAF-3.7.2-LICENSE. The distributed JAR contains no separate NOTICE.
