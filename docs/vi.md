@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — Hướng dẫn tiếng Việt
+# MultiRoute Downloader 4.0.1 — Hướng dẫn tiếng Việt
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
@@ -29,9 +29,9 @@ Hệ thống cần phông có các ký tự của ngôn ngữ đã chọn. Trên
 
 Chọn một bộ cài trong [bản phát hành 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0), nếu được đính kèm, và đối chiếu SHA-256 công bố.
 
-- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -81,7 +81,7 @@ Việc được chọn có thẻ Chi tiết và Lịch sử. Báo cáo giữ v�
 
 Đóng cửa sổ vẫn tiếp tục ở khay hệ thống. Biểu tượng thể hiện tốc độ của tất cả việc đến 10 Gbit/s; chú giải hiển thị chính xác hơn. Mở ứng dụng để khôi phục, Thoát ứng dụng để lưu/kết thúc. Nếu không có khay thì thu nhỏ xuống taskbar. **Thoát từ khay trước khi cập nhật**.
 
-Khi xóa công việc, tùy chọn xóa tệp **mặc định không chọn**. Có thể bỏ khỏi danh sách nhưng giữ tệp hoàn chỉnh/một phần. Chỉ chọn xóa khi thực sự muốn; nhật ký lịch sử bền vững không bị xóa theo công việc/tệp.
+Chọn nhiều hàng tải xuống bằng **Ctrl+nhấp chuột** trên Windows/Linux hoặc **Cmd+nhấp chuột** trên macOS; **Shift+nhấp chuột** chọn một dải. Khi bảng đang có tiêu điểm, **Ctrl+A** hoặc **Cmd+A** chỉ chọn tất cả hàng hiện đang hiển thị theo tìm kiếm và bộ lọc trạng thái. Thao tác xóa áp dụng cho cả nhóm đã chọn với một lần xác nhận. Tùy chọn xóa cả tệp hoàn chỉnh và các phần đã tải **mặc định không được chọn**, nên có thể chỉ bỏ mục khỏi danh sách mà giữ dữ liệu. Chỉ chọn tùy chọn đó khi muốn xóa tệp của các công việc ấy; các tệp khác và thư mục đích vẫn được giữ. Kết quả hiển thị số mục đã xóa. Công việc không xóa được vẫn nằm trong danh sách cùng bản tóm tắt lỗi để kiểm tra rồi thử lại; mục đã xóa thành công không bị xử lý lại. Xóa công việc hoặc tệp không xóa lịch sử tải xuống lâu dài.
 
 ## 6. Giao thức và kiểm tra toàn vẹn
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
+Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
 
 `logs/downloads-history.jsonl` là JSON từng dòng UTF-8, `logs/downloads-history.log` là văn bản có ngày/giờ. Được thêm qua các lần chạy, không viết lại quá khứ khi đổi ngôn ngữ hoặc xóa việc. Text giữ ngôn ngữ lúc ghi; UI dùng ngôn ngữ hiện tại. Cửa sổ chỉ đọc tối đa 1,000 sự kiện gần nhất/2 MiB, còn toàn bộ hồ sơ trên đĩa tiếp tục lớn, có thể lưu trữ riêng khi cần. Có tên và đường dẫn tuyệt đối nhưng không có URL nguồn/password/token; xem thông tin cá nhân trước khi chia sẻ.
 
@@ -233,7 +233,7 @@ API nhận `site_profile_id` cho tải xuống, tải lên, duyệt và xem trư
 
 ## Tích hợp Chrome và Edge
 
-Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.0-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
+Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
 
 MultiRoute phải chạy, kể cả trong khay. Gửi URL bằng menu liên kết hoặc popup tiện ích. Dùng thư mục, cổng và hồ sơ hiện tại; vẫn hiện lựa chọn repository/torrent khi cần. Cổng mặc định 8765 phải khớp API nếu đổi. Chỉ gửi URL, không sao chép cookie/mật khẩu và không chặn tải khác của trình duyệt. Cấu hình quyền nguồn trong ứng dụng. Chỉ cấp quyền kết nối cục bộ được hỏi cho tiện ích đã chọn này.
 

@@ -1,9 +1,11 @@
 # MultiRoute Downloader
 
+**New in 4.0.1:** select several downloads with Ctrl/Cmd-click or Shift, or select every visible row with Ctrl/Cmd+A, then remove them with one confirmation. Removing files is optional and off by default. Selection survives automatic list refreshes; failed removals remain selected for retry.
+
 **New in 4.0:** saved site profiles with isolated accounts, verified FTP/FTPS/SFTP uploads and remote browsing, plus bounded ZIP/TAR/7Z/RAR previews. Uploads require remote read permission for full SHA-256 verification. One upload file uses one gateway; multiple files can run in parallel. [Full instructions](docs/en.md#saved-sites-uploads-and-archive-previews-40).
 
 Java desktop download manager with resumable segments through selectable LAN
-gateways and a localhost API. Native installer version: **4.0**; portable ZIP
+gateways and a localhost API. Native installer version: **4.0.1**; portable ZIP
 distributions for **3.0** remain available.
 
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
@@ -27,7 +29,7 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.0).
+**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.0.1).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 

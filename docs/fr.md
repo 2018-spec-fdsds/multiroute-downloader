@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — Guide en français
+# MultiRoute Downloader 4.0.1 — Guide en français
 
 [Accueil](../README.md) · [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · **Français** · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -123,9 +123,9 @@ Choisissez l’installateur de votre système dans les [GitHub Releases](https:/
 
 | Système | Installateur | Lancement après installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` | **MultiRoute Downloader** dans Démarrer ou via son raccourci de bureau |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0-macOS-arm64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.0-macOS-x86_64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** dans Démarrer ou via son raccourci de bureau |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
 
 Les douze guides et les captures sont inclus pour une consultation hors ligne. Windows : `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS : dans le Finder, choisissez **Afficher le contenu du paquet** sur l’application installée, puis ouvrez `Contents/app/docs/`. Ouvrez `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` ou `vi.md` avec un éditeur de texte ou un lecteur Markdown.
 
@@ -240,7 +240,7 @@ Les segments HTTP font **20 Mio** par défaut, réglables de 1 à 64 Mio. Une pa
 
 Vous pouvez ajouter ou retirer des passerelles pendant un téléchargement. Une nouvelle passerelle doit être incluse dans un téléchargement existant via sa sélection de passerelles ; elle n’est pas ajoutée automatiquement à tous les travaux. Chaque travail inachevé doit conserver au moins une passerelle. Les segments déjà vérifiés sont conservés. Retirer un profil ne supprime pas les fichiers téléchargés.
 
-Supprimer un travail ouvre une confirmation séparée pour ses fichiers et pièces. **La suppression des fichiers n’est pas cochée par défaut**. Sans cette option, seule l’entrée disparaît de la liste. Avec elle, seuls les fichiers de ce travail sont supprimés après l’arrêt du transfert ; le dossier de destination et les autres fichiers sont conservés.
+Sélectionnez plusieurs lignes de téléchargement avec **Ctrl+clic** sous Windows/Linux ou **Cmd+clic** sous macOS ; **Maj+clic (Shift)** sélectionne une plage. Lorsque le tableau a le focus, **Ctrl+A** ou **Cmd+A** sélectionne toutes les lignes visibles selon la recherche et le filtre d’état. L’action de suppression s’applique à toute la sélection avec une seule confirmation. L’option supprimant aussi les fichiers terminés et les parties téléchargées est **décochée par défaut** : vous pouvez retirer uniquement les entrées de la liste et conserver les données. Cochez-la seulement pour supprimer les fichiers de ces travaux ; les autres fichiers et le dossier de destination sont conservés. Le résultat indique le nombre d’entrées supprimées. Les travaux dont la suppression a échoué restent dans la liste avec un récapitulatif des erreurs afin de les examiner et de réessayer ; les suppressions réussies ne sont pas répétées. Supprimer des travaux ou des fichiers n’efface pas l’historique permanent des téléchargements.
 
 ## File d’attente et plusieurs liens
 
@@ -327,7 +327,7 @@ Tous les chemins de ce tableau sont relatifs à `/api/v1`. Les champs et erreurs
 | Système | Réglages, historique et journaux | Application/Java | Composant réseau |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, avec Java inclus | Composant x64 inclus ; Npcap installé séparément |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net` |
 
 Fermez l’application avant une mise à jour avec un nouvel installateur. Sous Windows, supprimez-la par **Paramètres → Applications → Applications installées**. Sous macOS, supprimer la `.app` ne supprime pas automatiquement l’historique ni le composant protégé séparé. Les fichiers téléchargés restent dans le dossier choisi ; ne le supprimez pas seulement pour désinstaller. Le chemin des données diffère du ZIP Windows 3.0 ; conservez votre ancien profil avant migration.
 
@@ -458,7 +458,7 @@ Les contrôles de file/planification règlent `max_active_jobs` (1–32), limite
 
 ## Intégration Chrome et Edge
 
-Ouvrez **Chrome / Edge** dans l’application, autorisez les liens et ouvrez le dossier de l’extension. Une fois: `chrome://extensions` ou `edge://extensions`, mode développeur, **Charger l’extension non empaquetée**, puis `browser-extension` contenant `manifest.json`. Les paquets natifs l’incluent près du JAR; voir [browser-extension/](../browser-extension/). Gardez ce dossier à cet endroit. Décompressez d’abord `MultiRoute-Downloader-4.0-Chrome-Edge.zip` si utilisé. Cette version n’est pas publiée dans un magasin d’extensions.
+Ouvrez **Chrome / Edge** dans l’application, autorisez les liens et ouvrez le dossier de l’extension. Une fois: `chrome://extensions` ou `edge://extensions`, mode développeur, **Charger l’extension non empaquetée**, puis `browser-extension` contenant `manifest.json`. Les paquets natifs l’incluent près du JAR; voir [browser-extension/](../browser-extension/). Gardez ce dossier à cet endroit. Décompressez d’abord `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` si utilisé. Cette version n’est pas publiée dans un magasin d’extensions.
 
 MultiRoute doit fonctionner, y compris dans la zone de notification. Envoyez un lien par son menu contextuel ou la fenêtre de l’extension. Dossier, passerelles et profil courants sont utilisés; les choix de dépôt/torrent restent affichés. Le port est 8765; adaptez-le si l’API utilise un autre port. Seule l’URL est envoyée, sans cookies ni mots de passe; les autres téléchargements du navigateur ne sont pas interceptés. Configurez l’accès à la source dans l’application. Si le navigateur demande l’accès local, ne l’accordez qu’à cette extension choisie.
 

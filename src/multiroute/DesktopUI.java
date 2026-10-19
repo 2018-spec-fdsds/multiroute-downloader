@@ -166,6 +166,7 @@ public final class DesktopUI {
     final JComboBox<String> languageCombo = new JComboBox<>(I18n.codes().toArray(String[]::new));
     final JComboBox<String> themeCombo = new JComboBox<>(new String[]{"light", "dark", "system"});
     final JLabel summaryLabel = translatedLabel("Всего: 0 · Активных: 0 · Завершено: 0");
+    final JLabel selectionCountLabel = I18n.text(new JLabel(), "Выбрано: %d", 0);
     final JLabel aggregateSpeedLabel = translatedLabel("Общая скорость: —");
     final JButton archivePreviewButton = translatedButton("Содержимое архива…");
     final JComboBox<Map<String,Object>> siteProfileCombo = SiteProfilesDialog.combo();
@@ -274,6 +275,9 @@ public final class DesktopUI {
     private volatile boolean closing;
     private int speedUrlGeneration;
     private String selectedId;
+    private String selectionAnchorId;
+    private final java.util.LinkedHashSet<String> selectedJobIds = new java.util.LinkedHashSet<>();
+    private boolean selectionInitialized;
 
     /** Called by the controller on any thread; returns only after the window is visible. */
     public static void open(Main.Manager manager, Runnable onClose) throws Exception {
@@ -753,7 +757,16 @@ public final class DesktopUI {
         JPanel overview = new JPanel(new BorderLayout(0, 3));
         overview.add(titleLine, BorderLayout.NORTH);
         summaryLabel.putClientProperty("multiroute.tone", "muted"); summaryLabel.setForeground(muted());
-        JPanel summaryLine=new JPanel(new BorderLayout(8,0));summaryLine.add(summaryLabel,BorderLayout.CENTER);summaryLine.add(queueButton,BorderLayout.LINE_END);overview.add(summaryLine, BorderLayout.SOUTH);
+        JPanel summaryLabels = new JPanel(new java.awt.GridLayout(0, 1, 0, 1));
+        summaryLabels.add(summaryLabel);
+        summaryLabels.add(selectionCountLabel);
+        selectionCountLabel.putClientProperty("multiroute.tone", "muted");
+        selectionCountLabel.setForeground(muted());
+        tip(selectionCountLabel, "Выбор нескольких: Ctrl/Cmd или Shift. Ctrl/Cmd+A — выбрать все видимые строки. Действия с одной загрузкой доступны при выборе одной строки.");
+        JPanel summaryLine = new JPanel(new BorderLayout(8, 0));
+        summaryLine.add(summaryLabels, BorderLayout.CENTER);
+        summaryLine.add(queueButton, BorderLayout.LINE_END);
+        overview.add(summaryLine, BorderLayout.SOUTH);
         heading.add(overview, BorderLayout.NORTH);
         JPanel filters = new JPanel(new BorderLayout(8,0));
         filters.add(searchField, BorderLayout.CENTER);
@@ -773,9 +786,44 @@ public final class DesktopUI {
             public void insertUpdate(DocumentEvent e){applyJobFilter();}public void removeUpdate(DocumentEvent e){applyJobFilter();}public void changedUpdate(DocumentEvent e){applyJobFilter();}});
         jobFilter.addActionListener(event->applyJobFilter());
 
-        jobsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jobsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        int selectionShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+        for (int condition : new int[]{JComponent.WHEN_FOCUSED, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT})
+            jobsTable.getInputMap(condition).put(
+                    javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, selectionShortcut),
+                    "multiroute.select-visible");
+        jobsTable.getActionMap().put("multiroute.select-visible", new javax.swing.AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent event) {
+                jobsTable.selectAll();
+                selectCurrentJob();
+            }
+        });
         jobsTable.setRowHeight(Math.max(32, jobsTable.getRowHeight() + 9));
         jobsTable.setAutoCreateRowSorter(false);
+        // Register before JTable so this listener runs after its native sorter-selection mapping.
+        jobsSorter.addRowSorterListener(new javax.swing.event.RowSorterListener() {
+            private String anchorBeforeSort;
+            @Override public void sorterChanged(javax.swing.event.RowSorterEvent event) {
+                if (updatingJobs) { anchorBeforeSort = null; return; }
+                List<String> ids = new ArrayList<>(jobs.keySet());
+                if (event.getType() == javax.swing.event.RowSorterEvent.Type.SORT_ORDER_CHANGED) {
+                    int anchor = jobsTable.getSelectionModel().getAnchorSelectionIndex();
+                    anchorBeforeSort = anchor >= 0 && anchor < jobsTable.getRowCount()
+                            ? ids.get(jobsTable.convertRowIndexToModel(anchor)) : null;
+                } else if (anchorBeforeSort != null) {
+                    int model = ids.indexOf(anchorBeforeSort);
+                    int view = model < 0 ? -1 : jobsTable.convertRowIndexToView(model);
+                    if (view >= 0) {
+                        updatingJobs = true;
+                        try {
+                            jobsTable.getSelectionModel().setAnchorSelectionIndex(view);
+                            selectionAnchorId = anchorBeforeSort;
+                        } finally { updatingJobs = false; }
+                    }
+                    anchorBeforeSort = null;
+                }
+            }
+        });
         jobsTable.setRowSorter(jobsSorter);
         installJobMenu();
         jobsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -1376,6 +1424,59 @@ public final class DesktopUI {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         return answer == JOptionPane.OK_OPTION
                 ? (prompt.deleteFiles().isSelected() ? DeleteChoice.DELETE_FILES : DeleteChoice.KEEP_FILES) : DeleteChoice.CANCEL;
+    }
+
+    static DeletionPrompt bulkDeletionPrompt(List<Map<String,Object>> selected) {
+        JPanel content = new JPanel(new BorderLayout(0, 10));
+        JLabel heading = new JLabel();
+        I18n.text(heading, "Убрать выбранные загрузки (%d) из приложения?", selected.size());
+        content.add(heading, BorderLayout.NORTH);
+        StringBuilder files = new StringBuilder();
+        int index = 0;
+        for (Map<String,Object> job : selected)
+            files.append(++index).append(". ").append(Main.str(job.get("filename")))
+                    .append('\n').append(fullJobPath(job)).append("\n\n");
+        JTextArea list = pathListArea(files.toString(), Math.min(12, Math.max(4, selected.size() * 3)), 64);
+        JScrollPane scroll = new JScrollPane(list);
+        scroll.setPreferredSize(new Dimension(650, 260));
+        content.add(scroll, BorderLayout.CENTER);
+        JTextArea note = translatedArea("Без галочки файлы и скачанные части останутся на диске. С галочкой будут удалены только файлы и части выбранных загрузок.", 3, 64);
+        note.setOpaque(false);
+        note.setLineWrap(true);
+        note.setWrapStyleWord(true);
+        note.setFont(UIManager.getFont("Label.font"));
+        JCheckBox deleteFiles = translatedCheckBox("Удалить также файлы и скачанные части", false);
+        JPanel footer = new JPanel(new BorderLayout(0, 8));
+        footer.add(note, BorderLayout.CENTER);
+        footer.add(deleteFiles, BorderLayout.SOUTH);
+        content.add(footer, BorderLayout.SOUTH);
+        I18n.refresh(content);
+        list.setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
+        scroll.setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
+        return new DeletionPrompt(content, deleteFiles);
+    }
+
+    private static DeleteChoice confirmBulkJobDeletion(JFrame owner, List<Map<String,Object>> selected) {
+        DeletionPrompt prompt = bulkDeletionPrompt(selected);
+        int answer = JOptionPane.showConfirmDialog(owner, prompt.content(), I18n.t("Удаление загрузки"),
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        return answer == JOptionPane.OK_OPTION
+                ? (prompt.deleteFiles().isSelected() ? DeleteChoice.DELETE_FILES : DeleteChoice.KEEP_FILES)
+                : DeleteChoice.CANCEL;
+    }
+
+    private static JTextArea pathListArea(String text, int rows, int columns) {
+        JTextArea area = new JTextArea(text, rows, columns) {
+            @Override public void setComponentOrientation(java.awt.ComponentOrientation orientation) {
+                super.setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
+            }
+        };
+        area.setEditable(false);
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
+        area.setFont(UIManager.getFont("Label.font"));
+        area.setCaretPosition(0);
+        return area;
     }
 
     private static String chooseJobDirectory(JFrame owner, String currentDirectory) {
@@ -2292,19 +2393,25 @@ public final class DesktopUI {
 
     private void updateJobs(List<Object> snapshots) {
         tray.update(snapshots);
+        if (selectedId == null || selectedJobIds.contains(selectedId)) rememberSelectedJobs();
         Point viewportPosition = jobsScroll.getViewport().getViewPosition();
         int firstVisibleRow = jobsTable.rowAtPoint(new Point(0, viewportPosition.y));
         String anchorId = firstVisibleRow < 0 ? "" :
                 new ArrayList<>(jobs.keySet()).get(jobsTable.convertRowIndexToModel(firstVisibleRow));
         int anchorOffset = firstVisibleRow < 0 ? 0 : viewportPosition.y - firstVisibleRow * jobsTable.getRowHeight();
         String keepId = selectedId;
+        java.util.LinkedHashSet<String> keepIds = new java.util.LinkedHashSet<>(selectedJobIds);
+        if (keepId != null && !keepIds.contains(keepId)) {
+            keepIds.clear();
+            keepIds.add(keepId);
+            selectionAnchorId = keepId;
+        }
         Map<String,String> priorStatuses = new LinkedHashMap<>();
         for (Map.Entry<String,Map<String,Object>> entry : jobs.entrySet())
             priorStatuses.put(entry.getKey(), Main.str(entry.getValue().get("status")));
         updatingJobs = true;
         jobs.clear();
         jobsModel.setRowCount(0);
-        int selectedRow = -1;
         for (Object item : snapshots) {
             Map<String,Object> job = Main.obj(item);
             String id = Main.str(job.get("id"));
@@ -2321,17 +2428,21 @@ public final class DesktopUI {
                     DownloadProgress.from(job),
                     speed(Main.num(job.get("speed_bps"), 0)), duration(Main.num(job.get("elapsed_ms"), 0)),
                     remaining(job), channels});
-            if (id.equals(keepId)) selectedRow = jobsModel.getRowCount() - 1;
         }
-        if (selectedRow < 0 && jobsModel.getRowCount() > 0) selectedRow = jobsModel.getRowCount() - 1;
+        if (!selectionInitialized && keepIds.isEmpty() && !jobs.isEmpty()) {
+            keepId = new ArrayList<>(jobs.keySet()).get(jobs.size() - 1);
+            keepIds.add(keepId);
+            selectionAnchorId = keepId;
+        }
+        if (!jobs.isEmpty()) selectionInitialized = true;
+        selectedJobIds.clear();
+        selectedJobIds.addAll(keepIds);
+        selectedId = keepId;
         applyJobFilter();
-        int visibleRow = selectedRow < 0 ? -1 : jobsTable.convertRowIndexToView(selectedRow);
-        if(visibleRow < 0 && jobsTable.getRowCount()>0) visibleRow=0;
-        if (visibleRow >= 0) jobsTable.setRowSelectionInterval(visibleRow, visibleRow);
+        restoreSelectedJobs();
         updatingJobs = false;
         renderSummary();
-        if (visibleRow >= 0) selectCurrentJob();
-        else { selectedId = null; renderDetails(null); }
+        renderDetails(jobs.get(selectedId));
         restoreJobsViewport(viewportPosition, anchorId, anchorOffset);
     }
 
@@ -2365,10 +2476,81 @@ public final class DesktopUI {
     }
 
     private void selectCurrentJob() {
-        int row = jobsTable.getSelectedRow();
-        if (row < 0 || row >= jobs.size()) { selectedId = null; renderDetails(null); return; }
-        selectedId = new ArrayList<>(jobs.keySet()).get(jobsTable.convertRowIndexToModel(row));
+        rememberSelectedJobs();
         renderDetails(jobs.get(selectedId));
+    }
+
+    private void rememberSelectedJobs() {
+        selectedJobIds.clear();
+        List<String> ids = new ArrayList<>(jobs.keySet());
+        for (int view : jobsTable.getSelectedRows()) {
+            int model = jobsTable.convertRowIndexToModel(view);
+            if (model >= 0 && model < ids.size()) selectedJobIds.add(ids.get(model));
+        }
+        int lead = jobsTable.getSelectionModel().getLeadSelectionIndex();
+        String leadId = lead >= 0 && lead < jobsTable.getRowCount() && jobsTable.isRowSelected(lead)
+                ? ids.get(jobsTable.convertRowIndexToModel(lead)) : null;
+        if (leadId != null) selectedId = leadId;
+        else if (!selectedJobIds.contains(selectedId))
+            selectedId = selectedJobIds.isEmpty() ? null : selectedJobIds.iterator().next();
+        int anchor = jobsTable.getSelectionModel().getAnchorSelectionIndex();
+        selectionAnchorId = !selectedJobIds.isEmpty() && anchor >= 0 && anchor < jobsTable.getRowCount()
+                ? ids.get(jobsTable.convertRowIndexToModel(anchor)) : selectedId;
+    }
+
+    /** Snapshot IDs survive table model replacement; filtered-out jobs are never retained as targets. */
+    private void restoreSelectedJobs() {
+        List<String> ids = new ArrayList<>(jobs.keySet());
+        selectedJobIds.removeIf(id -> {
+            int model = ids.indexOf(id);
+            return model < 0 || jobsTable.convertRowIndexToView(model) < 0;
+        });
+        if (!selectedJobIds.contains(selectedId))
+            selectedId = selectedJobIds.isEmpty() ? null : selectedJobIds.iterator().next();
+        jobsTable.clearSelection();
+        for (String id : selectedJobIds) {
+            int view = jobsTable.convertRowIndexToView(ids.indexOf(id));
+            jobsTable.addRowSelectionInterval(view, view);
+        }
+        if (selectedId != null && jobsTable.getSelectionModel() instanceof javax.swing.DefaultListSelectionModel selection) {
+            int lead = jobsTable.convertRowIndexToView(ids.indexOf(selectedId));
+            int anchorModel = ids.indexOf(selectionAnchorId);
+            int anchor = anchorModel < 0 ? -1 : jobsTable.convertRowIndexToView(anchorModel);
+            if (anchor < 0) { anchor = lead; selectionAnchorId = selectedId; }
+            selection.setAnchorSelectionIndex(anchor);
+            selection.moveLeadSelectionIndex(lead);
+        } else selectionAnchorId = null;
+    }
+
+    private List<Map<String,Object>> selectedVisibleJobs() {
+        List<Map<String,Object>> result = new ArrayList<>();
+        List<String> ids = new ArrayList<>(jobs.keySet());
+        for (int view : jobsTable.getSelectedRows()) {
+            int model = jobsTable.convertRowIndexToModel(view);
+            if (model >= 0 && model < ids.size()) result.add(new LinkedHashMap<>(jobs.get(ids.get(model))));
+        }
+        return result;
+    }
+
+    private void updateSelectionActions() {
+        int count = selectedJobIds.size();
+        I18n.text(selectionCountLabel, "Выбрано: %d", count);
+        String removeText = count > 1 ? "Удалить выбранные (%d)…" : "Удалить задание";
+        Object[] removeArguments = count > 1 ? new Object[]{count} : new Object[]{};
+        I18n.text(removeButton, removeText, removeArguments);
+        removeButton.setEnabled(!jobActionRunning && count > 0);
+        if (count > 1)
+            for (JButton button : List.of(pauseButton, resumeButton, changeGatewaysButton,
+                    optionsButton, openFolderButton, changeDirectoryButton)) button.setEnabled(false);
+        JPopupMenu menu = jobsTable.getComponentPopupMenu();
+        if (menu != null && menu.getComponentCount() >= 8) {
+            JMenuItem remove = (JMenuItem)menu.getComponent(5);
+            I18n.text(remove, removeText, removeArguments);
+            JButton[] controls = {pauseButton, resumeButton, changeGatewaysButton, optionsButton, openFolderButton, removeButton};
+            for (int index = 0; index < controls.length; index++)
+                menu.getComponent(index).setEnabled(controls[index].isEnabled());
+            menu.getComponent(7).setEnabled(count == 1);
+        }
     }
 
     private void renderDetails(Map<String,Object> job) {
@@ -2387,7 +2569,7 @@ public final class DesktopUI {
             renderGatewaySpeeds(Map.of());
             updateDetails("", I18n.t("После запуска здесь появятся сведения о шлюзах и проверке файла."));
             pauseButton.setEnabled(false); resumeButton.setEnabled(false); changeGatewaysButton.setEnabled(false);
-            changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false); return;
+            changeDirectoryButton.setEnabled(false); removeButton.setEnabled(false);updateSelectionActions(); return;
         }
         String status = Main.str(job.get("status"));
         selectionLabel.setToolTipText(jobTooltip(job, false));
@@ -2446,6 +2628,7 @@ public final class DesktopUI {
             if (isNoSpaceError(error)) info.append(I18n.t("\nВыберите «Изменить папку…» и папку со свободным местом, затем нажмите «Продолжить». Скачанные части сохранятся.\n"));
         }
         updateDetails(Main.str(job.get("id")), info.toString());
+        updateSelectionActions();
     }
 
     private void updateHistory(Map<String,Object> job) {
@@ -2757,6 +2940,9 @@ public final class DesktopUI {
     }
 
     private void applyJobFilter() {
+        boolean parentUpdate = updatingJobs;
+        if (!parentUpdate) rememberSelectedJobs();
+        updatingJobs = true;
         String query=searchField.getText().strip().toLowerCase(java.util.Locale.ROOT),filter=Main.str(jobFilter.getSelectedItem());
         jobsSorter.setRowFilter(new RowFilter<DefaultTableModel,Integer>(){
             @Override public boolean include(Entry<? extends DefaultTableModel,? extends Integer> entry){
@@ -2769,9 +2955,10 @@ public final class DesktopUI {
                 return query.isEmpty()||(Main.str(job.get("filename"))+" "+Main.str(job.get("directory"))+" "+Main.str(job.get("url"))).toLowerCase(java.util.Locale.ROOT).contains(query);
             }
         });
-        if(!updatingJobs){
-            if(jobsTable.getSelectedRow()<0&&jobsTable.getRowCount()>0)jobsTable.setRowSelectionInterval(0,0);
-            selectCurrentJob();
+        if (!parentUpdate) {
+            restoreSelectedJobs();
+            updatingJobs = false;
+            renderDetails(jobs.get(selectedId));
         }
     }
 
@@ -2784,7 +2971,7 @@ public final class DesktopUI {
         JMenuItem copyPath = new JMenuItem(); I18n.text(copyPath, "Копировать полный путь");
         copyPath.addActionListener(event -> {
             Map<String,Object> job = jobs.get(selectedId);
-            if (job == null) return;
+            if (job == null || selectedJobIds.size() != 1) return;
             try {
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
                         new java.awt.datatransfer.StringSelection(fullJobPath(job)), null);
@@ -2794,9 +2981,9 @@ public final class DesktopUI {
         menu.add(copyPath);
         jobsTable.setComponentPopupMenu(menu);
         jobsTable.addMouseListener(new MouseAdapter(){
-            private void select(MouseEvent e){if(e.isPopupTrigger()){int row=jobsTable.rowAtPoint(e.getPoint());if(row>=0)jobsTable.setRowSelectionInterval(row,row);
+            private void select(MouseEvent e){if(e.isPopupTrigger()){int row=jobsTable.rowAtPoint(e.getPoint());if(row>=0&&!jobsTable.isRowSelected(row))jobsTable.setRowSelectionInterval(row,row);
                 for(int i=0;i<controls.length;i++)menu.getComponent(i).setEnabled(controls[i].isEnabled());
-                copyPath.setEnabled(jobs.containsKey(selectedId));}}
+                copyPath.setEnabled(selectedJobIds.size()==1&&jobs.containsKey(selectedId));}}
             @Override public void mousePressed(MouseEvent e){select(e);}@Override public void mouseReleased(MouseEvent e){select(e);}
             @Override public void mouseClicked(MouseEvent e){if(e.getClickCount()==2&&SwingUtilities.isLeftMouseButton(e))openSelectedFolder();}
         });
@@ -2909,6 +3096,7 @@ public final class DesktopUI {
     }
 
     private void openSelectedFolder() {
+        if (selectedJobIds.size() != 1) return;
         Map<String,Object> job=jobs.get(selectedId);if(job==null)return;
         Path directory;
         try{directory=Path.of(Main.str(job.get("directory")));}catch(Exception error){showError("Не удалось открыть папку: %s",errorArgument(error));return;}
@@ -3060,7 +3248,12 @@ public final class DesktopUI {
     }
 
     private boolean beginJobAction() {
-        if (closing || jobActionRunning || selectedId == null || !jobs.containsKey(selectedId)) return false;
+        return beginJobAction(false);
+    }
+
+    private boolean beginJobAction(boolean multiple) {
+        if (closing || jobActionRunning || selectedId == null || !jobs.containsKey(selectedId)
+                || selectedJobIds.isEmpty() || !multiple && selectedJobIds.size() != 1) return false;
         jobActionRunning = true;
         jobsGeneration++;
         renderDetails(jobs.get(selectedId));
@@ -3074,41 +3267,80 @@ public final class DesktopUI {
     }
 
     private void removeJob() {
-        String id = selectedId;
-        Map<String,Object> job = jobs.get(id);
-        if (job == null || !beginJobAction()) return;
+        List<Map<String,Object>> targets = selectedVisibleJobs();
+        if (targets.isEmpty() || !beginJobAction(true)) return;
+        boolean multiple = targets.size() > 1;
         DeleteChoice choice;
-        try { choice = jobDeletionConfirmation.confirm(frame, new LinkedHashMap<>(job)); }
-        catch (Exception error) {
+        try {
+            choice = multiple ? confirmBulkJobDeletion(frame, targets)
+                    : jobDeletionConfirmation.confirm(frame, targets.get(0));
+        } catch (Exception error) {
             finishJobAction(); showError("Не удалось открыть подтверждение удаления: %s", errorArgument(error)); return;
         }
         if (choice == null || choice == DeleteChoice.CANCEL || closing) {
             finishJobAction(); if (!closing) status("Удаление отменено"); return;
         }
         boolean deleteFiles = choice == DeleteChoice.DELETE_FILES;
-        status(deleteFiles ? "Удаляем задание, файлы и скачанные части…" : "Удаляем запись о загрузке…");
+        if (multiple) status("Удаляем выбранные загрузки: %d…", targets.size());
+        else status(deleteFiles ? "Удаляем задание, файлы и скачанные части…" : "Удаляем запись о загрузке…");
+        jobsTable.setEnabled(false);
         background.execute(() -> {
-            try {
-                manager.remove(id, deleteFiles);
-                SwingUtilities.invokeLater(() -> {
-                    if (closing) return;
-                    jobs.remove(id);
-                    if (id.equals(selectedId)) selectedId = null;
-                    finishJobAction();
-                    updateJobs(new ArrayList<>(jobs.values()));
-                    status(deleteFiles ? "Задание, его файлы и скачанные части удалены."
-                            : "Запись удалена. Файлы и скачанные части сохранены.");
-                    refreshJobs();
-                });
-            } catch (Exception error) {
-                SwingUtilities.invokeLater(() -> {
-                    if (closing) return;
-                    finishJobAction();
-                    showError("Не удалось удалить задание: %s", errorArgument(error));
-                    refreshJobs();
-                });
+            List<String> removed = new ArrayList<>();
+            Map<String,String> errors = new LinkedHashMap<>();
+            for (Map<String,Object> target : targets) {
+                String id = Main.str(target.get("id"));
+                try {
+                    manager.remove(id, deleteFiles);
+                    removed.add(id);
+                } catch (Exception error) { errors.put(id, message(error)); }
             }
+            SwingUtilities.invokeLater(() -> {
+                if (closing) return;
+                // Keep the old map aligned with JTable until updateJobs captures its selection and viewport.
+                List<Object> remaining = new ArrayList<>();
+                for (Map<String,Object> job : jobs.values())
+                    if (!removed.contains(Main.str(job.get("id")))) remaining.add(job);
+                selectedJobIds.clear();
+                selectedJobIds.addAll(errors.keySet());
+                if (!selectedJobIds.contains(selectedId))
+                    selectedId = selectedJobIds.isEmpty() ? null : selectedJobIds.iterator().next();
+                jobsTable.setEnabled(true);
+                finishJobAction();
+                updateJobs(remaining);
+                if (!errors.isEmpty()) {
+                    if (multiple) {
+                        status("Удалено: %d из %d. Не удалось удалить: %d.", removed.size(), targets.size(), errors.size());
+                        showBulkRemovalErrors(targets, errors, removed.size());
+                    } else showError("Не удалось удалить задание: %s", DiagnosticText.arg(errors.values().iterator().next()));
+                } else if (multiple) {
+                    status(deleteFiles ? "Удалено загрузок: %d. Файлы и скачанные части удалены."
+                            : "Удалено загрузок: %d. Файлы и скачанные части сохранены.", removed.size());
+                } else status(deleteFiles ? "Задание, его файлы и скачанные части удалены."
+                        : "Запись удалена. Файлы и скачанные части сохранены.");
+                refreshJobs();
+            });
         });
+    }
+
+    private void showBulkRemovalErrors(List<Map<String,Object>> targets, Map<String,String> errors, int removed) {
+        JPanel content = new JPanel(new BorderLayout(0, 10));
+        JLabel heading = new JLabel();
+        I18n.text(heading, "Удалено: %d из %d. Не удалось удалить: %d.", removed, targets.size(), errors.size());
+        content.add(heading, BorderLayout.NORTH);
+        StringBuilder detail = new StringBuilder();
+        for (Map<String,Object> job : targets) {
+            String error = errors.get(Main.str(job.get("id")));
+            if (error != null)
+                detail.append(Main.str(job.get("filename"))).append('\n').append(fullJobPath(job))
+                        .append('\n').append(I18n.t("Ошибка: %s", DiagnosticText.arg(error))).append("\n\n");
+        }
+        JTextArea text = pathListArea(detail.toString(), 10, 64);
+        JScrollPane scroll = new JScrollPane(text);
+        scroll.setPreferredSize(new Dimension(650, 240));
+        content.add(scroll, BorderLayout.CENTER);
+        I18n.refresh(content);
+        scroll.setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
+        JOptionPane.showMessageDialog(frame, content, I18n.t("Ошибка"), JOptionPane.ERROR_MESSAGE);
     }
 
     private void changeJobDirectory() {

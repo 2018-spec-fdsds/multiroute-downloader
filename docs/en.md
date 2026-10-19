@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — English guide
+# MultiRoute Downloader 4.0.1 — English guide
 
 **English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -70,9 +70,9 @@ Choose the installer for your system from [GitHub Releases](https://github.com/2
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` | **MultiRoute Downloader** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0-macOS-arm64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.0-macOS-x86_64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
 
 The twelve language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` or `vi.md` in a text or Markdown viewer.
 
@@ -209,7 +209,7 @@ Pause/resume, change a running job's selected gateways, set priority/limits/sche
 
 Bulk import accepts link lists and text files. Search, status filters, context menus and torrent file selection are available. Seeding completed torrents is disabled by default; when enabled, set its time and ratio limits.
 
-When removing a job, the option to delete its files is **unchecked by default**. You can remove it from the job list and retain the complete or partial file. Select file deletion only when you intend to remove that job's data.
+Select several download rows with **Ctrl+click** on Windows/Linux or **Cmd+click** on macOS; **Shift+click** selects a range. With the table focused, **Ctrl+A** or **Cmd+A** selects all currently visible rows, respecting search and status filters. Use the removal action for the selection: one confirmation covers the whole group. The option to also delete complete files and downloaded parts is **unchecked by default**, so you can remove only the list entries and keep the data. Select it only when you intend to delete those jobs’ files; other files and the destination folder are kept. Results show how many entries were removed. Jobs that could not be removed remain in the list with an error summary, so you can inspect them and retry; successful removals are not repeated. Removing jobs or files does not erase the persistent download history.
 
 ## 5. Protocols and verification
 
@@ -271,7 +271,7 @@ Set network configuration in the window or with `POST /network` first. See the e
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -406,7 +406,7 @@ Use the queue/schedule controls to set `max_active_jobs` (1–32), global or gat
 
 ## Chrome and Edge integration
 
-Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](../browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.0-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
+Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](../browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
 
 Keep MultiRoute running, including in the tray. Right-click a link and choose the MultiRoute download action, or use the extension popup to send a URL. The desktop uses the currently selected folder, gateways and site profile; repository/torrent choices still appear when needed. The popup port defaults to 8765; set it to the application’s actual local API port if changed. Only the URL is sent: browser cookies/passwords are not copied and ordinary browser downloads are not intercepted. Configure required source access in the application. If the browser requests permission for the local connection, approve it only for this chosen extension.
 

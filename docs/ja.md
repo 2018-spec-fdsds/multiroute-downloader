@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — 日本語ガイド
+# MultiRoute Downloader 4.0.1 — 日本語ガイド
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
@@ -29,9 +29,9 @@ Java には `java.desktop`、`java.net.http`、`jdk.httpserver`、`java.xml` が
 
 [リリース 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0) に添付されている場合、対応する一つのファイルを取得し、公開 SHA-256 と照合します。
 
-- Windows：`MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`。
-- Apple Silicon、macOS 26+：`MultiRoute-Downloader-4.0-macOS-arm64.pkg`。
-- Intel、macOS 15+：`MultiRoute-Downloader-4.0-macOS-x86_64.pkg`。
+- Windows：`MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`。
+- Apple Silicon、macOS 26+：`MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`。
+- Intel、macOS 15+：`MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`。
 
 ### Windows
 
@@ -81,7 +81,7 @@ FlatLaf のライト/ダーク/システムテーマを保存できます。サ�
 
 窓を閉じてもトレイで継続します。アイコンは全作業の合計速度を 10 Gbit/s まで表示し、ヒントで正確な値を示します。トレイの「開く」で復帰、「終了」で保存・終了します。トレイ非対応ならタスクバーに最小化します。**更新前はトレイから終了**してください。
 
-削除時のファイル削除チェックは**標準オフ**です。一覧だけから消して完了/部分ファイルを残せます。必要時だけファイル削除を選びます。作業やファイルを削除しても永続履歴は消えません。
+Windows/Linux では **Ctrl**、macOS では **Cmd** を押しながらクリックすると複数のダウンロード行を選択できます。**Shift** を押しながらクリックすると範囲を選択します。表にフォーカスがあるときの **Ctrl+A** または **Cmd+A** は、検索と状態フィルターを適用した現在の表示行だけをすべて選択します。削除操作は選択したグループ全体に適用され、確認は一度だけです。完了ファイルとダウンロード済みの部分も削除するオプションは**初期状態ではオフ**なので、データを残して一覧の記録だけを削除できます。それらの作業のファイルを消す場合にだけオンにしてください。他のファイルと保存先フォルダーは保持されます。結果には削除された記録数が表示されます。削除できなかった作業はエラーの概要とともに一覧に残るため、確認して再試行できます。成功した削除は繰り返されません。作業やファイルを削除しても永続的なダウンロード履歴は消えません。
 
 ## 6. プロトコルと整合性
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-ネイティブ Mac 部品は `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`。Windows portable 3.0 は起動元の `data/` で、`data-location.config` または `--data-dir` で変更可能。Linux の専用 Java は `~/.local/share/MultiRouteResume/runtime`、保護部品は `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。実ファイルはユーザーが選んだ別の場所にも保存されます。
+ネイティブ Mac 部品は `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`。Windows portable 3.0 は起動元の `data/` で、`data-location.config` または `--data-dir` で変更可能。Linux の専用 Java は `~/.local/share/MultiRouteResume/runtime`、保護部品は `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。実ファイルはユーザーが選んだ別の場所にも保存されます。
 
 `logs/downloads-history.jsonl` は UTF-8 の行単位 JSON、`logs/downloads-history.log` は日時付きテキストです。再起動をまたいで追記し、作業削除や言語変更で過去を書き換えません。テキストは記録時の言語、画面は現在の言語です。表示は最大直近 1,000 イベント/2 MiB ですが完全な履歴はディスクに残って増加します。必要なら別途アーカイブしてください。名前と絶対パスを含み、配布元 URL、パスワード、token を含みません。共有前に個人パスを確認します。
 
@@ -233,7 +233,7 @@ API はダウンロード、送信、参照、プレビューで `site_profile_i
 
 ## Chrome と Edge の連携
 
-アプリの **Chrome / Edge** 連携でリンク送信を許可し、拡張フォルダーを開きます。一度 `chrome://extensions` または `edge://extensions` のデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」で `manifest.json` のある `browser-extension` を選びます。インストーラーは JAR の隣に含めます。ソースの [browser-extension/](../browser-extension/) も利用でき、選択後は移動しないでください。別の `MultiRoute-Downloader-4.0-Chrome-Edge.zip` は先に展開します。ストア公開版ではありません。
+アプリの **Chrome / Edge** 連携でリンク送信を許可し、拡張フォルダーを開きます。一度 `chrome://extensions` または `edge://extensions` のデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」で `manifest.json` のある `browser-extension` を選びます。インストーラーは JAR の隣に含めます。ソースの [browser-extension/](../browser-extension/) も利用でき、選択後は移動しないでください。別の `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` は先に展開します。ストア公開版ではありません。
 
 MultiRoute はトレイでもよいので実行しておきます。リンクの右クリックメニューまたは拡張ポップアップから URL を送ります。現在の保存先、ゲートウェイ、サイト設定を使い、必要なリポジトリ/torrent 選択は表示されます。既定ポート 8765 は API に合わせて変更できます。URL だけを送信し、Cookie/パスワードをコピーせず、他のブラウザーダウンロードを横取りしません。認証はアプリ側で設定します。ローカル接続の許可はこの選択した拡張だけに与えてください。
 

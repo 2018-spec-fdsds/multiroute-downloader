@@ -1405,5 +1405,14 @@
   "The browser extension folder is missing": "La cartella dell’estensione del browser non è presente",
   "Browser integration is disabled or the extension origin is not allowed": "L’integrazione del browser è disabilitata o l’origine dell’estensione non è consentita",
   "Browser request is not allowed": "La richiesta del browser non è consentita",
-  "Open the MultiRoute desktop application first": "Apri prima l’applicazione desktop MultiRoute"
+  "Open the MultiRoute desktop application first": "Apri prima l’applicazione desktop MultiRoute",
+  "Выбрано: %d": "Selezionati: %d",
+  "Выбор нескольких: Ctrl/Cmd или Shift. Ctrl/Cmd+A — выбрать все видимые строки. Действия с одной загрузкой доступны при выборе одной строки.": "Selezione multipla: Ctrl/Cmd o Maiusc (Shift). Ctrl/Cmd+A seleziona tutte le righe visibili. Le azioni per un singolo download sono disponibili quando è selezionata una sola riga.",
+  "Удалить выбранные (%d)…": "Rimuovi selezionati (%d)…",
+  "Убрать выбранные загрузки (%d) из приложения?": "Rimuovere i download selezionati (%d) dall’applicazione?",
+  "Без галочки файлы и скачанные части останутся на диске. С галочкой будут удалены только файлы и части выбранных загрузок.": "Senza la spunta, i file e le parti scaricate restano sul disco. Con la spunta, vengono eliminati soltanto i file e le parti dei download selezionati.",
+  "Удаляем выбранные загрузки: %d…": "Rimozione dei download selezionati: %d…",
+  "Удалено загрузок: %d. Файлы и скачанные части сохранены.": "Download rimossi: %d. File e parti scaricate conservati.",
+  "Удалено загрузок: %d. Файлы и скачанные части удалены.": "Download rimossi: %d. File e parti scaricate eliminati.",
+  "Удалено: %d из %d. Не удалось удалить: %d.": "Rimossi: %d di %d. Rimozioni non riuscite: %d."
 }

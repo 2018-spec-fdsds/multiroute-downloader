@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — Guía en español
+# MultiRoute Downloader 4.0.1 — Guía en español
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -70,9 +70,9 @@ Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-s
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe` | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0-macOS-arm64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.0-macOS-x86_64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
 
 Las doce guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` o `vi.md` con un editor de texto o visor Markdown.
 
@@ -219,7 +219,7 @@ Puede pausar, continuar, cambiar las puertas de enlace de un trabajo activo, aju
 
 La importación masiva admite listas de enlaces y archivos de texto. También hay búsqueda, filtros, menú contextual y selección de archivos torrent. La distribución voluntaria de un torrent completado está desactivada por defecto; si la activa, configure sus límites de tiempo y proporción.
 
-Al eliminar un trabajo, la casilla para borrar sus archivos está **desmarcada por defecto**. Puede quitarlo de la lista de trabajos y conservar el archivo completo o incompleto; marque la casilla solo si desea borrar los datos de ese trabajo.
+Seleccione varias filas de descarga con **Ctrl+clic** en Windows/Linux o **Cmd+clic** en macOS; **Shift+clic** selecciona un intervalo. Con el foco en la tabla, **Ctrl+A** o **Cmd+A** selecciona todas las filas visibles según la búsqueda y el filtro de estado. La acción de eliminar se aplica a toda la selección con una sola confirmación. La opción de borrar también los archivos completos y las partes descargadas está **desmarcada por defecto**, por lo que puede quitar solo las entradas y conservar los datos. Márquela únicamente si desea borrar los archivos de esos trabajos; se conservan los demás archivos y la carpeta de destino. El resultado indica cuántas entradas se eliminaron. Los trabajos que no pudieron eliminarse permanecen en la lista con un resumen de errores para revisarlos y volver a intentarlo; las eliminaciones correctas no se repiten. Eliminar trabajos o archivos no borra el historial permanente de descargas.
 
 ## 5. Protocolos y comprobación
 
@@ -281,7 +281,7 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net` |
 
 Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
 
@@ -416,7 +416,7 @@ Configure `max_active_jobs` (1–32), límites globales/por puerta y ventana dia
 
 ## Integración con Chrome y Edge
 
-Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.0-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
+Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
 
 MultiRoute debe estar abierto, incluso en la bandeja. Envíe un enlace desde su menú contextual o la ventana de la extensión. Se usan carpeta, puertas y perfil actuales; la selección de repositorio/torrent sigue disponible. El puerto es 8765; ajústelo si cambió el de API. Solo se envía URL, sin cookies ni contraseñas; no intercepta otras descargas del navegador. Configure el acceso al origen en la aplicación. Si el navegador pide permiso de conexión local, concédalo solo a esta extensión elegida.
 

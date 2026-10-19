@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — دليل الاستخدام بالعربية
+# MultiRoute Downloader 4.0.1 — دليل الاستخدام بالعربية
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -29,9 +29,9 @@ MultiRoute Downloader تطبيق سطح مكتب بلغة Java لتنزيل ال
 
 نزّل ملفاً واحداً مناسباً من [إصدار 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0)، إذا كان مرفقاً بالإصدار، وقارن SHA-256 بالقيمة المنشورة:
 
-- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon، macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
-- Intel، macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
+- Apple Silicon، macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
+- Intel، macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -81,7 +81,7 @@ MultiRoute Downloader تطبيق سطح مكتب بلغة Java لتنزيل ال
 
 إغلاق النافذة يترك التنزيل يعمل في علبة النظام. الأيقونة تعرض مجموع سرعات جميع المهمات حتى 10 Gbit/s، مع قيمة أدق في التلميح. اختر فتح التطبيق لإعادة النافذة، وخروج التطبيق للحفظ والإنهاء. إذا غابت العلبة يصغر إلى شريط المهام. **اخرج من العلبة قبل التحديث**.
 
-في حذف المهمة يكون خيار حذف الملفات **غير محدد افتراضياً**. يمكن إزالتها من القائمة مع الاحتفاظ بالملف المكتمل أو الجزئي؛ اختر حذف الملفات فقط إذا قصدت ذلك. لا يمحو حذف المهمة أو الملفات سجل التاريخ الدائم.
+لاختيار عدة صفوف تنزيل، انقر مع الضغط على **Ctrl** في Windows/Linux أو **Cmd** في macOS؛ وانقر مع **Shift** لاختيار نطاق. عندما يكون التركيز في الجدول، يحدد **Ctrl+A** أو **Cmd+A** جميع الصفوف الظاهرة فقط وفق البحث ومرشح الحالة. ينطبق إجراء الحذف على المجموعة المحددة كلها بتأكيد واحد. خيار حذف الملفات المكتملة والأجزاء المنزلة أيضًا **غير محدد افتراضيًا**، ولذلك يمكنك حذف سجلات القائمة فقط والاحتفاظ بالبيانات. حدده فقط إذا أردت حذف ملفات تلك المهام؛ تبقى الملفات الأخرى ومجلد الحفظ. تعرض النتيجة عدد السجلات المحذوفة. تبقى المهام التي تعذر حذفها في القائمة مع ملخص للأخطاء لتراجعها وتعيد المحاولة؛ ولا يتكرر حذف العناصر التي نجح حذفها. لا يمحو حذف المهام أو الملفات سجل التنزيل الدائم.
 
 ## 6. البروتوكولات والوصول والفحص
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-مكوّن macOS الأصلي هو `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`. يستخدم Windows portable 3.0 مجلد `data/` بجانب المشغل مع إمكانية `data-location.config` أو `--data-dir`. Java الخاصة بـ Linux في `~/.local/share/MultiRouteResume/runtime` ومكوّنه المحمي في `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. ملفات التنزيل في الوجهة المختارة وقد تكون خارج هذه المسارات.
+مكوّن macOS الأصلي هو `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`. يستخدم Windows portable 3.0 مجلد `data/` بجانب المشغل مع إمكانية `data-location.config` أو `--data-dir`. Java الخاصة بـ Linux في `~/.local/share/MultiRouteResume/runtime` ومكوّنه المحمي في `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. ملفات التنزيل في الوجهة المختارة وقد تكون خارج هذه المسارات.
 
 الملف `logs/downloads-history.jsonl` هو JSON سطري UTF-8، و`logs/downloads-history.log` سجل مقروء بتاريخ ووقت. تضاف الأحداث بعد إعادة التشغيل ولا يُعاد كتابة الماضي عند تغيير اللغة أو حذف المهمة. يحافظ النص على لغة لحظة الكتابة، بينما تعرض الواجهة اللغة الحالية. تقرأ النافذة ذيلاً حتى 1,000 حدث/2 MiB فقط، ويظل السجل الكامل على القرص وينمو مع الاستخدام، فاحفظ أرشيفاً منفصلاً عند الحاجة. يسجل الأسماء والمسارات المطلقة دون URL المصدر أو كلمات المرور أو token؛ راجع المسارات قبل المشاركة.
 
@@ -233,7 +233,7 @@ print(job["id"])
 
 ## تكامل Chrome وEdge
 
-افتح تكامل **Chrome / Edge** في التطبيق واسمح بإرسال الروابط وافتح مجلد الإضافة. مرة واحدة: افتح `chrome://extensions` أو `edge://extensions`، فعّل وضع المطور واختر “تحميل إضافة غير مضغوطة” وحدد `browser-extension` المحتوي على `manifest.json`. يضم التثبيت الأصلي المجلد بجوار JAR ويوجد في [browser-extension/](../browser-extension/) بالمصدر. أبقه في مكانه؛ فك `MultiRoute-Downloader-4.0-Chrome-Edge.zip` أولًا إن استخدمته. الإضافة ليست منشورة في متجر المتصفح.
+افتح تكامل **Chrome / Edge** في التطبيق واسمح بإرسال الروابط وافتح مجلد الإضافة. مرة واحدة: افتح `chrome://extensions` أو `edge://extensions`، فعّل وضع المطور واختر “تحميل إضافة غير مضغوطة” وحدد `browser-extension` المحتوي على `manifest.json`. يضم التثبيت الأصلي المجلد بجوار JAR ويوجد في [browser-extension/](../browser-extension/) بالمصدر. أبقه في مكانه؛ فك `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` أولًا إن استخدمته. الإضافة ليست منشورة في متجر المتصفح.
 
 يجب أن يعمل MultiRoute ولو في صينية النظام. أرسل الرابط من قائمته السياقية أو نافذة الإضافة. تُستخدم المجلدات والبوابات وملف الموقع الحالي وتبقى اختيارات المستودع/torrent عند الحاجة. المنفذ الافتراضي 8765؛ طابقه مع منفذ API إن تغيّر. يُرسل URL فقط دون cookies أو كلمات مرور ودون اعتراض التنزيلات الأخرى. اضبط وصول المصدر في التطبيق. إن طُلب إذن اتصال محلي فامنحه لهذه الإضافة المختارة فقط.
 

@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — 中文使用说明
+# MultiRoute Downloader 4.0.1 — 中文使用说明
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -29,9 +29,9 @@ MultiRoute Downloader 是 Java 桌面下载管理器，可通过同一 Ethernet 
 
 从 [4.0 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0) 下载安装包（如果已附在该版本中），并与发布页的 SHA-256 比较：
 
-- Windows：`MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`。
-- Apple Silicon，macOS 26+：`MultiRoute-Downloader-4.0-macOS-arm64.pkg`。
-- Intel，macOS 15+：`MultiRoute-Downloader-4.0-macOS-x86_64.pkg`。
+- Windows：`MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`。
+- Apple Silicon，macOS 26+：`MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`。
+- Intel，macOS 15+：`MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`。
 
 ### Windows
 
@@ -81,7 +81,7 @@ MultiRoute Downloader 是 Java 桌面下载管理器，可通过同一 Ethernet 
 
 关闭主窗口会继续在托盘下载，图标显示全部任务总速度，可显示到 10 Gbit/s；悬浮提示更精确。用托盘“打开应用”恢复窗口，“退出应用”才真正保存并结束。无托盘支持时最小化到任务栏。升级前请从托盘退出。
 
-删除任务时，“同时删除文件”默认**不勾选**。可只从任务列表移除而保留完整或部分文件；仅在明确需要时勾选删除。持久历史日志不会因删除任务或文件而清空。
+在 Windows/Linux 中按住 **Ctrl** 单击、在 macOS 中按住 **Cmd** 单击，可选择多个下载任务；按住 **Shift** 单击可选择连续范围。焦点位于表格时，**Ctrl+A** 或 **Cmd+A** 仅选择当前搜索和状态筛选后可见的所有行。对所选任务执行删除时，整组只显示一次确认。“同时删除已完成文件和已下载片段”默认**不勾选**，因此可只移除列表记录并保留数据。仅在确实需要删除这些任务的文件时勾选；其他文件和保存文件夹保持不变。完成后会显示已删除记录数。删除失败的任务仍保留在列表中，并显示错误摘要，便于检查后重试；已成功删除的任务不会重复处理。删除任务或文件不会清空持久下载历史。
 
 ## 6. 协议、访问与校验
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-原生 macOS 网络组件为 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`。portable Windows 3.0 使用启动目录下 `data/`，可由 `data-location.config` 或 `--data-dir` 覆盖；Linux 私有运行时在 `~/.local/share/MultiRouteResume/runtime`，受保护组件在 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。下载文件在您所选目录，可能在上述位置之外。
+原生 macOS 网络组件为 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`。portable Windows 3.0 使用启动目录下 `data/`，可由 `data-location.config` 或 `--data-dir` 覆盖；Linux 私有运行时在 `~/.local/share/MultiRouteResume/runtime`，受保护组件在 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。下载文件在您所选目录，可能在上述位置之外。
 
 `logs/downloads-history.jsonl` 是 UTF-8 逐行 JSON，`logs/downloads-history.log` 是带日期时间的可读日志。它们跨重启追加，不因任务删除或切换语言重写。文本日志保留写入时语言，界面按当前语言显示历史。查看窗口最多读取最近 1,000 个事件/2 MiB，完整日志保存在磁盘并持续增长，可另行归档。日志保留文件名和绝对路径，不写来源 URL、密码或 token；分享前检查个人路径。
 
@@ -233,7 +233,7 @@ API 在下载、上传、目录浏览和预览中接受 `site_profile_id`。`GET
 
 ## Chrome 和 Edge 集成
 
-打开桌面应用的 **Chrome / Edge** 集成，启用链接传递并打开扩展目录。首次进入 `chrome://extensions` 或 `edge://extensions`，启用开发者模式，点击“加载已解压的扩展程序”，选择含 `manifest.json` 的 `browser-extension`。安装包将它放在 JAR 旁，源码也提供 [browser-extension/](../browser-extension/)。请保留该目录；使用单独的 `MultiRoute-Downloader-4.0-Chrome-Edge.zip` 时先解压。本版本未发布到扩展商店。
+打开桌面应用的 **Chrome / Edge** 集成，启用链接传递并打开扩展目录。首次进入 `chrome://extensions` 或 `edge://extensions`，启用开发者模式，点击“加载已解压的扩展程序”，选择含 `manifest.json` 的 `browser-extension`。安装包将它放在 JAR 旁，源码也提供 [browser-extension/](../browser-extension/)。请保留该目录；使用单独的 `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` 时先解压。本版本未发布到扩展商店。
 
 MultiRoute 必须正在运行，托盘中也可以。右键链接选择 MultiRoute 下载，或从扩展弹窗发送 URL。使用当前保存目录、网关和站点配置，必要时仍显示仓库/torrent 文件选择。默认端口 8765，API 改端口时同步修改。仅发送 URL，不复制浏览器 cookies/密码，不接管其他浏览器下载；源站认证在应用中配置。若浏览器请求本地连接权限，仅为选定扩展确认。
 

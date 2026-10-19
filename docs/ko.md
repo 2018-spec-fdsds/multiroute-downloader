@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — 한국어 안내서
+# MultiRoute Downloader 4.0.1 — 한국어 안내서
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -29,9 +29,9 @@ Java에는 `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` 모듈�
 
 [4.0 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0)에 첨부된 경우 시스템에 맞는 하나의 설치 파일을 받고 공개 SHA-256과 비교합니다.
 
-- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -81,7 +81,7 @@ FlatLaf의 밝게/어둡게/시스템 테마를 선택하면 저장됩니다. �
 
 창을 닫아도 트레이에서 다운로드가 계속됩니다. 아이콘은 모든 작업의 합산 속도를 최대 10 Gbit/s까지 표시하고 툴팁에 정확한 값을 보여 줍니다. 트레이의 앱 열기로 복원하고 앱 종료로 저장/종료합니다. 트레이를 지원하지 않으면 작업 표시줄로 최소화합니다. 업데이트 전에는 반드시 트레이에서 종료하십시오.
 
-작업 삭제 창의 파일 삭제 체크는 **기본 해제**입니다. 목록에서만 제거하고 완료/부분 파일을 남길 수 있습니다. 의도할 때만 파일 삭제를 선택합니다. 작업/파일 삭제가 영구 기록 로그를 지우지는 않습니다.
+Windows/Linux에서는 **Ctrl**을 누른 채 클릭하고 macOS에서는 **Cmd**를 누른 채 클릭하여 여러 다운로드 행을 선택합니다. **Shift**를 누른 채 클릭하면 범위를 선택합니다. 표에 포커스가 있을 때 **Ctrl+A** 또는 **Cmd+A**는 검색과 상태 필터를 적용한 현재 표시 행만 모두 선택합니다. 선택한 작업의 삭제는 전체 그룹에 대한 확인 창 하나로 처리합니다. 완료 파일과 다운로드한 부분까지 삭제하는 옵션은 **기본 해제**되어 목록 항목만 제거하고 데이터를 보관할 수 있습니다. 해당 작업의 파일을 지우려는 경우에만 선택하며, 다른 파일과 저장 폴더는 보존됩니다. 결과에는 삭제된 항목 수가 표시됩니다. 삭제하지 못한 작업은 오류 요약과 함께 목록에 남으므로 확인한 뒤 다시 시도할 수 있고, 이미 성공한 삭제는 반복되지 않습니다. 작업이나 파일을 삭제해도 영구 다운로드 기록은 지워지지 않습니다.
 
 ## 6. 지원 프로토콜과 무결성
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-macOS 기본 보호 구성 요소는 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`입니다. Windows portable 3.0은 실행 폴더의 `data/`이며 `data-location.config`/`--data-dir`로 바꿀 수 있습니다. Linux 전용 Java는 `~/.local/share/MultiRouteResume/runtime`, 보호 구성 요소는 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`입니다. 다운로드 파일은 사용자가 고른 별도 위치에 있습니다.
+macOS 기본 보호 구성 요소는 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`입니다. Windows portable 3.0은 실행 폴더의 `data/`이며 `data-location.config`/`--data-dir`로 바꿀 수 있습니다. Linux 전용 Java는 `~/.local/share/MultiRouteResume/runtime`, 보호 구성 요소는 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`입니다. 다운로드 파일은 사용자가 고른 별도 위치에 있습니다.
 
 `logs/downloads-history.jsonl`은 UTF-8 줄 단위 JSON, `logs/downloads-history.log`는 날짜/시간이 있는 읽기용 로그입니다. 재시작 후에도 추가되고 작업 삭제/언어 변경으로 과거 기록을 다시 쓰지 않습니다. 텍스트는 기록 당시 언어를 유지하지만 화면은 현재 언어로 렌더링합니다. 창은 최대 최근 1,000개 이벤트/2 MiB만 읽고 전체 파일은 디스크에 남아 증가하므로 필요 시 따로 보관합니다. 이름과 절대 경로가 들어가며 소스 URL, 비밀번호, token은 기록하지 않습니다. 공유 전 개인 경로를 확인하십시오.
 
@@ -233,7 +233,7 @@ MultiRoute Downloader의 이전 이름은 MultiRoute Resume입니다. 새 프로
 
 ## Chrome 및 Edge 통합
 
-앱의 **Chrome / Edge** 통합에서 링크 전달을 켜고 확장 폴더를 엽니다. 한 번 `chrome://extensions` 또는 `edge://extensions`에서 개발자 모드를 켜고 “압축해제된 확장 프로그램 로드”로 `manifest.json`이 있는 `browser-extension`을 선택합니다. 네이티브 설치본은 JAR 옆에 포함하며 소스에도 [browser-extension/](../browser-extension/)이 있습니다. 폴더를 옮기지 마십시오. 별도 `MultiRoute-Downloader-4.0-Chrome-Edge.zip`은 먼저 풉니다. 스토어 게시본은 아닙니다.
+앱의 **Chrome / Edge** 통합에서 링크 전달을 켜고 확장 폴더를 엽니다. 한 번 `chrome://extensions` 또는 `edge://extensions`에서 개발자 모드를 켜고 “압축해제된 확장 프로그램 로드”로 `manifest.json`이 있는 `browser-extension`을 선택합니다. 네이티브 설치본은 JAR 옆에 포함하며 소스에도 [browser-extension/](../browser-extension/)이 있습니다. 폴더를 옮기지 마십시오. 별도 `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip`은 먼저 풉니다. 스토어 게시본은 아닙니다.
 
 MultiRoute가 실행 중이어야 하며 트레이여도 됩니다. 링크 메뉴 또는 확장 팝업에서 URL을 보냅니다. 현재 폴더, 게이트웨이, 사이트 프로필을 사용하며 필요한 저장소/torrent 선택은 계속 나타납니다. 기본 포트 8765를 API 포트와 맞추십시오. URL만 보내며 브라우저 쿠키/암호를 복사하거나 다른 다운로드를 가로채지 않습니다. 원본 인증은 앱에서 설정합니다. 로컬 연결 권한 요청은 이 확장에만 허용하십시오.
 

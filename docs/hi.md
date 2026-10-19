@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — हिन्दी उपयोगकर्ता निर्देश
+# MultiRoute Downloader 4.0.1 — हिन्दी उपयोगकर्ता निर्देश
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
@@ -29,9 +29,9 @@ Java में `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` आ
 
 [रिलीज़ 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0) में संलग्न होने पर उपयुक्त एक इंस्टॉलर डाउनलोड करें और प्रकाशित SHA-256 से तुलना करें।
 
-- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`।
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`।
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`।
+- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`।
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`।
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`।
 
 ### Windows
 
@@ -81,7 +81,7 @@ FlatLaf में हल्की, गहरी और सिस्टम theme 
 
 खिड़की बंद होने पर tray में डाउनलोड जारी रहता है। चिह्न सभी कार्यों की कुल गति 10 Gbit/s तक और tooltip में सटीक मूल्य दिखाता है। tray से खोलें या Exit application द्वारा सहेजकर बंद करें। tray न हो तो taskbar में minimize होता है। **update से पहले tray से बाहर निकलें**।
 
-कार्य हटाते समय फ़ाइल मिटाने का विकल्प default **अचिह्नित** है। केवल सूची से हटाकर पूरा/अधूरा फ़ाइल रखें; फ़ाइल तभी मिटाएँ जब सच में चाहें। कार्य या फ़ाइल हटाने से स्थायी इतिहास लॉग नहीं मिटता।
+Windows/Linux में **Ctrl** या macOS में **Cmd** दबाकर क्लिक करने से डाउनलोड की कई पंक्तियाँ चुनें; **Shift** दबाकर क्लिक करने से लगातार पंक्तियों का दायरा चुना जाता है। तालिका पर फ़ोकस होने पर **Ctrl+A** या **Cmd+A** केवल खोज और स्थिति फ़िल्टर के बाद दिखाई देने वाली सभी पंक्तियाँ चुनता है। हटाने की कार्रवाई पूरे चयन पर एक ही पुष्टि के साथ लागू होती है। पूरी फ़ाइलें और डाउनलोड किए गए हिस्से भी मिटाने का विकल्प **डिफ़ॉल्ट रूप से अचिह्नित** है, इसलिए केवल सूची की प्रविष्टियाँ हटाकर डेटा रख सकते हैं। उन कार्यों की फ़ाइलें सच में मिटानी हों तभी इसे चुनें; दूसरे फ़ाइलों और सहेजने के फ़ोल्डर को रखा जाता है। परिणाम में हटाई गई प्रविष्टियों की संख्या दिखती है। जिन कार्यों को हटाया नहीं जा सका वे त्रुटियों के सारांश के साथ सूची में रहते हैं ताकि जाँचकर फिर कोशिश कर सकें; सफल हटाने की कार्रवाई दोहराई नहीं जाती। कार्य या फ़ाइलें हटाने से स्थायी डाउनलोड इतिहास नहीं मिटता।
 
 ## 6. प्रोटोकॉल, पहुँच और जाँच
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
+native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
 
 `logs/downloads-history.jsonl` UTF-8 line JSON और `logs/downloads-history.log` तारीख/समय वाला readable text है। पुनः आरंभ के बाद append होते हैं और कार्य हटाने/भाषा बदलने से पुराना पाठ नहीं लिखा जाता। text लिखने के समय की भाषा रखता है; UI वर्तमान भाषा में दिखाता है। viewer अधिकतम पिछली 1,000 घटनाएँ/2 MiB पढ़ता है; पूरा बढ़ता archive disk पर है, ज़रूरत पर अलग संग्रह करें। नाम और निरपेक्ष path रहते हैं, source URL/password/token नहीं। साझा करने से पहले निजी paths जाँचें।
 
@@ -233,7 +233,7 @@ API डाउनलोड, अपलोड, सूची और पूर्व�
 
 ## Chrome और Edge एकीकरण
 
-ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.0-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
+ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
 
 MultiRoute चलता रहे, ट्रे भी पर्याप्त है। लिंक के मेनू या एक्सटेंशन पॉपअप से URL भेजें। वर्तमान फ़ोल्डर, गेटवे और साइट प्रोफ़ाइल लगते हैं; आवश्यक repository/torrent चयन बना रहता है। डिफ़ॉल्ट पोर्ट 8765 को बदले API पोर्ट से मिलाएँ। केवल URL भेजता है, cookies/पासवर्ड नहीं और अन्य ब्राउज़र डाउनलोड नहीं पकड़ता। स्रोत पहुँच ऐप में सेट करें। स्थानीय कनेक्शन अनुमति माँगी जाए तो केवल इस चुने एक्सटेंशन को दें।
 

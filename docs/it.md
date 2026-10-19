@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0 — Guida in italiano
+# MultiRoute Downloader 4.0.1 — Guida in italiano
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -29,9 +29,9 @@ La lingua scelta richiede font installati che coprano i suoi caratteri. Su Linux
 
 Scegliere un solo installer dalla [release 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0), se allegato, e confrontarlo con lo SHA-256 pubblicato:
 
-- Windows: `MultiRoute-Downloader-4.0-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -81,7 +81,7 @@ Il lavoro selezionato ha schede Dettagli e Cronologia. Il rapporto mantiene posi
 
 Chiudere la finestra lascia i download attivi nell’area di notifica. L’icona mostra la somma di tutti i lavori fino a 10 Gbit/s, con dettaglio esatto nel suggerimento. Apri applicazione ripristina la finestra; Esci dall’applicazione salva e termina. Senza supporto tray, riduce alla barra delle applicazioni. **Uscire dal tray prima di aggiornare**.
 
-Nella rimozione di un lavoro, l’opzione di eliminazione file è **deselezionata per default**. Si può rimuovere solo dalla lista lasciando file completo/parziale; eliminare i file solo intenzionalmente. La rimozione non cancella il registro storico permanente.
+Selezionare più righe di download con **Ctrl+clic** su Windows/Linux o **Cmd+clic** su macOS; **Maiusc+clic (Shift)** seleziona un intervallo. Con il focus nella tabella, **Ctrl+A** o **Cmd+A** seleziona tutte le righe attualmente visibili secondo la ricerca e il filtro di stato. La rimozione si applica all’intera selezione con una sola conferma. L’opzione per eliminare anche i file completi e le parti scaricate è **deselezionata per impostazione predefinita**: si possono rimuovere soltanto le voci conservando i dati. Selezionarla solo per cancellare i file di quei lavori; gli altri file e la cartella di destinazione restano. Il risultato mostra il numero di voci rimosse. I lavori che non è stato possibile rimuovere rimangono nell’elenco con un riepilogo degli errori, per controllarli e riprovare; le rimozioni riuscite non vengono ripetute. Rimuovere lavori o file non cancella la cronologia permanente dei download.
 
 ## 6. Protocolli, credenziali e verifica
 
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.0/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
+Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
 
 `logs/downloads-history.jsonl` è JSON per riga UTF-8; `logs/downloads-history.log` è testo leggibile datato. Vengono aggiunti eventi tra i riavvii senza riscrivere il passato al cambio lingua o alla rimozione del lavoro. Il testo mantiene la lingua di scrittura; la GUI rende gli eventi nella lingua attuale. La finestra legge al massimo la coda di 1.000 eventi/2 MiB, lasciando l’archivio completo sul disco. Cresce con l’uso: archiviarlo separatamente se necessario. Contiene nomi e percorsi assoluti, senza URL sorgenti, password o token; controllare i percorsi prima di condividerlo.
 
@@ -233,7 +233,7 @@ Nei controlli coda/orario impostare `max_active_jobs` (1–32), limiti globali/p
 
 ## Integrazione Chrome ed Edge
 
-Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.0-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
+Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
 
 MultiRoute deve funzionare, anche nella tray. Inviare l’URL dal menu del link o dal popup. Usa cartella, gateway e profilo attuali; restano le selezioni repository/torrent. La porta predefinita è 8765, da adattare se l’API cambia. Viene inviato solo l’URL, senza cookie/password e senza intercettare altri download. Configurare l’accesso alla fonte nell’app. Concedere l’eventuale permesso di connessione locale soltanto a questa estensione scelta.
 

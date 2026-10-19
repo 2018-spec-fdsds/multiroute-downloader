@@ -1405,5 +1405,14 @@
   "The browser extension folder is missing": "Không tìm thấy thư mục tiện ích trình duyệt",
   "Browser integration is disabled or the extension origin is not allowed": "Tích hợp trình duyệt bị tắt hoặc nguồn của tiện ích không được phép",
   "Browser request is not allowed": "Yêu cầu trình duyệt không được phép",
-  "Open the MultiRoute desktop application first": "Hãy mở ứng dụng MultiRoute trên máy tính trước"
+  "Open the MultiRoute desktop application first": "Hãy mở ứng dụng MultiRoute trên máy tính trước",
+  "Выбрано: %d": "Đã chọn: %d",
+  "Выбор нескольких: Ctrl/Cmd или Shift. Ctrl/Cmd+A — выбрать все видимые строки. Действия с одной загрузкой доступны при выборе одной строки.": "Chọn nhiều mục: Ctrl/Cmd hoặc Shift. Ctrl/Cmd+A chọn tất cả hàng đang hiển thị. Thao tác cho một lượt tải chỉ khả dụng khi chọn đúng một hàng.",
+  "Удалить выбранные (%d)…": "Xóa mục đã chọn (%d)…",
+  "Убрать выбранные загрузки (%d) из приложения?": "Xóa các lượt tải đã chọn (%d) khỏi ứng dụng?",
+  "Без галочки файлы и скачанные части останутся на диске. С галочкой будут удалены только файлы и части выбранных загрузок.": "Nếu không chọn, tệp và các phần đã tải vẫn nằm trên đĩa. Nếu chọn, chỉ tệp và phần thuộc các lượt tải đã chọn bị xóa.",
+  "Удаляем выбранные загрузки: %d…": "Đang xóa các lượt tải đã chọn: %d…",
+  "Удалено загрузок: %d. Файлы и скачанные части сохранены.": "Đã xóa lượt tải: %d. Tệp và các phần đã tải được giữ lại.",
+  "Удалено загрузок: %d. Файлы и скачанные части удалены.": "Đã xóa lượt tải: %d. Tệp và các phần đã tải cũng đã bị xóa.",
+  "Удалено: %d из %d. Не удалось удалить: %d.": "Đã xóa: %d / %d. Không xóa được: %d."
 }
