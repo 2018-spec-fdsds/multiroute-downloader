@@ -47,7 +47,7 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
     """Pure C fixtures have no capture, OS enumeration, sockets or user profiles."""
     owned.mkdir()
     results = {}
-    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport"):
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"):
         source = ROOT / "native/source/tests" / (name + "_test.c")
         executable = owned / name
         run([clang, "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-finput-charset=UTF-8", "-fexec-charset=UTF-8",
@@ -74,12 +74,16 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
             assert validated["network_validation_ok"] and validated["network_generation"] == 2
             assert validated["computer_ipv4"] == "192.168.1.101" and validated["network_cidr"] == "192.168.1.0/24"
             assert not recheck["network_validation_ok"] and recheck["network_validation_status"] == "recheck_required"
-        else:
+        elif name == "gateway_dns_transport":
             assert lines[-1] == "GATEWAY_DNS_TRANSPORT_TEST_OK checks=169 capture=false os_network_changed=false"
             assert lines[0].startswith("DNS_SELF_TEST_OK ") and len(lines) == 2
             assert all(re.fullmatch(r"DNS_TCP_FALLBACK gateway=192\.168\.1\.[1-4] resolver=(?:192\.168\.1\.[1-4]|1\.1\.1\.1) result=(?:ok|failed)", line)
                        for line in completed.stderr.splitlines())
             assert "result=ok" in completed.stderr and "result=failed" in completed.stderr
+        else:
+            assert lines[-1] == "GATEWAY_SOCKS_RESOLVE_TEST_OK checks=145 capture=false sockets=false os_dns=false"
+            assert lines[0].startswith("DNS_SELF_TEST_OK ") and len(lines) == 2
+            assert not completed.stderr
         assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
         results[name] = {"ok": True, "source_sha256": sha256(source),
                          "stdout": completed.stdout, "stderr": completed.stderr,
@@ -88,6 +92,8 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
                          "capture_executed": False, "os_network_changed": False}
         if name == "gateway_dns_transport":
             results[name]["checks"] = 169
+        elif name == "gateway_socks_resolve":
+            results[name]["checks"] = 145
     return results
 
 

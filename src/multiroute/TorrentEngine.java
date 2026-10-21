@@ -17,10 +17,19 @@ import java.util.function.*;
 public final class TorrentEngine {
     @FunctionalInterface interface Resolver {
         InetSocketAddress resolve(Map<String,Object> route) throws Exception;
+        default List<String> bootstrap(Map<String,Object> route,InetSocketAddress endpoint) throws Exception {return List.of();}
         default java.net.http.HttpResponse<InputStream> open(Map<String,Object> route,String url,long start,long end)throws Exception {return Transport.open(route,url,start,end,null,null);}
         default java.net.http.HttpResponse<InputStream> get(Map<String,Object> route,String url)throws Exception {return Transport.torrentGet(route,url);}
     }
     private TorrentEngine() { }
+    static final Resolver DEFAULT_RESOLVER=new Resolver(){
+        public InetSocketAddress resolve(Map<String,Object> route)throws Exception{return socksEndpoint(route);}
+        public List<String> bootstrap(Map<String,Object> route,InetSocketAddress endpoint)throws Exception{return TorrentBootstrap.resolve(route,endpoint);}
+    };
+    private static Resolver relayResolver(TorrentNetwork network,Resolver upstream){return new Resolver(){
+        public InetSocketAddress resolve(Map<String,Object> route){return network.endpoint();}
+        public List<String> bootstrap(Map<String,Object> route,InetSocketAddress endpoint)throws Exception{return upstream.bootstrap(route,network.upstream);}
+    };}
     public static InetSocketAddress socksEndpoint(Map<String,Object> route) throws Exception {
         if (!"gateway".equals(route.get("type"))) throw new IOException("Для torrent выберите шлюз");
         try {
@@ -54,6 +63,8 @@ public final class TorrentEngine {
         settings.setBoolean(settings_pack.bool_types.enable_outgoing_utp.swigValue(),false);
         settings.setBoolean(settings_pack.bool_types.enable_outgoing_tcp.swigValue(),discovery);
         settings.setBoolean(settings_pack.bool_types.enable_dht.swigValue(),discovery);
+        // An explicit value also suppresses SessionManager's hostname defaults and OS DNS queue.
+        settings.setString(settings_pack.string_types.dht_bootstrap_nodes.swigValue(),discovery?TorrentBootstrap.numericNodes(resolver.bootstrap(route,proxy)):"");
         settings.setBoolean(settings_pack.bool_types.prefer_udp_trackers.swigValue(),false);
         settings.setInteger(settings_pack.int_types.connections_limit.swigValue(),12);
         settings.setInteger(settings_pack.int_types.max_metadata_size.swigValue(),TorrentSource.MAX_METADATA);
@@ -83,7 +94,7 @@ public final class TorrentEngine {
                     }else{failure.set("Не удалось получить метаданные magnet");ready.countDown();}
                 }catch(Throwable error){failure.set("Ошибка метаданных magnet: "+error.getMessage());ready.countDown();}
             }});
-            session.start(new SessionParams(settings(route,r->activeNetwork.endpoint(),true)));
+            session.start(new SessionParams(settings(route,relayResolver(activeNetwork,resolver),true)));
             AddTorrentParams params=AddTorrentParams.parseMagnetUri(source);networkParams(params,network);params.savePath(temp.toString());
             params.flags(TorrentFlags.UPLOAD_MODE.or_(TorrentFlags.DISABLE_LSD));
             ErrorCode error=new ErrorCode(new error_code());TorrentHandle handle=new SessionHandle(session.swig()).addTorrent(params,error);
@@ -98,11 +109,11 @@ public final class TorrentEngine {
     }
     public static Map<String,Object> run(Map<String,Object> state,Path scratch,BooleanSupplier stop,Consumer<Map<String,Object>> update) throws Exception {
         TorrentSource.nativeReady();
-        try{return run(state,scratch,stop,update,TorrentEngine::socksEndpoint);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
+        try{return run(state,scratch,stop,update,DEFAULT_RESOLVER);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
     }
     public static Map<String,Object> run(Map<String,Object> state,Path scratch,BooleanSupplier stop,Consumer<Map<String,Object>> update,Supplier<List<Map<String,Object>>> routes) throws Exception {
         TorrentSource.nativeReady();
-        try{return run(state,scratch,stop,update,TorrentEngine::socksEndpoint,routes);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
+        try{return run(state,scratch,stop,update,DEFAULT_RESOLVER,routes);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
     }
     static Map<String,Object> run(Map<String,Object> state,Path scratch,BooleanSupplier stop,Consumer<Map<String,Object>> update,Resolver resolver) throws Exception {
         return run(state,scratch,stop,update,resolver,()->enabledRoutes(state));
@@ -114,7 +125,7 @@ public final class TorrentEngine {
         return result;
     }
     static Map<String,Object> runControlled(Map<String,Object> state,Path scratch,BooleanSupplier stop,Consumer<Map<String,Object>> update,Supplier<List<Map<String,Object>>> routes,Supplier<Map<String,Object>> options,TransferLimits limits)throws Exception {
-        TorrentSource.nativeReady();return run(state,scratch,stop,update,TorrentEngine::socksEndpoint,routes,options,limits);
+        TorrentSource.nativeReady();return run(state,scratch,stop,update,DEFAULT_RESOLVER,routes,options,limits);
     }
     static Map<String,Object> run(Map<String,Object> state,Path scratch,BooleanSupplier stop,Consumer<Map<String,Object>> update,Resolver resolver,Supplier<List<Map<String,Object>>> routeSupplier)throws Exception {
         return run(state,scratch,stop,update,resolver,routeSupplier,()->state,null);
@@ -446,7 +457,7 @@ public final class TorrentEngine {
                     else if(alert instanceof FileErrorAlert || alert instanceof TorrentErrorAlert)fatal.set(alert.message());
                 }catch(Throwable failure){fatal.set("Ошибка события BitTorrent: "+failure.getMessage());}
             }});
-            try{session.start(new SessionParams(settings(route,this.network==null?r->new InetSocketAddress("127.0.0.1",1):r->this.network.endpoint(),network)));}catch(Exception|LinkageError error){if(this.network!=null)this.network.close();session.stop();throw error;}
+            try{session.start(new SessionParams(settings(route,this.network==null?r->new InetSocketAddress("127.0.0.1",1):relayResolver(this.network,resolver),network)));}catch(Exception|LinkageError error){if(this.network!=null)this.network.close();session.stop();throw error;}
         }
         void add(TorrentInfo ti,Priority[] priorities)throws Exception {add(ti,priorities,"");}
         void add(TorrentInfo ti,Priority[] priorities,String source)throws Exception {

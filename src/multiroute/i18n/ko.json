@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "선택한 이더넷 어댑터가 더 이상 활성 상태가 아닙니다",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "선택한 이더넷 어댑터의 하드웨어 주소가 변경되었습니다. 앱의 네트워크 설정을 다시 확인하고 적용하세요",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP를 통한 DNS 요청 성공: 게이트웨이=%s DNS 서버=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "TCP를 통한 DNS 요청 실패: 게이트웨이=%s DNS 서버=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP를 통한 DNS 요청 실패: 게이트웨이=%s DNS 서버=%s",
+  "Resolve torrent bootstrap": "DHT 부트스트랩 노드 조회",
+  "Invalid local SOCKS5 gateway": "게이트웨이의 로컬 SOCKS5 서버가 잘못되었습니다",
+  "Invalid torrent bootstrap limits": "DHT 부트스트랩 노드 조회 제한이 잘못되었습니다",
+  "Torrent bootstrap resolver failed": "DHT 부트스트랩 노드를 조회하지 못했습니다",
+  "Invalid torrent bootstrap endpoint": "DHT 부트스트랩 노드 주소가 잘못되었습니다",
+  "Invalid torrent bootstrap hostname": "DHT 부트스트랩 노드 호스트 이름이 잘못되었습니다",
+  "Torrent bootstrap DNS timed out": "DHT 부트스트랩 DNS 조회 시간이 초과되었습니다",
+  "Torrent bootstrap cancelled": "DHT 부트스트랩 노드 조회가 취소되었습니다",
+  "Invalid SOCKS5 bootstrap greeting": "DHT 부트스트랩 조회 중 SOCKS5 인사 메시지가 잘못되었습니다",
+  "Invalid SOCKS5 bootstrap response": "DHT 부트스트랩 조회 중 SOCKS5 응답이 잘못되었습니다",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "게이트웨이가 DHT 부트스트랩 노드를 조회하지 못했습니다(SOCKS 상태 %d)",
+  "Gateway returned an invalid torrent bootstrap address": "게이트웨이가 잘못된 DHT 부트스트랩 주소를 반환했습니다",
+  "Invalid torrent bootstrap endpoints": "DHT 부트스트랩 주소 목록이 잘못되었습니다",
+  "Torrent bootstrap must use public numeric IPv4": "DHT 부트스트랩 노드는 숫자로 된 공인 IPv4 주소를 사용해야 합니다"
 }

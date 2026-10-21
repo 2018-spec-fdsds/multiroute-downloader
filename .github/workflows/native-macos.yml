@@ -45,9 +45,9 @@ jobs:
           distribution: temurin
           java-version: '21'
           architecture: ${{ matrix.architecture == 'arm64' && 'aarch64' || 'x64' }}
-      - name: Build pinned native app, three pure C fixtures including DNS transport and Installer
+      - name: Build pinned native app, four pure C fixtures including DNS and SOCKS RESOLVE and Installer
         run: python3 packaging/macos/build.py --architecture '${{ matrix.architecture }}' --output dist/macos
-      - name: Verify package identities, DNS169, packaged network and real-timer scroll gates
+      - name: Verify package identities, DNS169, RESOLVE145, numeric torrent bootstrap and real-timer scroll gates
         run: python3 packaging/macos/verify.py --directory dist/macos
       - uses: actions/upload-artifact@v4
         with:

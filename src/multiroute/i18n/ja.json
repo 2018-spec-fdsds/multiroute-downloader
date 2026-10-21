@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "選択した Ethernet アダプターが有効ではなくなりました",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "選択した Ethernet アダプターのハードウェアアドレスが変更されました。アプリのネットワーク設定を再確認して適用してください",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP 経由の DNS 問い合わせに成功：ゲートウェイ=%s DNS サーバー=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "TCP 経由の DNS 問い合わせに失敗：ゲートウェイ=%s DNS サーバー=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP 経由の DNS 問い合わせに失敗：ゲートウェイ=%s DNS サーバー=%s",
+  "Resolve torrent bootstrap": "DHT ブートストラップノードの名前解決",
+  "Invalid local SOCKS5 gateway": "ゲートウェイのローカル SOCKS5 サーバーが無効です",
+  "Invalid torrent bootstrap limits": "DHT ブートストラップノードの検索制限が無効です",
+  "Torrent bootstrap resolver failed": "DHT ブートストラップノードの名前を解決できませんでした",
+  "Invalid torrent bootstrap endpoint": "DHT ブートストラップノードのアドレスが無効です",
+  "Invalid torrent bootstrap hostname": "DHT ブートストラップノードのホスト名が無効です",
+  "Torrent bootstrap DNS timed out": "DHT ブートストラップノードの DNS 名前解決がタイムアウトしました",
+  "Torrent bootstrap cancelled": "DHT ブートストラップノードの検索がキャンセルされました",
+  "Invalid SOCKS5 bootstrap greeting": "DHT ブートストラップ検索時の SOCKS5 ハンドシェイクが無効です",
+  "Invalid SOCKS5 bootstrap response": "DHT ブートストラップ検索時の SOCKS5 応答が無効です",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "ゲートウェイは DHT ブートストラップノードの名前を解決できませんでした（SOCKS ステータス %d）",
+  "Gateway returned an invalid torrent bootstrap address": "ゲートウェイが無効な DHT ブートストラップアドレスを返しました",
+  "Invalid torrent bootstrap endpoints": "DHT ブートストラップノードのアドレス一覧が無効です",
+  "Torrent bootstrap must use public numeric IPv4": "DHT ブートストラップノードには公開された数値 IPv4 アドレスが必要です"
 }

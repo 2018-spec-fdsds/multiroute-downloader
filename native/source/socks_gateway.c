@@ -2,39 +2,13 @@
  * RFC 1928 CONNECT and UDP ASSOCIATE; no OS network configuration/fallback.
  * Included in gateway_native.c so it shares that file's verified Ethernet stack.
  */
-#define SOCKS_MAX_DATAGRAM 65507
-#define SOCKS_MAX_PAYLOAD (SOCKS_MAX_DATAGRAM-10)
-typedef struct socks_address {
-  unsigned char type;
-  uint32_t ip;
-  char domain[256];
-  unsigned short port;
-  size_t bytes;
-} socks_address;
-static int socks_domain_valid(const unsigned char *p,size_t n) {
-  size_t i;if(!n||n>255)return 0;
-  for(i=0;i<n;i++)if(!((p[i]>='a'&&p[i]<='z')||(p[i]>='A'&&p[i]<='Z')||(p[i]>='0'&&p[i]<='9')||p[i]=='-'||p[i]=='.'))return 0;
-  return 1;
-}
-/* Parses ATYP + DST.ADDR + DST.PORT without DNS or network side effects. */
-static int socks_parse_address(const unsigned char *p,size_t n,socks_address *a) {
-  size_t index;memset(a,0,sizeof(*a));if(!n)return 1;a->type=p[0];
-  if(a->type==1){if(n<7)return 1;a->ip=get32(p+1);index=5;}
-  else if(a->type==3){if(n<2)return 1;index=(size_t)p[1]+2;if(n<index+2||!socks_domain_valid(p+2,p[1]))return 1;memcpy(a->domain,p+2,p[1]);a->domain[p[1]]=0;}
-  else return 8;
-  a->port=get16(p+index);a->bytes=index+2;return 0;
-}
-static int socks_parse_datagram(const unsigned char *p,size_t n,socks_address *a,size_t *offset) {
-  int error;if(n<4||p[0]||p[1]||p[2])return 1;
-  error=socks_parse_address(p+3,n-3,a);if(error)return error;
-  *offset=a->bytes+3;if(!a->port||n-*offset>SOCKS_MAX_PAYLOAD)return 1;return 0;
-}
+#include "gateway_socks_protocol.h"
 static int socks_recv_exact(SOCKET s,unsigned char *out,size_t n) {
   size_t done=0;ULONGLONG until=GetTickCount64()+5000;
   while(done<n&&!cancelled()&&GetTickCount64()<until){int got=recv(s,(char*)out+done,(int)(n-done),0);if(got<=0)return 0;done+=(size_t)got;}return done==n;
 }
 static int socks_reply(SOCKET s,unsigned char error,uint32_t ip,unsigned short port) {
-  unsigned char response[10]={5,0,0,1};response[1]=error;put32(response+4,ip);put16(response+8,port);return socket_send_all(s,response,sizeof(response));
+  unsigned char response[10];socks_reply_bytes(response,error,ip,port);return socket_send_all(s,response,sizeof(response));
 }
 static int socks_read_address(SOCKET s,unsigned char type,socks_address *address) {
   unsigned char buffer[262];size_t size;buffer[0]=type;
@@ -47,6 +21,22 @@ static int socks_read_address(SOCKET s,unsigned char type,socks_address *address
 static int socks_resolve(profile *route,const socks_address *a,ip_addr_t *ip) {
   if(a->type==1){if(!public_ip(a->ip))return 0;ip_addr_set_ip4_u32(ip,htonl(a->ip));return 1;}
   return a->type==3&&resolve_remote(route,a->domain,ip);
+}
+static int socks_gateway_lookup(void *selected_route,const char *host,uint32_t *address) {
+  profile *route=(profile*)selected_route;ip_addr_t resolved;
+  if(!resolve_remote(route,host,&resolved)||cancelled()||!route->configured||!route->mac_known)return 0;
+  *address=ntohl(ip_addr_get_ip4_u32(&resolved));return 1;
+}
+static void socks_resolve_only(client *c,const socks_address *address) {
+  uint32_t resolved=0;unsigned char error;uint64_t started=(uint64_t)GetTickCount64();
+  error=socks_resolve_request(c->route,c->route->configured&&c->route->mac_known&&!cancelled(),address,socks_gateway_lookup,&resolved);
+  if(error==4){
+    mr_proxy_diagnostic diagnostic={0};char record[MR_PROXY_DIAGNOSTIC_SIZE];uint64_t now=(uint64_t)GetTickCount64();
+    diagnostic.gateway=c->route->gateway;diagnostic.host=address->domain;diagnostic.started_ms=started;
+    mr_proxy_diagnostic_format(record,&diagnostic,"dns","No public IPv4 address for source",now>=started?now-started:0,MR_PROXY_LWIP_UNKNOWN);
+    fputs(record,stderr);fflush(stderr);
+  }
+  socks_reply(c->local,error,resolved,0);
 }
 static unsigned short socks_next_port(void) {
   for(;;){LONG port=InterlockedIncrement(&next_port);if(port>60000){InterlockedExchange(&next_port,20000);continue;}return (unsigned short)port;}
@@ -152,8 +142,9 @@ static DWORD WINAPI serve_socks_client(LPVOID pointer) {
   if(!socket_send_all(c->local,answer,2)||answer[1]==255)goto done;
   if(!socks_recv_exact(c->local,request,4))goto done;
   if(request[0]!=5||request[2]){socks_reply(c->local,1,0,0);goto done;}
-  if(request[1]!=1&&request[1]!=3){socks_reply(c->local,7,0,0);goto done;}
+  if(!socks_command_supported(request[1])){socks_reply(c->local,7,0,0);goto done;}
   error=socks_read_address(c->local,request[3],&address);if(error){socks_reply(c->local,(unsigned char)error,0,0);goto done;}
+  if(request[1]==SOCKS_COMMAND_RESOLVE){socks_resolve_only(c,&address);goto done;}
   if(request[1]==3){socks_udp_association(c,&address);goto done;}
   error=socks_tcp_connect(c,&address);if(error){socks_reply(c->local,(unsigned char)error,0,0);goto done;}
   if(socks_reply(c->local,0,virtual_host,c->port))socks_tcp_pump(c);

@@ -24,7 +24,7 @@ public final class LocalesTest40 {
         check(I18n.codes().equals(List.of("ru","en","de","es","fr","zh","ko","ar","it","ja","hi","vi")), "Twelve-language selector inventory differs");
         check(I18n.DEFAULT_LANGUAGE.equals("en"), "Default language changed");
         Map<String,String[]> all = new TreeMap<>(DiagnosticText.catalogRows()); all.putAll(I18n.sourceRows());
-        check(all.size() == 1465, "Unexpected canonical message inventory");
+        check(all.size() == 1479, "Unexpected canonical message inventory");
         Map<String,Object> counts = new LinkedHashMap<>();
         for (String code : LocalizedCatalog.EXTRA) {
             Map<String,String> catalog = LocalizedCatalog.catalog(code);
@@ -55,6 +55,20 @@ public final class LocalesTest40 {
             check(rendered.contains(name) && rendered.contains(owned.toString()) && rendered.indexOf('\ufffd') < 0, "History Unicode path did not reach viewer: " + code);
             Files.writeString(owned.resolve("history-" + code + ".txt"), rendered, StandardCharsets.UTF_8);
             check(Files.readString(owned.resolve("history-" + code + ".txt"), StandardCharsets.UTF_8).equals(rendered), "UTF-8 output roundtrip failed");
+            String operation = "Resolve torrent bootstrap";
+            String statusTemplate = "Gateway could not resolve torrent bootstrap (SOCKS status %d)";
+            String status = String.format(Locale.ROOT, statusTemplate, 7);
+            String localizedOperation = DiagnosticText.renderFor(code, operation);
+            check(localizedOperation.equals(I18n.tFor(code, operation)) && (code.equals("en") || !localizedOperation.equals(operation)), "Bootstrap operation was not translated: " + code);
+            check(DiagnosticText.renderFor(code, status).equals(I18n.tFor(code, statusTemplate, 7)), "Canonical SOCKS status did not switch language: " + code);
+            String networkTemplate = "Network request failed: gateway=%s server=%s operation=%s elapsed_ms=%d error=%s";
+            String canonical = String.format(Locale.ROOT, networkTemplate, "192.168.1.3", "router.bittorrent.com:6881", operation, 10000, status);
+            String nested = DiagnosticText.renderFor(code, canonical);
+            check(nested.equals(I18n.tFor(code, networkTemplate, "192.168.1.3", "router.bittorrent.com:6881", DiagnosticText.arg(operation), 10000, DiagnosticText.arg(status))), "Nested bootstrap network diagnostic lost a translated field: " + code);
+            check(DiagnosticText.renderFor(code, "java.io.IOException: " + status).equals("java.io.IOException: " + I18n.tFor(code, statusTemplate, 7)), "Bootstrap exception prefix prevented translation: " + code);
+            Path bootstrapLog = owned.resolve("bootstrap-" + code + ".txt");
+            Files.writeString(bootstrapLog, nested, StandardCharsets.UTF_8);
+            check(Files.readString(bootstrapLog, StandardCharsets.UTF_8).equals(nested) && nested.indexOf('\ufffd') < 0, "Bootstrap UTF-8 output roundtrip failed: " + code);
         }
         SwingUtilities.invokeAndWait(() -> {
             DesktopTheme.install("light"); DesktopUI.installReadableFonts();
@@ -74,6 +88,7 @@ public final class LocalesTest40 {
         report.put("checks", checks); report.put("catalog_entries", all.size()); report.put("extra_locales", counts);
         report.put("languages", I18n.codes()); report.put("arabic_rtl_and_ltr_data_fields", true);
         report.put("utf8_ui_history_output_roundtrip", true); report.put("network_calls", 0); report.put("user_data_read", false);
+        report.put("bootstrap_nested_diagnostics_and_utf8_output", true);
         Files.writeString(owned.resolve("LOCALES-TESTS.json"), Json.stringify(report), StandardCharsets.UTF_8);
         System.out.println("PASS " + checks + " locale checks");
     }

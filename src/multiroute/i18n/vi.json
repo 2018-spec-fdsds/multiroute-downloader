@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "Bộ điều hợp Ethernet đã chọn không còn hoạt động",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "Địa chỉ phần cứng của bộ điều hợp Ethernet đã chọn đã thay đổi; hãy kiểm tra và áp dụng lại cài đặt mạng của ứng dụng",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "DNS qua TCP thành công: cổng kết nối=%s máy chủ DNS=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "DNS qua TCP thất bại: cổng kết nối=%s máy chủ DNS=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "DNS qua TCP thất bại: cổng kết nối=%s máy chủ DNS=%s",
+  "Resolve torrent bootstrap": "Phân giải nút khởi đầu DHT",
+  "Invalid local SOCKS5 gateway": "Máy chủ SOCKS5 cục bộ của cổng mạng không hợp lệ",
+  "Invalid torrent bootstrap limits": "Giới hạn tìm nút khởi đầu DHT không hợp lệ",
+  "Torrent bootstrap resolver failed": "Không thể phân giải các nút khởi đầu DHT",
+  "Invalid torrent bootstrap endpoint": "Địa chỉ nút khởi đầu DHT không hợp lệ",
+  "Invalid torrent bootstrap hostname": "Tên máy chủ của nút khởi đầu DHT không hợp lệ",
+  "Torrent bootstrap DNS timed out": "Hết thời gian phân giải DNS cho nút khởi đầu DHT",
+  "Torrent bootstrap cancelled": "Đã hủy tìm nút khởi đầu DHT",
+  "Invalid SOCKS5 bootstrap greeting": "Lời chào SOCKS5 không hợp lệ khi tìm nút khởi đầu DHT",
+  "Invalid SOCKS5 bootstrap response": "Phản hồi SOCKS5 không hợp lệ khi tìm nút khởi đầu DHT",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "Cổng mạng không thể phân giải nút khởi đầu DHT (trạng thái SOCKS %d)",
+  "Gateway returned an invalid torrent bootstrap address": "Cổng mạng trả về địa chỉ nút khởi đầu DHT không hợp lệ",
+  "Invalid torrent bootstrap endpoints": "Danh sách địa chỉ nút khởi đầu DHT không hợp lệ",
+  "Torrent bootstrap must use public numeric IPv4": "Nút khởi đầu DHT phải dùng địa chỉ IPv4 công cộng dạng số"
 }

@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "所选以太网适配器已不再活动",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "所选以太网适配器的硬件地址已更改，请重新检查并应用应用程序的网络设置",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP DNS 查询成功：网关=%s DNS 服务器=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "TCP DNS 查询失败：网关=%s DNS 服务器=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP DNS 查询失败：网关=%s DNS 服务器=%s",
+  "Resolve torrent bootstrap": "解析 DHT 引导节点",
+  "Invalid local SOCKS5 gateway": "本地网关 SOCKS5 服务器无效",
+  "Invalid torrent bootstrap limits": "DHT 引导节点查找限制无效",
+  "Torrent bootstrap resolver failed": "无法解析 DHT 引导节点",
+  "Invalid torrent bootstrap endpoint": "DHT 引导节点地址无效",
+  "Invalid torrent bootstrap hostname": "DHT 引导节点主机名无效",
+  "Torrent bootstrap DNS timed out": "DHT 引导节点 DNS 解析超时",
+  "Torrent bootstrap cancelled": "DHT 引导节点查找已取消",
+  "Invalid SOCKS5 bootstrap greeting": "查找 DHT 引导节点时收到无效的 SOCKS5 握手",
+  "Invalid SOCKS5 bootstrap response": "查找 DHT 引导节点时收到无效的 SOCKS5 响应",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "网关无法解析 DHT 引导节点（SOCKS 状态 %d）",
+  "Gateway returned an invalid torrent bootstrap address": "网关返回了无效的 DHT 引导节点地址",
+  "Invalid torrent bootstrap endpoints": "DHT 引导节点地址列表无效",
+  "Torrent bootstrap must use public numeric IPv4": "DHT 引导节点必须使用公网数字 IPv4 地址"
 }

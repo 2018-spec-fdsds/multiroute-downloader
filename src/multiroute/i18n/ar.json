@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "لم يعد محوّل Ethernet المحدد نشطًا",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "تغيّر عنوان العتاد لمحوّل Ethernet المحدد؛ تحقّق من إعدادات شبكة التطبيق وطبّقها مجددًا",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "نجح DNS عبر TCP: البوابة=%s محلّل DNS=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "فشل DNS عبر TCP: البوابة=%s محلّل DNS=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "فشل DNS عبر TCP: البوابة=%s محلّل DNS=%s",
+  "Resolve torrent bootstrap": "حل أسماء عقد تمهيد DHT",
+  "Invalid local SOCKS5 gateway": "خادم SOCKS5 المحلي للبوابة غير صالح",
+  "Invalid torrent bootstrap limits": "حدود البحث عن عقد تمهيد DHT غير صالحة",
+  "Torrent bootstrap resolver failed": "تعذر حل أسماء عقد تمهيد DHT",
+  "Invalid torrent bootstrap endpoint": "عنوان عقدة تمهيد DHT غير صالح",
+  "Invalid torrent bootstrap hostname": "اسم مضيف عقدة تمهيد DHT غير صالح",
+  "Torrent bootstrap DNS timed out": "انتهت مهلة حل DNS لعقد تمهيد DHT",
+  "Torrent bootstrap cancelled": "أُلغي البحث عن عقد تمهيد DHT",
+  "Invalid SOCKS5 bootstrap greeting": "رسالة تهيئة SOCKS5 غير صالحة أثناء البحث عن عقد تمهيد DHT",
+  "Invalid SOCKS5 bootstrap response": "استجابة SOCKS5 غير صالحة أثناء البحث عن عقد تمهيد DHT",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "تعذر على البوابة حل اسم عقدة تمهيد DHT (حالة SOCKS %d)",
+  "Gateway returned an invalid torrent bootstrap address": "أعادت البوابة عنوانًا غير صالح لعقدة تمهيد DHT",
+  "Invalid torrent bootstrap endpoints": "قائمة عناوين عقد تمهيد DHT غير صالحة",
+  "Torrent bootstrap must use public numeric IPv4": "يجب أن تستخدم عقد تمهيد DHT عناوين IPv4 عامة رقمية"
 }

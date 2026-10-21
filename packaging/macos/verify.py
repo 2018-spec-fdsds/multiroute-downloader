@@ -112,8 +112,8 @@ def verify_native_source_pin(report: dict) -> int:
     actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in sorted(inputs)}
     assert report["native_source_sha256"] == actual, "Native input set/bytes differ from the build snapshot."
-    assert set(report["native_pure_fixtures"]) == {"gateway_diagnostics", "gateway_topology", "gateway_dns_transport"}
-    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport"):
+    assert set(report["native_pure_fixtures"]) == {"gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"}
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"):
         result = report["native_pure_fixtures"][name]
         assert result["ok"] and not result["capture_executed"] and not result["os_network_changed"]
         assert result["source_sha256"] == actual["native/source/tests/" + name + "_test.c"]
@@ -123,6 +123,9 @@ def verify_native_source_pin(report: dict) -> int:
         if name == "gateway_dns_transport":
             assert result["checks"] == 169
             assert result["stdout"].splitlines()[-1] == "GATEWAY_DNS_TRANSPORT_TEST_OK checks=169 capture=false os_network_changed=false"
+        elif name == "gateway_socks_resolve":
+            assert result["checks"] == 145
+            assert result["stdout"].splitlines()[-1] == "GATEWAY_SOCKS_RESOLVE_TEST_OK checks=145 capture=false sockets=false os_dns=false"
     return len(actual)
 
 
@@ -170,7 +173,7 @@ def verify_network42_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
 
 
 def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, version: str) -> dict:
-    """Run DNS log and real-timer scroll regressions against the packaged JAR."""
+    """Run DNS, scroll and gateway-bound torrent regressions against the packaged JAR."""
     root = owned / "hotfix411"
     classes = root / "classes"
     classes.mkdir(parents=True)
@@ -178,6 +181,7 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
         "DnsFallbackLogTest41": ("DNS-FALLBACK-LOG-TESTS.json", True),
         "AllTabsScrollTest41": ("ALL-TABS-SCROLL-TESTS.json", False),
         "TorrentProxyBindingTest411": ("TORRENT-PROXY-BINDING-TESTS.json", True),
+        "TorrentBootstrapTest411": ("TORRENT-BOOTSTRAP-TESTS.json", True),
     }
     run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
          "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
@@ -206,11 +210,17 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
                         "both_log_tabs_keep_middle_and_follow_only_existing_tail",
                         "explicit_keyboard_navigation_and_active_scrollbar_drag_remain_available"}
             assert required <= set(result["cases"]) and len(result["cases"]) >= 12
-        else:
+        elif name == "TorrentProxyBindingTest411":
             assert result["version"] == version and result["checks"] >= 51
             assert len(result["cases"]) == result["checks"]
             assert not result["session_started"] and result["sockets_opened"] == result["real_gateway_calls"] == 0
             assert not result["user_files_read"]
+        else:
+            assert result["version"] == version and result["checks"] == 53
+            assert len(result["cases"]) == result["checks"]
+            assert result["network_scope"] == "owned loopback SOCKS RESOLVE endpoints only"
+            assert not result["native_session_started"] and not result["native_capture_helper_started"]
+            assert result["real_gateway_fallback_calls"] == 0 and not result["user_files_read"]
         results[name] = {"checks": result["checks"], "headless": headless,
                          "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
                          "report": result}
@@ -772,6 +782,7 @@ public final class NativeDesktopFixture {
         checks.append("packaged JAR DNS TCP fallback log across twelve languages")
         checks.append("packaged JAR all-tab scrolling across actual desktop timers")
         checks.append("packaged JAR native torrent settings bind IPv4 and IPv6 loopback proxies without sessions or sockets")
+        checks.append("packaged JAR torrent bootstrap resolves public IPv4 addresses through selected SOCKS RESOLVE endpoints with bounded concurrent DNS and no native session or capture helper")
         checks.append("packaged JAR network diagnostics, durable error journal and authoritative topology bridge pass in fresh owned profiles with no physical gateways or OS network changes")
         checks.append("owned non-headless Swing topology label, translated tooltips and status changes pass using injected snapshots and no real gateway requests")
 
@@ -928,7 +939,7 @@ public final class MacAuthorizationFixture {
         assert distribution.find("options").get("hostArchitectures") == architecture
         assert distribution.find("volume-check/allowed-os-versions/os-version").get("min") == report["minimum_macos"]
         checks.append("expanded installer contains the matching helper/checksum and passes native offline self-test")
-        checks.append("native C/header input set is pinned and both pure native fixtures passed on this Mac CPU without capture")
+        checks.append("native C/header input set is pinned and all four pure native fixtures, including DNS169 and SOCKS RESOLVE145, passed on this Mac CPU without capture")
     result = {
         "ok": True, "architecture": architecture, "version": report["version"], "checks": checks,
         "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction", "real macOS menu-bar tray interaction", "graphical macOS downloads table layout, scrolling and viewport restoration"],

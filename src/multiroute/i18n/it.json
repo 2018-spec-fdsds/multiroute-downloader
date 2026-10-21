@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "L’adattatore Ethernet selezionato non è più attivo",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "L’indirizzo hardware dell’adattatore Ethernet selezionato è cambiato; verificare e applicare di nuovo le impostazioni di rete dell’applicazione",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "DNS su TCP riuscito: gateway=%s resolver=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "DNS su TCP non riuscito: gateway=%s resolver=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "DNS su TCP non riuscito: gateway=%s resolver=%s",
+  "Resolve torrent bootstrap": "Risoluzione dei nodi iniziali DHT",
+  "Invalid local SOCKS5 gateway": "Server SOCKS5 locale del gateway non valido",
+  "Invalid torrent bootstrap limits": "Limiti di ricerca dei nodi iniziali DHT non validi",
+  "Torrent bootstrap resolver failed": "Impossibile risolvere i nodi iniziali DHT",
+  "Invalid torrent bootstrap endpoint": "Indirizzo del nodo iniziale DHT non valido",
+  "Invalid torrent bootstrap hostname": "Nome host del nodo iniziale DHT non valido",
+  "Torrent bootstrap DNS timed out": "Timeout della risoluzione DNS dei nodi iniziali DHT",
+  "Torrent bootstrap cancelled": "Ricerca dei nodi iniziali DHT annullata",
+  "Invalid SOCKS5 bootstrap greeting": "Saluto SOCKS5 non valido durante la ricerca dei nodi iniziali DHT",
+  "Invalid SOCKS5 bootstrap response": "Risposta SOCKS5 non valida durante la ricerca dei nodi iniziali DHT",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "Il gateway non ha risolto il nodo iniziale DHT (stato SOCKS %d)",
+  "Gateway returned an invalid torrent bootstrap address": "Il gateway ha restituito un indirizzo di nodo iniziale DHT non valido",
+  "Invalid torrent bootstrap endpoints": "Elenco degli indirizzi dei nodi iniziali DHT non valido",
+  "Torrent bootstrap must use public numeric IPv4": "I nodi iniziali DHT devono usare indirizzi IPv4 numerici pubblici"
 }

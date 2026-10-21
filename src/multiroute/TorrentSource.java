@@ -21,7 +21,7 @@ public final class TorrentSource {
     }
     public static Map<String,Object> inspect(String source, Map<String,Object> route) throws Exception {
         nativeReady();
-        try{return inspect(source, route, TorrentEngine::socksEndpoint);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
+        try{return inspect(source, route, TorrentEngine.DEFAULT_RESOLVER);}catch(LinkageError unavailable){throw new IOException("Компонент BitTorrent не загружен. Обновите всю папку приложения",unavailable);}
     }
     static Map<String,Object> inspect(String source, Map<String,Object> route, TorrentEngine.Resolver resolver) throws Exception {
         if (source == null || source.isBlank() || source.length() > 64 * 1024) throw new IOException("Некорректная ссылка torrent");

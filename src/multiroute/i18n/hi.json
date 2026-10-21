@@ -1463,5 +1463,19 @@
   "The selected Ethernet adapter is no longer active": "चुना गया Ethernet अडैप्टर अब सक्रिय नहीं है",
   "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "चुने गए Ethernet अडैप्टर का हार्डवेयर पता बदल गया है; ऐप की नेटवर्क सेटिंग फिर जाँचें और लागू करें",
   "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP पर DNS अनुरोध सफल: गेटवे=%s DNS रिज़ॉल्वर=%s",
-  "DNS over TCP failed: gateway=%s resolver=%s": "TCP पर DNS अनुरोध विफल: गेटवे=%s DNS रिज़ॉल्वर=%s"
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP पर DNS अनुरोध विफल: गेटवे=%s DNS रिज़ॉल्वर=%s",
+  "Resolve torrent bootstrap": "DHT प्रारंभिक नोड के नाम हल करें",
+  "Invalid local SOCKS5 gateway": "गेटवे का स्थानीय SOCKS5 सर्वर अमान्य है",
+  "Invalid torrent bootstrap limits": "DHT प्रारंभिक नोड खोज की सीमाएँ अमान्य हैं",
+  "Torrent bootstrap resolver failed": "DHT प्रारंभिक नोड के नाम हल नहीं हो सके",
+  "Invalid torrent bootstrap endpoint": "DHT प्रारंभिक नोड का पता अमान्य है",
+  "Invalid torrent bootstrap hostname": "DHT प्रारंभिक नोड का होस्ट नाम अमान्य है",
+  "Torrent bootstrap DNS timed out": "DHT प्रारंभिक नोड के DNS समाधान का समय समाप्त हो गया",
+  "Torrent bootstrap cancelled": "DHT प्रारंभिक नोड की खोज रद्द कर दी गई",
+  "Invalid SOCKS5 bootstrap greeting": "DHT प्रारंभिक नोड की खोज के दौरान SOCKS5 अभिवादन अमान्य है",
+  "Invalid SOCKS5 bootstrap response": "DHT प्रारंभिक नोड की खोज के दौरान SOCKS5 उत्तर अमान्य है",
+  "Gateway could not resolve torrent bootstrap (SOCKS status %d)": "गेटवे DHT प्रारंभिक नोड का नाम हल नहीं कर सका (SOCKS स्थिति %d)",
+  "Gateway returned an invalid torrent bootstrap address": "गेटवे ने DHT प्रारंभिक नोड का अमान्य पता लौटाया",
+  "Invalid torrent bootstrap endpoints": "DHT प्रारंभिक नोड की पता सूची अमान्य है",
+  "Torrent bootstrap must use public numeric IPv4": "DHT प्रारंभिक नोड को सार्वजनिक संख्यात्मक IPv4 पते इस्तेमाल करने चाहिए"
 }
