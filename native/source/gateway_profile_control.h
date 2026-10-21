@@ -1,8 +1,13 @@
 /* Private owner-only hot profile commands. Existing netifs/listener ports stay stable. */
+static uint32_t configured_gateway_order[MAX_CONFIGURED_PROFILES];
+static int configured_gateway_order_count;
 static void ready_hot_fields(FILE *f) {
   int i,first=1;fprintf(f,",\"hot_gateway_updates\":true,\"max_gateway_profiles\":32,\"control_revision\":%llu,\"control_error\":",(unsigned long long)control_revision);
   json_string(f,control_error);fputs(",\"configured_gateways\":[",f);
-  for(i=0;i<profile_count;i++)if(profiles[i].configured){if(!first)fputc(',',f);first=0;json_string(f,profiles[i].gateway);}fputc(']',f);
+  if(configured_gateway_order_count){
+    for(i=0;i<configured_gateway_order_count;i++){char gateway[16];mr_lan_ip(gateway,configured_gateway_order[i]);if(i)fputc(',',f);json_string(f,gateway);}
+  } else for(i=0;i<profile_count;i++)if(profiles[i].configured){if(!first)fputc(',',f);first=0;json_string(f,profiles[i].gateway);}
+  fputc(']',f);
 }
 static int read_profile_control(char *data,size_t capacity) {
   char name[4300];size_t n=0;snprintf(name,sizeof(name),"%s.gateways",ready_path);
@@ -35,6 +40,7 @@ static int hot_add_profile(const char *gateway,uint32_t host) {
   arp_send(virtual_host,host,1,NULL);return 1;
 }
 static int (*profile_activator)(const char*,uint32_t)=hot_add_profile;
+static int (*profile_topology_reader)(const uint32_t*,size_t,uint32_t*,char*,size_t)=read_selected_topology;
 static int apply_profile_command(char *data) {
   char *revision_text,*list,*end,*p;unsigned long long revision;uint32_t hosts[32];char names[32][16];int count=0,i,j;
   if(strncmp(data,"MR_GATEWAYS_3\n",14))return 0;
@@ -49,6 +55,13 @@ static int apply_profile_command(char *data) {
     if(!parse_ip(names[count],&hosts[count])||hosts[count]==virtual_host||(hosts[count]&mask_host)!=(virtual_host&mask_host)||hosts[count]==(virtual_host&mask_host)||hosts[count]==((virtual_host&mask_host)|~mask_host))goto invalid;
     for(i=0;i<count;i++)if(hosts[i]==hosts[count])goto invalid;count++;if(!comma)break;p=comma+1;
   }
+  /* Validate the complete desired list before creating/enabling any profile. A bad
+   * new gateway must not stop or change the existing working profile set. */
+  {uint32_t computer_ip;char error[512];
+    if(!profile_topology_reader(hosts,(size_t)count,&computer_ip,error,sizeof(error))){
+      control_revision=revision;snprintf(control_error,sizeof(control_error),"%s",error);report_topology_error(control_error);return 1;
+    }
+  }
   for(i=0;i<count;i++){
     for(j=0;j<profile_count;j++)if(profiles[j].gateway_host==hosts[i])break;
     if(j==profile_count){if(!profile_activator(names[i],hosts[i])){control_revision=revision;strcpy(control_error,"Cannot allocate a gateway profile; restart the application to reclaim inactive profiles");return 1;}}
@@ -56,9 +69,10 @@ static int apply_profile_command(char *data) {
   }
   EnterCriticalSection(&ready_lock);
   for(i=0;i<profile_count;i++){int enabled=0;for(j=0;j<count;j++)if(profiles[i].gateway_host==hosts[j]){enabled=1;break;}InterlockedExchange(&profiles[i].configured,enabled);}
+  memcpy(configured_gateway_order,hosts,(size_t)count*sizeof(hosts[0]));configured_gateway_order_count=count;
   control_revision=revision;control_error[0]=0;LeaveCriticalSection(&ready_lock);return 1;
 invalid:
-  control_revision=revision;strcpy(control_error,"Gateway profiles must be unique addresses in the application's Ethernet subnet (1 to 32)");return 1;
+  control_revision=revision;strcpy(control_error,"Gateway profiles must be unique addresses in the application's Ethernet subnet (1 to 32)");report_topology_error(control_error);return 1;
 }
 static void poll_profile_control(void) {
   char data[1024];int result=read_profile_control(data,sizeof(data));
@@ -72,9 +86,18 @@ static int profile_test_activate(const char *gateway,uint32_t host){
   r->proxy_port=(unsigned short)(3000+profile_count);r->socks_port=(unsigned short)(4000+profile_count);r->mac_known=1;
   InterlockedIncrement(&profile_count_raw);return 1;
 }
+static int profile_test_topology(const uint32_t *hosts,size_t count,uint32_t *computer_ip,char *error,size_t size){
+  uint32_t os_address=0xc0a80164;mr_lan_result result=mr_lan_validate(os_address,mask_host,virtual_host,hosts,count,&os_address,1);
+  if(result!=MR_LAN_OK)return topology_error(error,size,mr_lan_reason(result));
+  *computer_ip=os_address;return 1;
+}
 static int profile_control_self_test(void){
   char command[1024];int i,n;uint32_t oldmask=mask_host;int (*old)(const char*,uint32_t)=profile_activator;
-  if(profile_count||capture||transmit)return 1;profile_activator=profile_test_activate;mask_host=0xffffff00;
+  int (*old_topology)(const uint32_t*,size_t,uint32_t*,char*,size_t)=profile_topology_reader;
+  if(profile_count||capture||transmit||configured_gateway_order_count)return 1;profile_activator=profile_test_activate;profile_topology_reader=profile_test_topology;mask_host=0xffffff00;
+  for(i=1;i<=4;i++){char gateway[16];snprintf(gateway,sizeof(gateway),"192.168.1.%d",i);if(!profile_test_activate(gateway,0xc0a80100U+(uint32_t)i))return 11;profiles[i-1].configured=1;}
+  fputs("INITIAL_PROFILE_READY {\"fixture\":true",stdout);ready_hot_fields(stdout);puts("}");
+  memset(profiles,0,sizeof(profiles));InterlockedExchange(&profile_count_raw,0);
   strcpy(command,"MR_GATEWAYS_3\n1\n192.168.1.1,192.168.1.2,192.168.1.3,192.168.1.4,192.168.1.5\n");
   if(!apply_profile_command(command)||profile_count!=5||control_error[0])return 2;
   profiles[0].tx_bytes=771;unsigned short stable=profiles[0].proxy_port;
@@ -87,6 +110,10 @@ static int profile_control_self_test(void){
   if(!apply_profile_command(command)||profile_count!=32||control_error[0])return 6;
   for(i=0;i<32;i++)if(!profiles[i].configured)return 7;
   strcpy(command,"MR_GATEWAYS_3\n5\n192.168.1.33\n");if(apply_profile_command(command)||profile_count!=32)return 8;
-  profile_activator=old;mask_host=oldmask;memset(profiles,0,sizeof(profiles));InterlockedExchange(&profile_count_raw,0);control_revision=0;control_error[0]=0;
-  puts("HOT_PROFILE_SELF_TEST_OK stable ports, live add/remove, 32 profiles, no network handles");return 0;
+  strcpy(command,"MR_GATEWAYS_3\n6\n192.168.1.6,192.168.1.1\n");
+  if(!apply_profile_command(command)||control_error[0]||configured_gateway_order_count!=2||configured_gateway_order[0]!=0xc0a80106||configured_gateway_order[1]!=0xc0a80101||profiles[0].proxy_port!=stable)return 9;
+  strcpy(command,"MR_GATEWAYS_3\n7\n192.168.1.1,192.168.1.100\n");
+  if(!apply_profile_command(command)||!strstr(control_error,"assigned")||profile_count!=32||configured_gateway_order_count!=2||configured_gateway_order[0]!=0xc0a80106||profiles[0].proxy_port!=stable||!profiles[5].configured)return 10;
+  profile_activator=old;profile_topology_reader=old_topology;mask_host=oldmask;memset(profiles,0,sizeof(profiles));InterlockedExchange(&profile_count_raw,0);control_revision=0;control_error[0]=0;configured_gateway_order_count=0;
+  puts("HOT_PROFILE_SELF_TEST_OK stable ports, live add/remove, ordered profiles, rejected topology leaves old profiles, 32 profiles, no network handles");return 0;
 }

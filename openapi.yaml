@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MultiRoute Downloader local API
-  version: '4.0'
+  version: '4.1'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
 servers:
@@ -93,7 +93,48 @@ paths:
       responses:
         '200':
           description: Virtual IPv4, configured routers and network helper state. No OS routes or IP configuration
-            are edited.
+            are edited. network_validation contains fresh native subnet evidence; GET never starts the helper.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  virtual_ip:
+                    type: string
+                  gateways:
+                    type: array
+                    items:
+                      type: string
+                  running:
+                    type: boolean
+                  os_routes_changed:
+                    type: boolean
+                    enum: [false]
+                  network_validation:
+                    type: object
+                    required: [status, message]
+                    properties:
+                      status:
+                        type: string
+                        enum: [pending, valid, error]
+                      message:
+                        type: string
+                        description: Canonical diagnostic text; desktop presentation translates it.
+                      computer_ipv4:
+                        type: string
+                      netmask:
+                        type: string
+                      prefix_length:
+                        type: integer
+                        minimum: 1
+                        maximum: 30
+                      network_cidr:
+                        type: string
+                      interface_index:
+                        type: integer
+                      network_generation:
+                        type: integer
+                        description: Increases when the observed computer IPv4 changes on the selected LAN.
     post:
       operationId: configureApplicationNetwork
       requestBody:

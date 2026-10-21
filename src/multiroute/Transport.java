@@ -57,6 +57,16 @@ public final class Transport {
 
     private Transport() { }
 
+    private static HttpResponse<InputStream> send(HttpClient client, Map<String,Object> route,
+            HttpRequest request) throws IOException, InterruptedException {
+        long started = System.nanoTime();
+        try { return client.send(request, HttpResponse.BodyHandlers.ofInputStream()); }
+        catch (IOException error) {
+            NetworkDiagnostics.requestFailure(route, request.uri(), "HTTP request", started, error);
+            throw error;
+        }
+    }
+
     /** A protocol or access failure that another identical attempt cannot repair. */
     public static class NonRetryableException extends IOException {
         public NonRetryableException(String message) { super(message); }
@@ -93,8 +103,8 @@ public final class Transport {
                 if (etag != null && !etag.isBlank() && !etag.startsWith("W/")) request.header("If-Range", etag);
                 else if (modified != null && !modified.isBlank()) request.header("If-Range", modified);
                 SourceAuth.apply(request, current,route);
-                HttpResponse<InputStream> response = client.send(
-                        request.timeout(Duration.ofSeconds(60)).build(), HttpResponse.BodyHandlers.ofInputStream());
+                HttpResponse<InputStream> response = send(client, route,
+                        request.timeout(Duration.ofSeconds(60)).build());
                 int status = response.statusCode();
                 if (status != 301 && status != 302 && status != 303 && status != 307 && status != 308)
                     return response;
@@ -127,7 +137,7 @@ public final class Transport {
                     .header("Accept-Encoding","identity").header("User-Agent","MultiRoute-Downloader/4.0");
             SourceAuth.apply(builder,current,route);
             HttpRequest request=builder.build();
-            HttpResponse<InputStream> response=client.send(request,HttpResponse.BodyHandlers.ofInputStream());int status=response.statusCode();
+            HttpResponse<InputStream> response=send(client,route,request);int status=response.statusCode();
             if(status!=301&&status!=302&&status!=303&&status!=307&&status!=308)return response;
             current=redirectTarget(current,response,redirects,false);
         }throw new IOException("Too many redirects");
@@ -243,7 +253,7 @@ public final class Transport {
                         .timeout(Duration.ofSeconds(30));
                 SourceAuth.apply(builder,current,route);
                 HttpRequest request=builder.build();
-                HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                HttpResponse<InputStream> response = send(client, route, request);
                 int status = response.statusCode();
                 if (status != 301 && status != 302 && status != 303 && status != 307 && status != 308)
                     return response;
@@ -282,7 +292,7 @@ public final class Transport {
                     .method(method,body==null?HttpRequest.BodyPublishers.noBody():HttpRequest.BodyPublishers.ofString(body,StandardCharsets.UTF_8));
             for(var header:headers.entrySet())builder.header(header.getKey(),header.getValue());
             SourceAuth.apply(builder,current,route);
-            HttpResponse<InputStream> response=client.send(builder.build(),HttpResponse.BodyHandlers.ofInputStream());
+            HttpResponse<InputStream> response=send(client,route,builder.build());
             int status=response.statusCode();
             if(status!=301&&status!=302&&status!=303&&status!=307&&status!=308)return response;
             if(!method.equals("GET")&&!method.equals("HEAD")){

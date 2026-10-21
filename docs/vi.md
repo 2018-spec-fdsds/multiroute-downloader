@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0.1 — Hướng dẫn tiếng Việt
+# MultiRoute Downloader 4.1 — Hướng dẫn tiếng Việt
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
@@ -27,11 +27,11 @@ Hệ thống cần phông có các ký tự của ngôn ngữ đã chọn. Trên
 
 ## 3. Cài đặt và xác nhận bảo mật
 
-Chọn một bộ cài trong [bản phát hành 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0), nếu được đính kèm, và đối chiếu SHA-256 công bố.
+Chọn một bộ cài trong [bản phát hành 4.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1), nếu được đính kèm, và đối chiếu SHA-256 công bố.
 
-- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.1-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -108,7 +108,7 @@ Mọi tham chiếu đã biết phải khớp trước khi xuất bản tệp cu�
 
 Khi đang chạy, API ở `http://127.0.0.1:8765/api/v1`. Yêu cầu/đáp ứng JSON UTF-8, body dùng `Content-Type: application/json`. Không cần API token để tạo/quản lý việc cục bộ; thông tin nguồn là riêng. Chỉ cùng máy truy cập được; không mở cổng ra LAN/Internet. `--headless` chỉ chạy API. Dùng launcher gốc; ví dụ `.cmd` dành cho portable.
 
-Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.0"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
+Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.1"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
 
 ```json
 {
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
+Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.1/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
 
 `logs/downloads-history.jsonl` là JSON từng dòng UTF-8, `logs/downloads-history.log` là văn bản có ngày/giờ. Được thêm qua các lần chạy, không viết lại quá khứ khi đổi ngôn ngữ hoặc xóa việc. Text giữ ngôn ngữ lúc ghi; UI dùng ngôn ngữ hiện tại. Cửa sổ chỉ đọc tối đa 1,000 sự kiện gần nhất/2 MiB, còn toàn bộ hồ sơ trên đĩa tiếp tục lớn, có thể lưu trữ riêng khi cần. Có tên và đường dẫn tuyệt đối nhưng không có URL nguồn/password/token; xem thông tin cá nhân trước khi chia sẻ.
 
@@ -233,7 +233,7 @@ API nhận `site_profile_id` cho tải xuống, tải lên, duyệt và xem trư
 
 ## Tích hợp Chrome và Edge
 
-Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
+Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.1-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
 
 MultiRoute phải chạy, kể cả trong khay. Gửi URL bằng menu liên kết hoặc popup tiện ích. Dùng thư mục, cổng và hồ sơ hiện tại; vẫn hiện lựa chọn repository/torrent khi cần. Cổng mặc định 8765 phải khớp API nếu đổi. Chỉ gửi URL, không sao chép cookie/mật khẩu và không chặn tải khác của trình duyệt. Cấu hình quyền nguồn trong ứng dụng. Chỉ cấp quyền kết nối cục bộ được hỏi cho tiện ích đã chọn này.
 

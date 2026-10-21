@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0.1 — 日本語ガイド
+# MultiRoute Downloader 4.1 — 日本語ガイド
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
@@ -27,11 +27,11 @@ Java には `java.desktop`、`java.net.http`、`jdk.httpserver`、`java.xml` が
 
 ## 3. インストールと安全確認
 
-[リリース 4.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0) に添付されている場合、対応する一つのファイルを取得し、公開 SHA-256 と照合します。
+[リリース 4.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1) に添付されている場合、対応する一つのファイルを取得し、公開 SHA-256 と照合します。
 
-- Windows：`MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`。
-- Apple Silicon、macOS 26+：`MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`。
-- Intel、macOS 15+：`MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`。
+- Windows：`MultiRoute-Downloader-4.1-Windows-x64-Setup.exe`。
+- Apple Silicon、macOS 26+：`MultiRoute-Downloader-4.1-macOS-arm64.pkg`。
+- Intel、macOS 15+：`MultiRoute-Downloader-4.1-macOS-x86_64.pkg`。
 
 ### Windows
 
@@ -108,7 +108,7 @@ Windows/Linux では **Ctrl**、macOS では **Cmd** を押しながらクリッ
 
 実行中は `http://127.0.0.1:8765/api/v1` にローカル API があります。JSON UTF-8、本文に `Content-Type: application/json` を指定します。ローカル作業管理に API token は不要で、配布元認証は別です。同じ PC の接続だけを受け付け、LAN/インターネットに公開しないでください。`--headless` は API 専用です。ネイティブ起動器を使い、`.cmd` 例は portable 用です。
 
-確認は `GET /api/v1/health`、通常 `{"ok":true,"version":"4.0"}`。先に画面で設定するか `POST /api/v1/network` に次を送ります。
+確認は `GET /api/v1/health`、通常 `{"ok":true,"version":"4.1"}`。先に画面で設定するか `POST /api/v1/network` に次を送ります。
 
 ```json
 {
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-ネイティブ Mac 部品は `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`。Windows portable 3.0 は起動元の `data/` で、`data-location.config` または `--data-dir` で変更可能。Linux の専用 Java は `~/.local/share/MultiRouteResume/runtime`、保護部品は `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。実ファイルはユーザーが選んだ別の場所にも保存されます。
+ネイティブ Mac 部品は `/Library/PrivilegedHelperTools/MultiRouteResume/4.1/gateway-net`。Windows portable 3.0 は起動元の `data/` で、`data-location.config` または `--data-dir` で変更可能。Linux の専用 Java は `~/.local/share/MultiRouteResume/runtime`、保護部品は `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。実ファイルはユーザーが選んだ別の場所にも保存されます。
 
 `logs/downloads-history.jsonl` は UTF-8 の行単位 JSON、`logs/downloads-history.log` は日時付きテキストです。再起動をまたいで追記し、作業削除や言語変更で過去を書き換えません。テキストは記録時の言語、画面は現在の言語です。表示は最大直近 1,000 イベント/2 MiB ですが完全な履歴はディスクに残って増加します。必要なら別途アーカイブしてください。名前と絶対パスを含み、配布元 URL、パスワード、token を含みません。共有前に個人パスを確認します。
 
@@ -233,7 +233,7 @@ API はダウンロード、送信、参照、プレビューで `site_profile_i
 
 ## Chrome と Edge の連携
 
-アプリの **Chrome / Edge** 連携でリンク送信を許可し、拡張フォルダーを開きます。一度 `chrome://extensions` または `edge://extensions` のデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」で `manifest.json` のある `browser-extension` を選びます。インストーラーは JAR の隣に含めます。ソースの [browser-extension/](../browser-extension/) も利用でき、選択後は移動しないでください。別の `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` は先に展開します。ストア公開版ではありません。
+アプリの **Chrome / Edge** 連携でリンク送信を許可し、拡張フォルダーを開きます。一度 `chrome://extensions` または `edge://extensions` のデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」で `manifest.json` のある `browser-extension` を選びます。インストーラーは JAR の隣に含めます。ソースの [browser-extension/](../browser-extension/) も利用でき、選択後は移動しないでください。別の `MultiRoute-Downloader-4.1-Chrome-Edge.zip` は先に展開します。ストア公開版ではありません。
 
 MultiRoute はトレイでもよいので実行しておきます。リンクの右クリックメニューまたは拡張ポップアップから URL を送ります。現在の保存先、ゲートウェイ、サイト設定を使い、必要なリポジトリ/torrent 選択は表示されます。既定ポート 8765 は API に合わせて変更できます。URL だけを送信し、Cookie/パスワードをコピーせず、他のブラウザーダウンロードを横取りしません。認証はアプリ側で設定します。ローカル接続の許可はこの選択した拡張だけに与えてください。
 

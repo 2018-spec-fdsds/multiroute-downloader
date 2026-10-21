@@ -49,7 +49,7 @@ public final class GatewayNetwork {
     }
 
     public static void validateSettings(String ip, List<String> values) throws IOException {
-        if (!validIpv4(ip) || ip.endsWith(".0") || ip.endsWith(".255"))
+        if (!validIpv4(ip))
             throw new IOException("Укажите корректный свободный IPv4 адрес приложения");
         if (values == null || values.isEmpty() || values.size() > MAX_GATEWAYS)
             throw new IOException("Configure between 1 and 32 gateways");
@@ -118,21 +118,132 @@ public final class GatewayNetwork {
     }
 
     public static synchronized Map<String,Object> settings() {
-        return Map.of("virtual_ip", virtualIp, "gateways", gateways, "max_gateways",MAX_GATEWAYS,
-                "running", process != null && process.isAlive(), "os_routes_changed", false);
+        boolean alive = process != null && process.isAlive();
+        Map<String,Object> report = readReadySnapshot();
+        // A failed final report remains useful after the helper has exited or its file disappeared.
+        if (report == null && ready != null && Boolean.FALSE.equals(ready.get("ok"))) report = ready;
+        Map<String,Object> result = new LinkedHashMap<>();
+        result.put("virtual_ip", virtualIp); result.put("gateways", gateways); result.put("max_gateways", MAX_GATEWAYS);
+        result.put("running", alive); result.put("os_routes_changed", false);
+        result.put("network_validation", validationSnapshot(report, alive, virtualIp, gateways));
+        return result;
+    }
+
+    private static final List<String> TOPOLOGY_FIELDS = List.of("computer_ipv4", "netmask", "prefix_length",
+            "network_cidr", "interface_index", "network_generation", "interface");
+
+    /** Reads only this process's readiness file. GET/settings never launches or stops a helper. */
+    private static Map<String,Object> readReadySnapshot() {
+        if (readyFile == null) return null;
+        try {
+            if (!Files.isRegularFile(readyFile) || Files.size(readyFile) > 256 * 1024) return null;
+            return Main.obj(Json.parse(Files.readString(readyFile, StandardCharsets.UTF_8)));
+        } catch (IOException | RuntimeException transientRead) { return null; }
+    }
+
+    private static Map<String,Object> readReadySnapshotRetry() throws InterruptedException {
+        Map<String,Object> report = readReadySnapshot();
+        for (int attempt = 0; report == null && attempt < 3; attempt++) {
+            Thread.sleep(20); report = readReadySnapshot();
+        }
+        return report;
+    }
+
+    /** Pure verification of the native report, not another OS adapter/routing implementation. */
+    static Map<String,Object> validationSnapshot(Map<String,Object> report, boolean alive, String ip, List<String> values) {
+        Map<String,Object> result = new LinkedHashMap<>();
+        String status = "pending", message = "Network topology has not been checked yet";
+        if (report != null) {
+            for (String field : TOPOLOGY_FIELDS) {
+                Object value = report.get(field);
+                if (value instanceof String || value instanceof Number) result.put(field, value);
+            }
+            String error = Main.str(report.get("error"));
+            if (Boolean.FALSE.equals(report.get("ok")) ||
+                    (Boolean.FALSE.equals(report.get("network_validation_ok")) && "recheck_required".equals(report.get("network_validation_status")))) {
+                status = "error";
+                message = error.isBlank() ? "Network component did not report subnet validation" : error;
+                if (!error.isBlank()) result.put("error", error);
+            } else if (!alive) {
+                status = "error"; message = "Gateway component is not running";
+            } else if (Boolean.TRUE.equals(report.get("ok")) && Boolean.TRUE.equals(report.get("network_validation_ok")) &&
+                    "valid".equals(report.get("network_validation_status")) && validTopologyEvidence(report, ip, values)) {
+                status = "valid"; message = "Network topology verified";
+            } else message = "Network component did not report subnet validation";
+        } else if (alive) message = "Network component did not report subnet validation";
+        result.put("status", status); result.put("message", message);
+        return result;
+    }
+
+    private static boolean validTopologyEvidence(Map<String,Object> report, String ip, List<String> values) {
+        try {
+            if (!ip.equals(report.get("virtual_ip")) || !values.equals(report.get("configured_gateways")) ||
+                    !(report.get("prefix_length") instanceof Number prefixValue) ||
+                    !(report.get("interface_index") instanceof Number interfaceValue) ||
+                    !(report.get("network_generation") instanceof Number generationValue) ||
+                    interfaceValue.longValue() < 1 || interfaceValue.longValue() > Integer.MAX_VALUE ||
+                    interfaceValue.doubleValue() != interfaceValue.longValue() || generationValue.longValue() < 1 ||
+                    generationValue.doubleValue() != generationValue.longValue()) return false;
+            long prefix = prefixValue.longValue();
+            if (prefix < 1 || prefix > 30 || prefixValue.doubleValue() != prefix) return false;
+            String computer = Main.str(report.get("computer_ipv4")), netmask = Main.str(report.get("netmask"));
+            if (!validIpv4(computer) || !validIpv4(ip) || !validIpv4(netmask)) return false;
+            long mask = (0xffffffffL << (32 - prefix)) & 0xffffffffL;
+            long network = ipv4Number(computer) & mask, broadcast = network | (0xffffffffL ^ mask);
+            if (ipv4Number(netmask) != mask ||
+                    !Main.str(report.get("network_cidr")).equals(ipv4Text(network) + "/" + prefix)) return false;
+            List<String> hosts = new ArrayList<>(); hosts.add(computer); hosts.add(ip); hosts.addAll(values);
+            if (hosts.stream().distinct().count() != hosts.size()) return false;
+            for (String host : hosts) {
+                if (!validIpv4(host)) return false;
+                long address = ipv4Number(host);
+                if ((address & mask) != network || address == network || address == broadcast ||
+                        address < 0x01000000L || address >= 0xe0000000L || (address >>> 24) == 127) return false;
+            }
+            return true;
+        } catch (RuntimeException malformed) { return false; }
+    }
+
+    private static long ipv4Number(String value) {
+        long result = 0;
+        for (String part : value.split("\\.")) result = (result << 8) | Integer.parseInt(part);
+        return result;
+    }
+    private static String ipv4Text(long value) {
+        return ((value >>> 24) & 255) + "." + ((value >>> 16) & 255) + "." + ((value >>> 8) & 255) + "." + (value & 255);
+    }
+
+    private static Map<String,Object> requireFreshValidation() throws IOException, InterruptedException {
+        Map<String,Object> report = readReadySnapshotRetry();
+        if (report == null && ready != null && Boolean.FALSE.equals(ready.get("ok"))) report = ready;
+        Map<String,Object> validation = validationSnapshot(report, process != null && process.isAlive(), virtualIp, gateways);
+        if (!"valid".equals(validation.get("status"))) {
+            if (report != null && Boolean.FALSE.equals(report.get("ok"))) ready = report;
+            throw new IOException(humanError(Main.str(validation.get("message"))));
+        }
+        ready = report; return validation;
+    }
+
+    private static void addTopologyEvidence(Map<String,Object> target, Map<String,Object> validation) {
+        target.put("network_validation", validation);
+        for (String field : TOPOLOGY_FIELDS) if (validation.containsKey(field)) target.put(field, validation.get(field));
     }
 
     /** Address probing and monitoring belong to the private stack, never to OS configuration. */
     public static synchronized Map<String,Object> checkAddress() throws IOException, InterruptedException {
         ensureStarted();
-        return Map.of("ok", true, "virtual_ip", virtualIp, "address_available", true,
-                "interface", Main.str(ready.get("interface")), "os_routes_changed", false);
+        Map<String,Object> validation = requireFreshValidation();
+        Map<String,Object> result = new LinkedHashMap<>();
+        result.put("ok", true); result.put("virtual_ip", virtualIp); result.put("address_available", true);
+        result.put("interface", Main.str(ready.get("interface"))); result.put("os_routes_changed", false);
+        addTopologyEvidence(result, validation); return result;
     }
 
     /** Starts once, checks address conflicts, then resolves only the requested gateway. */
     public static synchronized Map<String,Object> route(String gateway) throws IOException, InterruptedException {
         if (!gateways.contains(gateway)) throw new IOException("Шлюз не настроен в приложении: " + gateway);
         ensureStarted();
+        Map<String,Object> validation = requireFreshValidation();
         if (!(ready.get("gateway_profiles") instanceof List<?> profiles))
             throw new IOException("Сетевой компонент не вернул список шлюзов");
         for (Object value : profiles) {
@@ -144,6 +255,7 @@ public final class GatewayNetwork {
             result.put("gateway", gateway);
             result.put("virtual_ip", virtualIp);
             result.put("interface", Main.str(ready.get("interface")));
+            addTopologyEvidence(result, validation);
             if (Boolean.TRUE.equals(profile.get("available"))) {
                 long port = Main.num(profile.get("port"), 0);
                 if (port < 1 || port > 65535) throw new IOException("Некорректный порт сетевого компонента");
@@ -183,19 +295,15 @@ public final class GatewayNetwork {
     }
 
     private static void ensureStarted() throws IOException, InterruptedException {
-        if (process != null && ready != null) {
-            if (readyFile != null && Files.isRegularFile(readyFile)) {
-                try {
-                    Map<String,Object> latest = Main.obj(Json.parse(Files.readString(readyFile)));
-                    if (!Boolean.TRUE.equals(latest.get("ok"))) {
-                        String error = humanError(Main.str(latest.get("error")));
-                        close();
-                        throw new IOException(error);
-                    }
-                    ready = latest;
-                } catch (IllegalArgumentException partialJson) { /* retry next request */ }
+        if (process != null) {
+            Map<String,Object> latest = readReadySnapshotRetry();
+            if (latest != null) ready = latest;
+            if (ready != null && Boolean.FALSE.equals(ready.get("ok"))) {
+                String error = humanError(Main.str(ready.get("error")));
+                Map<String,Object> failed = ready;
+                close(); ready = failed; throw new IOException(error);
             }
-            if (process != null && process.isAlive()) return;
+            if (process.isAlive()) { requireFreshValidation(); return; }
         }
         close();
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
@@ -236,17 +344,18 @@ public final class GatewayNetwork {
         long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(nativeMac ? 120 : 20);
         try {
             while (System.nanoTime() < deadline) {
-                if (Files.isRegularFile(readyFile)) {
-                    try {
-                        Map<String,Object> report = Main.obj(Json.parse(Files.readString(readyFile)));
-                        if (!Boolean.TRUE.equals(report.get("ok")))
-                            throw new IOException(humanError(Main.str(report.get("error"))));
-                        if (!virtualIp.equals(Main.str(report.get("virtual_ip"))))
-                            throw new IOException("Сетевой компонент использует другой адрес приложения");
-                        if (!process.isAlive()) throw new IOException("Сетевой компонент завершился");
-                        ready = report;
-                        return;
-                    } catch (IllegalArgumentException partialJson) { /* retry incomplete atomic startup file */ }
+                Map<String,Object> report = readReadySnapshot();
+                if (report == null && !process.isAlive()) report = readReadySnapshotRetry();
+                if (report != null) {
+                    ready = report;
+                    if (!Boolean.TRUE.equals(report.get("ok")))
+                        throw new IOException(humanError(Main.str(report.get("error"))));
+                    if (!virtualIp.equals(Main.str(report.get("virtual_ip"))))
+                        throw new IOException("Сетевой компонент использует другой адрес приложения");
+                    if (!process.isAlive()) throw new IOException("Сетевой компонент завершился");
+                    Map<String,Object> validation = validationSnapshot(report, true, virtualIp, gateways);
+                    if (!"valid".equals(validation.get("status"))) throw new IOException(Main.str(validation.get("message")));
+                    return;
                 }
                 if (!process.isAlive()) throw new IOException(linux
                         ? "Authorize the gateway component through Start-Linux.sh and check the gateways again"
@@ -258,7 +367,10 @@ public final class GatewayNetwork {
             }
             throw new IOException(nativeMac ? "macOS network authorization or preparation timed out; check the gateways again"
                     : "Подготовка сети приложения превысила 20 секунд; журнал: " + log);
-        } catch (IOException | InterruptedException error) { close(); throw error; }
+        } catch (IOException | InterruptedException error) {
+            Map<String,Object> failed = ready != null && Boolean.FALSE.equals(ready.get("ok")) ? ready : null;
+            close(); if (failed != null) ready = failed; throw error;
+        }
     }
 
     public static synchronized void close() {

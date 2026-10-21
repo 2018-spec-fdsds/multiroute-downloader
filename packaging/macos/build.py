@@ -36,6 +36,53 @@ def sha256(path: Path) -> str:
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def native_source_hashes() -> dict[str, str]:
+    sources = [path for path in (ROOT / "native/source").rglob("*")
+               if path.is_file() and path.suffix in {".c", ".h"}]
+    sources += [ROOT / "native/source/build_macos.sh", HERE / "gateway_launch.c"]
+    return {path.relative_to(ROOT).as_posix(): sha256(path) for path in sorted(sources)}
+
+
+def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dict:
+    """Pure C fixtures have no capture, OS enumeration, sockets or user profiles."""
+    owned.mkdir()
+    results = {}
+    for name in ("gateway_diagnostics", "gateway_topology"):
+        source = ROOT / "native/source/tests" / (name + "_test.c")
+        executable = owned / name
+        run([clang, "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-finput-charset=UTF-8", "-fexec-charset=UTF-8",
+             "-isysroot", sdk, "-arch", architecture, "-mmacosx-version-min=11.0",
+             source, "-o", executable], timeout=120)
+        run(["/usr/bin/codesign", "--force", "--sign", "-", executable], timeout=30)
+        try:
+            completed = run([executable], capture_output=True, text=True, timeout=15)
+        except subprocess.CalledProcessError as failed:
+            print((failed.stdout or "")[-16384:] + (failed.stderr or "")[-4096:], file=sys.stderr)
+            raise
+        lines = completed.stdout.splitlines()
+        if name == "gateway_diagnostics":
+            assert lines[-1] == "GATEWAY_DIAGNOSTICS_TEST_OK"
+            records = [json.loads(line.removeprefix("TUNNEL_ERROR ")) for line in lines[:-1]]
+            assert len(records) == 9 and all(line.startswith("TUNNEL_ERROR ") for line in lines[:-1])
+            assert records[4]["reason"] == "Связь прервана — 接続失敗"
+            assert all(len(line.encode("utf-8")) < 1536 for line in lines[:-1])
+            assert records[2]["host"] == records[2]["gateway"] == ""
+        else:
+            assert lines[-1].startswith("GATEWAY_TOPOLOGY_TEST_OK ")
+            validated = json.loads(lines[0].removeprefix("TOPOLOGY_READY "))
+            recheck = json.loads(lines[1].removeprefix("TOPOLOGY_RECHECK "))
+            assert validated["network_validation_ok"] and validated["network_generation"] == 2
+            assert validated["computer_ipv4"] == "192.168.1.101" and validated["network_cidr"] == "192.168.1.0/24"
+            assert not recheck["network_validation_ok"] and recheck["network_validation_status"] == "recheck_required"
+        assert "\ufffd" not in completed.stdout
+        results[name] = {"ok": True, "source_sha256": sha256(source),
+                         "stdout": completed.stdout, "stderr": completed.stderr,
+                         "stdout_sha256": hashlib.sha256(completed.stdout.encode("utf-8")).hexdigest(),
+                         "stderr_sha256": hashlib.sha256(completed.stderr.encode("utf-8")).hexdigest(),
+                         "capture_executed": False, "os_network_changed": False}
+    return results
+
+
 def manifest_attribute(name: str, value: str) -> str:
     line = name + ": " + value
     chunks = [line[:70]]
@@ -223,12 +270,14 @@ def main() -> None:
         plist_write(plist_path, metadata)
         localize_network_prompt(contents)
         run(["/usr/bin/plutil", "-lint", plist_path])
+        source_hashes = native_source_hashes()
         helper = stage / "gateway-net"
         environment = dict(os.environ, ARCH=architecture, MULTIROUTE_BUILD_OUTPUT=str(helper))
-        run(["/bin/bash", ROOT / "native/source/build_macos.sh"], env=environment)
+        run(["/bin/bash", ROOT / "native/source/build_macos.sh"], env=environment, timeout=600)
         launcher = stage / "gateway-launch"
         clang = run(["/usr/bin/xcrun", "--find", "clang"], capture_output=True, text=True).stdout.strip()
         sdk = run(["/usr/bin/xcrun", "--sdk", "macosx", "--show-sdk-path"], capture_output=True, text=True).stdout.strip()
+        fixture_results = native_fixtures(clang, sdk, architecture, stage / "native-fixtures")
         run([clang, "-std=c11", "-O2", "-fstack-protector-strong", "-Wall", "-Wextra", "-Werror=format",
              "-Werror=implicit-function-declaration", "-isysroot", sdk, "-arch", architecture, "-mmacosx-version-min=11.0",
              '-DMULTIROUTE_VERSION="' + version + '"', HERE / "gateway_launch.c", "-o", launcher])
@@ -246,6 +295,8 @@ def main() -> None:
         for binary in (helper, launcher):
             run(["/usr/bin/codesign", "--verify", "--strict", binary])
         helper_digest, launcher_digest = sha256(helper), sha256(launcher)
+        if native_source_hashes() != source_hashes:
+            raise SystemExit("Native sources changed while compiling; rebuild from one saved source snapshot.")
         payload = stage / "payload"
         (payload / "Applications").mkdir(parents=True)
         shutil.copytree(app, payload / "Applications" / app.name, symlinks=True)
@@ -299,6 +350,8 @@ def main() -> None:
             "version": version, "architecture": architecture, "minimum_macos": minimum,
             "package": output.name, "sha256": sha256(output), "helper_sha256": helper_digest,
             "gateway_launcher_sha256": launcher_digest, "helper_output_limit_bytes": 65536,
+            "native_source_sha256": source_hashes, "native_pure_fixtures": fixture_results,
+            "application_jar_sha256": sha256(contents / "app/MultiRoute-Downloader.jar"),
             "license_sha256": sha256(license_file), "project_owner_url": owner_url,
             "installer_displays_license": True,
             "bundled_documentation_sha256": documentation_hashes,

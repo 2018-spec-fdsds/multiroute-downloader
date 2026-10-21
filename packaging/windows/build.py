@@ -162,7 +162,7 @@ def copy_file(source, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="4.0.1")
+    parser.add_argument("--version", default="4.1")
     parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Downloader.jar")
     parser.add_argument("--native-helper", type=Path, default=ROOT / "native/windows-x64/gateway-net.exe")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build/windows-package")

@@ -104,6 +104,65 @@ def run(command, **kwargs):
         raise
 
 
+def verify_native_source_pin(report: dict) -> int:
+    inputs = [path for path in (ROOT / "native/source").rglob("*")
+              if path.is_file() and path.suffix in {".c", ".h"}]
+    inputs += [ROOT / "native/source/build_macos.sh", ROOT / "packaging/macos/gateway_launch.c"]
+    actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in sorted(inputs)}
+    assert report["native_source_sha256"] == actual, "Native input set/bytes differ from the build snapshot."
+    for name in ("gateway_diagnostics", "gateway_topology"):
+        result = report["native_pure_fixtures"][name]
+        assert result["ok"] and not result["capture_executed"] and not result["os_network_changed"]
+        assert result["source_sha256"] == actual["native/source/tests/" + name + "_test.c"]
+        for stream in ("stdout", "stderr"):
+            assert hashlib.sha256(result[stream].encode("utf-8")).hexdigest() == result[stream + "_sha256"]
+    return len(actual)
+
+
+def verify_network42_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, version: str) -> dict:
+    """Use the real app JAR with fresh owned state and no installed profiles/helpers."""
+    root = owned / "network42"
+    classes = root / "classes"
+    classes.mkdir(parents=True)
+    fixtures = {
+        "NetworkDiagnosticsTest42": ("NETWORK-DIAGNOSTICS-TESTS.json", True),
+        "NetworkErrorJournalTest42": ("NETWORK-ERROR-JOURNAL-TESTS.json", True),
+        "NetworkTopologyBridgeTest42": ("NETWORK-TOPOLOGY-BRIDGE-TESTS.json", True),
+        "NetworkTopologyDesktopTest42": ("NETWORK-TOPOLOGY-DESKTOP-TESTS.json", False),
+    }
+    run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
+         "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
+    results = {}
+    for name, (filename, headless) in fixtures.items():
+        case = root / name
+        for directory in ("home", "tmp", "state"):
+            (case / directory).mkdir(parents=True)
+        completed = run([java, "-Djava.awt.headless=" + str(headless).lower(), "-Dfile.encoding=UTF-8",
+                         "-Duser.home=" + str(case / "home"), "-Djava.io.tmpdir=" + str(case / "tmp"),
+                         "-cp", classpath + os.pathsep + str(classes), "multiroute." + name, case / "state"],
+                        capture_output=True, text=True, timeout=120)
+        result = json.loads((case / "state" / filename).read_text(encoding="utf-8"))
+        assert result["status"] == "PASS" and result["checks"] > 0
+        if "version" in result:
+            assert result["version"] == version
+        assert "\ufffd" not in completed.stdout
+        if name == "NetworkDiagnosticsTest42":
+            assert not result["real_gateways_used"] and not result["user_data_read"]
+            assert result["network"] == "owned loopback proxy only"
+        elif name == "NetworkErrorJournalTest42":
+            assert not result["user_logs_read"] and not result["native_network_started"] and result["network_calls"] == 0
+        elif name == "NetworkTopologyBridgeTest42":
+            assert result["native_processes_started"] == result["network_calls"] == 0
+            assert not result["os_routes_changed"] and not result["user_data_read"]
+        else:
+            assert result["real_network_calls"] == 0 and not result["os_network_changed"]
+            assert set(result["languages"]) == set(LANGUAGES)
+        results[name] = {"checks": result["checks"], "headless": headless,
+                         "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest()}
+    return results
+
+
 def desktop_shortcut_fragment(script: str) -> str:
     return script.split("# BEGIN_DESKTOP_SHORTCUT_USER\n", 1)[1].split("# END_DESKTOP_SHORTCUT_USER", 1)[0]
 
@@ -409,6 +468,9 @@ def main() -> None:
     architecture = report["architecture"]
     if architecture != platform.machine():
         parser.error("Verify the installer on a matching native CPU runner.")
+    native_input_count = verify_native_source_pin(report)
+    package = directory / report["package"]
+    assert hashlib.sha256(package.read_bytes()).hexdigest() == report["sha256"], "Installer bytes differ from the build report."
     app = directory / "MultiRoute Downloader.app"
     contents = app / "Contents"
     with (contents / "Info.plist").open("rb") as stream:
@@ -431,6 +493,7 @@ def main() -> None:
     assert REQUIRED.issubset({line.split("@", 1)[0] for line in modules.splitlines()})
     run([java, "--validate-modules"])
     app_dir = contents / "app"
+    assert hashlib.sha256((app_dir / "MultiRoute-Downloader.jar").read_bytes()).hexdigest() == report["application_jar_sha256"]
     license_bytes = (app_dir / "LICENSE.txt").read_bytes()
     assert hashlib.sha256(license_bytes).hexdigest() == report["license_sha256"]
     assert ("Project owner: " + report["project_owner_url"]).encode("utf-8") in license_bytes
@@ -650,6 +713,10 @@ public final class NativeDesktopFixture {
         assert locales["network_calls"] == 0 and not locales["user_data_read"]
         checks.append("twelve-language catalog checks cover the complete current message catalog including Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
 
+        network42 = verify_network42_fixtures(java, jdk, classpath, owned, report["version"])
+        checks.append("packaged JAR network diagnostics, durable error journal and authoritative topology bridge pass in fresh owned profiles with no physical gateways or OS network changes")
+        checks.append("owned non-headless Swing topology label, translated tooltips and status changes pass using injected snapshots and no real gateway requests")
+
         for fixture_name in ("SiteProfilesTest40", "ArchivePreviewTest40", "TransfersApiTest40", "ProfileRoutesTest40", "ScheduleQueueTest40", "BrowserBridgeTest40"):
             fixture_source = ROOT / "packaging/tests" / (fixture_name + ".java")
             run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath, "-d", owned, fixture_source])
@@ -751,7 +818,7 @@ public final class MacAuthorizationFixture {
                         child.kill()
                         child.wait(timeout=5)
         expanded = owned / "expanded-package"
-        run(["/usr/sbin/pkgutil", "--expand-full", directory / report["package"], expanded])
+        run(["/usr/sbin/pkgutil", "--expand-full", package, expanded])
         postinstall_scripts = list(expanded.rglob("postinstall"))
         assert len(postinstall_scripts) == 1
         run(["/bin/bash", "-n", postinstall_scripts[0]])
@@ -760,6 +827,7 @@ public final class MacAuthorizationFixture {
         installed_apps = list(expanded.rglob("MultiRoute Downloader.app"))
         assert len(installed_apps) == 1, "The installer must contain exactly one application bundle."
         installed_app_dir = installed_apps[0] / "Contents" / "app"
+        assert hashlib.sha256((installed_app_dir / "MultiRoute-Downloader.jar").read_bytes()).hexdigest() == report["application_jar_sha256"]
         verify_documentation(installed_app_dir, report)
         assert verify_browser_extension(installed_app_dir, report) == browser_extension_count
         installed_markdown_links = verify_relative_markdown_links(installed_app_dir)
@@ -773,11 +841,16 @@ public final class MacAuthorizationFixture {
         helper = candidates[0]
         marker = helper.with_name("gateway-net.sha256")
         assert marker.read_text(encoding="ascii").strip() == report["helper_sha256"]
-        selftest = run([helper, "--self-test"], capture_output=True, text=True)
+        assert hashlib.sha256(helper.read_bytes()).hexdigest() == report["helper_sha256"], "Expanded helper bytes differ from the build report."
+        selftest = run([helper, "--self-test"], capture_output=True, text=True, timeout=30)
         assert "SELF_TEST_OK no network handles, no routing changes" in selftest.stdout
+        initial = next(line for line in selftest.stdout.splitlines() if line.startswith("INITIAL_PROFILE_READY "))
+        assert json.loads(initial.removeprefix("INITIAL_PROFILE_READY "))["configured_gateways"] == ["192.168.1.1", "192.168.1.2", "192.168.1.3", "192.168.1.4"]
+        assert "ordered profiles, rejected topology leaves old profiles" in selftest.stdout
         assert architecture in run(["/usr/bin/lipo", "-archs", helper], capture_output=True, text=True).stdout.split()
         launcher = helper.with_name("gateway-launch")
         assert launcher.with_name("gateway-launch.sha256").read_text(encoding="ascii").strip() == report["gateway_launcher_sha256"]
+        assert hashlib.sha256(launcher.read_bytes()).hexdigest() == report["gateway_launcher_sha256"], "Expanded launcher bytes differ from the build report."
         monitor = run([launcher, "--self-test"], capture_output=True, text=True)
         assert "1MiB fully drained, 64KiB retained, exit codes preserved, closed consumer tolerated" in monitor.stdout
         # Controlled CI fixture only: no capture handles, installer execution, routes or permissions.
@@ -797,6 +870,7 @@ public final class MacAuthorizationFixture {
         assert distribution.find("options").get("hostArchitectures") == architecture
         assert distribution.find("volume-check/allowed-os-versions/os-version").get("min") == report["minimum_macos"]
         checks.append("expanded installer contains the matching helper/checksum and passes native offline self-test")
+        checks.append("native C/header input set is pinned and both pure native fixtures passed on this Mac CPU without capture")
     result = {
         "ok": True, "architecture": architecture, "version": report["version"], "checks": checks,
         "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction", "real macOS menu-bar tray interaction", "graphical macOS downloads table layout, scrolling and viewport restoration"],
@@ -821,6 +895,8 @@ public final class MacAuthorizationFixture {
         "schedule_queue40_fixture_checks": schedule_queue["checks"],
         "browser_extension_files_verified": browser_extension_count,
         "browser_bridge40_fixture_checks": browser_bridge["checks"],
+        "network42_fixtures": network42, "native_source_files_verified": native_input_count,
+        "native_pure_fixtures": report["native_pure_fixtures"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,
     }

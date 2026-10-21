@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0.1 — Anleitung auf Deutsch
+# MultiRoute Downloader 4.1 — Anleitung auf Deutsch
 
 [Startseite](../README.md) · [English](en.md) · [Русский](ru.md) · **Deutsch** · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -117,15 +117,15 @@ WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transpo
 
 DNS-Anfragen laufen über das ausgewählte Gateway: zunächst zum Router, dann bei Bedarf zu `1.1.1.1` oder `8.8.8.8` über denselben Weg. Es gibt keinen Rückfall auf den DNS-Resolver des Betriebssystems. DNSSEC, DoH und ein TCP-Rückfall bei gekürzten DNS-Antworten sind in diesem Release nicht implementiert.
 
-## Native Installationspakete 4.0: Windows und macOS
+## Native Installationspakete 4.1: Windows und macOS
 
 Wählen Sie das Paket für Ihr System aus den [GitHub-Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), sofern es dort angehängt ist. Jedes Paket ist **eine Installationsdatei** mit Anwendung, nativem Starter, vollständiger Java-Laufzeit und passendem Netzwerkhelfer. Quellcode und portable ZIPs der Version 3.0 sind separate Angebote.
 
 | System | Installationsdatei | Start nach der Installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** im Startmenü oder über die Desktopverknüpfung |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg` | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg` | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1-macOS-arm64.pkg` | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.1-macOS-x86_64.pkg` | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
 
 Die zwölf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` oder `vi.md` in einem Text- oder Markdown-Programm öffnen.
 
@@ -322,12 +322,12 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
-### Native Pakete 4.0
+### Native Pakete 4.1
 
 | System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, einschließlich Java | Enthaltener x64-Helfer; Npcap separat installiert |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, einschließlich Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1/gateway-net` |
 
 Schließen Sie die Anwendung vor einem Update mit einem neuen Installer. Unter Windows erfolgt die Entfernung über **Einstellungen → Apps → Installierte Apps**. Unter macOS löscht das Entfernen der `.app` nicht automatisch den Verlauf und den separat geschützten Helfer. Heruntergeladene Dateien bleiben im gewählten Ordner; löschen Sie ihn nicht nur zur Deinstallation. Der Datenpfad unterscheidet sich vom Windows-ZIP 3.0; sichern Sie ein früheres Profil vor einer Migration.
 
@@ -458,7 +458,7 @@ Unter Warteschlange/Zeitplan stehen `max_active_jobs` (1–32), globale/Gateway-
 
 ## Integration mit Chrome und Edge
 
-Öffnen Sie die **Chrome / Edge**-Integration der Anwendung, erlauben Sie Linkübergaben und öffnen Sie den Erweiterungsordner. Einmalig `chrome://extensions` bzw. `edge://extensions` öffnen, Entwicklermodus aktivieren und über **Entpackte Erweiterung laden** den Ordner `browser-extension` mit `manifest.json` wählen. Native Pakete enthalten ihn neben der JAR; im Quellbaum: [browser-extension/](../browser-extension/). Ordner am gewählten Ort belassen. Das separate `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip` zuerst entpacken. Keine Veröffentlichung im Browserstore.
+Öffnen Sie die **Chrome / Edge**-Integration der Anwendung, erlauben Sie Linkübergaben und öffnen Sie den Erweiterungsordner. Einmalig `chrome://extensions` bzw. `edge://extensions` öffnen, Entwicklermodus aktivieren und über **Entpackte Erweiterung laden** den Ordner `browser-extension` mit `manifest.json` wählen. Native Pakete enthalten ihn neben der JAR; im Quellbaum: [browser-extension/](../browser-extension/). Ordner am gewählten Ort belassen. Das separate `MultiRoute-Downloader-4.1-Chrome-Edge.zip` zuerst entpacken. Keine Veröffentlichung im Browserstore.
 
 MultiRoute muss laufen, auch im Tray genügt. Über das Kontextmenü eines Links oder das Erweiterungsfenster die URL senden. Die Anwendung verwendet aktuelle Ordner, Gateways und Websiteprofil; Repository-/Torrent-Auswahl bleibt erhalten. Bei geändertem API-Port den Erweiterungsport anpassen (Standard 8765). Nur URLs werden übertragen, keine Browsercookies oder Passwörter; normale Browserdownloads werden nicht abgefangen. Quellenzugriff in der Anwendung konfigurieren. Eine eventuell verlangte lokale Verbindungsberechtigung nur für diese Erweiterung bestätigen.
 

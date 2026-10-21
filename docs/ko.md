@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.0.1 — 한국어 안내서
+# MultiRoute Downloader 4.1 — 한국어 안내서
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
@@ -27,11 +27,11 @@ Java에는 `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` 모듈�
 
 ## 3. 설치와 보안 확인
 
-[4.0 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.0)에 첨부된 경우 시스템에 맞는 하나의 설치 파일을 받고 공개 SHA-256과 비교합니다.
+[4.1 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1)에 첨부된 경우 시스템에 맞는 하나의 설치 파일을 받고 공개 SHA-256과 비교합니다.
 
-- Windows: `MultiRoute-Downloader-4.0.1-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.0.1-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.0.1-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.1-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.1-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -108,7 +108,7 @@ Windows/Linux에서는 **Ctrl**을 누른 채 클릭하고 macOS에서는 **Cmd*
 
 앱 실행 중 `http://127.0.0.1:8765/api/v1`에 로컬 API가 있습니다. 요청/응답은 JSON UTF-8, 본문 헤더는 `Content-Type: application/json`입니다. 작업 생성/제어용 API token은 필요 없고 소스 자격 증명은 별개입니다. 같은 컴퓨터에서만 사용하며 LAN/인터넷에 포트를 공개하지 마십시오. `--headless`는 API 전용 실행입니다. 기본 설치는 정상 실행기를 사용하고 `.cmd` 예는 portable용입니다.
 
-상태 확인: `GET /api/v1/health`, 정상 예 `{"ok":true,"version":"4.0"}`. 먼저 창에서 네트워크를 설정하거나 다음을 `POST /api/v1/network`에 보냅니다.
+상태 확인: `GET /api/v1/health`, 정상 예 `{"ok":true,"version":"4.1"}`. 먼저 창에서 네트워크를 설정하거나 다음을 `POST /api/v1/network`에 보냅니다.
 
 ```json
 {
@@ -186,7 +186,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-macOS 기본 보호 구성 요소는 `/Library/PrivilegedHelperTools/MultiRouteResume/4.0.1/gateway-net`입니다. Windows portable 3.0은 실행 폴더의 `data/`이며 `data-location.config`/`--data-dir`로 바꿀 수 있습니다. Linux 전용 Java는 `~/.local/share/MultiRouteResume/runtime`, 보호 구성 요소는 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`입니다. 다운로드 파일은 사용자가 고른 별도 위치에 있습니다.
+macOS 기본 보호 구성 요소는 `/Library/PrivilegedHelperTools/MultiRouteResume/4.1/gateway-net`입니다. Windows portable 3.0은 실행 폴더의 `data/`이며 `data-location.config`/`--data-dir`로 바꿀 수 있습니다. Linux 전용 Java는 `~/.local/share/MultiRouteResume/runtime`, 보호 구성 요소는 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`입니다. 다운로드 파일은 사용자가 고른 별도 위치에 있습니다.
 
 `logs/downloads-history.jsonl`은 UTF-8 줄 단위 JSON, `logs/downloads-history.log`는 날짜/시간이 있는 읽기용 로그입니다. 재시작 후에도 추가되고 작업 삭제/언어 변경으로 과거 기록을 다시 쓰지 않습니다. 텍스트는 기록 당시 언어를 유지하지만 화면은 현재 언어로 렌더링합니다. 창은 최대 최근 1,000개 이벤트/2 MiB만 읽고 전체 파일은 디스크에 남아 증가하므로 필요 시 따로 보관합니다. 이름과 절대 경로가 들어가며 소스 URL, 비밀번호, token은 기록하지 않습니다. 공유 전 개인 경로를 확인하십시오.
 
@@ -233,7 +233,7 @@ MultiRoute Downloader의 이전 이름은 MultiRoute Resume입니다. 새 프로
 
 ## Chrome 및 Edge 통합
 
-앱의 **Chrome / Edge** 통합에서 링크 전달을 켜고 확장 폴더를 엽니다. 한 번 `chrome://extensions` 또는 `edge://extensions`에서 개발자 모드를 켜고 “압축해제된 확장 프로그램 로드”로 `manifest.json`이 있는 `browser-extension`을 선택합니다. 네이티브 설치본은 JAR 옆에 포함하며 소스에도 [browser-extension/](../browser-extension/)이 있습니다. 폴더를 옮기지 마십시오. 별도 `MultiRoute-Downloader-4.0.1-Chrome-Edge.zip`은 먼저 풉니다. 스토어 게시본은 아닙니다.
+앱의 **Chrome / Edge** 통합에서 링크 전달을 켜고 확장 폴더를 엽니다. 한 번 `chrome://extensions` 또는 `edge://extensions`에서 개발자 모드를 켜고 “압축해제된 확장 프로그램 로드”로 `manifest.json`이 있는 `browser-extension`을 선택합니다. 네이티브 설치본은 JAR 옆에 포함하며 소스에도 [browser-extension/](../browser-extension/)이 있습니다. 폴더를 옮기지 마십시오. 별도 `MultiRoute-Downloader-4.1-Chrome-Edge.zip`은 먼저 풉니다. 스토어 게시본은 아닙니다.
 
 MultiRoute가 실행 중이어야 하며 트레이여도 됩니다. 링크 메뉴 또는 확장 팝업에서 URL을 보냅니다. 현재 폴더, 게이트웨이, 사이트 프로필을 사용하며 필요한 저장소/torrent 선택은 계속 나타납니다. 기본 포트 8765를 API 포트와 맞추십시오. URL만 보내며 브라우저 쿠키/암호를 복사하거나 다른 다운로드를 가로채지 않습니다. 원본 인증은 앱에서 설정합니다. 로컬 연결 권한 요청은 이 확장에만 허용하십시오.
 

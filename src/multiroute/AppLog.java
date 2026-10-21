@@ -29,6 +29,8 @@ public final class AppLog {
     private static final int MAX_EVENT_TEXT = 16 * 1024;
     private static final int QUEUE_SIZE = 1024;
     private static final int MAX_CANONICAL_FILE = 8 * 1024 * 1024;
+    private static final int MAX_ERROR_JOURNAL = 4 * 1024 * 1024;
+    private static final int ERROR_JOURNAL_BACKUPS = 3;
     private static final Pattern MAC = Pattern.compile("(?i)(?<![0-9a-f])(?:[0-9a-f]{2}[:-]){5}[0-9a-f]{2}(?![0-9a-f])|(?i)(?<![0-9a-f])[0-9a-f]{4}(?:\\.[0-9a-f]{4}){2}(?![0-9a-f])");
     private static final Pattern URL_SECRET = Pattern.compile("(?i)(https?://)[^\\s/?#]+@|([?&](?:token|access_token|auth|authorization|signature|sig|x-amz-[^=&#\\s]+|x-goog-[^=&#\\s]+)=)[^&#\\s]*");
     private static volatile Session session;
@@ -65,7 +67,36 @@ public final class AppLog {
     }
     public static void info(String source, Object... args) { record("INFO", "application", source, args); }
     public static void error(String source, Object... args) { record("ERROR", "application", source, args); }
-    public static void nativeLine(String raw) { record("INFO", "network", raw, new Object[0]); }
+    /** Network errors have their own durable journal, independent of the bounded UI history. */
+    public static void networkError(String source, Object... args) { record("ERROR", "network", source, args); }
+    public static void nativeLine(String raw) {
+        if (raw != null && raw.startsWith("NETWORK_TOPOLOGY_ERROR ")) {
+            networkError("Network topology check failed: %s", DiagnosticText.arg(
+                    NetworkDiagnostics.safe(raw.substring("NETWORK_TOPOLOGY_ERROR ".length()))));
+        } else if (raw != null && raw.startsWith("TUNNEL_ERROR ")) {
+            try {
+                if (raw.length() > 4096) throw new IllegalArgumentException();
+                Map<String,Object> fields = Main.obj(Json.parse(raw.substring("TUNNEL_ERROR ".length())));
+                String gateway = Main.str(fields.get("gateway")), host = Main.str(fields.get("host"));
+                String destination = Main.str(fields.get("destination_ipv4")), stage = Main.str(fields.get("stage"));
+                String reason = Main.str(fields.get("reason"));
+                long port = Main.num(fields.get("remote_port"), 0), elapsed = Main.num(fields.get("elapsed_ms"), 0);
+                if (!GatewayNetwork.validIpv4(gateway) || !host.matches("[A-Za-z0-9.-]{0,253}") ||
+                        (!destination.isEmpty() && !GatewayNetwork.validIpv4(destination)) ||
+                        !java.util.Set.of("parse", "arp", "dns", "tcp_open", "tcp_bind", "tcp_bind_interface", "tcp_connect").contains(stage) ||
+                        !reason.matches("[A-Za-z0-9 .()_/-]{1,160}") || port < 0 || port > 65535 || elapsed < 0)
+                    throw new IllegalArgumentException();
+                Object nativeError = fields.get("lwip_error");
+                String errorCode = nativeError instanceof Number number ? Long.toString(number.longValue()) : "—";
+                networkError("Gateway tunnel failed: gateway=%s server=%s:%d destination=%s stage=%s elapsed_ms=%d lwip_error=%s reason=%s",
+                        gateway, host.isEmpty() ? "—" : host, port, destination.isEmpty() ? "—" : destination,
+                        DiagnosticText.arg(stage), elapsed, errorCode, DiagnosticText.arg(reason));
+            } catch (RuntimeException malformed) {
+                // Never retain an unparsed request or URL from a malformed diagnostic.
+                networkError("Malformed gateway tunnel diagnostic");
+            }
+        } else record("INFO", "network", raw, new Object[0]);
+    }
     /** Lifecycle timestamps describe the observed transition, not a later refresh of the log. */
     static void downloadEvent(Map<String,Object> entry) {
         try {
@@ -73,7 +104,7 @@ public final class AppLog {
                     sanitizeTemplate(DownloadHistory.template(String.valueOf(entry.get("kind")))),
                     List.copyOf(encodeArguments(DownloadHistory.arguments(entry).toArray(), 0, new int[]{MAX_EVENT_TEXT})));
             Session current = session;
-            if (current != null && current.accepting && !current.queue.offer(event)) current.dropped.incrementAndGet();
+            if (current != null && current.accepting && !current.offer(event)) current.dropped.incrementAndGet();
         } catch (RuntimeException ignored) { /* the durable history remains independent of UI diagnostics */ }
     }
     /** Nested presentation text retains its template; ordinary strings remain user data. */
@@ -91,7 +122,7 @@ public final class AppLog {
                 String text = render(event, I18n.language());
                 if (level.equals("ERROR")) System.err.println(text); else System.out.println(text);
             }
-            if (current != null && current.accepting && !current.queue.offer(event)) current.dropped.incrementAndGet();
+            if (current != null && current.accepting && !current.offer(event)) current.dropped.incrementAndGet();
         } catch (RuntimeException ignored) { /* diagnostics cannot break the caller */ }
     }
 
@@ -174,7 +205,6 @@ public final class AppLog {
 
     private static String render(Event event, String language) {
         try {
-            if (event.kind.equals("network")) return sanitize(DiagnosticText.renderFor(language, event.source));
             if (event.args.isEmpty()) return sanitize(DiagnosticText.renderFor(language, event.source));
             Object[] args = decodeArguments(event.args, language, 0);
             return sanitize(I18n.tFor(language, event.source, args));
@@ -210,19 +240,22 @@ public final class AppLog {
     private record Barrier(CountDownLatch done, boolean close) { }
 
     private static final class Session {
-        final Path directory, canonical, application, network;
+        final Path directory, canonical, application, network, networkErrors;
         final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(QUEUE_SIZE);
         final Deque<Event> history = new ArrayDeque<>();
         final AtomicLong dropped = new AtomicLong();
+        final AtomicLong droppedNetworkErrors = new AtomicLong();
         final AtomicBoolean rewrite = new AtomicBoolean(true);
         final Thread writer;
         volatile boolean accepting = true;
         volatile boolean closeRequested;
         int historySize;
+        boolean errorJournalUnavailable;
 
         Session(Path data) throws IOException {
             directory = data.resolve("logs"); canonical = directory.resolve("events.json");
             application = directory.resolve("application.log"); network = data.resolve("network").resolve("gateway-network.log");
+            networkErrors = directory.resolve("network-errors.log");
             Files.createDirectories(directory); Files.createDirectories(network.getParent());
             restore();
             writer = new Thread(this::run, "application-log-writer"); writer.setDaemon(true);
@@ -261,6 +294,20 @@ public final class AppLog {
             REVISION.incrementAndGet();
         }
         synchronized List<Event> snapshot() { return new ArrayList<>(history); }
+        boolean offer(Event event) {
+            if (queue.offer(event)) return true;
+            if (event.kind.equals("network") && event.level.equals("ERROR")) {
+                // A connection/debug burst must not discard the more useful failure record.
+                for (Object queued : queue) {
+                    if (queued instanceof Event prior && prior.level.equals("INFO") && queue.remove(queued)) {
+                        dropped.incrementAndGet();
+                        if (queue.offer(event)) return true;
+                    }
+                }
+                droppedNetworkErrors.incrementAndGet();
+            }
+            return false;
+        }
         void barrier(boolean close) {
             if (Thread.currentThread() == writer) return;
             boolean interrupted = Thread.interrupted();
@@ -281,6 +328,7 @@ public final class AppLog {
                     Object command = queue.poll(100, TimeUnit.MILLISECONDS);
                     if (command instanceof Event event) {
                         append(event); dirty = true;
+                        if (event.kind.equals("network") && event.level.equals("ERROR")) appendNetworkError(event);
                         if (event.kind.equals("application")) {
                             String text = render(event, I18n.language());
                             if (event.level.equals("ERROR")) System.err.println(text); else System.out.println(text);
@@ -288,6 +336,11 @@ public final class AppLog {
                     }
                     long lost = dropped.getAndSet(0);
                     if (lost > 0) { append(event("ERROR", "application", "Часть сообщений журнала пропущена: %d", new Object[]{lost})); dirty = true; }
+                    long lostErrors = droppedNetworkErrors.getAndSet(0);
+                    if (lostErrors > 0) {
+                        Event notice = event("ERROR", "network", "Часть сообщений журнала пропущена: %d", new Object[]{lostErrors});
+                        append(notice); appendNetworkError(notice); dirty = true;
+                    }
                     boolean requested = rewrite.getAndSet(false);
                     if (command instanceof Barrier barrier) {
                         save(); dirty = false; nextSave = System.nanoTime() + TimeUnit.SECONDS.toNanos(1);
@@ -309,6 +362,24 @@ public final class AppLog {
                 atomic(canonical, Json.stringify(Map.of("format", 1, "events", values)));
                 atomic(application, app.toString()); atomic(network, net.toString());
             } catch (Exception ignored) { /* never recurse into the logger after disk errors */ }
+        }
+        /** Append once at observation time; restoring UI events or changing language never duplicates errors. */
+        void appendNetworkError(Event event) {
+            try {
+                byte[] bytes = line(event, I18n.language()).getBytes(StandardCharsets.UTF_8);
+                if (Files.isRegularFile(networkErrors) && Files.size(networkErrors) + bytes.length > MAX_ERROR_JOURNAL) {
+                    for (int index = ERROR_JOURNAL_BACKUPS; index >= 1; index--) {
+                        Path from = index == 1 ? networkErrors : networkErrors.resolveSibling("network-errors.log." + (index - 1));
+                        Path to = networkErrors.resolveSibling("network-errors.log." + index);
+                        if (Files.exists(from)) Files.move(from, to, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }
+                Files.write(networkErrors, bytes, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                errorJournalUnavailable = false;
+            } catch (IOException | SecurityException unavailable) {
+                if (!errorJournalUnavailable) System.err.println(DiagnosticText.render("Could not append network error journal") + ": " + sanitize(unavailable.getMessage()));
+                errorJournalUnavailable = true;
+            }
         }
         void atomic(Path path, String value) throws IOException {
             Path temporary = path.resolveSibling(path.getFileName() + ".tmp");

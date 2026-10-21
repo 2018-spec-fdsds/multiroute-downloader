@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "4.0.1";
+    static final String VERSION = "4.1";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -439,7 +439,9 @@ public final class Main {
                     if (tried.add(routeKey(candidate)+"\n"+str(raw))) { route = candidate; metadataUrl=str(raw);break outer; }
                 if (route == null) break;
                 HttpAttempt attempt = new HttpAttempt(-1, -1, 0, route);
-                try {
+                NetworkDiagnostics.Attempt diagnostic = NetworkDiagnostics.attempt(str(state.get("id")), route,
+                        metadataUrl, "Metadata", -1, 0, 0, () -> !stop && !attempt.cancelled);
+                try (diagnostic) {
                     attempt.check();
                     var response = httpOpener.open(route,metadataUrl, 0, 0, null, null);
                     try (Lease lease = new Lease(response.body(), openStreams)) {
@@ -492,6 +494,7 @@ public final class Main {
                         if (attempt.stalled) synchronized (this) { route.put("last_error", "Шлюз не передавал данные в течение 60 секунд"); }
                         continue;
                     }
+                    diagnostic.failure(error);
                     if (error instanceof InterruptedException || (error instanceof Checksum.ConflictException && sourceUrls.size()==1)) throw error;
                     last = str(route.get("name")) + ": " + error.getMessage();
                     synchronized (this) { route.put("last_error", error.getMessage()); }
@@ -721,8 +724,10 @@ public final class Main {
             int first=(int)Math.floorMod(attempt.worker+attempt.generation,urls.size());Exception last=null;
             for(int index=0;index<urls.size();index++) {
                 attempt.check();String url=str(urls.get((first+index)%urls.size()));java.net.http.HttpResponse<InputStream> response=null;
-                try{response=httpOpener.open(route,url,start,end,etag,modified);Transport.validate(response,start,end,size(),etag,modified);synchronized(this){route.put("source_url_active",url);}return response;}
-                catch(Exception error){if(response!=null)try{response.body().close();}catch(IOException close){error.addSuppressed(close);}last=error;if(stop||attempt.cancelled||error instanceof InterruptedException)throw error;}
+                NetworkDiagnostics.Attempt diagnostic=NetworkDiagnostics.attempt(str(state.get("id")),route,url,
+                        "Segment",attempt.index,start,end,()->!stop&&!attempt.cancelled);
+                try(diagnostic){response=httpOpener.open(route,url,start,end,etag,modified);Transport.validate(response,start,end,size(),etag,modified);synchronized(this){route.put("source_url_active",url);}return response;}
+                catch(Exception error){if(response!=null)try{response.body().close();}catch(IOException close){error.addSuppressed(close);}diagnostic.failure(error);last=error;if(stop||attempt.cancelled||error instanceof InterruptedException)throw error;}
             }
             throw Objects.requireNonNull(last);
         }
@@ -761,7 +766,11 @@ public final class Main {
                         if (attempt == null) return;
                         boolean complete = false; Exception failure = null;
                         int index = attempt.index;
-                        try {
+                        long start=(long)index*chunkSize(),end=Math.min(size()-1,start+chunkSize()-1);
+                        HttpAttempt diagnosticAttempt=attempt;
+                        NetworkDiagnostics.Attempt diagnostic=NetworkDiagnostics.attempt(str(state.get("id")),route,
+                                str(state.get("url")),"Segment",index,start,end,()->!stop&&!diagnosticAttempt.cancelled&&!retired);
+                        try (diagnostic) {
                             String digest = downloadChunk(route, attempt); attempt.check();
                             long length = Math.min(chunkSize(), size() - (long) index * chunkSize());
                             synchronized (Job.this) {
@@ -793,6 +802,7 @@ public final class Main {
                         }
                         if (!selected()) return;
                         if (failure != null && !attempt.cancelled && !stop) {
+                            diagnostic.failure(NetworkDiagnostics.uri(str(route.getOrDefault("source_url_active",state.get("url")))),"Segment",failure);
                             synchronized (Job.this) {
                                 if (stop || !selected()) return;
                                 route.put("last_error", failure.getMessage());

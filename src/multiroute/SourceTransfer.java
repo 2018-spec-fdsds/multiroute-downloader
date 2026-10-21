@@ -88,7 +88,7 @@ public final class SourceTransfer {
         requireGateway(route);if(host==null||!host.matches("[A-Za-z0-9.\\-:\\[\\]]+")||port<1||port>65535)throw new IOException("Invalid source endpoint");
         URI endpoint=endpoints.endpoint(route);
         if(!"http".equals(endpoint.getScheme())||!"127.0.0.1".equals(endpoint.getHost())||endpoint.getPort()<1)throw new IOException("Gateway proxy must be loopback HTTP");
-        Socket socket=new Socket(java.net.Proxy.NO_PROXY);
+        Socket socket=new Socket(java.net.Proxy.NO_PROXY);long started=System.nanoTime();
         try {
             socket.connect(new InetSocketAddress("127.0.0.1",endpoint.getPort()),15000);socket.setSoTimeout(1000);socket.setTcpNoDelay(true);
             String authority=host.contains(":")?"["+host.replace("[","").replace("]","")+"]:"+port:host+":"+port;
@@ -96,9 +96,15 @@ public final class SourceTransfer {
             ByteArrayOutputStream header=new ByteArrayOutputStream();int state=0;long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(15);
             while(state!=4){if(Thread.currentThread().isInterrupted())throw new InterruptedException();if(System.nanoTime()>deadline)throw new SocketTimeoutException("Gateway CONNECT timed out");int b;try{b=socket.getInputStream().read();}catch(SocketTimeoutException waiting){continue;}if(b<0||header.size()>=16384)throw new IOException("Invalid gateway CONNECT response");header.write(b);state=switch(state){case 0->b==13?1:0;case 1->b==10?2:b==13?1:0;case 2->b==13?3:0;default->b==10?4:0;};}
             String line=header.toString(StandardCharsets.US_ASCII).split("\r\n",2)[0];
-            if(!line.matches("HTTP/1\\.[01] 200(?: .*)?"))throw new IOException("Gateway refused source tunnel");
+            if(!line.matches("HTTP/1\\.[01] 200(?: .*)?")){
+                java.util.regex.Matcher status=java.util.regex.Pattern.compile("HTTP/1\\.[01] ([1-5][0-9]{2})(?: .*)?").matcher(line);
+                throw new IOException(status.matches()?"Gateway refused source tunnel (HTTP "+status.group(1)+")":"Gateway refused source tunnel");
+            }
             socket.setSoTimeout(60000);return socket;
-        }catch(IOException|InterruptedException error){try{socket.close();}catch(IOException ignored){}throw error;}
+        }catch(IOException|InterruptedException error){
+            if(error instanceof IOException)NetworkDiagnostics.requestFailure(route,NetworkDiagnostics.uri("tcp://"+(host.contains(":")?"["+host.replace("[","").replace("]","")+"]":host)+":"+port),"Source tunnel",started,error);
+            try{socket.close();}catch(IOException ignored){}throw error;
+        }
     }
     static SSLSocket tls(Socket raw,String host,int port)throws IOException {
         SSLSocket secure=(SSLSocket)TlsTrust.context().getSocketFactory().createSocket(raw,host,port,true);

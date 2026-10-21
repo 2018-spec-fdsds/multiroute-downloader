@@ -24,7 +24,7 @@ public final class LocalesTest40 {
         check(I18n.codes().equals(List.of("ru","en","de","es","fr","zh","ko","ar","it","ja","hi","vi")), "Twelve-language selector inventory differs");
         check(I18n.DEFAULT_LANGUAGE.equals("en"), "Default language changed");
         Map<String,String[]> all = new TreeMap<>(DiagnosticText.catalogRows()); all.putAll(I18n.sourceRows());
-        check(all.size() == 1416, "Unexpected canonical message inventory");
+        check(all.size() == 1463, "Unexpected canonical message inventory");
         Map<String,Object> counts = new LinkedHashMap<>();
         for (String code : LocalizedCatalog.EXTRA) {
             Map<String,String> catalog = LocalizedCatalog.catalog(code);

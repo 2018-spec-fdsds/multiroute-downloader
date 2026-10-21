@@ -9,6 +9,9 @@ permissions:
 jobs:
   macos:
     timeout-minutes: 35
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
     strategy:
       fail-fast: false
       matrix:
@@ -42,9 +45,9 @@ jobs:
           distribution: temurin
           java-version: '21'
           architecture: ${{ matrix.architecture == 'arm64' && 'aarch64' || 'x64' }}
-      - name: Build native app and single Installer package
+      - name: Build pinned native app, pure C fixtures and single Installer package
         run: python3 packaging/macos/build.py --architecture '${{ matrix.architecture }}' --output dist/macos
-      - name: Verify package, JNI, local API and bounded helper
+      - name: Verify package bytes, native source pins, packaged network gates and bounded helper
         run: python3 packaging/macos/verify.py --directory dist/macos
       - uses: actions/upload-artifact@v4
         with:

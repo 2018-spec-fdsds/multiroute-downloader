@@ -194,6 +194,8 @@ public final class DesktopUI {
     private String lastLoggedStatus = "";
     final JButton applyNetworkButton = translatedButton("Проверить и применить");
     final JTextArea networkStatusLabel = translatedArea("Адрес ещё не проверен", 2, 34);
+    final JTextArea networkTopologyStatusLabel = translatedArea("Network topology has not been checked yet", 3, 34);
+    static final String LAN_TOPOLOGY_HELP = "All gateways and the application's virtual IP must be usable addresses in one subnet of the selected computer interface. MultiRoute keeps the virtual IP when the computer's IP changes within that subnet. Moving to another subnet or changing the network mask requires a new check. System routes are not changed.";
     final JSpinner chunkSpinner = new JSpinner(new SpinnerNumberModel(20, 1, 64, 1));
     final JButton pasteButton = translatedButton("Вставить URL");
     final JButton torrentFileButton = translatedButton("Открыть torrent…");
@@ -678,6 +680,15 @@ public final class DesktopUI {
         networkStatusLabel.setFont(UIManager.getFont("Label.font"));
         networkStatusLabel.setForeground(muted()); networkStatusLabel.putClientProperty("multiroute.tone", "muted");
         add(panel, c, row++, networkStatusLabel);
+        networkTopologyStatusLabel.setEditable(false);
+        networkTopologyStatusLabel.setLineWrap(true);
+        networkTopologyStatusLabel.setWrapStyleWord(true);
+        networkTopologyStatusLabel.setOpaque(false);
+        networkTopologyStatusLabel.setFont(UIManager.getFont("Label.font"));
+        networkTopologyStatusLabel.setForeground(muted());
+        networkTopologyStatusLabel.putClientProperty("multiroute.tone", "muted");
+        tip(networkTopologyStatusLabel, LAN_TOPOLOGY_HELP);
+        add(panel, c, row++, networkTopologyStatusLabel);
         applyNetworkButton.addActionListener(event -> applyNetwork());
         virtualIpField.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent event) { virtualIpEdited(); }
@@ -2382,13 +2393,38 @@ public final class DesktopUI {
                 List<Object> snapshots = Main.arr(state.get("jobs"));
                 SwingUtilities.invokeLater(() -> {
                     if (closing) return;
-                    if (networkSettings != null) synchronizeNetworkSettings(networkSettings, observedApplied);
+                    if (networkSettings != null) {
+                        synchronizeNetworkSettings(networkSettings, observedApplied);
+                        refreshNetworkTopology(networkSettings);
+                    }
                     if (generation == jobsGeneration) updateJobs(snapshots);
                 });
             } catch (Exception error) {
                 SwingUtilities.invokeLater(() -> status("Не удалось обновить список: %s", errorArgument(error)));
             } finally { refreshing.set(false); }
         });
+    }
+
+    /** The subnet proof belongs to applied settings; edits must not inherit a previous green status. */
+    void refreshNetworkTopology(Map<String,Object> settings) {
+        NetworkInput applied = networkSettingsInput(settings);
+        try {
+            if (applied == null || !applied.equals(networkInput())) {
+                I18n.text(networkTopologyStatusLabel, "Network settings changed; check the subnet again"); return;
+            }
+        } catch (RuntimeException invalidDraft) {
+            I18n.text(networkTopologyStatusLabel, "Network settings changed; check the subnet again"); return;
+        }
+        Map<String,Object> validation = Main.obj(settings.get("network_validation"));
+        switch (Main.str(validation.get("status"))) {
+            case "valid" -> I18n.text(networkTopologyStatusLabel,
+                    "LAN verified: computer %s, subnet %s; virtual IP %s; gateways %d.",
+                    Main.str(validation.get("computer_ipv4")), Main.str(validation.get("network_cidr")),
+                    applied.virtualIp(), applied.gateways().size());
+            case "error" -> I18n.text(networkTopologyStatusLabel, "LAN check failed: %s",
+                    DiagnosticText.arg(Main.str(validation.get("message"))));
+            default -> I18n.text(networkTopologyStatusLabel, "Network topology has not been checked yet");
+        }
     }
 
     private void updateJobs(List<Object> snapshots) {

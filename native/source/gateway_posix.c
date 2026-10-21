@@ -18,6 +18,7 @@
 #include "lwip/inet_chksum.h"
 #include "lwip/etharp.h"
 #include "netif/ethernet.h"
+#include "gateway_topology.h"
 
 #define MAX_PROFILES 128
 #define MAX_CONFIGURED_PROFILES 32
@@ -56,6 +57,9 @@ static char virtual_ip[16], adapter_name[512], interface_name[512], ready_path[4
 static uint32_t virtual_host, mask_host;
 static unsigned char adapter_mac[6];
 static unsigned int interface_index;
+static mr_lan_state lan_topology;
+static volatile LONG topology_validated;
+static ULONGLONG next_topology_check;
 static pcap_t *capture, *transmit;
 static CRITICAL_SECTION tx_lock;
 static volatile LONG stopping, connection_count, next_port = 20000;
@@ -121,7 +125,8 @@ static void ready_result(const char *error) {
   fprintf(f,"{\"ok\":%s,\"application_routes_only\":true,\"virtual_ip\":",error?"false":"true");json_string(f,virtual_ip);
   if(error) {fputs(",\"error\":",f);json_string(f,error);}
   fputs(",\"interface\":",f);json_string(f,interface_name);
-  fputs(",\"interface_name\":",f);json_string(f,interface_name);fprintf(f,",\"interface_index\":%u,\"profiles\":{",interface_index);
+  fputs(",\"interface_name\":",f);json_string(f,interface_name);fprintf(f,",\"interface_index\":%u",interface_index);
+  mr_lan_ready(f,&lan_topology,topology_validated);fputs(",\"profiles\":{",f);
   for(i=0;i<profile_count;i++) {
     profile *r=&profiles[i];if(i)fputc(',',f);json_string(f,r->gateway);fputs(":{\"gateway\":",f);json_string(f,r->gateway);
     fprintf(f,",\"port\":%u,\"socks_port\":%u,\"available\":%s,\"source_ip\":",r->proxy_port,r->socks_port,(r->configured&&r->mac_known)?"true":"false");json_string(f,virtual_ip);
@@ -139,7 +144,20 @@ static void ready_result(const char *error) {
   if(rename(temp,ready_path))fprintf(stderr,"Cannot publish ready file: %s\n",strerror(errno));
   LeaveCriticalSection(&ready_lock);
 }
-static void fatal(const char *message) {fprintf(stderr,"%s\n",message);ready_result(message);InterlockedExchange(&stopping,1);}
+static void fatal(const char *message) {InterlockedExchange(&topology_validated,0);fprintf(stderr,"%s\n",message);ready_result(message);InterlockedExchange(&stopping,1);}
+static void report_topology_error(const char *reason) {fprintf(stderr,"NETWORK_TOPOLOGY_ERROR %s\n",reason);fflush(stderr);}
+static int topology_error(char *error,size_t size,const char *reason) {snprintf(error,size,"%s",reason);return 0;}
+static size_t current_gateway_hosts(uint32_t hosts[MAX_PROFILES]) {
+  int i;size_t count=0;for(i=0;i<profile_count;i++)if(profiles[i].configured)hosts[count++]=profiles[i].gateway_host;return count;
+}
+static int lan_os_addresses(const struct ifaddrs *all,uint32_t addresses[MR_LAN_MAX_ADDRESSES],size_t *count,char *error,size_t error_size) {
+  const struct ifaddrs *a;*count=0;
+  for(a=all;a;a=a->ifa_next){
+    if(!a->ifa_addr||a->ifa_addr->sa_family!=AF_INET)continue;
+    if(*count>=MR_LAN_MAX_ADDRESSES)return topology_error(error,error_size,"Too many local IPv4 addresses to validate the application network");
+    addresses[(*count)++]=ntohl(((struct sockaddr_in*)a->ifa_addr)->sin_addr.s_addr);
+  }return 1;
+}
 
 static int adapter_link(const struct ifaddrs *all,const char *name,unsigned char *mac) {
   const struct ifaddrs *a;
@@ -163,25 +181,57 @@ static int adapter_link(const struct ifaddrs *all,const char *name,unsigned char
   return 0;
 }
 static int choose_adapter(char *error,size_t error_size) {
-  struct ifaddrs *all,*a;int candidates=0,i;char selected[IFNAMSIZ]={0};
-  if(getifaddrs(&all)){snprintf(error,error_size,"Cannot read LAN adapters");return 0;}
-  for(a=all;a;a=a->ifa_next)if(a->ifa_addr&&a->ifa_addr->sa_family==AF_INET&&ntohl(((struct sockaddr_in*)a->ifa_addr)->sin_addr.s_addr)==virtual_host){freeifaddrs(all);snprintf(error,error_size,"Virtual IP is already assigned to macOS; choose another application IP");return 0;}
+  struct ifaddrs *all,*a;size_t candidates=0;unsigned int selected[MR_LAN_MAX_ADDRESSES];
+  uint32_t addresses[MR_LAN_MAX_ADDRESSES],hosts[MAX_PROFILES],selected_ip=0;size_t count,host_count=current_gateway_hosts(hosts);
+  mr_lan_result result,last=MR_LAN_OK;
+  if(getifaddrs(&all))return topology_error(error,error_size,"Cannot read LAN adapters");
+  if(!lan_os_addresses(all,addresses,&count,error,error_size)){freeifaddrs(all);return 0;}
+  result=mr_lan_collisions(virtual_host,hosts,host_count,addresses,count);
+  if(result!=MR_LAN_OK){freeifaddrs(all);return topology_error(error,error_size,mr_lan_reason(result));}
   for(a=all;a;a=a->ifa_next){
-    uint32_t src,mask;unsigned char mac[6];
+    uint32_t src,mask;unsigned char mac[6];unsigned int identity;int added;
     if(!a->ifa_addr||!a->ifa_netmask||a->ifa_addr->sa_family!=AF_INET||!(a->ifa_flags&IFF_UP)||(a->ifa_flags&IFF_LOOPBACK)||!adapter_link(all,a->ifa_name,mac))continue;
     src=ntohl(((struct sockaddr_in*)a->ifa_addr)->sin_addr.s_addr);mask=ntohl(((struct sockaddr_in*)a->ifa_netmask)->sin_addr.s_addr);
-    if(!mask||((~mask)&((~mask)+1))||~mask<3)continue;
-    if((src&mask)!=(virtual_host&mask)||virtual_host==(src&mask)||virtual_host==((src&mask)|~mask))continue;
-    for(i=0;i<profile_count;i++)if((profiles[i].gateway_host&mask)!=(src&mask)||profiles[i].gateway_host==src||profiles[i].gateway_host==(src&mask)||profiles[i].gateway_host==((src&mask)|~mask))break;
-    if(i!=profile_count)continue;
-    if(*selected&&!strcmp(selected,a->ifa_name))continue;
-    candidates++;snprintf(selected,sizeof(selected),"%s",a->ifa_name);
+    result=mr_lan_validate(src,mask,virtual_host,hosts,host_count,addresses,count);
+    if(result!=MR_LAN_OK){if(last==MR_LAN_OK||(src&mask)==(virtual_host&mask))last=result;continue;}
+    identity=if_nametoindex(a->ifa_name);added=mr_lan_add_adapter(selected,&candidates,MR_LAN_MAX_ADDRESSES,identity);
+    if(!added)continue;
+    if(added<0){freeifaddrs(all);return topology_error(error,error_size,"Too many local IPv4 addresses to validate the application network");}
     snprintf(adapter_name,sizeof(adapter_name),"%s",a->ifa_name);snprintf(interface_name,sizeof(interface_name),"%s",a->ifa_name);
-    memcpy(adapter_mac,mac,6);interface_index=if_nametoindex(a->ifa_name);mask_host=mask;
+    memcpy(adapter_mac,mac,6);interface_index=if_nametoindex(a->ifa_name);mask_host=mask;selected_ip=src;
   }
   freeifaddrs(all);
-  if(candidates!=1){snprintf(error,error_size,candidates?"More than one physical LAN adapter matches the gateways":"No active physical Ethernet LAN adapter contains the virtual IP and gateways");return 0;}
+  if(candidates!=1)return topology_error(error,error_size,candidates?"More than one physical LAN adapter matches the gateways":last!=MR_LAN_OK?mr_lan_reason(last):"No active physical Ethernet LAN adapter contains the virtual IP and gateways");
+  mr_lan_start(&lan_topology,selected_ip,mask_host,virtual_host);InterlockedExchange(&topology_validated,1);next_topology_check=GetTickCount64()+2000;
   return 1;
+}
+static int read_selected_topology(const uint32_t *hosts,size_t host_count,uint32_t *computer_ip,char *error,size_t error_size) {
+  struct ifaddrs *all,*a;uint32_t addresses[MR_LAN_MAX_ADDRESSES];mr_lan_address selected[MR_LAN_MAX_ADDRESSES];
+  size_t count,selected_count=0;int found=0;mr_lan_result result;unsigned char mac[6];
+  if(getifaddrs(&all))return topology_error(error,error_size,"Cannot read LAN adapters");
+  if(!lan_os_addresses(all,addresses,&count,error,error_size)){freeifaddrs(all);return 0;}
+  for(a=all;a;a=a->ifa_next)if(!strcmp(a->ifa_name,adapter_name)){
+    if(!found){
+      if(!(a->ifa_flags&IFF_UP)||(a->ifa_flags&IFF_LOOPBACK)||if_nametoindex(a->ifa_name)!=interface_index||!adapter_link(all,a->ifa_name,mac)){freeifaddrs(all);return topology_error(error,error_size,"The selected Ethernet adapter is no longer active");}
+      if(memcmp(mac,adapter_mac,6)){freeifaddrs(all);return topology_error(error,error_size,"The selected Ethernet adapter hardware address changed; check and apply the application network settings again");}found=1;
+    }
+    if(!a->ifa_addr||a->ifa_addr->sa_family!=AF_INET)continue;
+    if(selected_count>=MR_LAN_MAX_ADDRESSES){freeifaddrs(all);return topology_error(error,error_size,"Too many local IPv4 addresses to validate the application network");}
+    selected[selected_count].address=ntohl(((struct sockaddr_in*)a->ifa_addr)->sin_addr.s_addr);
+    selected[selected_count++].mask=a->ifa_netmask?ntohl(((struct sockaddr_in*)a->ifa_netmask)->sin_addr.s_addr):0;
+  }
+  if(!found){freeifaddrs(all);return topology_error(error,error_size,"The selected Ethernet adapter is no longer active");}
+  result=mr_lan_current(&lan_topology,selected,selected_count,hosts,host_count,addresses,count,computer_ip);freeifaddrs(all);
+  if(result!=MR_LAN_OK)return topology_error(error,error_size,mr_lan_reason(result));
+  return 1;
+}
+static void monitor_topology(void) {
+  uint32_t hosts[MAX_PROFILES],computer_ip,previous;size_t count;char error[512],old_ip[16],new_ip[16],cidr[20];int changed;
+  ULONGLONG now=GetTickCount64();if(now<next_topology_check)return;next_topology_check=now+2000;count=current_gateway_hosts(hosts);
+  if(!read_selected_topology(hosts,count,&computer_ip,error,sizeof(error))){report_topology_error(error);fatal(error);return;}
+  EnterCriticalSection(&ready_lock);previous=lan_topology.computer_ipv4;changed=mr_lan_observe(&lan_topology,computer_ip);LeaveCriticalSection(&ready_lock);
+  if(changed){mr_lan_ip(old_ip,previous);mr_lan_ip(new_ip,computer_ip);mr_lan_cidr(cidr,&lan_topology);
+    fprintf(stderr,"HOST_IPV4_CHANGED interface=%u previous=%s current=%s subnet=%s virtual_ip=%s\n",interface_index,old_ip,new_ip,cidr,virtual_ip);fflush(stderr);}
 }
 static int open_capture(char *error,size_t error_size) {
   char filter[8192],errbuf[PCAP_ERRBUF_SIZE]={0};struct bpf_program code;int i;
@@ -330,8 +380,12 @@ static int socket_send_all(SOCKET s,const void *buffer,size_t size) {
   const char *p=(const char*)buffer;ULONGLONG deadline=GetTickCount64()+10000;
   while(size&&!cancelled()) {int n=send(s,p,(int)size,0);if(n>0){p+=n;size-=n;continue;}if(n<0&&WSAGetLastError()==WSAEWOULDBLOCK&&GetTickCount64()<deadline){Sleep(1);continue;}return 0;}return !size;
 }
-static void proxy_error(SOCKET s,const char *reason) {
-  char response[1024];snprintf(response,sizeof(response),"HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n%s\nNo fallback gateway was used.\n",reason);socket_send_all(s,response,strlen(response));
+#include "gateway_diagnostics.h"
+static void proxy_error(client *c,const mr_proxy_diagnostic *diagnostic,const char *stage,const char *reason,int lwip_error) {
+  char response[1024],record[MR_PROXY_DIAGNOSTIC_SIZE];uint64_t now=(uint64_t)GetTickCount64();
+  mr_proxy_diagnostic_format(record,diagnostic,stage,reason,now>=diagnostic->started_ms?now-diagnostic->started_ms:0,lwip_error);
+  fputs(record,stderr);fflush(stderr);
+  snprintf(response,sizeof(response),"HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n%s\nNo fallback gateway was used.\n",reason);socket_send_all(c->local,response,strlen(response));
 }
 #include "gateway_dns.h"
 static int split_authority(char *authority,char *host,size_t host_size,unsigned short *port,unsigned short default_port) {
@@ -358,38 +412,46 @@ static int append_close_headers(char *out,int size,int used,const char *headers)
   if(used+2>=size)return -1;memcpy(out+used,"\r\n",3);return used+2;
 }
 static void * serve_client(void * pointer) {
-  client *c=(client*)pointer;char header[MAX_HEADER+1],host[256],target[MAX_HEADER+1],method[16],version[24];
-  char rewritten[MAX_HEADER+1],response_header[MAX_HEADER+1];int used=0,tunnel=0,header_bytes=0,local_closed=0,response_pending=1,response_used=0;unsigned short remote_port;ip_addr_t remote,local;err_t err;u_long nonblocking=1;ULONGLONG deadline;
+  client *c=(client*)pointer;char header[MAX_HEADER+1],host[256]="",target[MAX_HEADER+1],method[16],version[24];
+  char rewritten[MAX_HEADER+1],response_header[MAX_HEADER+1];int used=0,tunnel=0,header_bytes=0,local_closed=0,response_pending=1,response_used=0;unsigned short remote_port=0;ip_addr_t remote,local;err_t err;u_long nonblocking=1;ULONGLONG deadline;
+  mr_proxy_diagnostic diagnostic={0};diagnostic.gateway=c->route->gateway;diagnostic.host=host;diagnostic.started_ms=(uint64_t)GetTickCount64();
   set_receive_timeout(c->local,5000);
   while(used<MAX_HEADER) {int n=recv(c->local,header+used,1,0);if(n<=0)goto done;used+=n;header[used]=0;if(used>=4&&!memcmp(header+used-4,"\r\n\r\n",4))break;}
-  if(used==MAX_HEADER){proxy_error(c->local,"Proxy header too large");goto done;}
-  if(sscanf(header,"%15s %16384s %23s",method,target,version)!=3){proxy_error(c->local,"Invalid proxy request");goto done;}
-  if(strcmp(version,"HTTP/1.1")&&strcmp(version,"HTTP/1.0")){proxy_error(c->local,"Unsupported HTTP version");goto done;}
-  if(!strcmp(method,"CONNECT")) {tunnel=1;if(!split_authority(target,host,sizeof(host),&remote_port,443)){proxy_error(c->local,"Invalid CONNECT authority");goto done;}}
+  if(used==MAX_HEADER){proxy_error(c,&diagnostic,"parse","Proxy header too large",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  if(sscanf(header,"%15s %16384s %23s",method,target,version)!=3){proxy_error(c,&diagnostic,"parse","Invalid proxy request",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  if(strcmp(version,"HTTP/1.1")&&strcmp(version,"HTTP/1.0")){proxy_error(c,&diagnostic,"parse","Unsupported HTTP version",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  if(!strcmp(method,"CONNECT")) {tunnel=1;if(!split_authority(target,host,sizeof(host),&remote_port,443)){proxy_error(c,&diagnostic,"parse","Invalid CONNECT authority",MR_PROXY_LWIP_UNKNOWN);goto done;}}
   else if((!strcmp(method,"GET")||!strcmp(method,"HEAD"))&&!strncmp(target,"http://",7)) {
     char *path=strchr(target+7,'/'),authority[256],*rest=strstr(header,"\r\n");size_t authority_size=path?(size_t)(path-(target+7)):strlen(target+7);
-    if(authority_size>=sizeof(authority)||!rest){proxy_error(c->local,"Invalid HTTP proxy URL");goto done;}
+    if(authority_size>=sizeof(authority)||!rest){proxy_error(c,&diagnostic,"parse","Invalid HTTP proxy URL",MR_PROXY_LWIP_UNKNOWN);goto done;}
     memcpy(authority,target+7,authority_size);authority[authority_size]=0;
-    if(!split_authority(authority,host,sizeof(host),&remote_port,80)){proxy_error(c->local,"Invalid HTTP authority");goto done;}
+    if(!split_authority(authority,host,sizeof(host),&remote_port,80)){proxy_error(c,&diagnostic,"parse","Invalid HTTP authority",MR_PROXY_LWIP_UNKNOWN);goto done;}
+    diagnostic.remote_port=remote_port;
     header_bytes=snprintf(rewritten,sizeof(rewritten),"%s %s %s\r\nConnection: close\r\n",method,path?path:"/",version);
     header_bytes=append_close_headers(rewritten,sizeof(rewritten),header_bytes,rest+2);
-    if(header_bytes<=0||header_bytes>=MAX_HEADER){proxy_error(c->local,"Invalid HTTP header");goto done;}
-  } else {proxy_error(c->local,"Only CONNECT, HTTP GET and HEAD are supported");goto done;}
-  if(!c->route->configured||!c->route->mac_known){proxy_error(c->local,"Selected gateway did not answer ARP");goto done;}
-  if(!resolve_remote(c->route,host,&remote)){proxy_error(c->local,"No public IPv4 address for source");goto done;}
-  c->conn=netconn_new(NETCONN_TCP);if(!c->conn){proxy_error(c->local,"Application TCP socket limit");goto done;}
+    if(header_bytes<=0||header_bytes>=MAX_HEADER){proxy_error(c,&diagnostic,"parse","Invalid HTTP header",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  } else {proxy_error(c,&diagnostic,"parse","Only CONNECT, HTTP GET and HEAD are supported",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  diagnostic.remote_port=remote_port;
+  if(!c->route->configured||!c->route->mac_known){proxy_error(c,&diagnostic,"arp","Selected gateway did not answer ARP",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  if(!resolve_remote(c->route,host,&remote)){proxy_error(c,&diagnostic,"dns","No public IPv4 address for source",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  diagnostic.resolved=1;diagnostic.destination_ipv4=ntohl(ip_addr_get_ip4_u32(&remote));
+  c->conn=netconn_new(NETCONN_TCP);if(!c->conn){proxy_error(c,&diagnostic,"tcp_open","Application TCP socket limit",MR_PROXY_LWIP_UNKNOWN);goto done;}
   ip_addr_set_ip4_u32(&local,htonl(virtual_host));
   for(;;) {
     LONG port=InterlockedIncrement(&next_port);if(port>60000){InterlockedExchange(&next_port,20000);continue;}
-    c->port=(uint16_t)port;err=netconn_bind(c->conn,&local,c->port);if(err==ERR_OK)break;if(err!=ERR_USE){proxy_error(c->local,"Application TCP bind failed");goto done;}
+    c->port=(uint16_t)port;err=netconn_bind(c->conn,&local,c->port);if(err==ERR_OK)break;if(err!=ERR_USE){proxy_error(c,&diagnostic,"tcp_bind","Application TCP bind failed",err);goto done;}
   }
   port_routes[c->port]=c->route;
-  if(netconn_bind_if(c->conn,netif_get_index(&c->route->netif))!=ERR_OK){proxy_error(c->local,"Application gateway binding failed");goto done;}
+  err=netconn_bind_if(c->conn,netif_get_index(&c->route->netif));if(err!=ERR_OK){proxy_error(c,&diagnostic,"tcp_bind_interface","Application gateway binding failed",err);goto done;}
   netconn_set_nonblocking(c->conn,1);err=netconn_connect(c->conn,&remote,remote_port);
-  if(err!=ERR_OK&&err!=ERR_INPROGRESS){proxy_error(c->local,"Selected gateway connection failed");goto done;}
+  if(err!=ERR_OK&&err!=ERR_INPROGRESS){proxy_error(c,&diagnostic,"tcp_connect","Selected gateway connection failed",err);goto done;}
   deadline=GetTickCount64()+5000;
   while(!cancelled()&&remote_connected(c->conn)==0&&GetTickCount64()<deadline)Sleep(5);
-  if(cancelled()||remote_connected(c->conn)!=1){proxy_error(c->local,"Selected gateway TCP connection timed out");goto done;}
+  if(cancelled()){proxy_error(c,&diagnostic,"tcp_connect","Selected gateway connection cancelled",MR_PROXY_LWIP_UNKNOWN);goto done;}
+  if(remote_connected(c->conn)!=1){
+    const char *reason=GetTickCount64()>=deadline?"Selected gateway TCP connection timed out":"Selected gateway connection closed before establishment";
+    err=netconn_err(c->conn);proxy_error(c,&diagnostic,"tcp_connect",reason,err==ERR_OK||err==ERR_INPROGRESS?MR_PROXY_LWIP_UNKNOWN:err);goto done;
+  }
   netconn_set_nonblocking(c->conn,0);netconn_set_recvtimeout(c->conn,10);netconn_set_sendtimeout(c->conn,1000);
   if(tunnel) {if(!socket_send_all(c->local,"HTTP/1.1 200 Connection Established\r\n\r\n",39))goto done;}
   else {size_t written=0;err=netconn_write_partly(c->conn,rewritten,(size_t)header_bytes,NETCONN_COPY,&written);if(err!=ERR_OK||written!=(size_t)header_bytes){fprintf(stderr,"HTTP_WRITE error=%d bytes=%zu/%d\n",err,written,header_bytes);goto done;}}
@@ -599,12 +661,14 @@ static int run_main(int argc,char **argv){
   }
   if(!profile_count){fatal("No gateways configured");return 2;}
   InitializeCriticalSection(&tx_lock);signal(SIGTERM,console_control);signal(SIGINT,console_control);signal(SIGPIPE,SIG_IGN);
-  if(!choose_adapter(error,sizeof(error))||!open_capture(error,sizeof(error))){
+  {int topology_ok=choose_adapter(error,sizeof(error));
+  if(!topology_ok||!open_capture(error,sizeof(error))){
     /* Publish startup diagnostics only after permanently dropping privileges.
      * This also covers failed capture setup before the normal drop point. */
     if(!drop_privileges()){fatal("Cannot permanently drop packet-capture helper privileges");return 4;}
+    if(!topology_ok)report_topology_error(error);
     fatal(*error?error:"LAN setup failed");return 4;
-  }
+  }}
   if(!drop_privileges()){fatal("Cannot permanently drop packet-capture helper privileges");return 4;}
   if(!parent_identity(parent_pid,target_uid,target_gid)||!acquire_ip_lock()){fatal("Application virtual IP is already owned by another MultiRoute helper, or parent application exited");return 3;}
   if(cancelled()){fatal("Application transport cancelled before address claim");return 3;}
@@ -614,7 +678,7 @@ static int run_main(int argc,char **argv){
   rx=spawn_thread(receive_loop,NULL);if(!rx||!start_listeners()){fatal("Application loopback proxy startup failed");return 7;}
   ready_result(NULL);fprintf(stderr,"READY virtual_ip=%s interface=%s profiles=%d application_routes_only=true\n",virtual_ip,interface_name,profile_count);
   for(i=0;i<profile_count;i++)fprintf(stderr,"GATEWAY %s proxy=127.0.0.1:%u available=%d\n",profiles[i].gateway,profiles[i].proxy_port,profiles[i].mac_known);
-  while(!cancelled()){Sleep(250);if(!cancelled()){poll_profile_control();ready_result(NULL);}}
+  while(!cancelled()){Sleep(250);if(!cancelled()){poll_profile_control();monitor_topology();ready_result(NULL);}}
   for(i=0;i<profile_count;i++){if(profiles[i].listener!=INVALID_SOCKET)closesocket(profiles[i].listener);if(profiles[i].socks_listener!=INVALID_SOCKET)closesocket(profiles[i].socks_listener);}
   pthread_join(*rx,NULL);free(rx);
   {ULONGLONG until=GetTickCount64()+3000;while(connection_count&&GetTickCount64()<until)Sleep(10);if(connection_count)return 0;}
