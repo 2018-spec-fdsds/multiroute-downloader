@@ -1,6 +1,8 @@
-# MultiRoute Downloader 4.1 — Инструкция на русском
+# MultiRoute Downloader 4.1.1 — Инструкция на русском
 
 [English](en.md) · **Русский** · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Главная](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
+
+**Исправления 4.1.1:** при тайм-ауте UDP или усечённом ответе DNS повторяется по TCP через тот же шлюз и виртуальный IP (общий лимит DNS — 8 секунд). Автообновление больше не тянет прокручиваемые панели вверх. [Описание релиза](releases/4.1.1.ru.md).
 
 MultiRoute Downloader — настольное приложение на Java для скачивания через один или несколько **шлюзов** вашей локальной сети. Оно выдаёт доступные части шлюзам, сохраняет проверенные данные и собирает итоговый файл. Локальный API позволяет создавать и управлять загрузками из других приложений. Окно программы — отдельный настольный интерфейс.
 
@@ -64,15 +66,15 @@ MultiRoute Downloader — настольное приложение на Java д
 
 Для выбранного языка нужны установленные шрифты с его символами. В минимальной Linux установите подходящие пакеты из репозитория дистрибутива, например Noto CJK для китайского/корейского и арабское семейство Noto. Java использует подстановку системных шрифтов; приложение не устанавливает и не включает пакеты шрифтов. Покрытие зависит от компьютера.
 
-## Установщики 4.1: Windows и macOS
+## Установщики 4.1.1: Windows и macOS
 
 Выберите установщик для своей системы в [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), если он приложен к релизу. Каждый дистрибутив — **один установочный файл**, содержащий программу, обычный запускающий компонент, полную Java и сетевой компонент для этой ОС. Исходники и portable ZIP версии 3.0 распространяются отдельно.
 
 | Система | Установщик | Запуск после установки |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** в меню «Пуск» либо ярлык на рабочем столе |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1-macOS-arm64.pkg` | **MultiRoute Downloader** в «Программах», Spotlight или Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1-macOS-x86_64.pkg` | **MultiRoute Downloader** в «Программах», Spotlight или Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** в меню «Пуск» либо ярлык на рабочем столе |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg` | **MultiRoute Downloader** в «Программах», Spotlight или Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg` | **MultiRoute Downloader** в «Программах», Spotlight или Dock |
 
 Инструкции на двенадцати языках и скриншоты включены для чтения без Интернета. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: в Finder выберите **«Показать содержимое пакета»** у установленного приложения и откройте `Contents/app/docs/`. Файлы `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md`, `vi.md` можно открыть в текстовом редакторе или просмотрщике Markdown.
 
@@ -266,12 +268,12 @@ GET http://127.0.0.1:8765/api/v1/health
 
 ## 7. Данные, обновление и удаление
 
-### Новые установщики 4.1
+### Новые установщики 4.1.1
 
 | Система | Настройки, история и журналы | Приложение и Java | Сетевой компонент |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, включая Java | Готовый компонент x64; Npcap устанавливается отдельно |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, включая Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, включая Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.1/gateway-net` |
 
 Перед обновлением новым установщиком закройте приложение. В Windows удаление выполняется через **«Параметры → Приложения → Установленные приложения»**. На macOS удаление `.app` не удаляет автоматически историю и отдельно защищённый сетевой компонент. Скачанные файлы остаются в выбранной папке: не удаляйте её ради удаления программы. Путь данных отличается от Windows portable 3.0; сохраните предыдущий профиль перед переносом.
 
@@ -406,7 +408,7 @@ API принимает `site_profile_id` для скачивания, отпра
 
 ## Интеграция с Chrome и Edge
 
-Откройте в приложении интеграцию **Chrome / Edge**, разрешите передачу ссылок и откройте папку расширения. Один раз перейдите в Chrome на `chrome://extensions`, в Edge — `edge://extensions`, включите режим разработчика, нажмите **Загрузить распакованное** и выберите `browser-extension` с `manifest.json`. Native-установщики включают её рядом с JAR; в исходниках есть [browser-extension/](../browser-extension/). Не перемещайте выбранную папку. Отдельный `MultiRoute-Downloader-4.1-Chrome-Edge.zip` сначала распакуйте. Эта версия устанавливается локально, публикации в магазинах браузеров нет.
+Откройте в приложении интеграцию **Chrome / Edge**, разрешите передачу ссылок и откройте папку расширения. Один раз перейдите в Chrome на `chrome://extensions`, в Edge — `edge://extensions`, включите режим разработчика, нажмите **Загрузить распакованное** и выберите `browser-extension` с `manifest.json`. Native-установщики включают её рядом с JAR; в исходниках есть [browser-extension/](../browser-extension/). Не перемещайте выбранную папку. Отдельный `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip` сначала распакуйте. Эта версия устанавливается локально, публикации в магазинах браузеров нет.
 
 MultiRoute должен быть запущен, достаточно трея. Нажмите правой кнопкой по ссылке и выберите действие скачивания MultiRoute либо отправьте URL из окна расширения. Используются выбранные в приложении папка, шлюзы и профиль сайта; при необходимости остаётся выбор файлов репозитория/torrent. Порт расширения по умолчанию 8765; если API работает на другом порту, задайте его. Передаётся только URL: cookies и пароли браузера не копируются, остальные закачки браузера не перехватываются. Доступ к источнику настройте в приложении. Если браузер запрашивает доступ к локальному соединению, подтвердите его только для выбранного расширения.
 

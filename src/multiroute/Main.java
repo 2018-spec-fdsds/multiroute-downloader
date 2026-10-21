@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "4.1";
+    static final String VERSION = "4.1.1";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");

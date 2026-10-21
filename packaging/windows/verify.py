@@ -93,7 +93,9 @@ def main():
     for name, expected in extension_hashes.items():
         check("browser extension SHA-256 " + name, sha256(image/"app"/name) == expected and sha256(Path(__file__).resolve().parents[2]/name) == expected)
     extension_manifest = json.loads((image/"app/browser-extension/manifest.json").read_text(encoding="utf-8"))
-    check("browser extension is current Manifest V3", extension_manifest["manifest_version"] == 3 and extension_manifest["version"] == original["application_version"] + ".0")
+    application_version = original["application_version"]
+    extension_version = application_version + ".0" if application_version.count(".") == 1 else application_version
+    check("browser extension is current Manifest V3", extension_manifest["manifest_version"] == 3 and extension_manifest["version"] == extension_version)
     check("browser extension only explicit link permissions", set(extension_manifest["permissions"]) == {"contextMenus", "activeTab", "storage"} and extension_manifest["host_permissions"] == ["http://127.0.0.1/*"])
     extension_key = hashlib.sha256(base64.b64decode(extension_manifest["key"], validate=True)).digest()[:16].hex()
     extension_id = "".join(chr(ord("a") + int(character, 16)) for character in extension_key)

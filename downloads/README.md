@@ -1,6 +1,6 @@
 # MultiRoute Downloader installers
 
-**Latest:** [version 4.0](v4.0/). [Version 3.9](v3.9/) is also available. [Version 3.8](v3.8/) is also available. [Version 3.7](v3.7/) is also available. [Version 3.6](v3.6/) is also available. [Version 3.5](v3.5/) is also available. [Version 3.4](v3.4/) is also available. [Version 3.3](v3.3/) is also available. [Version 3.2](v3.2/) is also available. The files below are the previous 3.1 release.
+**Latest:** [version 4.1.1](v4.1.1/). Previous: [4.1](v4.1/) · [4.0.1](v4.0.1/) · [4.0](v4.0/) · [3.9](v3.9/) · [3.8](v3.8/) · [3.7](v3.7/) · [3.6](v3.6/) · [3.5](v3.5/) · [3.4](v3.4/) · [3.3](v3.3/) · [3.2](v3.2/). The files below are the previous 3.1 release.
 
 The actual installer files are in this folder. Open the file page and click **Download raw file** to save it.
 

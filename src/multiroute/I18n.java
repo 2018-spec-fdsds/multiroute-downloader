@@ -231,7 +231,13 @@ public final class I18n {
         if (ROWS.putIfAbsent(ru, LocalizedCatalog.extend(ru, new String[]{ru, en, de, es, fr})) != null)
             throw new IllegalStateException("Duplicate localization key: " + ru);
     }
+    private static void row(String source, String ru, String en, String de, String es, String fr) {
+        if (ROWS.putIfAbsent(source, LocalizedCatalog.extend(source, new String[]{ru, en, de, es, fr})) != null)
+            throw new IllegalStateException("Duplicate localization key: " + source);
+    }
     private static void catalog() {
+        row("DNS over TCP succeeded: gateway=%s resolver=%s", "DNS через TCP: запрос выполнен; шлюз=%s DNS-сервер=%s", "DNS over TCP succeeded: gateway=%s resolver=%s", "DNS über TCP erfolgreich: Gateway=%s Resolver=%s", "DNS por TCP completado: puerta de enlace=%s servidor DNS=%s", "DNS sur TCP réussi : passerelle=%s résolveur=%s");
+        row("DNS over TCP failed: gateway=%s resolver=%s", "DNS через TCP: запрос не удался; шлюз=%s DNS-сервер=%s", "DNS over TCP failed: gateway=%s resolver=%s", "DNS über TCP fehlgeschlagen: Gateway=%s Resolver=%s", "Falló DNS por TCP: puerta de enlace=%s servidor DNS=%s", "Échec de DNS sur TCP : passerelle=%s résolveur=%s");
         row("Докачка через выбранные шлюзы · MD5, SHA-256, SHA-512", "Resumable downloads through selected gateways · MD5, SHA-256, SHA-512", "Fortsetzbare Downloads über ausgewählte Gateways · MD5, SHA-256, SHA-512", "Descargas reanudables por las puertas de enlace seleccionadas · MD5, SHA-256, SHA-512", "Téléchargements reprenables via les passerelles sélectionnées · MD5, SHA-256, SHA-512");
         row("Ожидаемая контрольная сумма (необязательно)", "Expected checksum (optional)", "Erwartete Prüfsumme (optional)", "Suma esperada (opcional)", "Somme attendue (facultatif)");
         row("Тип определяется автоматически: MD5 — 32, SHA-256 — 64, SHA-512 — 128 шестнадцатеричных символов.", "Type detected automatically: MD5 = 32, SHA-256 = 64, SHA-512 = 128 hexadecimal characters.", "Typ automatisch erkannt: MD5 = 32, SHA-256 = 64, SHA-512 = 128 hexadezimale Zeichen.", "Tipo detectado automáticamente: MD5 = 32, SHA-256 = 64, SHA-512 = 128 caracteres hexadecimales.", "Type détecté automatiquement : MD5 = 32, SHA-256 = 64, SHA-512 = 128 caractères hexadécimaux.");

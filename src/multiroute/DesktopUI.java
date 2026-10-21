@@ -260,11 +260,11 @@ public final class DesktopUI {
     final JButton removeButton = translatedButton("Удалить задание");
     final JLabel statusLabel = translatedLabel("Готово к работе");
     final JLabel selectionLabel = translatedLabel("Выберите загрузку");
-    final JTextArea transferMessageArea = new JTextArea(2, 32);
+    final JTextArea transferMessageArea = new StatusTextArea(2, 32);
     final JLabel totalSpeedLabel = translatedLabel("Общая скорость: —");
     final JLabel elapsedLabel = translatedLabel("Прошло: —");
     final JLabel etaLabel = translatedLabel("Осталось: —");
-    final JTextArea gatewaySpeedsArea = new JTextArea(4, 25);
+    final JTextArea gatewaySpeedsArea = new StatusTextArea(4, 25);
     private final Timer refreshTimer;
     private boolean restoring;
     private boolean discoveryRunning;
@@ -1139,7 +1139,7 @@ public final class DesktopUI {
     }
 
     private static JTextArea translatedArea(String source, int rows, int columns) {
-        JTextArea area = new JTextArea(rows, columns);
+        JTextArea area = new StatusTextArea(rows, columns);
         area.setEditable(false);
         I18n.text(area, source);
         return area;
@@ -2720,7 +2720,6 @@ public final class DesktopUI {
                 : I18n.t("Ошибка: %s", conciseError(error));
         else if ("paused".equals(status) && !error.isBlank()) text = I18n.t("Последняя ошибка: %s", conciseError(error));
         I18n.text(transferMessageArea, text);
-        transferMessageArea.setCaretPosition(0);
         transferMessageArea.setVisible(!text.isBlank());
         transferMessageArea.setForeground("failed".equals(status) ? DesktopTheme.danger() : UIManager.getColor("Label.foreground"));
         String tooltip = error.isBlank() ? null : I18n.t("Причина: %s", conciseError(error, 360));

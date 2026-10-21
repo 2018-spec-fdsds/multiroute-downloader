@@ -39,17 +39,21 @@ Private local control files use revision acknowledgements and fail-safe rollback
 Removed profiles remain inactive internal slots; 128 different profile slots
 per helper lifetime bound storage. Restart can reclaim retired slots if exhausted.
 
-DNS uses UDP bound to the virtual IP and selected gateway netif. Router DNS is
-tried first, then 1.1.1.1/8.8.8.8 through the same gateway. There is no OS resolver
-fallback. ID/question/source/port/public IPv4/CNAME bounds are checked. Cache
-has 64 profile-specific entries, TTL <=300 seconds. DNSSEC/DoH/IPv6 and DNS TCP
-truncation fallback are not implemented; source TLS/SSH identity is still checked.
+DNS uses UDP bound to the virtual IP and selected gateway netif. UDP failure or
+a matching truncated reply retries DNS over TCP through that same gateway and
+virtual IP. Router DNS is tried first, then 1.1.1.1/8.8.8.8; no OS resolver is
+used. TCP has a two-second limit per attempt and DNS an eight-second total limit.
+ID/question/source/port/public IPv4/CNAME bounds are checked. Cache has 64
+profile-specific entries, TTL <=300 seconds. DNSSEC/DoH/IPv6 and separate CNAME
+continuation queries are not implemented; source TLS/SSH identity is still checked.
 
 VERIFICATION
   gateway-net --self-test
 This checks SOCKS, UDP fragments, hot profiles and bounded DNS parsing without
 opening any network capture handles or changing routes. Windows and POSIX builds
-passed. An owned synthetic Ethernet/lwIP harness verified four DNS gateway MACs,
+passed. The standalone tests/gateway_dns_transport_test.c adds 169 checks for
+UDP timeout/truncation, TCP framing/partial writes, profile binding, rejection,
+cancellation and cleanup. An owned synthetic Ethernet/lwIP harness verified four DNS gateway MACs,
 virtual IP/netif/UDP ports, invalid reply rejection, cache affinity, timeout and
 cancellation. Physical router/Internet capture and actual macOS BPF/Apple SDK
 were not tested in this cycle. See CHECKS.ru.md and TEST-REPORT.json at app root.

@@ -79,7 +79,8 @@ def verify_browser_extension(app_dir: Path, report: dict) -> int:
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest
         assert hashlib.sha256((app_dir / name).read_bytes()).hexdigest() == digest
     manifest = json.loads((app_dir / "browser-extension/manifest.json").read_text(encoding="utf-8"))
-    assert manifest["manifest_version"] == 3 and manifest["version"] == report["version"] + ".0"
+    expected_version = report["version"] + ".0" if report["version"].count(".") == 1 else report["version"]
+    assert manifest["manifest_version"] == 3 and manifest["version"] == expected_version
     assert set(manifest["permissions"]) == {"contextMenus", "activeTab", "storage"}
     assert manifest["host_permissions"] == ["http://127.0.0.1/*"]
     key = hashlib.sha256(base64.b64decode(manifest["key"], validate=True)).digest()[:16].hex()
@@ -111,12 +112,17 @@ def verify_native_source_pin(report: dict) -> int:
     actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in sorted(inputs)}
     assert report["native_source_sha256"] == actual, "Native input set/bytes differ from the build snapshot."
-    for name in ("gateway_diagnostics", "gateway_topology"):
+    assert set(report["native_pure_fixtures"]) == {"gateway_diagnostics", "gateway_topology", "gateway_dns_transport"}
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport"):
         result = report["native_pure_fixtures"][name]
         assert result["ok"] and not result["capture_executed"] and not result["os_network_changed"]
         assert result["source_sha256"] == actual["native/source/tests/" + name + "_test.c"]
         for stream in ("stdout", "stderr"):
             assert hashlib.sha256(result[stream].encode("utf-8")).hexdigest() == result[stream + "_sha256"]
+            assert "\ufffd" not in result[stream]
+        if name == "gateway_dns_transport":
+            assert result["checks"] == 169
+            assert result["stdout"].splitlines()[-1] == "GATEWAY_DNS_TRANSPORT_TEST_OK checks=169 capture=false os_network_changed=false"
     return len(actual)
 
 
@@ -160,6 +166,46 @@ def verify_network42_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
             assert set(result["languages"]) == set(LANGUAGES)
         results[name] = {"checks": result["checks"], "headless": headless,
                          "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest()}
+    return results
+
+
+def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, version: str) -> dict:
+    """Run DNS log and real-timer scroll regressions against the packaged JAR."""
+    root = owned / "hotfix411"
+    classes = root / "classes"
+    classes.mkdir(parents=True)
+    fixtures = {
+        "DnsFallbackLogTest41": ("DNS-FALLBACK-LOG-TESTS.json", True),
+        "AllTabsScrollTest41": ("ALL-TABS-SCROLL-TESTS.json", False),
+    }
+    run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
+         "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
+    results = {}
+    for name, (filename, headless) in fixtures.items():
+        case = root / name
+        for directory in ("home", "tmp", "state"):
+            (case / directory).mkdir(parents=True)
+        completed = run([java, "-Djava.awt.headless=" + str(headless).lower(), "-Dfile.encoding=UTF-8",
+                         "-Duser.home=" + str(case / "home"), "-Djava.io.tmpdir=" + str(case / "tmp"),
+                         "-cp", classpath + os.pathsep + str(classes), "multiroute." + name, case / "state"],
+                        capture_output=True, text=True, timeout=180)
+        result = json.loads((case / "state" / filename).read_text(encoding="utf-8"))
+        assert result["status"] == "PASS" and result["network_calls"] == 0
+        assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
+        if name == "DnsFallbackLogTest41":
+            assert result["checks"] == 52 and result["languages"] == 12 and not result["user_logs_read"]
+        else:
+            assert result["version"] == version and result["checks"] >= 100
+            assert result["real_timer_interval_ms"] == 900
+            assert not result["user_profile_or_logs_read"] and not result["user_media_or_clipboard_read"]
+            required = {"network_32_gateways_stable_across_actual900ms_timer",
+                        "long_topology_full_layout_gateway_add_remove_twelve_languages_tab_roundtrip",
+                        "both_log_tabs_keep_middle_and_follow_only_existing_tail",
+                        "explicit_keyboard_navigation_and_active_scrollbar_drag_remain_available"}
+            assert required <= set(result["cases"]) and len(result["cases"]) >= 12
+        results[name] = {"checks": result["checks"], "headless": headless,
+                         "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
+                         "report": result}
     return results
 
 
@@ -714,6 +760,9 @@ public final class NativeDesktopFixture {
         checks.append("twelve-language catalog checks cover the complete current message catalog including Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
 
         network42 = verify_network42_fixtures(java, jdk, classpath, owned, report["version"])
+        hotfix411 = verify_hotfix411_fixtures(java, jdk, classpath, owned, report["version"])
+        checks.append("packaged JAR DNS TCP fallback log across twelve languages")
+        checks.append("packaged JAR all-tab scrolling across actual desktop timers")
         checks.append("packaged JAR network diagnostics, durable error journal and authoritative topology bridge pass in fresh owned profiles with no physical gateways or OS network changes")
         checks.append("owned non-headless Swing topology label, translated tooltips and status changes pass using injected snapshots and no real gateway requests")
 
@@ -896,6 +945,7 @@ public final class MacAuthorizationFixture {
         "browser_extension_files_verified": browser_extension_count,
         "browser_bridge40_fixture_checks": browser_bridge["checks"],
         "network42_fixtures": network42, "native_source_files_verified": native_input_count,
+        "hotfix411_fixtures": hotfix411,
         "native_pure_fixtures": report["native_pure_fixtures"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,

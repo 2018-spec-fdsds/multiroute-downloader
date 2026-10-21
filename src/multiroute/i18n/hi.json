@@ -1461,5 +1461,7 @@
   "Cannot allocate LAN adapter snapshot": "LAN अडैप्टर की स्थिति के लिए मेमोरी आवंटित नहीं की जा सकी",
   "Too many local IPv4 addresses to validate the application network": "ऐप के नेटवर्क की जाँच के लिए बहुत अधिक स्थानीय IPv4 पते हैं",
   "The selected Ethernet adapter is no longer active": "चुना गया Ethernet अडैप्टर अब सक्रिय नहीं है",
-  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "चुने गए Ethernet अडैप्टर का हार्डवेयर पता बदल गया है; ऐप की नेटवर्क सेटिंग फिर जाँचें और लागू करें"
+  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "चुने गए Ethernet अडैप्टर का हार्डवेयर पता बदल गया है; ऐप की नेटवर्क सेटिंग फिर जाँचें और लागू करें",
+  "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP पर DNS अनुरोध सफल: गेटवे=%s DNS रिज़ॉल्वर=%s",
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP पर DNS अनुरोध विफल: गेटवे=%s DNS रिज़ॉल्वर=%s"
 }

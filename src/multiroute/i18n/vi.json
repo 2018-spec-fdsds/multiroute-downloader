@@ -1461,5 +1461,7 @@
   "Cannot allocate LAN adapter snapshot": "Không thể cấp phát bộ nhớ cho ảnh chụp trạng thái bộ điều hợp LAN",
   "Too many local IPv4 addresses to validate the application network": "Có quá nhiều địa chỉ IPv4 cục bộ để xác minh mạng của ứng dụng",
   "The selected Ethernet adapter is no longer active": "Bộ điều hợp Ethernet đã chọn không còn hoạt động",
-  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "Địa chỉ phần cứng của bộ điều hợp Ethernet đã chọn đã thay đổi; hãy kiểm tra và áp dụng lại cài đặt mạng của ứng dụng"
+  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "Địa chỉ phần cứng của bộ điều hợp Ethernet đã chọn đã thay đổi; hãy kiểm tra và áp dụng lại cài đặt mạng của ứng dụng",
+  "DNS over TCP succeeded: gateway=%s resolver=%s": "DNS qua TCP thành công: cổng kết nối=%s máy chủ DNS=%s",
+  "DNS over TCP failed: gateway=%s resolver=%s": "DNS qua TCP thất bại: cổng kết nối=%s máy chủ DNS=%s"
 }

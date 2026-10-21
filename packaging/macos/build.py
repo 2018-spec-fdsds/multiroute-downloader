@@ -47,7 +47,7 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
     """Pure C fixtures have no capture, OS enumeration, sockets or user profiles."""
     owned.mkdir()
     results = {}
-    for name in ("gateway_diagnostics", "gateway_topology"):
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport"):
         source = ROOT / "native/source/tests" / (name + "_test.c")
         executable = owned / name
         run([clang, "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-finput-charset=UTF-8", "-fexec-charset=UTF-8",
@@ -67,19 +67,27 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
             assert records[4]["reason"] == "Связь прервана — 接続失敗"
             assert all(len(line.encode("utf-8")) < 1536 for line in lines[:-1])
             assert records[2]["host"] == records[2]["gateway"] == ""
-        else:
+        elif name == "gateway_topology":
             assert lines[-1].startswith("GATEWAY_TOPOLOGY_TEST_OK ")
             validated = json.loads(lines[0].removeprefix("TOPOLOGY_READY "))
             recheck = json.loads(lines[1].removeprefix("TOPOLOGY_RECHECK "))
             assert validated["network_validation_ok"] and validated["network_generation"] == 2
             assert validated["computer_ipv4"] == "192.168.1.101" and validated["network_cidr"] == "192.168.1.0/24"
             assert not recheck["network_validation_ok"] and recheck["network_validation_status"] == "recheck_required"
-        assert "\ufffd" not in completed.stdout
+        else:
+            assert lines[-1] == "GATEWAY_DNS_TRANSPORT_TEST_OK checks=169 capture=false os_network_changed=false"
+            assert lines[0].startswith("DNS_SELF_TEST_OK ") and len(lines) == 2
+            assert all(re.fullmatch(r"DNS_TCP_FALLBACK gateway=192\.168\.1\.[1-4] resolver=(?:192\.168\.1\.[1-4]|1\.1\.1\.1) result=(?:ok|failed)", line)
+                       for line in completed.stderr.splitlines())
+            assert "result=ok" in completed.stderr and "result=failed" in completed.stderr
+        assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
         results[name] = {"ok": True, "source_sha256": sha256(source),
                          "stdout": completed.stdout, "stderr": completed.stderr,
                          "stdout_sha256": hashlib.sha256(completed.stdout.encode("utf-8")).hexdigest(),
                          "stderr_sha256": hashlib.sha256(completed.stderr.encode("utf-8")).hexdigest(),
                          "capture_executed": False, "os_network_changed": False}
+        if name == "gateway_dns_transport":
+            results[name]["checks"] = 169
     return results
 
 

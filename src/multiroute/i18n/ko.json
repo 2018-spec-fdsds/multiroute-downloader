@@ -1461,5 +1461,7 @@
   "Cannot allocate LAN adapter snapshot": "LAN 어댑터 상태 저장에 필요한 메모리를 할당할 수 없습니다",
   "Too many local IPv4 addresses to validate the application network": "로컬 IPv4 주소가 너무 많아 앱의 네트워크를 확인할 수 없습니다",
   "The selected Ethernet adapter is no longer active": "선택한 이더넷 어댑터가 더 이상 활성 상태가 아닙니다",
-  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "선택한 이더넷 어댑터의 하드웨어 주소가 변경되었습니다. 앱의 네트워크 설정을 다시 확인하고 적용하세요"
+  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "선택한 이더넷 어댑터의 하드웨어 주소가 변경되었습니다. 앱의 네트워크 설정을 다시 확인하고 적용하세요",
+  "DNS over TCP succeeded: gateway=%s resolver=%s": "TCP를 통한 DNS 요청 성공: 게이트웨이=%s DNS 서버=%s",
+  "DNS over TCP failed: gateway=%s resolver=%s": "TCP를 통한 DNS 요청 실패: 게이트웨이=%s DNS 서버=%s"
 }

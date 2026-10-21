@@ -73,6 +73,18 @@ public final class AppLog {
         if (raw != null && raw.startsWith("NETWORK_TOPOLOGY_ERROR ")) {
             networkError("Network topology check failed: %s", DiagnosticText.arg(
                     NetworkDiagnostics.safe(raw.substring("NETWORK_TOPOLOGY_ERROR ".length()))));
+        } else if (raw != null && raw.startsWith("DNS_TCP_FALLBACK ")) {
+            // Keep native protocol fields separate from translated presentation text.
+            java.util.regex.Matcher fields = Pattern.compile(
+                    "DNS_TCP_FALLBACK gateway=([0-9.]{7,15}) resolver=([0-9.]{7,15}) result=(ok|failed)")
+                    .matcher(raw);
+            if (fields.matches() && GatewayNetwork.validIpv4(fields.group(1)) &&
+                    GatewayNetwork.validIpv4(fields.group(2))) {
+                record("INFO", "network", fields.group(3).equals("ok")
+                                ? "DNS over TCP succeeded: gateway=%s resolver=%s"
+                                : "DNS over TCP failed: gateway=%s resolver=%s",
+                        new Object[]{fields.group(1), fields.group(2)});
+            } else networkError("Malformed gateway tunnel diagnostic");
         } else if (raw != null && raw.startsWith("TUNNEL_ERROR ")) {
             try {
                 if (raw.length() > 4096) throw new IllegalArgumentException();

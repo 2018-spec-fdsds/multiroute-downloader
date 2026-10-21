@@ -51,7 +51,7 @@ public final class TorrentApiRelease41 {
         SourceTransfer.EndpointResolver saved = SourceTransfer.endpoints;
         SourceTransfer.endpoints = route -> { forbidden.incrementAndGet(); throw new AssertionError("Real gateway fallback forbidden"); };
         try {
-            check(api("GET", "/api/v1/health", null, 200).get("version").equals("4.1"), "API reports actual release version");
+            check(api("GET", "/api/v1/health", null, 200).get("version").equals(Main.VERSION), "API reports actual release version");
             List<Object> routes = List.of(Map.of("type", "gateway", "gateway", "192.168.1.1", "enabled", true), Map.of("type", "gateway", "gateway", "192.168.1.2", "enabled", true));
             Map<String,Object> inspect = Map.of("url", torrent.toString(), "routes", routes);
             Map<String,Object> listing = api("POST", "/api/v1/sources/inspect", inspect, 200);

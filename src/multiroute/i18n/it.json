@@ -1461,5 +1461,7 @@
   "Cannot allocate LAN adapter snapshot": "Impossibile allocare memoria per l’istantanea degli adattatori LAN",
   "Too many local IPv4 addresses to validate the application network": "Troppi indirizzi IPv4 locali per verificare la rete dell’applicazione",
   "The selected Ethernet adapter is no longer active": "L’adattatore Ethernet selezionato non è più attivo",
-  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "L’indirizzo hardware dell’adattatore Ethernet selezionato è cambiato; verificare e applicare di nuovo le impostazioni di rete dell’applicazione"
+  "The selected Ethernet adapter hardware address changed; check and apply the application network settings again": "L’indirizzo hardware dell’adattatore Ethernet selezionato è cambiato; verificare e applicare di nuovo le impostazioni di rete dell’applicazione",
+  "DNS over TCP succeeded: gateway=%s resolver=%s": "DNS su TCP riuscito: gateway=%s resolver=%s",
+  "DNS over TCP failed: gateway=%s resolver=%s": "DNS su TCP non riuscito: gateway=%s resolver=%s"
 }
