@@ -91,7 +91,15 @@ public final class ModernDesktopTest40 {
         check(((JComponent)button).getVisibleRect().contains(new Rectangle(0,0,button.getWidth(),button.getHeight())),"Control clipped by ancestor: "+button);
         if(button instanceof AbstractButton action)check(action.getFont().canDisplayUpTo(action.getText())<0,"Control has missing translated glyphs: "+action.getText());
     }
+    static void emphasisReadable(DesktopUI ui) {
+        for(JComponent component:List.of(ui.createButton,ui.aggregateSpeedLabel,ui.totalSpeedLabel)) {
+            Font font=component.getFont();
+            check(font!=null&&font.getSize2D()>=14f,"Primary download action or speed text is smaller than 14 points: "+font);
+            check(font.isBold(),"Primary download action or speed text lost its bold emphasis: "+font);
+        }
+    }
     static void capture(DesktopUI ui,Path own,String theme,String language) throws Exception {
+        emphasisReadable(ui);
         BufferedImage image=new BufferedImage(ui.frame.getContentPane().getWidth(),ui.frame.getContentPane().getHeight(),BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics=image.createGraphics();try{ui.frame.getContentPane().printAll(graphics);}finally{graphics.dispose();}
         Path file=own.resolve("OWN-DESKTOP-"+theme+"-"+language+".png");
@@ -139,6 +147,9 @@ public final class ModernDesktopTest40 {
         AtomicReference<DesktopUI> ref=new AtomicReference<>();CountDownLatch closed=new CountDownLatch(1);
         try {
             edt(()->{
+                // Match DesktopUI.open() before its component field initializers run.
+                DesktopTheme.install("light");
+                DesktopUI.installReadableFonts();
                 DesktopUI ui=new DesktopUI(manager,closed::countDown,false,(gateway,url)->{networkCalls.incrementAndGet();throw new AssertionError("No discovery");},
                         (ip,gateways)->{networkCalls.incrementAndGet();throw new AssertionError("No route configuration");},
                         (route,url)->{networkCalls.incrementAndGet();throw new AssertionError("No speed tests");},null,
@@ -147,7 +158,7 @@ public final class ModernDesktopTest40 {
                         (owner,job)->DesktopUI.DeleteChoice.CANCEL,(owner,directory)->null,uri->{throw new AssertionError("No browser launch");});
                 ref.set(ui);((javax.swing.Timer)field(ui,"refreshTimer")).stop();
                 ui.frame.setSize(1080,700);if(visible)ui.frame.setVisible(true);else ui.frame.addNotify();
-                ui.frame.validate();layout(ui.frame.getContentPane());
+                ui.frame.validate();layout(ui.frame.getContentPane());emphasisReadable(ui);
             });drain();DesktopUI ui=ref.get();
             check(manager.browserDownload!=null,"Desktop did not attach its browser intake");
             edt(()->{Field running=DesktopUI.class.getDeclaredField("createRunning");running.setAccessible(true);running.setBoolean(ui,true);});
@@ -195,10 +206,11 @@ public final class ModernDesktopTest40 {
             final String enteredUrl="https://example.invalid/Модель_日本語_🚀?name=é";
             edt(()->ui.urlField.setText(enteredUrl));
             for(String language:I18n.codes()) {
-                edt(()->ui.languageCombo.setSelectedItem(language));drain();
+                edt(()->{ui.languageCombo.setSelectedItem(language);emphasisReadable(ui);});drain();
                 for(String theme:List.of("light","dark")) {
                     edt(()->{ui.themeCombo.setSelectedItem(theme);ui.frame.validate();layout(ui.frame.getContentPane());});drain();
                     edt(()->{
+                        emphasisReadable(ui);
                         buttonVisible(ui,ui.instructionsButton);buttonVisible(ui,ui.apiGuideButton);buttonVisible(ui,ui.languageCombo);
                         buttonVisible(ui,ui.logButton);buttonVisible(ui,ui.exitButton);buttonVisible(ui,ui.themeCombo);buttonVisible(ui,ui.createButton);buttonVisible(ui,ui.browserButton);buttonVisible(ui,ui.queueButton);
                         check(contrast(ui.jobsTable.getForeground(),ui.jobsTable.getBackground())>=9,"Themed table contrast is unreadable");
@@ -227,6 +239,7 @@ public final class ModernDesktopTest40 {
                 }
             }
             cases.add("twelve_languages_visible_header_actions_at_1080x700_in_light_and_dark");
+            cases.add("public_launch_font_bootstrap_and_custom_bold_labels_stay_at_least_14_points");
             historyLog(ui,own);
             for(String theme:List.of("light","dark")) {
                 edt(()->{
