@@ -177,6 +177,7 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
     fixtures = {
         "DnsFallbackLogTest41": ("DNS-FALLBACK-LOG-TESTS.json", True),
         "AllTabsScrollTest41": ("ALL-TABS-SCROLL-TESTS.json", False),
+        "TorrentProxyBindingTest411": ("TORRENT-PROXY-BINDING-TESTS.json", True),
     }
     run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
          "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
@@ -190,11 +191,13 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
                          "-cp", classpath + os.pathsep + str(classes), "multiroute." + name, case / "state"],
                         capture_output=True, text=True, timeout=180)
         result = json.loads((case / "state" / filename).read_text(encoding="utf-8"))
-        assert result["status"] == "PASS" and result["network_calls"] == 0
+        assert result["status"] == "PASS"
         assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
         if name == "DnsFallbackLogTest41":
+            assert result["network_calls"] == 0
             assert result["checks"] == 52 and result["languages"] == 12 and not result["user_logs_read"]
-        else:
+        elif name == "AllTabsScrollTest41":
+            assert result["network_calls"] == 0
             assert result["version"] == version and result["checks"] >= 100
             assert result["real_timer_interval_ms"] == 900
             assert not result["user_profile_or_logs_read"] and not result["user_media_or_clipboard_read"]
@@ -203,6 +206,11 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
                         "both_log_tabs_keep_middle_and_follow_only_existing_tail",
                         "explicit_keyboard_navigation_and_active_scrollbar_drag_remain_available"}
             assert required <= set(result["cases"]) and len(result["cases"]) >= 12
+        else:
+            assert result["version"] == version and result["checks"] >= 51
+            assert len(result["cases"]) == result["checks"]
+            assert not result["session_started"] and result["sockets_opened"] == result["real_gateway_calls"] == 0
+            assert not result["user_files_read"]
         results[name] = {"checks": result["checks"], "headless": headless,
                          "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
                          "report": result}
@@ -763,6 +771,7 @@ public final class NativeDesktopFixture {
         hotfix411 = verify_hotfix411_fixtures(java, jdk, classpath, owned, report["version"])
         checks.append("packaged JAR DNS TCP fallback log across twelve languages")
         checks.append("packaged JAR all-tab scrolling across actual desktop timers")
+        checks.append("packaged JAR native torrent settings bind IPv4 and IPv6 loopback proxies without sessions or sockets")
         checks.append("packaged JAR network diagnostics, durable error journal and authoritative topology bridge pass in fresh owned profiles with no physical gateways or OS network changes")
         checks.append("owned non-headless Swing topology label, translated tooltips and status changes pass using injected snapshots and no real gateway requests")
 

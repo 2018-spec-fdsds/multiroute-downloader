@@ -38,6 +38,8 @@ public final class TorrentEngine {
         if(proxy==null || proxy.isUnresolved() || !proxy.getAddress().isLoopbackAddress())throw new IOException("SOCKS5 шлюза должен быть локальным");
         SettingsPack settings=new SettingsPack();
         settings.setString(settings_pack.string_types.proxy_hostname.swigValue(),proxy.getAddress().getHostAddress());
+        // Keep the native connection to our local proxy independent of the OS default interface.
+        settings.setString(settings_pack.string_types.outgoing_interfaces.swigValue(),proxy.getAddress().getHostAddress());
         settings.setInteger(settings_pack.int_types.proxy_port.swigValue(),proxy.getPort());
         settings.setInteger(settings_pack.int_types.proxy_type.swigValue(),settings_pack.proxy_type_t.socks5.swigValue());
         settings.setString(settings_pack.string_types.listen_interfaces.swigValue(),"127.0.0.1:0");
