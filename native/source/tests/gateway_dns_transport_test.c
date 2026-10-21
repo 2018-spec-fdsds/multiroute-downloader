@@ -36,6 +36,9 @@ struct netbuf { unsigned char data[4200];u16_t len;ip_addr_t from;uint16_t fromp
 #define ip_addr_set_ip4_u32(p,n) ((p)->addr=(n))
 #define ip_addr_cmp(a,b) ((a)->addr==(b)->addr)
 static uint32_t mock_htonl(uint32_t n){return ((n&255U)<<24)|((n&65280U)<<8)|((n>>8)&65280U)|(n>>24);}
+#ifdef htonl
+#undef htonl
+#endif
 #define htonl(n) mock_htonl(n)
 static profile routes[4],other;
 static profile *volatile port_routes[65536],*volatile udp_port_routes[65536];
