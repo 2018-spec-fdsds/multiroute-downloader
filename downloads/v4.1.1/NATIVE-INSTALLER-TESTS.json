@@ -586,8 +586,11 @@
       }
     ],
     "user_profiles_modified": false,
-    "network_handles_opened": false,
-    "version": "4.1.1"
+    "network_handles_opened": true,
+    "version": "4.1.1",
+    "raw_builder_receipt_sha256": "760f843ecb441e6969ceeb50fa87e05097174a7c4c932df2665dc21afe8db0a1",
+    "network_scope": "Owned loopback fixtures only; no gateway capture or external fixture traffic",
+    "metadata_correction_note": "The immutable raw builder summary incorrectly marked all network handles as unopened. The owned SOCKS bootstrap fixture opens loopback sockets. This publication projection corrects that field; raw evidence, JAR and all test results are retained unchanged."
   },
   "windows_package_build": {
     "application_version": "4.1.1",
