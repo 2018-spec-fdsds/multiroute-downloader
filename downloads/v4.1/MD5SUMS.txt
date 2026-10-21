@@ -1,0 +1,4 @@
+1306ea1ae1957871b78f420a44c50109  MultiRoute-Downloader-4.1-Windows-x64-Setup.exe
+d9760a6b798f2901c41f8d4b3702798a  MultiRoute-Downloader-4.1-macOS-arm64.pkg
+da9cd4d8dd9a2e43654611ec6f47a4ac  MultiRoute-Downloader-4.1-macOS-x86_64.pkg
+474b0262b8fd1284af9ed106c7071d32  MultiRoute-Downloader-4.1-Chrome-Edge.zip

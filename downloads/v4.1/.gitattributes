@@ -1,0 +1,4 @@
+*.exe binary
+*.pkg binary
+*.zip binary
+*SUMS.txt -text
