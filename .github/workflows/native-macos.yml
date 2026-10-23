@@ -47,7 +47,7 @@ jobs:
           architecture: ${{ matrix.architecture == 'arm64' && 'aarch64' || 'x64' }}
       - name: Build pinned native app, six C fixtures including managed DNS broker and Installer
         run: python3 packaging/macos/build.py --architecture '${{ matrix.architecture }}' --output dist/macos
-      - name: Verify identities, DNS169, RESOLVE145, broker191/63, secure DNS42, managed DNS146, HTTP2 DNS106 and UI891
+      - name: Verify identities, DNS169, RESOLVE145, broker191/63, secure DNS42, managed DNS147, HTTP2 DNS106 and UI891
         run: python3 packaging/macos/verify.py --directory dist/macos
       - uses: actions/upload-artifact@v4
         with:

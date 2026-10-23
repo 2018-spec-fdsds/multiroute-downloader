@@ -104,6 +104,9 @@ public final class ManagedDnsTest {
                 Reply result = query(bridge, bridge.key(), gateway, 2, 1000, wire);
                 require(result.status() == 1 && DnsMessage.publicAddresses(wire, result.body()).equals(List.of("9.9.9.9")) && ttl(result.body()) == 0);
             }
+            // Diagnostics are published after the reply is flushed. Await the worker's
+            // finally block (which removes its owned socket), not a scheduler-dependent delay.
+            waitEmpty(dns);
             require(calls.get() == 4 && Main.arr(dns.settings().get("gateway_status")).size() == 4);
             int before = calls.get();
             expectIo(() -> query(bridge, "b".repeat(64), "192.168.1.1", 2, 1000, wire));

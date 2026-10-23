@@ -290,7 +290,7 @@ def verify_dns420_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, v
     classes.mkdir(parents=True)
     fixtures = {
         "SecureDnsProtocolTest": ("SECURE-DNS-PROTOCOL-TESTS.json", 42, True, True),
-        "ManagedDnsTest": ("MANAGED-DNS-TESTS.json", 146, True, True),
+        "ManagedDnsTest": ("MANAGED-DNS-TESTS.json", 147, True, True),
         "Http2DnsTest": ("HTTP2-DNS-TESTS.json", 106, True, True),
         "DnsSettingsUiTest": ("DNS-SETTINGS-UI-TESTS.json", 891, False, False),
     }
@@ -902,7 +902,7 @@ public final class NativeDesktopFixture {
         transfer42 = verify_transfer42_fixtures(java, jdk, classpath, owned, report["version"])
         dns420 = verify_dns420_fixtures(java, jdk, classpath, owned, report["version"])
         checks.append("packaged JAR strict DoH and DoT pass 42 owned TLS wire, certificate, deadline, cancellation and numeric-bootstrap cases without public DNS or OS fallback")
-        checks.append("packaged JAR managed DNS passes 146 persistence, revision acknowledgement, rollback, generation-race isolation, broker authentication, reserved egress, malformed readiness, error cooldown and actual loopback API checks without OS DNS or installed profiles")
+        checks.append("packaged JAR managed DNS passes 147 persistence, revision acknowledgement, rollback, generation-race isolation, broker authentication, reserved egress, malformed readiness, error cooldown and actual loopback API checks without OS DNS or installed profiles")
         checks.append("packaged JAR HTTP/2 DoH passes 106 checks across 43 owned frame, HPACK, flow-control, limit and real TLS ALPN cases without public DNS or OS fallback")
         checks.append("packaged JAR DNS settings pass 891 real Swing checks across twelve languages, actual 900ms desktop refreshes, clean and dirty drafts, caret selection and scroll restoration without network calls")
         checks.append("packaged JAR DNS TCP fallback log across twelve languages")

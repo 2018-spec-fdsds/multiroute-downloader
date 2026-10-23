@@ -6,7 +6,7 @@ sys.stdout.reconfigure(encoding="utf-8");sys.stderr.reconfigure(encoding="utf-8"
 REPO=Path(sys.argv[1]).resolve();OUTPUT=Path(sys.argv[2]).resolve()
 assert platform.system()=="Linux" and os.getuid()>0
 OUTPUT.mkdir(parents=True,exist_ok=False)
-SPECS={"SecureDnsProtocolTest":("SECURE-DNS-PROTOCOL-TESTS.json",42),"ManagedDnsTest":("MANAGED-DNS-TESTS.json",146),"Http2DnsTest":("HTTP2-DNS-TESTS.json",106)}
+SPECS={"SecureDnsProtocolTest":("SECURE-DNS-PROTOCOL-TESTS.json",42),"ManagedDnsTest":("MANAGED-DNS-TESTS.json",147),"Http2DnsTest":("HTTP2-DNS-TESTS.json",106)}
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def inputs():
     values=[path for path in (REPO/"src").rglob("*") if path.is_file() and path.suffix in {".java",".json"}]
@@ -58,4 +58,4 @@ receipt={"status":"PASS","platform":"Linux","version":version,"java_release":17,
          "public_dns_used":False,"installed_application_accessed":False,"os_network_changed":False,
          "runtime_version":run([java,"-version"],OUTPUT/"java-version.log").strip()}
 (OUTPUT/"JAVA-DNS-VERIFICATION.json").write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-print("LINUX_JAVA_DNS_VERIFIED fixture_groups=3 secure=42 managed=146 http2=106")
+print("LINUX_JAVA_DNS_VERIFIED fixture_groups=3 secure=42 managed=147 http2=106")
