@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "4.1.1";
+    static final String VERSION = "4.1.2";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -396,6 +396,42 @@ public final class Main {
         long size() { return num(state.get("size"), 0); }
         long chunkSize() { return num(state.get("chunk_size"), 0); }
 
+        static final class PartialPreservedException extends IOException {
+            PartialPreservedException(String message) { super(message); }
+        }
+
+        /** A ranged source can ignore an individual request; retry without consuming its full body. */
+        static final class IgnoredRangeException extends IOException {
+            IgnoredRangeException() { super("Source temporarily ignored a byte range; the saved segment was preserved"); }
+        }
+
+        /** A zero-byte range is ignored by some download CDNs even when ordinary ranges work. */
+        record MetadataResponse(java.net.http.HttpResponse<InputStream> response, long offset) { }
+
+        MetadataResponse metadataResponse(Map<String,Object> route, String url, HttpAttempt attempt) throws Exception {
+            var first = httpOpener.open(route, url, 0, 0, null, null);
+            String scheme = URI.create(url).getScheme().toLowerCase(Locale.ROOT);
+            if (first.statusCode() != 200 || !Set.of("http", "https", "webdavs").contains(scheme))
+                return new MetadataResponse(first, 0);
+            long total;
+            try { total = wholeLength(first, null, null, null); }
+            catch (Exception failure) { first.body().close(); throw failure; }
+            if (total == 0 || total == 1) return new MetadataResponse(first, 0);
+            String etag = first.headers().firstValue("ETag").orElse("");
+            if (etag.startsWith("W/")) etag = "";
+            String modified = first.headers().firstValue("Last-Modified").orElse("");
+            first.body().close(); attempt.check();
+            var second = httpOpener.open(route, url, 1, 1, null, null);
+            try {
+                if (second.statusCode() == 206) {
+                    Transport.validate(second, 1, 1, total<0?null:total, etag, modified);
+                    return new MetadataResponse(second, 1);
+                }
+                wholeLength(second, total<0?null:total, etag, modified);
+                return new MetadataResponse(second, 0);
+            } catch (Exception failure) { second.body().close(); throw failure; }
+        }
+
         /** A server ignoring Range can supply one bounded whole file, never a segment. */
         static long wholeLength(java.net.http.HttpResponse<InputStream> response, Long expectedTotal,
                 String etag, String modified) throws IOException {
@@ -443,13 +479,14 @@ public final class Main {
                         metadataUrl, "Metadata", -1, 0, 0, () -> !stop && !attempt.cancelled);
                 try (diagnostic) {
                     attempt.check();
-                    var response = httpOpener.open(route,metadataUrl, 0, 0, null, null);
+                    MetadataResponse probe = metadataResponse(route, metadataUrl, attempt);
+                    var response = probe.response();
                     try (Lease lease = new Lease(response.body(), openStreams)) {
                         attempt.attach(lease);
                         InputStream stream = lease.stream;
                         boolean whole = response.statusCode() == 200;
                         long total = whole ? wholeLength(response, null, null, null) :
-                                Transport.validate(response, 0, 0, null, null, null);
+                                Transport.validate(response, probe.offset(), probe.offset(), null, null, null);
                         if (state.containsKey("source_size") && total >= 0 && total != num(state.get("source_size"), -1))
                             throw new Checksum.ConflictException("Размер файла не совпадает с метаданными Hugging Face");
                         if (!whole) {
@@ -546,6 +583,7 @@ public final class Main {
             final Map<String,Object> route;
             final long disabledEpoch;
             volatile Lease lease;
+            volatile TransferJournal.Attempt journal;
             int rescueWorker = -1;
             boolean complete;
             HttpAttempt(int index, int worker, long generation, Map<String,Object> route) {
@@ -691,8 +729,8 @@ public final class Main {
             try (Lease lease = new Lease(response.body(), openStreams); FileChannel output = FileChannel.open(part(), StandardOpenOption.WRITE)) {
                 attempt.attach(lease);
                 InputStream input = lease.stream;
-                if (yes(state.get("whole_file")) && response.statusCode() == 200) {
-                    if (start != 0 || end != size()-1) throw new IOException("Whole-file response cannot represent a segment");
+                boolean wholePrefix = response.statusCode()==200 && start==0;
+                if (wholePrefix) {
                     wholeLength(response, size(), etag, modified);
                 } else Transport.validate(response, start, end, size(), etag, modified);
                 while (left > 0) {
@@ -710,8 +748,11 @@ public final class Main {
                     while (slice.hasRemaining()) offset += output.write(slice, offset);
                     digest.update(buffer, 0, got);
                     left -= got;
+                    if(attempt.journal!=null)attempt.journal.progress(attempt.received,savedBytes()+attempt.received,wireBytes());
                 }
-                if (input.read() >= 0) throw new IOException("Сервер передал лишние байты сегмента");
+                // Some CDNs ignore every zero-start Range. Its validated full body may supply only
+                // the bounded first segment; closing it does not make another range overlap.
+                if (!wholePrefix && input.read() >= 0) throw new IOException("Сервер передал лишние байты сегмента");
                 attempt.check();
                 output.force(true);
             }
@@ -726,7 +767,14 @@ public final class Main {
                 attempt.check();String url=str(urls.get((first+index)%urls.size()));java.net.http.HttpResponse<InputStream> response=null;
                 NetworkDiagnostics.Attempt diagnostic=NetworkDiagnostics.attempt(str(state.get("id")),route,url,
                         "Segment",attempt.index,start,end,()->!stop&&!attempt.cancelled);
-                try(diagnostic){response=httpOpener.open(route,url,start,end,etag,modified);Transport.validate(response,start,end,size(),etag,modified);synchronized(this){route.put("source_url_active",url);}return response;}
+                try(diagnostic){response=httpOpener.open(route,url,start,end,etag,modified);
+                    if(start==0&&response.statusCode()==200)wholeLength(response,size(),etag,modified);
+                    else if(start>0&&response.statusCode()==200&&yes(state.get("distribution_supported"))) {
+                        wholeLength(response,size(),etag,modified);
+                        throw new IgnoredRangeException();
+                    }
+                    else Transport.validate(response,start,end,size(),etag,modified);
+                    synchronized(this){route.put("source_url_active",url);}return response;}
                 catch(Exception error){if(response!=null)try{response.body().close();}catch(IOException close){error.addSuppressed(close);}diagnostic.failure(error);last=error;if(stop||attempt.cancelled||error instanceof InterruptedException)throw error;}
             }
             throw Objects.requireNonNull(last);
@@ -767,6 +815,7 @@ public final class Main {
                         boolean complete = false; Exception failure = null;
                         int index = attempt.index;
                         long start=(long)index*chunkSize(),end=Math.min(size()-1,start+chunkSize()-1);
+                        attempt.journal=TransferJournal.begin(str(state.get("id")),str(route.get("gateway")),start,end,savedBytes(),wireBytes(),true);
                         HttpAttempt diagnosticAttempt=attempt;
                         NetworkDiagnostics.Attempt diagnostic=NetworkDiagnostics.attempt(str(state.get("id")),route,
                                 str(state.get("url")),"Segment",index,start,end,()->!stop&&!diagnosticAttempt.cancelled&&!retired);
@@ -794,6 +843,8 @@ public final class Main {
                             }
                             synchronized (Job.this) { metrics.endChunk(index); }
                             queue.release(attempt, complete);
+                            attempt.journal.finish(complete?"completed":stop?"paused":attempt.cancelled?"retry":"failed",
+                                    failure==null?"":str(failure.getMessage()),attempt.received,savedBytes(),wireBytes());
                             if (attempt.cancelled && !stop) Thread.interrupted();
                         }
                         if (attempt.stalled) {
@@ -891,39 +942,97 @@ public final class Main {
             try { Files.deleteIfExists(part()); } catch (IOException ignored) { }
         }
 
-        /** Range-free sources use exactly one gateway and restart from byte zero after interruption. */
+        /** Whole-file transfers preserve their prefix on every error, pause and application restart. */
         void streamWhole(long declared) throws Exception {
             Path directory=Path.of(str(state.get("directory")));safePath(directory);safePath(part());Files.createDirectories(directory);
             if(Files.exists(part(),LinkOption.NOFOLLOW_LINKS)&&!Files.isRegularFile(part(),LinkOption.NOFOLLOW_LINKS))throw new IOException("Invalid partial file type");
+            long preserved=Files.exists(part())?Files.size(part()):0;
+            if(preserved>0) {
+                if(declared>=0&&preserved==declared&&savedBytes()==preserved&&
+                        (!state.containsKey("whole_prefix_bytes")||num(state.get("whole_prefix_bytes"),-1)==declared)) {
+                    synchronized(this){state.put("size",declared);state.put("downloaded",preserved);state.put("chunks",new LinkedHashMap<>(Map.of("0",hashFile(part()))));persist();}
+                    return;
+                }
+                String reason="Partial file preserved: the source does not support safe resuming. Explicitly restart the download to replace it.";
+                TransferJournal.preserved(str(state.get("id")),"",preserved,wireBytes(),reason);
+                throw new PartialPreservedException(reason);
+            }
             while(!stop) {
                 for(Map<String,Object> route:routeReferences()) {
                     HttpAttempt attempt=new HttpAttempt(0,0,System.nanoTime(),route);
+                    long received=0;
+                    TransferJournal.Attempt journal=TransferJournal.begin(str(state.get("id")),str(route.get("gateway")),0,declared<0?-1:declared-1,0,wireBytes(),false);
+                    String outcome="interrupted",reason="";
                     try {
                         attempt.check();var response=SourceTransfer.openWhole(route,str(state.get("url")));
-                        try(Lease lease=new Lease(response.body(),openStreams);FileChannel output=FileChannel.open(part(),StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE)) {
-                            attempt.attach(lease);long actualLength=wholeLength(response,declared<0?null:declared,str(state.get("etag")),str(state.get("modified")));
+                        try(Lease lease=new Lease(response.body(),openStreams)) {
+                            attempt.attach(lease);
+                            // Headers and source identity must be accepted before opening the saved file for writing.
+                            long actualLength=wholeLength(response,declared<0?null:declared,str(state.get("etag")),str(state.get("modified")));
                             if(declared>=0)requireSpace(directory,declared);
-                            long received=0,spaceCheck=0;byte[] buffer=new byte[32768];MessageDigest digest=sha();
+                            if(Files.exists(part())&&Files.size(part())!=0)throw new PartialPreservedException("Partial file preserved: the source does not support safe resuming. Explicitly restart the download to replace it.");
+                            try(FileChannel output=FileChannel.open(part(),StandardOpenOption.CREATE,StandardOpenOption.WRITE)) {
+                            long spaceCheck=0;byte[] buffer=new byte[32768];MessageDigest digest=sha();
                             synchronized(this){state.put("downloaded",0L);state.put("status","running");state.put("error","");persist();}
                             while(!stop) {
                                 attempt.check();int allowed=buffer.length;
                                 if(transferLimits!=null)allowed=transferLimits.acquire(str(route.get("gateway")),allowed,()->stop||attempt.cancelled,()->{lease.touch();attempt.lastProgress=System.nanoTime();});
                                 attempt.lastProgress=System.nanoTime();int read=lease.stream.read(buffer,0,allowed);if(read<0)break;
                                 attempt.progress(read);lease.touch();if(read==0)continue;
+                                synchronized(this){metrics.receive(route,0,read);metrics.endChunk(0);}
                                 if(actualLength>=0&&received+read>actualLength)throw new IOException("Source sent more bytes than declared");
                                 if(received>=spaceCheck){requireSpace(directory,Math.max(8L*1024*1024,read));spaceCheck=received+8L*1024*1024;}
                                 ByteBuffer bytes=ByteBuffer.wrap(buffer,0,read);while(bytes.hasRemaining())output.write(bytes);digest.update(buffer,0,read);received+=read;
-                                synchronized(this){metrics.receive(route,0,read);metrics.endChunk(0);state.put("downloaded",received);}
+                                synchronized(this){state.put("downloaded",received);}
+                                journal.progress(attempt.received,received,wireBytes());
                             }
                             attempt.check();if(actualLength>=0&&received!=actualLength)throw new EOFException("Incomplete whole-file transfer");
                             if(state.containsKey("source_size")&&received!=num(state.get("source_size"),-1))throw new Checksum.ConflictException("File size differs from source metadata");
-                            output.force(true);synchronized(this){state.put("size",received);state.put("chunk_size",Math.max(1,received));state.put("chunks",received==0?new LinkedHashMap<>():new LinkedHashMap<>(Map.of("0",hex(digest.digest()))));state.put("downloaded",received);route.put("bytes",num(route.get("bytes"),0)+received);route.put("chunks",num(route.get("chunks"),0)+1);metrics.endChunk(0);persist();}return;
+                            output.force(true);synchronized(this){state.put("size",received);state.put("chunk_size",Math.max(1,received));state.put("chunks",received==0?new LinkedHashMap<>():new LinkedHashMap<>(Map.of("0",hex(digest.digest()))));state.put("downloaded",received);route.put("bytes",num(route.get("bytes"),0)+received);route.put("chunks",num(route.get("chunks"),0)+1);metrics.endChunk(0);persist();}outcome="completed";return;
+                            }
                         }
-                    }catch(Exception failure){if(stop)throw failure;if(attempt.cancelled){Thread.interrupted();continue;}if(terminalHttpFailure(failure))throw failure;synchronized(this){route.put("last_error",str(failure.getMessage()));state.put("status","retrying");state.put("error",str(failure.getMessage()));persist();}}
-                    finally{attempt.released();}
+                    }catch(Exception failure){reason=str(failure.getMessage());outcome=stop?"paused":"failed";
+                        synchronized(this){route.put("last_error",reason);state.put("downloaded",Math.max(received,Files.exists(part())?Files.size(part()):0));persist();}
+                        if(stop)throw failure;
+                        if(received>0||(Files.exists(part())&&Files.size(part())>0)) {
+                            TransferJournal.preserved(str(state.get("id")),str(route.get("gateway")),Files.size(part()),wireBytes(),reason);
+                            throw new PartialPreservedException("Partial file preserved after a transfer error; retrying will check resume support before writing.");
+                        }
+                        if(attempt.cancelled){Thread.interrupted();continue;}if(terminalHttpFailure(failure))throw failure;
+                        synchronized(this){state.put("status","retrying");state.put("error",reason);persist();}
+                    }
+                    finally{attempt.released();journal.finish(outcome,reason,attempt.received,savedBytes(),wireBytes());}
                 }
                 for(int delay=0;delay<50&&!stop;delay++)Thread.sleep(100);
             }
+        }
+
+        synchronized long wireBytes() { metrics.checkpoint(state); return num(state.get("received_bytes"),0); }
+        synchronized long savedBytes() { return num(state.get("downloaded"),0); }
+
+        /** Reuse only complete saved prefix ranges; final publisher checksums still verify the assembled file. */
+        void recoverWholePrefix(long total) throws Exception {
+            if(!Files.exists(part(),LinkOption.NOFOLLOW_LINKS))return;
+            safePath(part());if(!Files.isRegularFile(part(),LinkOption.NOFOLLOW_LINKS))throw new IOException("Invalid partial file type");
+            long actual=Files.size(part()),prefix=num(state.get("whole_prefix_bytes"),actual);
+            if(prefix<0||prefix>actual||prefix>total||actual>total)
+                throw new PartialPreservedException("Partial file preserved: source size or identity changed.");
+            long segment=num(state.get("segment_size"),20L*1024*1024);
+            if(segment<1||segment>MAX_CHUNK_MB*1024L*1024)segment=20L*1024*1024;
+            synchronized(this){state.put("whole_prefix_bytes",prefix);persist();}
+            Map<String,Object> recovered=new LinkedHashMap<>();long completeBytes=0;
+            try(FileChannel input=FileChannel.open(part(),StandardOpenOption.READ)) {
+                byte[] buffer=new byte[1024*1024];
+                for(long start=0;start<total;start+=segment) {
+                    long length=Math.min(segment,total-start);if(start+length>prefix)break;
+                    MessageDigest digest=sha();long offset=start,left=length;
+                    while(left>0){if(stop)throw new InterruptedException();int read=input.read(ByteBuffer.wrap(buffer,0,(int)Math.min(buffer.length,left)),offset);if(read<=0)throw new EOFException("Saved partial file changed during recovery");digest.update(buffer,0,read);offset+=read;left-=read;}
+                    recovered.put(Long.toString(start/segment),hex(digest.digest()));completeBytes+=length;
+                }
+            }
+            if(actual<total){requireSpace(part().getParent(),total-actual);try(FileChannel output=FileChannel.open(part(),StandardOpenOption.WRITE)){if(total>0)output.write(ByteBuffer.wrap(new byte[]{0}),total-1);output.force(true);}}
+            synchronized(this){state.put("chunk_size",segment);state.put("segment_size",segment);state.put("chunks",recovered);state.put("downloaded",completeBytes);persist();}
+            TransferJournal.preserved(str(state.get("id")),"",prefix,wireBytes(),"Saved partial data recovered for segmented downloading");
         }
 
         String hashFile(Path path) throws Exception {
@@ -992,6 +1101,7 @@ public final class Main {
                 if(rawSources instanceof Map<?,?> map)for(var entry:map.entrySet())sources.put(str(entry.getKey()),str(entry.getValue()));
                 if(discovered.isEmpty()&&!discoveredSha.isEmpty()){discovered=Map.of("sha256",discoveredSha);sources.put("sha256",discoveredSource);}
                 boolean whole = yes(state.remove("probe_whole"));
+                boolean previousWhole = yes(state.get("whole_file"));
                 String expectedSha = str(state.get("expected_sha256"));
                 if(state.get("mirrors") instanceof List<?> mirrors&&mirrors.size()>1&&!expectedSha.isEmpty()){etag="";modified="";}
                 Checksums.checkDiscovery(state, discovered);
@@ -999,6 +1109,16 @@ public final class Main {
                 expectedSha = expectedHashes.getOrDefault("sha256", "");
                 if (!whole && etag.isEmpty() && !Checksums.strong(expectedHashes))
                     throw new IOException("Источник не дал сильный ETag; для безопасной докачки укажите ожидаемую SHA-256 или SHA-512");
+                if(whole&&!previousWhole&&Files.exists(part(),LinkOption.NOFOLLOW_LINKS)&&Files.size(part())>0)
+                    throw new PartialPreservedException("Partial file preserved: the source does not support safe resuming. Explicitly restart the download to replace it.");
+                synchronized(this) {
+                    if(size()!=0 && (size()!=total || (!Checksums.strong(expectedHashes) &&
+                            (!str(state.get("etag")).equals(etag)||!str(state.get("modified")).equals(modified))))) {
+                        if(previousWhole)throw new PartialPreservedException("Partial file preserved: source size or identity changed.");
+                        throw new IOException("Исходный файл изменился; прежние сегменты сохранены");
+                    }
+                }
+                if(!whole && previousWhole)recoverWholePrefix(total);
                 synchronized (this) {
                     if (size() != 0 && (size() != total || (!Checksums.strong(expectedHashes) &&
                             (!str(state.get("etag")).equals(etag) || !str(state.get("modified")).equals(modified)))))
@@ -1006,8 +1126,12 @@ public final class Main {
                     state.put("size", total); state.put("etag", etag); state.put("modified", modified);
                     state.put("whole_file", whole); state.put("resumable", !whole);
                     state.put("distribution_supported", !whole);
-                    if(whole) { state.put("chunks",new LinkedHashMap<>());state.put("downloaded",0L); }
+                    if(whole && !previousWhole && num(state.get("downloaded"),0)==0) {
+                        state.put("segment_size",chunkSize());state.put("chunks",new LinkedHashMap<>());
+                    }
                     if (whole) state.put("chunk_size", Math.max(1, total));
+                    else state.remove("whole_prefix_bytes");
+                    state.remove("restart_required");
                     Checksums.acceptDiscovery(state, discovered, sources);
                     persist();
                 }
@@ -1039,8 +1163,10 @@ public final class Main {
                 synchronized (this) {
                     if (!stop) {
                         metrics.stop(); METRIC_JOBS.remove(this);
-                        DownloadHistory.failed(state);
-                        state.put("status", "failed"); state.put("error", error.getMessage()); persist();
+                        if(error instanceof PartialPreservedException) {
+                            DownloadHistory.pause(state,"partial_preserved");state.put("status","paused");state.put("restart_required",true);
+                        } else { DownloadHistory.failed(state);state.put("status", "failed"); }
+                        state.put("error", error.getMessage()); persist();
                     }
                 }
             } finally {

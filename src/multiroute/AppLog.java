@@ -69,6 +69,15 @@ public final class AppLog {
     public static void error(String source, Object... args) { record("ERROR", "application", source, args); }
     /** Network errors have their own durable journal, independent of the bounded UI history. */
     public static void networkError(String source, Object... args) { record("ERROR", "network", source, args); }
+    /** Structured payload counters share the bounded writer, with an independent append-only journal. */
+    static void transferEvent(Map<String,Object> details, String source, Object... args) {
+        try {
+            Event event = new Event(String.valueOf(details.get("time")), "INFO", "transfer", sanitizeTemplate(source),
+                    List.copyOf(encodeArguments(args, 0, new int[]{MAX_EVENT_TEXT})), Map.copyOf(details));
+            Session current = session;
+            if (current != null && current.accepting && !current.offer(event)) current.dropped.incrementAndGet();
+        } catch (RuntimeException ignored) { /* payload logging must never fail a transfer */ }
+    }
     public static void nativeLine(String raw) {
         if (raw != null && raw.startsWith("NETWORK_TOPOLOGY_ERROR ")) {
             networkError("Network topology check failed: %s", DiagnosticText.arg(
@@ -241,7 +250,10 @@ public final class AppLog {
         return event.time + " [" + event.level + "] " + render(event, language) + System.lineSeparator();
     }
 
-    private record Event(String time, String level, String kind, String source, List<Object> args) {
+    private record Event(String time, String level, String kind, String source, List<Object> args, Map<String,Object> transfer) {
+        Event(String time, String level, String kind, String source, List<Object> args) {
+            this(time, level, kind, source, args, Map.of());
+        }
         int size() { return source.length() + args.toString().length() + 80; }
         Map<String,Object> map() {
             Map<String,Object> result = new LinkedHashMap<>();
@@ -257,12 +269,14 @@ public final class AppLog {
         final Deque<Event> history = new ArrayDeque<>();
         final AtomicLong dropped = new AtomicLong();
         final AtomicLong droppedNetworkErrors = new AtomicLong();
+        final AtomicLong droppedTransferEvents = new AtomicLong();
         final AtomicBoolean rewrite = new AtomicBoolean(true);
         final Thread writer;
         volatile boolean accepting = true;
         volatile boolean closeRequested;
         int historySize;
         boolean errorJournalUnavailable;
+        boolean transferJournalUnavailable;
 
         Session(Path data) throws IOException {
             directory = data.resolve("logs"); canonical = directory.resolve("events.json");
@@ -281,7 +295,7 @@ public final class AppLog {
                 for (Object raw : events) {
                     if (!(raw instanceof Map<?,?> item) || !(item.get("args") instanceof List<?> args)) continue;
                     String kind = String.valueOf(item.get("kind")), level = String.valueOf(item.get("level"));
-                    if (!(kind.equals("application") || kind.equals("network")) || !(level.equals("INFO") || level.equals("ERROR"))) continue;
+                    if (!(kind.equals("application") || kind.equals("network") || kind.equals("transfer")) || !(level.equals("INFO") || level.equals("ERROR"))) continue;
                     List<Object> values = restoreArguments(args, 0);
                     String time = String.valueOf(item.get("time")); Instant.parse(time);
                     append(new Event(time, level, kind, sanitizeTemplate(String.valueOf(item.get("source"))), List.copyOf(values)));
@@ -308,17 +322,23 @@ public final class AppLog {
         synchronized List<Event> snapshot() { return new ArrayList<>(history); }
         boolean offer(Event event) {
             if (queue.offer(event)) return true;
-            if (event.kind.equals("network") && event.level.equals("ERROR")) {
+            if (priority(event)) {
                 // A connection/debug burst must not discard the more useful failure record.
                 for (Object queued : queue) {
-                    if (queued instanceof Event prior && prior.level.equals("INFO") && queue.remove(queued)) {
+                    if (queued instanceof Event prior && !priority(prior) && prior.level.equals("INFO") && queue.remove(queued)) {
                         dropped.incrementAndGet();
+                        if (prior.kind.equals("transfer")) droppedTransferEvents.incrementAndGet();
                         if (queue.offer(event)) return true;
                     }
                 }
-                droppedNetworkErrors.incrementAndGet();
+                if (event.kind.equals("network")) droppedNetworkErrors.incrementAndGet();
             }
+            if (event.kind.equals("transfer")) droppedTransferEvents.incrementAndGet();
             return false;
+        }
+        boolean priority(Event event) {
+            return (event.kind.equals("network") && event.level.equals("ERROR")) ||
+                    (event.kind.equals("transfer") && TransferJournal.priority(event.transfer));
         }
         void barrier(boolean close) {
             if (Thread.currentThread() == writer) return;
@@ -341,6 +361,7 @@ public final class AppLog {
                     if (command instanceof Event event) {
                         append(event); dirty = true;
                         if (event.kind.equals("network") && event.level.equals("ERROR")) appendNetworkError(event);
+                        if (event.kind.equals("transfer") && !event.transfer.isEmpty()) appendTransfer(event.transfer);
                         if (event.kind.equals("application")) {
                             String text = render(event, I18n.language());
                             if (event.level.equals("ERROR")) System.err.println(text); else System.out.println(text);
@@ -352,6 +373,11 @@ public final class AppLog {
                     if (lostErrors > 0) {
                         Event notice = event("ERROR", "network", "Часть сообщений журнала пропущена: %d", new Object[]{lostErrors});
                         append(notice); appendNetworkError(notice); dirty = true;
+                    }
+                    long lostTransfers = droppedTransferEvents.getAndSet(0);
+                    if (lostTransfers > 0) {
+                        appendTransfer(TransferJournal.omitted(lostTransfers));
+                        append(event("ERROR", "application", "Transfer journal events omitted: %d", new Object[]{lostTransfers})); dirty = true;
                     }
                     boolean requested = rewrite.getAndSet(false);
                     if (command instanceof Barrier barrier) {
@@ -391,6 +417,16 @@ public final class AppLog {
             } catch (IOException | SecurityException unavailable) {
                 if (!errorJournalUnavailable) System.err.println(DiagnosticText.render("Could not append network error journal") + ": " + sanitize(unavailable.getMessage()));
                 errorJournalUnavailable = true;
+            }
+        }
+        void appendTransfer(Map<String,Object> details) {
+            try { TransferJournal.append(directory, details); transferJournalUnavailable = false; }
+            catch (IOException | SecurityException unavailable) {
+                if (!transferJournalUnavailable) {
+                    Event warning = event("ERROR", "application", "Could not append transfer journal", new Object[0]);
+                    append(warning); System.err.println(render(warning, I18n.language()));
+                }
+                transferJournalUnavailable = true;
             }
         }
         void atomic(Path path, String value) throws IOException {
