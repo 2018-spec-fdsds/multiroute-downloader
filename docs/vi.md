@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — Hướng dẫn tiếng Việt
+# MultiRoute Downloader 4.2.0 — Hướng dẫn tiếng Việt
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
+<a name="dns-settings"></a>
+
+## Thiết lập DNS trong 4.2.0
+
+**Hướng dẫn cho phiên bản 4.2.0. Đối chiếu phiên bản bộ cài và tổng kiểm tra đã công bố; xem NATIVE-INSTALLER-TESTS.json tương ứng để biết kết quả xác minh nền tảng và gói.**
+
+Mở **Mạng → Phân giải DNS**. Mặc định là **DNS qua HTTPS (DoH), Cloudflare**. Thiết lập chỉ thuộc MultiRoute, không đổi DNS, bảng định tuyến hoặc IP giao diện của hệ điều hành.
+
+DoH hỗ trợ HTTP/2 có giới hạn khi TLS ALPN chọn và HTTP/1.1 khi giao thức đó được thương lượng. Tương thích nhà cung cấp và kết quả cổng thực tế nằm trong báo cáo phát hành cuối cùng tương ứng.
+
+- **DoH:** DNS mã hóa qua HTTPS trên từng cổng mạng đã chọn; kiểm tra chứng chỉ TLS theo tên máy trong URL.
+- **DoT:** DNS mã hóa qua TLS trên từng cổng mạng, mặc định cổng 853; kiểm tra tên máy chủ trên chứng chỉ.
+- **DNS hệ thống (máy tính):** chủ động dùng chính sách DNS của máy, OS hoặc VPN. DNS không được bảo đảm đi theo từng cổng đã chọn, nhưng kết nối tệp vẫn dùng cổng của mình. Chế độ này không tự bảo đảm mã hóa DNS.
+
+Chọn Cloudflare, Quad9, Google hoặc **Tùy chỉnh**. Giá trị mẫu là cố định; Tùy chỉnh cho sửa URL/tên máy chủ, cổng và IPv4 công cộng dạng số để kết nối ban đầu. Địa chỉ số tránh phải phân giải tên nhà cung cấp qua OS trước. DoH/DoT xác minh chuỗi tin cậy, tên máy và SNI; không âm thầm chuyển sang DNS rõ hoặc DNS hệ thống. Lỗi DNS bảo mật làm lần thử đó thất bại. Nhà cung cấp phải truy cập được qua cổng đã chọn.
+
+Sửa bản nháp, chọn cổng mạng rồi nhấn **Kiểm tra DNS**. Kiểm tra không lưu, hiển thị kết quả, thời gian và IPv4 công cộng hoặc lỗi cho từng cổng. Lỗi một phần vẫn hiện rõ. Thành công ở chế độ Hệ thống chỉ kiểm tra phân giải OS, không chứng minh WAN độc lập của từng router. **Áp dụng thiết lập DNS** kiểm tra và lưu; số phiên bản trả về xác định cấu hình đã áp dụng. Cập nhật trạng thái và đổi ngôn ngữ giữ bản nháp chưa lưu, con trỏ và vị trí cuộn.
+
+Mỗi truy vấn có tổng thời hạn 8 giây. Giữ ý nghĩa TTL bằng 0 và khấu trừ HTTP Age của DoH; bộ đệm gốc tối đa 300 giây, tách theo cổng/phiên bản cấu hình. Java không thêm bộ đệm DNS khác. Chế độ Hệ thống theo chính sách bộ đệm OS/JVM. Hỗ trợ câu trả lời IPv4 công cộng, không xác thực DNSSEC cục bộ hoặc phân giải IPv6.
+
+API: `GET /api/v1/network/dns` đọc cấu hình và trạng thái chỉ đọc; `PUT`/`POST` cùng đường dẫn áp dụng cấu hình. `POST /api/v1/network/dns/test` kiểm tra bản nháp; `GET /api/v1/network/dns/providers` liệt kê mẫu. Chỉ gửi trường cấu hình, không gửi phiên bản/trạng thái từ GET. [API](../API.ru.txt) · [OpenAPI](../openapi.yaml).
+
 **Bản sửa lỗi 4.1.3:** nếu CDN như Civitai trả HTTP 200 cho vùng byte bắt đầu từ 0, ứng dụng kiểm tra thêm vùng bắt đầu sau 0. Đoạn đầu chỉ được đọc trong giới hạn của đoạn; dữ liệu tải tuần tự đã lưu và khớp nguồn có thể tiếp tục theo từng đoạn. HTTP 200 tạm thời cho vùng phía sau sẽ được thử lại sau 2–30 giây, giữ dữ liệu và luồng xử lý cổng mạng. Nhật ký truyền bền vững theo cổng phân biệt lưu lượng nhận với tiến độ đã lưu. [Ghi chú và giới hạn kiểm tra](releases/4.1.3.en.md) · [Chẩn đoán truyền](transfer-diagnostics.en.md).
 
-[Bộ cài 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
+[Bộ cài 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
 
 Chủ dự án: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -31,11 +53,11 @@ Hệ thống cần phông có các ký tự của ngôn ngữ đã chọn. Trên
 
 ## 3. Cài đặt và xác nhận bảo mật
 
-Chọn một bộ cài trong [bản phát hành 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3), nếu được đính kèm, và đối chiếu SHA-256 công bố.
+Chọn một bộ cài trong [bản phát hành 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.2.0), nếu được đính kèm, và đối chiếu SHA-256 công bố.
 
-- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`.
+- Windows: [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe).
+- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg).
+- Intel, macOS 15+: [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg).
 
 ### Windows
 
@@ -112,7 +134,7 @@ Mọi tham chiếu đã biết phải khớp trước khi xuất bản tệp cu�
 
 Khi đang chạy, API ở `http://127.0.0.1:8765/api/v1`. Yêu cầu/đáp ứng JSON UTF-8, body dùng `Content-Type: application/json`. Không cần API token để tạo/quản lý việc cục bộ; thông tin nguồn là riêng. Chỉ cùng máy truy cập được; không mở cổng ra LAN/Internet. `--headless` chỉ chạy API. Dùng launcher gốc; ví dụ `.cmd` dành cho portable.
 
-Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.1.3"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
+Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.2.0"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
 
 ```json
 {
@@ -190,7 +212,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
+Thành phần Mac gốc là `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net`. Windows portable 3.0 dùng `data/` tại chỗ launcher, đổi bằng `data-location.config`/`--data-dir`. Java riêng Linux ở `~/.local/share/MultiRouteResume/runtime`, thành phần bảo vệ ở `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. Tệp tải ở đích bạn chọn, có thể nằm ngoài các nơi này.
 
 `logs/downloads-history.jsonl` là JSON từng dòng UTF-8, `logs/downloads-history.log` là văn bản có ngày/giờ. Được thêm qua các lần chạy, không viết lại quá khứ khi đổi ngôn ngữ hoặc xóa việc. Text giữ ngôn ngữ lúc ghi; UI dùng ngôn ngữ hiện tại. Cửa sổ chỉ đọc tối đa 1,000 sự kiện gần nhất/2 MiB, còn toàn bộ hồ sơ trên đĩa tiếp tục lớn, có thể lưu trữ riêng khi cần. Có tên và đường dẫn tuyệt đối nhưng không có URL nguồn/password/token; xem thông tin cá nhân trước khi chia sẻ.
 
@@ -237,7 +259,7 @@ API nhận `site_profile_id` cho tải xuống, tải lên, duyệt và xem trư
 
 ## Tích hợp Chrome và Edge
 
-Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
+Mở tích hợp **Chrome / Edge** trong ứng dụng, bật gửi liên kết và mở thư mục tiện ích. Một lần: vào `chrome://extensions` hoặc `edge://extensions`, bật chế độ nhà phát triển, chọn **Tải tiện ích đã giải nén** và thư mục `browser-extension` chứa `manifest.json`. Bản cài gốc chứa thư mục cạnh JAR; mã nguồn cũng có [browser-extension/](../browser-extension/). Giữ nguyên vị trí; giải nén `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip` trước nếu dùng. Chưa phát hành trên cửa hàng.
 
 MultiRoute phải chạy, kể cả trong khay. Gửi URL bằng menu liên kết hoặc popup tiện ích. Dùng thư mục, cổng và hồ sơ hiện tại; vẫn hiện lựa chọn repository/torrent khi cần. Cổng mặc định 8765 phải khớp API nếu đổi. Chỉ gửi URL, không sao chép cookie/mật khẩu và không chặn tải khác của trình duyệt. Cấu hình quyền nguồn trong ứng dụng. Chỉ cấp quyền kết nối cục bộ được hỏi cho tiện ích đã chọn này.
 

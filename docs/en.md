@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — English guide
+# MultiRoute Downloader 4.2.0 — English guide
 
 **English** · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [Home](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
+<a name="dns-settings"></a>
+
+## DNS settings in 4.2.0
+
+**Instructions for version 4.2.0. Match the installer version and published checksums; see the matching NATIVE-INSTALLER-TESTS.json for platform and asset verification results.**
+
+Open **Network → DNS resolution**. The application defaults to **DNS over HTTPS (DoH), Cloudflare**. This setting belongs to MultiRoute; it does not change the computer's DNS servers, routes or interface IP addresses.
+
+DoH supports bounded HTTP/2 selected by TLS ALPN and HTTP/1.1 when that protocol is negotiated. Provider interoperability and live gateway results belong to the matching final release report.
+
+- **DoH:** encrypted HTTPS DNS through each selected gateway. The URL hostname authenticates the TLS certificate.
+- **DoT:** encrypted DNS over TLS through each selected gateway; port 853 by default. The server name authenticates the TLS certificate.
+- **System DNS (computer):** explicitly use the computer/OS/VPN resolver policy. DNS is not guaranteed to follow each selected gateway, although file connections still do. This mode is not a guarantee of encrypted DNS.
+
+Choose Cloudflare, Quad9, Google or **Custom**. Presets are fixed; Custom enables the relevant URL/server name, port and numeric public IPv4 bootstrap addresses. Bootstrap addresses connect directly without first resolving the DNS provider through the OS. DoH/DoT verify trusted certificates, hostname and SNI; neither silently falls back to unencrypted DNS or System mode. A failed secure lookup fails that attempt. Use a provider reachable through the selected gateway.
+
+Edit a draft, select gateways, then choose **Test DNS**. Testing uses the draft without saving it and shows a result, elapsed time and public IPv4 addresses or an error for each gateway. A partial failure remains visible. In System mode a successful lookup checks OS resolution, not independent WAN reachability through every gateway. Choose **Apply DNS settings** to validate and save the configuration. The returned revision identifies the applied configuration; background status refresh and language changes preserve an unsaved draft, caret and reading position.
+
+Each lookup has an 8-second total budget. Secure responses retain DNS TTL semantics, including TTL zero and the HTTP Age reduction for DoH; the native cache is limited to 300 seconds and scoped to gateway/configuration revision. There is no additional Java DNS cache. System mode follows the OS/JVM cache policy. Public IPv4 answers are supported; this is not local DNSSEC validation or IPv6 resolution.
+
+API: `GET /api/v1/network/dns` reads configuration and readonly state; `PUT` (or `POST`) at the same path applies configuration. `POST /api/v1/network/dns/test` tests a draft; `GET /api/v1/network/dns/providers` lists presets. Send only configuration keys, not the revision/status fields from GET. See the [API reference](../API.ru.txt) and [OpenAPI schema](../openapi.yaml).
+
 **4.1.3 fixes:** CDNs such as Civitai that return HTTP 200 for a range starting at zero are checked with a nonzero range. The first segment stays bounded; compatible saved sequential data can resume as segments. A temporary HTTP 200 for a nonzero range retries after 2–30 seconds while preserving saved data and keeping the gateway worker available. A persistent per-gateway transfer journal distinguishes received traffic from saved progress. [Release notes and validation limits](releases/4.1.3.en.md) · [Transfer diagnostics](transfer-diagnostics.en.md).
 
-[4.1.3 installers](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) include a private Java 21 runtime. Windows Setup uses English and creates a desktop shortcut; Npcap remains separately required. macOS uses system libpcap. Follow the installation and security confirmations below.
+[4.2.0 installers](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) include a private Java 21 runtime. Windows Setup uses English and creates a desktop shortcut; Npcap remains separately required. macOS uses system libpcap. Follow the installation and security confirmations below.
 
 MultiRoute Downloader is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
 
@@ -68,15 +90,15 @@ Version 3.0's gateway transport uses IPv4 over Ethernet. Wi-Fi-only, VPN-only an
 
 The selected language also needs installed fonts covering its script. On minimal Linux, install suitable fonts through the distribution, for example Noto CJK for Chinese/Korean and an Arabic Noto family. Java uses platform font fallback; this application does not install or bundle font packs. Coverage can differ between computers.
 
-## Native installers 4.1.3: Windows and macOS
+## Native installers 4.2.0: Windows and macOS
 
 Choose the installer for your system from [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), when it is attached to the release. Each is **one installer file**, containing the application, native launcher, full Java runtime and platform network component. The source checkout and portable 3.0 ZIPs are separate distributions.
 
 | System | Installer | Launch after installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe` | **MultiRoute Downloader** in the Start menu or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg` | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
+| Windows 11 x64 | [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe) | **MultiRoute Downloader** in the Start menu or its desktop shortcut |
+| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg) | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
+| Intel, macOS 15+ | [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg) | **MultiRoute Downloader** in Applications, Spotlight or the Dock |
 
 The twelve language guides and screenshots are included for offline use. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: in Finder choose **Show Package Contents** on the installed app, then open `Contents/app/docs/`. Open `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` or `vi.md` in a text or Markdown viewer.
 
@@ -270,12 +292,12 @@ Set network configuration in the window or with `POST /network` first. See the e
 
 ## 7. Data, updates and removal
 
-### Native installers 4.1.3
+### Native installers 4.2.0
 
 | Platform | Settings, history and logs | Application/runtime | Network component |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, with Java included | Included x64 component; Npcap installed separately |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, including Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net` |
 
 Close the application before updating with a new installer. Windows removal uses **Settings → Apps → Installed apps**. On macOS, removing the `.app` does not also remove saved history or the separately protected helper. Downloaded files stay in the folder you chose; do not delete that folder merely to uninstall the program. The data paths differ from Windows portable 3.0: preserve any earlier profile before migrating.
 
@@ -410,7 +432,7 @@ Use the queue/schedule controls to set `max_active_jobs` (1–32), global or gat
 
 ## Chrome and Edge integration
 
-Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](../browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
+Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](../browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
 
 Keep MultiRoute running, including in the tray. Right-click a link and choose the MultiRoute download action, or use the extension popup to send a URL. The desktop uses the currently selected folder, gateways and site profile; repository/torrent choices still appear when needed. The popup port defaults to 8765; set it to the application’s actual local API port if changed. Only the URL is sent: browser cookies/passwords are not copied and ordinary browser downloads are not intercepted. Configure required source access in the application. If the browser requests permission for the local connection, approve it only for this chosen extension.
 

@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — Guía en español
+# MultiRoute Downloader 4.2.0 — Guía en español
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
+<a name="dns-settings"></a>
+
+## Configuración DNS en 4.2.0
+
+**Instrucciones para la versión 4.2.0. Compare la versión del instalador y las sumas publicadas; consulte el NATIVE-INSTALLER-TESTS.json correspondiente para los resultados por plataforma y archivo.**
+
+Abra **Red → Resolución DNS**. El valor predeterminado es **DNS sobre HTTPS (DoH), Cloudflare**. Solo afecta a MultiRoute; no cambia DNS, rutas ni direcciones IP del sistema.
+
+DoH admite HTTP/2 acotado seleccionado por TLS ALPN y HTTP/1.1 cuando se negocia ese protocolo. La compatibilidad del proveedor y los resultados reales constan en el informe final de la versión.
+
+- **DoH:** DNS cifrado por HTTPS a través de cada puerta de enlace seleccionada. Se verifica el certificado TLS con el nombre de la URL.
+- **DoT:** DNS cifrado por TLS a través de cada puerta de enlace, puerto 853 por defecto; se verifica el nombre del servidor.
+- **DNS del sistema (equipo):** usar expresamente la política DNS del equipo, SO o VPN. El DNS puede no seguir cada puerta de enlace; las conexiones de archivos conservan la seleccionada. Este modo no garantiza cifrado DNS.
+
+Elija Cloudflare, Quad9, Google o **Personalizado**. Los preajustes son fijos; Personalizado permite editar URL/nombre, puerto e IPv4 públicas numéricas de arranque. Estas direcciones evitan resolver antes el proveedor mediante el SO. DoH/DoT verifican la cadena de confianza, nombre y SNI; nunca recurren silenciosamente a DNS sin cifrar ni al sistema. Un fallo seguro termina ese intento. El proveedor debe ser accesible por la puerta de enlace elegida.
+
+Edite un borrador, seleccione puertas de enlace y pulse **Probar DNS**. No lo guarda; muestra resultado, tiempo e IPv4 públicas o error por puerta de enlace. Los fallos parciales siguen visibles. En modo Sistema el éxito comprueba el resolvedor del SO, no la WAN independiente de cada router. **Aplicar configuración DNS** valida y guarda. La revisión devuelta identifica la configuración aplicada; las actualizaciones y los cambios de idioma conservan borrador, cursor y desplazamiento.
+
+Cada consulta tiene un límite total de 8 segundos. Se respetan TTL cero y la reducción por HTTP Age en DoH; la caché nativa dura como máximo 300 segundos y se separa por puerta de enlace/revisión. Java no añade otra caché DNS. Sistema usa la política de caché SO/JVM. Se admiten respuestas IPv4 públicas; no hay validación DNSSEC local ni resolución IPv6.
+
+API: `GET /api/v1/network/dns` devuelve configuración y estado de solo lectura; `PUT` o `POST` aplica configuración. `POST /api/v1/network/dns/test` prueba un borrador; `GET /api/v1/network/dns/providers` enumera preajustes. Envíe solo campos de configuración, sin revisión/estado de GET. [API](../API.ru.txt) · [OpenAPI](../openapi.yaml).
+
 **Correcciones de 4.1.3:** si un CDN como Civitai devuelve HTTP 200 para un intervalo que empieza en cero, se comprueba otro intervalo que empieza después de cero. El primer segmento se limita a su tamaño; los datos secuenciales guardados compatibles pueden continuar como segmentos. Un HTTP 200 temporal para un intervalo posterior se reintenta tras 2–30 segundos, conservando los datos y el trabajador de la puerta de enlace. El registro persistente por puerta de enlace distingue el tráfico recibido del progreso guardado. [Notas y límites de validación](releases/4.1.3.en.md) · [Diagnóstico de transferencias](transfer-diagnostics.en.md).
 
-[Los instaladores 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) incluyen Java 21 privado. El asistente de Windows está en inglés y crea un acceso directo en el escritorio; Npcap se requiere por separado. macOS usa libpcap del sistema. Siga las instrucciones de instalación y seguridad que aparecen abajo.
+[Los instaladores 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) incluyen Java 21 privado. El asistente de Windows está en inglés y crea un acceso directo en el escritorio; Npcap se requiere por separado. macOS usa libpcap del sistema. Siga las instrucciones de instalación y seguridad que aparecen abajo.
 
 MultiRoute Downloader es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
 
@@ -68,15 +90,15 @@ La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión 
 
 El idioma elegido necesita fuentes instaladas con sus caracteres. En Linux mínimo instale paquetes de la distribución, por ejemplo Noto CJK para chino/coreano y una familia Noto árabe. Java usa las fuentes de sustitución de la plataforma; la aplicación no instala ni incluye paquetes de fuentes. La cobertura depende del equipo.
 
-## Instaladores nativos 4.1.3: Windows y macOS
+## Instaladores nativos 4.2.0: Windows y macOS
 
 Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), si está adjunto a la publicación. Cada paquete es **un solo archivo de instalación**, con aplicación, lanzador nativo, Java completo y componente de red. Las fuentes y los ZIP portátiles 3.0 son distribuciones distintas.
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe` | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe) | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
 
 Las doce guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` o `vi.md` con un editor de texto o visor Markdown.
 
@@ -280,12 +302,12 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## 7. Datos, actualización y desinstalación
 
-### Instaladores nativos 4.1.3
+### Instaladores nativos 4.2.0
 
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net` |
 
 Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
 
@@ -420,7 +442,7 @@ Configure `max_active_jobs` (1–32), límites globales/por puerta y ventana dia
 
 ## Integración con Chrome y Edge
 
-Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
+Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
 
 MultiRoute debe estar abierto, incluso en la bandeja. Envíe un enlace desde su menú contextual o la ventana de la extensión. Se usan carpeta, puertas y perfil actuales; la selección de repositorio/torrent sigue disponible. El puerto es 8765; ajústelo si cambió el de API. Solo se envía URL, sin cookies ni contraseñas; no intercepta otras descargas del navegador. Configure el acceso al origen en la aplicación. Si el navegador pide permiso de conexión local, concédalo solo a esta extensión elegida.
 

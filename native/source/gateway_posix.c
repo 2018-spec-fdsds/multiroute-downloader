@@ -2,6 +2,7 @@
  * lwIP is a separate TCP/IP stack; only this process owns the virtual IPv4 address.
  * TLS stays end-to-end in the Java HTTP client through the loopback CONNECT tunnel.
  */
+#define MR_DNS_MANAGED_SUPPORT 1
 #include "posix_platform.h"
 #undef IP_STATS
 #undef ICMP_STATS
@@ -604,6 +605,8 @@ static int self_test(void) {
   if(fragment_self_test())return 11;
   if(profile_control_self_test())return 12;
   if(gateway_dns_self_test())return 13;
+  if(mr_dns_broker_protocol_self_test())return 14;
+  puts("MANAGED_DNS_SELF_TEST_OK authenticated framing, public numeric egress, no network handles");
   puts("SELF_TEST_OK no network handles, no routing changes");return 0;
 }
 static int parse_id(const char *arg,unsigned long *out){char *end;unsigned long value;if(!arg||!*arg||*arg<'0'||*arg>'9')return 0;errno=0;value=strtoul(arg,&end,10);if(errno||*end||!value||value>INT_MAX)return 0;*out=value;return 1;}
@@ -639,6 +642,7 @@ static int run_main(int argc,char **argv){
   if(argc==2&&!strcmp(argv[1],"--self-test"))return self_test();
   for(i=1;i<argc;i++){
     if(!strcmp(argv[i],"--debug-headers")){debug_headers=1;continue;}
+    if(!strcmp(argv[i],"--managed-dns")){if(managed_dns_required)return 2;managed_dns_required=1;continue;}
     if(i+1>=argc){fprintf(stderr,"Missing option argument\n");return 2;}
     if(!strcmp(argv[i],"--virtual-ip")){if(strlen(argv[i+1])>=sizeof(virtual_ip)){fatal("Virtual IPv4 argument too long");return 2;}strcpy(virtual_ip,argv[++i]);}
     else if(!strcmp(argv[i],"--gateways")){if(!*argv[i+1]||strlen(argv[i+1])>=sizeof(gateways)||argv[i+1][0]==','||strstr(argv[i+1],",,")||argv[i+1][strlen(argv[i+1])-1]==','){fatal("Invalid gateway list");return 2;}strcpy(gateways,argv[++i]);}
@@ -660,6 +664,10 @@ static int run_main(int argc,char **argv){
     strcpy(profiles[profile_count].gateway,token);profiles[profile_count].listener=INVALID_SOCKET;profiles[profile_count].socks_listener=INVALID_SOCKET;profiles[profile_count].configured=1;InterlockedIncrement(&profile_count_raw);
   }
   if(!profile_count){fatal("No gateways configured");return 2;}
+  if(!initialize_managed_control()){
+    if(!drop_privileges()){fatal("Cannot permanently drop packet-capture helper privileges");return 4;}
+    fatal("Managed DNS configuration is missing or invalid; no plaintext fallback is permitted");return 2;
+  }
   InitializeCriticalSection(&tx_lock);signal(SIGTERM,console_control);signal(SIGINT,console_control);signal(SIGPIPE,SIG_IGN);
   {int topology_ok=choose_adapter(error,sizeof(error));
   if(!topology_ok||!open_capture(error,sizeof(error))){
@@ -675,13 +683,14 @@ static int run_main(int argc,char **argv){
   fprintf(stderr,"ACD probing %s on %s; no macOS IP/route configuration\n",virtual_ip,interface_name);
   if(!address_claim()){fatal("Application virtual IP is in use, probed by another host, or request cancelled; no address claimed");return 5;}
   if(!initialize_stack()){fatal("Application TCP/IP stack initialization failed");return 6;}
-  rx=spawn_thread(receive_loop,NULL);if(!rx||!start_listeners()){fatal("Application loopback proxy startup failed");return 7;}
+  rx=spawn_thread(receive_loop,NULL);if(!rx||!start_listeners()||!mr_dns_tunnel_start()){fatal("Application loopback proxy startup failed");return 7;}
   ready_result(NULL);fprintf(stderr,"READY virtual_ip=%s interface=%s profiles=%d application_routes_only=true\n",virtual_ip,interface_name,profile_count);
   for(i=0;i<profile_count;i++)fprintf(stderr,"GATEWAY %s proxy=127.0.0.1:%u available=%d\n",profiles[i].gateway,profiles[i].proxy_port,profiles[i].mac_known);
   while(!cancelled()){Sleep(250);if(!cancelled()){poll_profile_control();monitor_topology();ready_result(NULL);}}
   for(i=0;i<profile_count;i++){if(profiles[i].listener!=INVALID_SOCKET)closesocket(profiles[i].listener);if(profiles[i].socks_listener!=INVALID_SOCKET)closesocket(profiles[i].socks_listener);}
+  mr_dns_tunnel_stop();
   pthread_join(*rx,NULL);free(rx);
-  {ULONGLONG until=GetTickCount64()+3000;while(connection_count&&GetTickCount64()<until)Sleep(10);if(connection_count)return 0;}
+  {ULONGLONG until=GetTickCount64()+3000;while((connection_count||mr_dns_tunnel_connections)&&GetTickCount64()<until)Sleep(10);if(connection_count||mr_dns_tunnel_connections)return 0;}
   if(capture)pcap_close(capture);if(transmit)pcap_close(transmit);if(instance_lock>=0)close(instance_lock);return 0;
 }
 int main(int argc,char **argv){return run_main(argc,argv);}

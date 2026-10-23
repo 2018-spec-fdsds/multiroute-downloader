@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — Guida in italiano
+# MultiRoute Downloader 4.2.0 — Guida in italiano
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
+<a name="dns-settings"></a>
+
+## Impostazioni DNS in 4.2.0
+
+**Istruzioni per la versione 4.2.0. Verificare versione dell’installer e somme pubblicate; consultare il NATIVE-INSTALLER-TESTS.json corrispondente per i risultati di piattaforme e pacchetti.**
+
+Aprire **Rete → Risoluzione DNS**. Il valore predefinito è **DNS su HTTPS (DoH), Cloudflare**. L’impostazione riguarda solo MultiRoute e non cambia DNS, rotte o indirizzi IP del sistema.
+
+DoH supporta HTTP/2 con limiti, selezionato tramite TLS ALPN, e HTTP/1.1 quando negoziato. Compatibilità dei fornitori e risultati reali dei gateway sono nel rapporto finale della relativa release.
+
+- **DoH:** DNS cifrato su HTTPS attraverso ogni gateway selezionato. Il certificato TLS è verificato rispetto al nome nell’URL.
+- **DoT:** DNS cifrato su TLS attraverso ogni gateway, porta 853 predefinita; verifica del nome del server.
+- **DNS di sistema (computer):** usare esplicitamente la politica DNS di computer, SO o VPN. Il DNS può non seguire ciascun gateway selezionato; le connessioni dei file mantengono il proprio gateway. Questa modalità non garantisce la cifratura DNS.
+
+Scegliere Cloudflare, Quad9, Google o **Personalizzato**. I preset sono fissi; Personalizzato abilita URL/nome, porta e indirizzi IPv4 pubblici numerici di bootstrap. Permettono la connessione al fornitore senza risolverne prima il nome tramite il SO. DoH/DoT verificano catena di fiducia, nome e SNI, senza ripiego silenzioso su DNS in chiaro o di sistema. Un errore sicuro termina quel tentativo; il fornitore deve essere raggiungibile dal gateway selezionato.
+
+Modificare una bozza, scegliere i gateway e premere **Prova DNS**. Il test non salva e mostra risultato, tempo e IPv4 pubblici o errore per gateway. I guasti parziali restano visibili. In modalità Sistema il successo verifica la risoluzione del SO, non la WAN indipendente di ogni router. **Applica impostazioni DNS** convalida e salva; la revisione restituita identifica la configurazione applicata. Aggiornamenti e cambi di lingua conservano bozza, cursore e scorrimento.
+
+Ogni richiesta ha un limite totale di 8 secondi. Sono rispettati TTL zero e riduzione HTTP Age di DoH; la cache nativa è limitata a 300 secondi e separata per gateway/revisione. Java non aggiunge un’altra cache DNS. Sistema segue la politica cache SO/JVM. Sono supportate risposte IPv4 pubbliche, senza validazione DNSSEC locale o risoluzione IPv6.
+
+API: `GET /api/v1/network/dns` legge configurazione e stato in sola lettura; `PUT` o `POST` applica la configurazione. `POST /api/v1/network/dns/test` prova una bozza; `GET /api/v1/network/dns/providers` elenca i preset. Inviare solo i campi di configurazione, senza revisione/stato di GET. [API](../API.ru.txt) · [OpenAPI](../openapi.yaml).
+
 **Correzioni 4.1.3:** se una CDN come Civitai risponde HTTP 200 a un intervallo che parte da zero, viene controllato anche un intervallo con inizio diverso da zero. Il primo segmento resta limitato alla sua dimensione; i dati sequenziali salvati compatibili possono proseguire come segmenti. Un HTTP 200 temporaneo per un intervallo successivo viene ritentato dopo 2–30 secondi, conservando i dati e il worker del gateway. Il registro persistente per gateway distingue il traffico ricevuto dall’avanzamento salvato. [Note e limiti della verifica](releases/4.1.3.en.md) · [Diagnostica trasferimenti](transfer-diagnostics.en.md).
 
-[Gli installer 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) includono Java 21 privato. Il programma di installazione Windows è in inglese e crea un collegamento sul desktop; Npcap resta necessario separatamente. macOS usa libpcap di sistema. Seguire le istruzioni di installazione e sicurezza sotto.
+[Gli installer 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) includono Java 21 privato. Il programma di installazione Windows è in inglese e crea un collegamento sul desktop; Npcap resta necessario separatamente. macOS usa libpcap di sistema. Seguire le istruzioni di installazione e sicurezza sotto.
 
 Proprietario del progetto: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -31,11 +53,11 @@ La lingua scelta richiede font installati che coprano i suoi caratteri. Su Linux
 
 ## 3. Installazione e conferme di sicurezza
 
-Scegliere un solo installer dalla [release 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3), se allegato, e confrontarlo con lo SHA-256 pubblicato:
+Scegliere un solo installer dalla [release 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.2.0), se allegato, e confrontarlo con lo SHA-256 pubblicato:
 
-- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`.
+- Windows: [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe).
+- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg).
+- Intel, macOS 15+: [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg).
 
 ### Windows
 
@@ -112,7 +134,7 @@ Tutti i riferimenti noti devono coincidere prima della pubblicazione. Un errore 
 
 A programma aperto l’API si trova su `http://127.0.0.1:8765/api/v1`. Richieste e risposte sono JSON UTF-8; usare `Content-Type: application/json` per il corpo. Non serve un API token per creare/gestire lavori locali; le credenziali della fonte sono separate. Accetta soltanto il computer locale: non esporre la porta in LAN o Internet. `--headless` esegue soltanto l’API. Usare il launcher nativo; gli esempi `.cmd` riguardano portable.
 
-Controllo: `GET /api/v1/health`, risposta normale `{"ok":true,"version":"4.1.3"}`. Prima configurare la rete nella finestra o inviare a `POST /api/v1/network`:
+Controllo: `GET /api/v1/health`, risposta normale `{"ok":true,"version":"4.2.0"}`. Prima configurare la rete nella finestra o inviare a `POST /api/v1/network`:
 
 ```json
 {
@@ -190,7 +212,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
+Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
 
 `logs/downloads-history.jsonl` è JSON per riga UTF-8; `logs/downloads-history.log` è testo leggibile datato. Vengono aggiunti eventi tra i riavvii senza riscrivere il passato al cambio lingua o alla rimozione del lavoro. Il testo mantiene la lingua di scrittura; la GUI rende gli eventi nella lingua attuale. La finestra legge al massimo la coda di 1.000 eventi/2 MiB, lasciando l’archivio completo sul disco. Cresce con l’uso: archiviarlo separatamente se necessario. Contiene nomi e percorsi assoluti, senza URL sorgenti, password o token; controllare i percorsi prima di condividerlo.
 
@@ -237,7 +259,7 @@ Nei controlli coda/orario impostare `max_active_jobs` (1–32), limiti globali/p
 
 ## Integrazione Chrome ed Edge
 
-Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
+Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
 
 MultiRoute deve funzionare, anche nella tray. Inviare l’URL dal menu del link o dal popup. Usa cartella, gateway e profilo attuali; restano le selezioni repository/torrent. La porta predefinita è 8765, da adattare se l’API cambia. Viene inviato solo l’URL, senza cookie/password e senza intercettare altri download. Configurare l’accesso alla fonte nell’app. Concedere l’eventuale permesso di connessione locale soltanto a questa estensione scelta.
 

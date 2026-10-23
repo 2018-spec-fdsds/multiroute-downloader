@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — 中文使用说明
+# MultiRoute Downloader 4.2.0 — 中文使用说明
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
+<a name="dns-settings"></a>
+
+## 4.2.0 的 DNS 设置
+
+**适用于 4.2.0 的说明。请核对安装包版本和公布的校验和；平台及安装文件验证结果见对应的 NATIVE-INSTALLER-TESTS.json。**
+
+打开**网络 → DNS 解析**。默认是 **DNS over HTTPS（DoH），Cloudflare**。此设置仅属于 MultiRoute，不修改系统 DNS、路由或网卡 IP。
+
+DoH 支持 TLS ALPN 选择的有界 HTTP/2，以及协商为 HTTP/1.1 时的传输。服务商兼容性和真实网关结果以对应最终发行报告为准。
+
+- **DoH：**经每个选定网关发送加密 HTTPS DNS；按 URL 主机名验证 TLS 证书。
+- **DoT：**经每个选定网关发送 TLS DNS，默认端口 853；按服务器名称验证证书。
+- **系统 DNS（计算机）：**明确采用计算机、操作系统或 VPN 的解析策略。DNS 不保证经过各个选定网关，文件连接仍使用其网关。此模式本身不保证 DNS 加密。
+
+可选 Cloudflare、Quad9、Google 或**自定义**。预设值固定；自定义可编辑相应 URL/服务器名、端口和公网 IPv4 引导地址。数字地址让程序直接连接 DNS 服务，无需先通过系统解析服务商名称。DoH/DoT 验证受信证书链、主机名及 SNI，绝不会静默回退到明文或系统 DNS。安全查询失败会结束该次尝试；服务商必须能通过所选网关访问。
+
+修改草稿，选择网关，再点击**测试 DNS**。测试不保存配置，逐网关显示结果、耗时、公网 IPv4 或错误；部分失败仍会显示。系统模式成功只说明系统能解析，不证明每个网关各自的 WAN 可用。点击**应用 DNS 设置**验证并保存；返回的修订号表示生效配置。后台状态更新及切换语言会保留未保存草稿、光标和滚动位置。
+
+单次查询总预算为 8 秒。保留 TTL 为零及 DoH 的 HTTP Age 扣减语义；原生缓存最多 300 秒，按网关和配置修订号隔离。Java 不增加另一层 DNS 缓存。系统模式遵循 OS/JVM 缓存策略。支持公网 IPv4 回答；不进行本地 DNSSEC 验证或 IPv6 解析。
+
+API：`GET /api/v1/network/dns` 读取配置和只读状态；同路径 `PUT` 或 `POST` 应用配置。`POST /api/v1/network/dns/test` 测试草稿；`GET /api/v1/network/dns/providers` 列出预设。仅发送配置字段，不要把 GET 的修订号/状态写回。[API](../API.ru.txt) · [OpenAPI](../openapi.yaml)。
+
 **4.1.3 修复：** 对于 Civitai 等 CDN，若从零开始的字节范围请求返回 HTTP 200，会再检查非零起点的范围。首段读取限制在该段长度内；身份匹配的已有顺序下载数据可转换为分段续传。非零范围临时返回 HTTP 200 时，保留已存数据及网关工作线程，等待 2–30 秒后重试。持久化的分网关传输日志区分接收流量与已保存进度。[版本说明及验证范围](releases/4.1.3.en.md) · [传输诊断](transfer-diagnostics.en.md)。
 
-[4.1.3 安装包](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
+[4.2.0 安装包](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
 
 项目所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
 
@@ -31,11 +53,11 @@ MultiRoute Downloader 是 Java 桌面下载管理器，可通过同一 Ethernet 
 
 ## 3. 安装与安全确认
 
-从 [4.1.3 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3) 下载安装包（如果已附在该版本中），并与发布页的 SHA-256 比较：
+从 [4.2.0 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.2.0) 下载安装包（如果已附在该版本中），并与发布页的 SHA-256 比较：
 
-- Windows：`MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`。
-- Apple Silicon，macOS 26+：`MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`。
-- Intel，macOS 15+：`MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`。
+- Windows：[MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe)。
+- Apple Silicon，macOS 26+：[MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg)。
+- Intel，macOS 15+：[MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg)。
 
 ### Windows
 
@@ -112,7 +134,7 @@ MultiRoute Downloader 是 Java 桌面下载管理器，可通过同一 Ethernet 
 
 启动桌面应用后，API 位于 `http://127.0.0.1:8765/api/v1`。请求与响应为 JSON、UTF-8；写请求使用 `Content-Type: application/json`。本地创建/管理任务不需要 API token，来源凭据另行配置。只接受本机连接，不要把端口开放到局域网或互联网。支持 `--headless` 仅运行 API；原生应用应使用正常启动器，`.cmd` 示例只用于 portable 发行包。
 
-健康检查：`GET /api/v1/health`，正常响应含 `{"ok":true,"version":"4.1.3"}`。先在界面配置网络，或向 `POST /api/v1/network` 发送：
+健康检查：`GET /api/v1/health`，正常响应含 `{"ok":true,"version":"4.2.0"}`。先在界面配置网络，或向 `POST /api/v1/network` 发送：
 
 ```json
 {
@@ -190,7 +212,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-原生 macOS 网络组件为 `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net`。portable Windows 3.0 使用启动目录下 `data/`，可由 `data-location.config` 或 `--data-dir` 覆盖；Linux 私有运行时在 `~/.local/share/MultiRouteResume/runtime`，受保护组件在 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。下载文件在您所选目录，可能在上述位置之外。
+原生 macOS 网络组件为 `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net`。portable Windows 3.0 使用启动目录下 `data/`，可由 `data-location.config` 或 `--data-dir` 覆盖；Linux 私有运行时在 `~/.local/share/MultiRouteResume/runtime`，受保护组件在 `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`。下载文件在您所选目录，可能在上述位置之外。
 
 `logs/downloads-history.jsonl` 是 UTF-8 逐行 JSON，`logs/downloads-history.log` 是带日期时间的可读日志。它们跨重启追加，不因任务删除或切换语言重写。文本日志保留写入时语言，界面按当前语言显示历史。查看窗口最多读取最近 1,000 个事件/2 MiB，完整日志保存在磁盘并持续增长，可另行归档。日志保留文件名和绝对路径，不写来源 URL、密码或 token；分享前检查个人路径。
 
@@ -237,7 +259,7 @@ API 在下载、上传、目录浏览和预览中接受 `site_profile_id`。`GET
 
 ## Chrome 和 Edge 集成
 
-打开桌面应用的 **Chrome / Edge** 集成，启用链接传递并打开扩展目录。首次进入 `chrome://extensions` 或 `edge://extensions`，启用开发者模式，点击“加载已解压的扩展程序”，选择含 `manifest.json` 的 `browser-extension`。安装包将它放在 JAR 旁，源码也提供 [browser-extension/](../browser-extension/)。请保留该目录；使用单独的 `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` 时先解压。本版本未发布到扩展商店。
+打开桌面应用的 **Chrome / Edge** 集成，启用链接传递并打开扩展目录。首次进入 `chrome://extensions` 或 `edge://extensions`，启用开发者模式，点击“加载已解压的扩展程序”，选择含 `manifest.json` 的 `browser-extension`。安装包将它放在 JAR 旁，源码也提供 [browser-extension/](../browser-extension/)。请保留该目录；使用单独的 `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip` 时先解压。本版本未发布到扩展商店。
 
 MultiRoute 必须正在运行，托盘中也可以。右键链接选择 MultiRoute 下载，或从扩展弹窗发送 URL。使用当前保存目录、网关和站点配置，必要时仍显示仓库/torrent 文件选择。默认端口 8765，API 改端口时同步修改。仅发送 URL，不复制浏览器 cookies/密码，不接管其他浏览器下载；源站认证在应用中配置。若浏览器请求本地连接权限，仅为选定扩展确认。
 

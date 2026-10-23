@@ -201,7 +201,7 @@ int main(int argc, char **argv) {
     const char *options[] = {"--virtual-ip", "--gateways", "--ready-file", "--parent-pid", "--drop-uid", "--drop-gid", "--stop-file"};
     unsigned long owner, group, parent;
     uint32_t virtual_ip;
-    int i, j, pipes[2], drained;
+    int i, j, pipes[2], drained, managed_dns = 0;
     pid_t child;
     uint64_t received;
     size_t retained;
@@ -213,12 +213,16 @@ int main(int argc, char **argv) {
         printf("GATEWAY_LAUNCH_DROP_OK uid=%lu gid=%lu cannot regain root\n", (unsigned long)geteuid(), (unsigned long)getegid());
         return 0;
     }
-    if (argc != 16 || strcmp(argv[1], HELPER_PATH)) { fputs("Only the installed gateway component is permitted\n", stderr); return 2; }
-    for (i = 2; i < argc; i += 2) {
+    if ((argc != 16 && argc != 17) || strcmp(argv[1], HELPER_PATH)) { fputs("Only the installed gateway component is permitted\n", stderr); return 2; }
+    for (i = 2; i < argc;) {
+        if (!strcmp(argv[i], "--managed-dns")) { if (managed_dns) return 2; managed_dns = 1; i++; continue; }
+        if (i + 1 >= argc) return 2;
         for (j = 0; j < 7 && strcmp(argv[i], options[j]); j++) { }
         if (j == 7 || values[j] || !clean_text(argv[i + 1])) return 2;
         values[j] = argv[i + 1];
+        i += 2;
     }
+    for (j = 0; j < 7; j++) if (!values[j]) return 2;
     if (!ipv4(values[0], &virtual_ip) || !gateway_list(values[1], virtual_ip) || !state_paths(values[2], values[6]) ||
         !number(values[3], &parent) || !number(values[4], &owner) || !number(values[5], &group) ||
         !owner_identity((uid_t)owner, (gid_t)group, (pid_t)parent)) { fputs("Invalid gateway owner, parent or arguments\n", stderr); return 3; }

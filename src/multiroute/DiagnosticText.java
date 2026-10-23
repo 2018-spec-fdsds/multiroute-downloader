@@ -578,7 +578,28 @@ public final class DiagnosticText {
         }
         String key = "Шлюз %s: %s"; String[] values = I18n.sourceRows().get(key);
         if (values != null) addRule(new Entry(key,values,"ve"));
+        // DNS logs retain canonical templates; only explicit error slots are nested prose.
+        for (var dns : Map.of(
+                "DNS test complete: %s/%s gateways", "vv",
+                "Applied DNS: %s · %s", "vv",
+                "DNS settings could not be loaded: %s", "e",
+                "DNS lookup failed via gateway %s (%s): %s", "vve",
+                "DNS settings applied: %s · %s", "vv",
+                "DNS settings apply failed: %s", "e",
+                "Unknown DNS configuration field: %s", "v",
+                "Invalid DNS text field: %s", "v",
+                "DNS returned response code %d", "v",
+                "DoH HTTP status %d", "v").entrySet()) {
+            if (ROWS.containsKey(dns.getKey())) continue;
+            String[] dnsValues = I18n.sourceRows().get(dns.getKey());
+            if (dnsValues != null) addRule(new Entry(dns.getKey(), dnsValues, dns.getValue()));
+        }
         // Prefer the most specific literal template over generic protocol field errors.
+        // DNS42_HTTP2_RULES: protocol names and status codes remain plain data.
+        row("DoH HTTP/2 stream reset (code %d)", "Поток DoH HTTP/2 сброшен (код %d)", "DoH HTTP/2 stream reset (code %d)", "DoH-HTTP/2-Stream zurückgesetzt (Code %d)", "Flujo DoH HTTP/2 reiniciado (código %d)", "Flux DoH HTTP/2 réinitialisé (code %d)", "v");
+        row("Duplicate DoH %s", "Повторяющийся заголовок DoH %s", "Duplicate DoH %s", "Doppelter DoH-Header: %s", "Cabecera DoH duplicada: %s", "En-tête DoH répété : %s", "v");
+        row("Invalid DoH %s", "Некорректный заголовок DoH %s", "Invalid DoH %s", "Ungültiger DoH-Header: %s", "Cabecera DoH no válida: %s", "En-tête DoH non valide : %s", "v");
+        row("Missing DoH %s", "Отсутствует заголовок DoH %s", "Missing DoH %s", "DoH-Header fehlt: %s", "Falta la cabecera DoH %s", "En-tête DoH absent : %s", "v");
         RULES.sort(java.util.Comparator.comparingInt((Rule rule) -> FORMAT.matcher(rule.entry.source).replaceAll("").length()).reversed());
     }
     private static final String[] DATA = { """

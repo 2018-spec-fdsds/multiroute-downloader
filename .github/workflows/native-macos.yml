@@ -45,9 +45,9 @@ jobs:
           distribution: temurin
           java-version: '21'
           architecture: ${{ matrix.architecture == 'arm64' && 'aarch64' || 'x64' }}
-      - name: Build pinned native app, four pure C fixtures including DNS and SOCKS RESOLVE and Installer
+      - name: Build pinned native app, six C fixtures including managed DNS broker and Installer
         run: python3 packaging/macos/build.py --architecture '${{ matrix.architecture }}' --output dist/macos
-      - name: Verify package identities, DNS169, RESOLVE145, numeric torrent bootstrap and real-timer scroll gates
+      - name: Verify identities, DNS169, RESOLVE145, broker191/63, secure DNS42, managed DNS146, HTTP2 DNS106 and UI891
         run: python3 packaging/macos/verify.py --directory dist/macos
       - uses: actions/upload-artifact@v4
         with:
@@ -55,5 +55,38 @@ jobs:
           path: |
             dist/macos/*.pkg
             dist/macos/*report.json
+          if-no-files-found: error
+          retention-days: 7
+
+  linux-dns:
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            native
+            packaging
+            src
+            lib
+            scripts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install native compiler dependencies on the disposable CI runner
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libpcap-dev
+      - name: Verify Linux helper, six native fixtures and three Java DNS TLS fixtures without capture
+        run: bash packaging/tests/verify_linux_dns.sh "$GITHUB_WORKSPACE" "$RUNNER_TEMP/multiroute-dns420"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multiroute-linux-dns
+          path: ${{ runner.temp }}/multiroute-dns420/VERIFICATION.json
           if-no-files-found: error
           retention-days: 7

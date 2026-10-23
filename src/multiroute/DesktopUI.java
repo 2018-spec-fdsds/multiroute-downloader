@@ -207,6 +207,7 @@ public final class DesktopUI {
     final JButton allSpeedButton = translatedButton("Проверить скорости");
     final List<RouteRow> routes = new ArrayList<>();
     final JPanel gatewayRows = new JPanel();
+    DnsSettingsPanel dnsPanel;
     final JButton addGatewayButton = translatedButton("Добавить шлюз…");
     final JButton virtualIpHelpButton = translatedButton("?");
     final JButton bulkButton = translatedButton("Список ссылок…");
@@ -409,8 +410,11 @@ public final class DesktopUI {
         ToolTipManager.sharedInstance().setDismissDelay(20000);
         installImports();
         installShortcuts();
-        if (networkSettingsProvider != null)
-            configuredNetwork = networkSettingsInput(networkSettingsProvider.settings());
+        if (networkSettingsProvider != null) {
+            Map<String,Object> network = networkSettingsProvider.settings();
+            configuredNetwork = networkSettingsInput(network);
+            if (dnsPanel != null && network.get("dns") instanceof Map<?,?>) dnsPanel.refresh(Main.obj(network.get("dns")));
+        }
         refreshTimer = new Timer(900, event -> {refreshJobs();drainBrowserDownloads();});
         refreshTimer.start();
         manager.browserDownload=browserDownloadHandler;
@@ -448,6 +452,7 @@ public final class DesktopUI {
                 for (RouteRow row : routes) if (row != null) row.generation++;
                 refreshTimer.stop();
                 if (uploadPanel != null) uploadPanel.close();
+                if (dnsPanel != null) dnsPanel.close();
                 if (logDialog != null) logDialog.dispose();
                 stopLogRefresh();
                 saveSettings();
@@ -689,6 +694,13 @@ public final class DesktopUI {
         networkTopologyStatusLabel.putClientProperty("multiroute.tone", "muted");
         tip(networkTopologyStatusLabel, LAN_TOPOLOGY_HELP);
         add(panel, c, row++, networkTopologyStatusLabel);
+        dnsPanel = new DnsSettingsPanel(new DnsSettingsPanel.Controller() {
+            @Override public Map<String,Object> apply(Map<String,Object> settings) throws Exception { return manager.configureDns(settings); }
+            @Override public Map<String,Object> test(Map<String,Object> settings, List<String> gateways) throws Exception {
+                return manager.testDns(Map.of("settings", settings, "gateways", gateways, "hostname", "example.com"));
+            }
+        }, background, () -> routes.stream().filter(route -> route.checkBox.isSelected()).map(route -> route.gateway).toList());
+        add(panel, c, row++, dnsPanel);
         applyNetworkButton.addActionListener(event -> applyNetwork());
         virtualIpField.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent event) { virtualIpEdited(); }
@@ -2396,6 +2408,7 @@ public final class DesktopUI {
                     if (networkSettings != null) {
                         synchronizeNetworkSettings(networkSettings, observedApplied);
                         refreshNetworkTopology(networkSettings);
+                        if (dnsPanel != null && networkSettings.get("dns") instanceof Map<?,?>) dnsPanel.refresh(Main.obj(networkSettings.get("dns")));
                     }
                     if (generation == jobsGeneration) updateJobs(snapshots);
                 });

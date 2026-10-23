@@ -162,7 +162,7 @@ def copy_file(source, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="4.1.3")
+    parser.add_argument("--version", default="4.2.0")
     parser.add_argument("--jar", type=Path, default=ROOT / "MultiRoute-Downloader.jar")
     parser.add_argument("--native-helper", type=Path, default=ROOT / "native/windows-x64/gateway-net.exe")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build/windows-package")
@@ -213,11 +213,22 @@ def main():
     run([args.runtime / "bin/java.exe", "--validate-modules"])
     copy_file(args.jar, inputs / "MultiRoute-Downloader.jar")
     dependencies = json.loads((ROOT / "scripts/dependencies.sha256.json").read_text(encoding="utf-8"))
-    for name in ("jlibtorrent-2.0.12.9.jar", "jlibtorrent-windows-2.0.12.9.jar", "jsch-2.28.8.jar", "flatlaf-3.7.2.jar",
-                 "commons-compress-1.28.0.jar", "commons-io-2.22.0.jar", "commons-lang3-3.21.0.jar",
-                 "commons-codec-1.23.0.jar", "xz-1.12.jar"):
+    # Take the saved, pinned dependency inventory so newly added protocol
+    # libraries are included automatically. Only the Windows JNI platform
+    # library belongs in this image; the common Java torrent library stays.
+    selected_dependencies = {
+        name: digest for name, digest in dependencies.items()
+        if name.endswith(".jar") and not name.startswith(("jlibtorrent-linux-", "jlibtorrent-macosx-"))
+    }
+    available_dependencies = {
+        path.name for path in (ROOT / "lib").glob("*.jar")
+        if not path.name.startswith(("jlibtorrent-linux-", "jlibtorrent-macosx-"))
+    }
+    if set(selected_dependencies) != available_dependencies:
+        raise ValueError("Saved Windows Java dependency files do not match their pinned inventory")
+    for name, digest in sorted(selected_dependencies.items()):
         source = ROOT / "lib" / name
-        if sha256(source) != dependencies[name]:
+        if not re.fullmatch(r"[0-9a-f]{64}", digest) or sha256(source) != digest:
             raise ValueError("Dependency SHA-256 mismatch: " + name)
         copy_file(source, inputs / "lib" / name)
     shutil.copytree(ROOT / "lib/licenses", inputs / "lib/licenses")
@@ -249,6 +260,9 @@ def main():
     executable = image / (APP_NAME + ".exe")
     if not executable.is_file():
         raise ValueError("jpackage did not create the native application EXE")
+    packaged_dependencies = {path.name: sha256(path) for path in (image / "app/lib").glob("*.jar")}
+    if packaged_dependencies != selected_dependencies:
+        raise ValueError("The Windows app image Java dependencies differ from the pinned inventory")
     report = {
         "application_version": args.version,
         "format": "Windows x64 native EXE application and per-user EXE installer",
@@ -260,6 +274,7 @@ def main():
         "wix_archive_sha256": TOOLS["wix"]["sha256"],
         "java_jar_sha256": sha256(args.jar),
         "native_helper_sha256": sha256(args.native_helper),
+        "java_dependencies_sha256": packaged_dependencies,
         "launcher_sha256": sha256(executable),
         "browser_extension_sha256": {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted((ROOT / "browser-extension").rglob("*")) if p.is_file()},
         "driver_bundled": False,

@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — हिन्दी उपयोगकर्ता निर्देश
+# MultiRoute Downloader 4.2.0 — हिन्दी उपयोगकर्ता निर्देश
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
+<a name="dns-settings"></a>
+
+## 4.2.0 में DNS सेटिंग
+
+**यह संस्करण 4.2.0 के निर्देश हैं। इंस्टॉलर संस्करण और प्रकाशित चेकसम मिलाएँ; प्लेटफ़ॉर्म और पैकेज सत्यापन के परिणाम संबंधित NATIVE-INSTALLER-TESTS.json में देखें।**
+
+**नेटवर्क → DNS रिज़ॉल्यूशन** खोलें। डिफ़ॉल्ट **DNS over HTTPS (DoH), Cloudflare** है। यह केवल MultiRoute की सेटिंग है; OS के DNS, रूट या इंटरफ़ेस IP नहीं बदलते।
+
+DoH, TLS ALPN से चुना गया सीमित HTTP/2 और बातचीत में चुना गया HTTP/1.1 समर्थित करता है। प्रदाता संगतता और वास्तविक गेटवे परिणाम संबंधित अंतिम रिलीज़ रिपोर्ट में देखें।
+
+- **DoH:** प्रत्येक चयनित गेटवे से एन्क्रिप्टेड HTTPS DNS; URL के होस्ट नाम से TLS प्रमाणपत्र जाँचा जाता है।
+- **DoT:** प्रत्येक चयनित गेटवे से TLS DNS; डिफ़ॉल्ट पोर्ट 853 और प्रमाणपत्र के लिए सर्वर नाम की जाँच।
+- **सिस्टम DNS (कंप्यूटर):** कंप्यूटर, OS या VPN की DNS नीति स्पष्ट रूप से उपयोग करें। DNS का हर चयनित गेटवे से जाना सुनिश्चित नहीं है; फ़ाइल कनेक्शन अपने गेटवे का उपयोग करते हैं। यह मोड स्वयं DNS एन्क्रिप्शन की गारंटी नहीं है।
+
+Cloudflare, Quad9, Google या **कस्टम** चुनें। प्रीसेट स्थिर हैं; कस्टम में URL/सर्वर नाम, पोर्ट और संख्यात्मक सार्वजनिक IPv4 बूटस्ट्रैप पते बदल सकते हैं। इन पतों से प्रदाता का नाम पहले OS से हल किए बिना सीधा कनेक्शन होता है। DoH/DoT विश्वसनीय प्रमाणपत्र श्रृंखला, होस्ट नाम और SNI जाँचते हैं; चुपचाप असुरक्षित या सिस्टम DNS पर नहीं जाते। सुरक्षित DNS विफल होने पर वह प्रयास विफल होता है। प्रदाता चयनित गेटवे से उपलब्ध होना चाहिए।
+
+ड्राफ़्ट बदलें, गेटवे चुनें और **DNS जाँचें** दबाएँ। परीक्षण सहेजता नहीं और हर गेटवे का परिणाम, समय, सार्वजनिक IPv4 या त्रुटि दिखाता है। आंशिक विफलता भी दिखती है। सिस्टम मोड की सफलता OS रिज़ॉल्यूशन जाँचती है, हर राउटर की स्वतंत्र WAN नहीं। **DNS सेटिंग लागू करें** सत्यापित करके सहेजता है; लौटाया रिविज़न लागू कॉन्फ़िगरेशन बताता है। स्थिति अपडेट और भाषा परिवर्तन असहेजे ड्राफ़्ट, कर्सर और स्क्रॉल बनाए रखते हैं।
+
+हर क्वेरी का कुल बजट 8 सेकंड है। TTL शून्य और DoH में HTTP Age की कटौती बनी रहती है; नेटिव कैश अधिकतम 300 सेकंड है और गेटवे/कॉन्फ़िगरेशन रिविज़न के अनुसार अलग है। Java में अतिरिक्त DNS कैश नहीं है। सिस्टम मोड OS/JVM कैश नीति अपनाता है। सार्वजनिक IPv4 उत्तर समर्थित हैं; स्थानीय DNSSEC सत्यापन या IPv6 रिज़ॉल्यूशन नहीं।
+
+API: `GET /api/v1/network/dns` कॉन्फ़िगरेशन और केवल-पढ़ने की स्थिति देता है; उसी पथ का `PUT`/`POST` लागू करता है। `POST /api/v1/network/dns/test` ड्राफ़्ट जाँचता है; `GET /api/v1/network/dns/providers` प्रीसेट सूची देता है। केवल कॉन्फ़िगरेशन फ़ील्ड भेजें, GET के रिविज़न/स्थिति नहीं। [API](../API.ru.txt) · [OpenAPI](../openapi.yaml)।
+
 **4.1.3 में सुधार:** Civitai जैसे CDN यदि शून्य से शुरू होने वाली बाइट सीमा पर HTTP 200 लौटाते हैं, तो शून्य से आगे शुरू होने वाली सीमा भी जाँची जाती है। पहला सेगमेंट अपनी निर्धारित लंबाई तक ही पढ़ता है; स्रोत से मेल खाने वाला पहले से सहेजा गया क्रमिक डेटा सेगमेंट के रूप में जारी रह सकता है। बाद की सीमा पर अस्थायी HTTP 200 मिलने पर सहेजा डेटा और गेटवे वर्कर बनाए रखते हुए 2–30 सेकंड बाद फिर प्रयास होता है। हर गेटवे का स्थायी ट्रांसफ़र लॉग प्राप्त ट्रैफ़िक और सहेजी प्रगति को अलग दिखाता है। [रिलीज़ नोट्स और जाँच की सीमाएँ](releases/4.1.3.en.md) · [ट्रांसफ़र निदान](transfer-diagnostics.en.md)।
 
-[4.1.3 इंस्टॉलर](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) में निजी Java 21 शामिल है। Windows सेटअप अंग्रेज़ी में है और डेस्कटॉप शॉर्टकट बनाता है; Npcap अलग से आवश्यक है। macOS सिस्टम की libpcap उपयोग करता है। नीचे दिए इंस्टॉलेशन और सुरक्षा पुष्टि के चरणों का पालन करें।
+[4.2.0 इंस्टॉलर](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) में निजी Java 21 शामिल है। Windows सेटअप अंग्रेज़ी में है और डेस्कटॉप शॉर्टकट बनाता है; Npcap अलग से आवश्यक है। macOS सिस्टम की libpcap उपयोग करता है। नीचे दिए इंस्टॉलेशन और सुरक्षा पुष्टि के चरणों का पालन करें।
 
 परियोजना स्वामी: [2018-spec-fdsds](https://github.com/2018-spec-fdsds)।
 
@@ -31,11 +53,11 @@ Java में `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` आ
 
 ## 3. स्थापना और सुरक्षा स्वीकृतियाँ
 
-[रिलीज़ 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3) में संलग्न होने पर उपयुक्त एक इंस्टॉलर डाउनलोड करें और प्रकाशित SHA-256 से तुलना करें।
+[रिलीज़ 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.2.0) में संलग्न होने पर उपयुक्त एक इंस्टॉलर डाउनलोड करें और प्रकाशित SHA-256 से तुलना करें।
 
-- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`।
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`।
-- Intel, macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`।
+- Windows: [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe)।
+- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg)।
+- Intel, macOS 15+: [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg)।
 
 ### Windows
 
@@ -112,7 +134,7 @@ assembly के बाद एक पढ़ाई में **MD5, SHA-256, SHA-5
 
 चलते समय API `http://127.0.0.1:8765/api/v1` पर है। JSON UTF-8 और body के लिए `Content-Type: application/json` इस्तेमाल करें। स्थानीय कार्य बनाने/चलाने में API token नहीं चाहिए; source credentials अलग हैं। केवल उसी कंप्यूटर से पहुँच है; LAN/इंटरनेट पर port न खोलें। `--headless` केवल API चलाता है। native launcher इस्तेमाल करें; `.cmd` उदाहरण portable के हैं।
 
-जाँच: `GET /api/v1/health`, सामान्य उत्तर `{"ok":true,"version":"4.1.3"}`। पहले UI में नेटवर्क सेट करें या `POST /api/v1/network` को यह दें:
+जाँच: `GET /api/v1/health`, सामान्य उत्तर `{"ok":true,"version":"4.2.0"}`। पहले UI में नेटवर्क सेट करें या `POST /api/v1/network` को यह दें:
 
 ```json
 {
@@ -190,7 +212,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
+native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
 
 `logs/downloads-history.jsonl` UTF-8 line JSON और `logs/downloads-history.log` तारीख/समय वाला readable text है। पुनः आरंभ के बाद append होते हैं और कार्य हटाने/भाषा बदलने से पुराना पाठ नहीं लिखा जाता। text लिखने के समय की भाषा रखता है; UI वर्तमान भाषा में दिखाता है। viewer अधिकतम पिछली 1,000 घटनाएँ/2 MiB पढ़ता है; पूरा बढ़ता archive disk पर है, ज़रूरत पर अलग संग्रह करें। नाम और निरपेक्ष path रहते हैं, source URL/password/token नहीं। साझा करने से पहले निजी paths जाँचें।
 
@@ -237,7 +259,7 @@ API डाउनलोड, अपलोड, सूची और पूर्व�
 
 ## Chrome और Edge एकीकरण
 
-ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
+ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
 
 MultiRoute चलता रहे, ट्रे भी पर्याप्त है। लिंक के मेनू या एक्सटेंशन पॉपअप से URL भेजें। वर्तमान फ़ोल्डर, गेटवे और साइट प्रोफ़ाइल लगते हैं; आवश्यक repository/torrent चयन बना रहता है। डिफ़ॉल्ट पोर्ट 8765 को बदले API पोर्ट से मिलाएँ। केवल URL भेजता है, cookies/पासवर्ड नहीं और अन्य ब्राउज़र डाउनलोड नहीं पकड़ता। स्रोत पहुँच ऐप में सेट करें। स्थानीय कनेक्शन अनुमति माँगी जाए तो केवल इस चुने एक्सटेंशन को दें।
 

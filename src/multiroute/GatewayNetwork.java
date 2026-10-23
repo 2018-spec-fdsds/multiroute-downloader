@@ -28,11 +28,15 @@ public final class GatewayNetwork {
     private static boolean nativeMacSession;
     private static Map<String,Object> ready;
     private static long controlRevision;
+    private static ManagedDns managedDns;
+    private static ManagedDns.Bridge dnsBridge;
 
     private GatewayNetwork() { }
 
     static synchronized void initialize(Path data) throws IOException {
+        if (managedDns != null) { close(); managedDns.close(); }
         dataDirectory = data.toAbsolutePath().normalize();
+        managedDns = new ManagedDns(dataDirectory);
         Path settings = dataDirectory.resolve("desktop-settings.config");
         if (Files.isRegularFile(settings)) {
             Map<String,Object> saved = Main.obj(Json.parse(Files.readString(settings)));
@@ -87,7 +91,7 @@ public final class GatewayNetwork {
         long revision = ++controlRevision;
         Path command = readyFile.resolveSibling(readyFile.getFileName()+".gateways");
         Path temporary = command.resolveSibling(command.getFileName()+"."+UUID.randomUUID()+".tmp");
-        String text = "MR_GATEWAYS_3\n"+revision+"\n"+String.join(",",desired)+"\n";
+        String text = controlText(revision, desired);
         try {
             try { Files.createFile(temporary,java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
                     java.nio.file.attribute.PosixFilePermissions.fromString("rw-------"))); }
@@ -102,10 +106,11 @@ public final class GatewayNetwork {
                 if(process==null||!process.isAlive())throw new IOException("The gateway component stopped during the profile update");
                 try {
                     Map<String,Object> status=Main.obj(Json.parse(Files.readString(readyFile)));
-                    if(Main.num(status.get("control_revision"),-1)==revision) {
+                    if(reportInteger(status.get("control_revision"),-1)==revision) {
                         String error=Main.str(status.get("control_error"));
                         if(!error.isBlank())throw new IOException(error);
                         if(!desired.equals(status.get("configured_gateways")))throw new IOException("Gateway update acknowledgement does not match the requested profiles");
+                        requireDnsReadiness(status, desired);
                         ready=status;return;
                     }
                 } catch(IllegalArgumentException partial) { }
@@ -126,7 +131,88 @@ public final class GatewayNetwork {
         result.put("virtual_ip", virtualIp); result.put("gateways", gateways); result.put("max_gateways", MAX_GATEWAYS);
         result.put("running", alive); result.put("os_routes_changed", false);
         result.put("network_validation", validationSnapshot(report, alive, virtualIp, gateways));
+        result.put("dns", dnsSettings());
         return result;
+    }
+
+    static synchronized Map<String,Object> dnsSettings() {
+        if (managedDns != null) return managedDns.settings();
+        Map<String,Object> result = new LinkedHashMap<>(SecureDns.Config.defaults().toJson());
+        result.put("revision", 1); result.put("configuration_error", ""); result.put("helper_ready", false);
+        result.put("plaintext_fallback", false); result.put("timeout_ms", 8000); result.put("gateway_status", List.of());
+        return result;
+    }
+
+    private static ManagedDns dns() throws IOException {
+        if (managedDns == null) managedDns = new ManagedDns(dataDirectory);
+        return managedDns;
+    }
+
+    static synchronized Map<String,Object> configureDns(Map<String,Object> values) throws IOException {
+        SecureDns.Config candidate = SecureDns.Config.fromJson(values);
+        ManagedDns owner = dns(); ManagedDns.State before = owner.snapshot();
+        if (candidate.equals(before.config()) && before.error().isBlank()) { owner.persist(); return owner.settings(); }
+        if (before.revision() > Long.MAX_VALUE - 4) throw new IOException("DNS settings revision exhausted");
+        ManagedDns.State after = new ManagedDns.State(candidate, before.revision() + 1, "");
+        owner.stage(after);
+        try {
+            if (process != null && process.isAlive()) applyHotProfiles(gateways);
+            owner.persist();
+            AppLog.info("DNS settings applied: %s · %s", candidate.mode(), candidate.provider());
+            return owner.settings();
+        } catch (IOException failure) {
+            owner.stage(new ManagedDns.State(before.config(), after.revision() + 1, before.error()));
+            boolean interrupted = Thread.interrupted();
+            try { if (process != null && process.isAlive()) applyHotProfiles(gateways); }
+            catch (IOException restore) { failure.addSuppressed(restore); close(); }
+            finally { if (interrupted) Thread.currentThread().interrupt(); }
+            if (before.error().isBlank())
+                try { owner.persist(); } catch (IOException restoreFile) { failure.addSuppressed(restoreFile); }
+            AppLog.error("DNS settings apply failed: %s", DiagnosticText.arg(failure.getMessage()));
+            throw failure;
+        }
+    }
+
+    static Map<String,Object> testDns(Map<String,Object> values, List<String> requested, String hostname) throws IOException, InterruptedException {
+        SecureDns.Config draft = SecureDns.Config.fromJson(values);
+        ManagedDns owner;
+        synchronized (GatewayNetwork.class) {
+            if (!gateways.containsAll(requested)) throw new IOException("Choose configured gateways for the DNS test");
+            ensureStarted(); owner = dns();
+        }
+        return owner.test(draft, requested, hostname);
+    }
+
+    private static String controlText(long revision, List<String> desired) throws IOException {
+        if (dnsBridge == null) throw new IOException("Managed DNS bridge is not prepared");
+        return "MR_GATEWAYS_4\n" + revision + "\n" + String.join(",", desired) + "\n" +
+                dnsBridge.port() + "\n" + dnsBridge.key() + "\n" + dns().snapshot().revision() + "\n";
+    }
+
+    private static void prepareDnsControl() throws IOException {
+        dnsBridge = dns().beginGeneration();
+        Path command = readyFile.resolveSibling(readyFile.getFileName()+".gateways");
+        try { Files.createFile(command, java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+                java.nio.file.attribute.PosixFilePermissions.fromString("rw-------"))); }
+        catch (UnsupportedOperationException nonPosix) { Files.createFile(command); }
+        Files.writeString(command, controlText(controlRevision, gateways), StandardCharsets.US_ASCII, java.nio.file.StandardOpenOption.WRITE);
+    }
+
+    private static void requireDnsReadiness(Map<String,Object> report, List<String> desired) throws IOException {
+        if (dnsBridge == null || !Boolean.TRUE.equals(report.get("managed_dns")))
+            throw new IOException("Update the network component for managed DNS");
+        String error = Main.str(report.get("dns_control_error"));
+        if (!error.isBlank()) throw new IOException(error);
+        if (reportInteger(report.get("dns_revision"), -1) != dns().snapshot().revision())
+            throw new IOException("DNS settings acknowledgement does not match the requested revision");
+        long port = reportInteger(report.get("dns_tunnel_port"), 0);
+        if (port < 1 || port > 65535) throw new IOException("Invalid managed DNS tunnel port");
+        dns().publishEgress((int)port, desired);
+    }
+
+    private static long reportInteger(Object value, long missing) {
+        if (!(value instanceof Number number) || !Double.isFinite(number.doubleValue()) || number.doubleValue() != number.longValue()) return missing;
+        return number.longValue();
     }
 
     private static final List<String> TOPOLOGY_FIELDS = List.of("computer_ipv4", "netmask", "prefix_length",
@@ -303,7 +389,7 @@ public final class GatewayNetwork {
                 Map<String,Object> failed = ready;
                 close(); ready = failed; throw new IOException(error);
             }
-            if (process.isAlive()) { requireFreshValidation(); return; }
+            if (process.isAlive()) { requireFreshValidation(); requireDnsReadiness(ready, gateways); return; }
         }
         close();
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
@@ -330,12 +416,15 @@ public final class GatewayNetwork {
         Files.createDirectories(dataDirectory.resolve("network"));
         readyFile = dataDirectory.resolve("network").resolve("ready-" + UUID.randomUUID() + ".json");
         controlRevision = 0;
+        prepareDnsControl();
         stopFile = privilegedPosix ? readyFile.resolveSibling(readyFile.getFileName() + ".stop") : null;
         Path log = dataDirectory.resolve("network").resolve("gateway-network.log");
         int uid = privilegedPosix ? macIdentity("-u") : -1;
         int gid = privilegedPosix ? macIdentity("-g") : -1;
-        ProcessBuilder builder = new ProcessBuilder(helperArguments(platform, helper, virtualIp, gateways,
+        List<String> arguments = new ArrayList<>(helperArguments(platform, helper, virtualIp, gateways,
                 readyFile, stopFile, ProcessHandle.current().pid(), uid, gid));
+        arguments.add("--managed-dns");
+        ProcessBuilder builder = new ProcessBuilder(arguments);
         builder.directory(base.toFile()).redirectErrorStream(true);
         boolean nativeMac = mac && DesktopLauncher.nativeDesktop();
         nativeMacSession = nativeMac;
@@ -355,6 +444,7 @@ public final class GatewayNetwork {
                     if (!process.isAlive()) throw new IOException("Сетевой компонент завершился");
                     Map<String,Object> validation = validationSnapshot(report, true, virtualIp, gateways);
                     if (!"valid".equals(validation.get("status"))) throw new IOException(Main.str(validation.get("message")));
+                    requireDnsReadiness(report, gateways);
                     return;
                 }
                 if (!process.isAlive()) throw new IOException(linux
@@ -374,6 +464,8 @@ public final class GatewayNetwork {
     }
 
     public static synchronized void close() {
+        if (managedDns != null) managedDns.invalidateGeneration();
+        dnsBridge = null;
         if (process != null) {
             boolean gracefulMac = stopFile != null;
             Map<Long,ProcessHandle> ownedChildren = new LinkedHashMap<>();

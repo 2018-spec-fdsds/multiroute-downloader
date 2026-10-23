@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 
 /** Native desktop controller, versioned local API and durable segmented downloads. */
 public final class Main {
-    static final String VERSION = "4.1.3";
+    static final String VERSION = "4.2.0";
     static final int MAX_CHUNK_MB = 64;
     static final Pattern SHA256 = Pattern.compile("[a-fA-F0-9]{64}");
     static final Pattern JOB_ACTION = Pattern.compile("/jobs/([a-f0-9]{12})/(pause|resume)");
@@ -1265,6 +1265,7 @@ public final class Main {
             recoverInterruptedRemovals();
             try (DirectoryStream<Path> files = Files.newDirectoryStream(dataDir, "*.json")) {
                 for (Path path : files) try {
+                    if (path.getFileName().toString().equals("dns-settings.json")) continue;
                     Map<String,Object> state = obj(Json.parse(Files.readString(path, StandardCharsets.UTF_8)));
                     String id = str(state.get("id"));
                     if (!id.matches("[a-f0-9]{12}") || !path.getFileName().toString().equals(id + ".json") || Files.isSymbolicLink(path))
@@ -1767,6 +1768,25 @@ public final class Main {
         synchronized void removeGatewayProfile(String gateway)throws IOException {
             Map<String,Object> settings=GatewayNetwork.settings();List<String> gateways=new ArrayList<>();for(Object raw:arr(settings.get("gateways")))if(!gateway.equals(str(raw)))gateways.add(str(raw));
             if(gateways.size()==arr(settings.get("gateways")).size())throw new IOException("Gateway profile was not found");configureNetwork(str(settings.get("virtual_ip")),gateways);
+        }
+        Map<String,Object> dnsSettings() { return GatewayNetwork.dnsSettings(); }
+        synchronized Map<String,Object> configureDns(Map<String,Object> settings) throws IOException {
+            if (closing) throw new IOException("Приложение завершает работу");
+            Map<String,Object> applied = GatewayNetwork.configureDns(settings);
+            events.publish("network", GatewayNetwork.settings()); return applied;
+        }
+        Map<String,Object> testDns(Map<String,Object> input) throws IOException, InterruptedException {
+            Map<String,Object> settings = obj(input.get("settings"));
+            if (settings.isEmpty()) throw new IllegalArgumentException("Provide DNS settings for the test");
+            List<String> selected = new ArrayList<>();
+            Object raw = input.get("gateways");
+            if (raw == null) for (Object value : arr(GatewayNetwork.settings().get("gateways"))) selected.add(str(value));
+            else if (raw instanceof List<?> values) for (Object value : values) {
+                if (!(value instanceof String)) throw new IllegalArgumentException("Invalid DNS test gateway");
+                selected.add(str(value));
+            } else throw new IllegalArgumentException("Invalid DNS test gateway list");
+            String hostname = str(input.get("hostname")); if (hostname.isBlank()) hostname = "example.com";
+            return GatewayNetwork.testDns(settings, selected, hostname);
         }
         synchronized void configureNetwork(String ip, List<String> gateways) throws IOException {
             if(closing)throw new IOException("Приложение завершает работу");
@@ -2282,6 +2302,20 @@ public final class Main {
             if(path.matches("/api/v1/(?:sources/auth|source-auth)/[a-f0-9-]{36}")&&method.equals("DELETE")){SourceAuth.delete(path.substring(path.lastIndexOf('/')+1));json(exchange,200,Map.of("ok",true));return;}
             if (path.equals("/api/v1/sources/download") && method.equals("POST")) {
                 json(exchange, 201, manager.createFromSource(request(exchange))); return;
+            }
+            if (path.equals("/api/v1/network/dns")) {
+                if (method.equals("GET")) { json(exchange, 200, manager.dnsSettings()); return; }
+                if (method.equals("PUT") || method.equals("POST")) { json(exchange, 200, manager.configureDns(request(exchange))); return; }
+            }
+            if (path.equals("/api/v1/network/dns/test") && method.equals("POST")) {
+                json(exchange, 200, manager.testDns(request(exchange))); return;
+            }
+            if (path.equals("/api/v1/network/dns/providers") && method.equals("GET")) {
+                List<Object> providers = new ArrayList<>();
+                for (String provider : List.of("cloudflare", "quad9", "google"))
+                    providers.add(Map.of("id", provider, "doh", SecureDns.Config.preset(provider, "doh").toJson(),
+                            "dot", SecureDns.Config.preset(provider, "dot").toJson()));
+                json(exchange, 200, Map.of("providers", providers, "modes", List.of("system", "doh", "dot"), "plaintext_fallback", false)); return;
             }
             if (path.equals("/api/v1/network")) {
                 if (method.equals("GET")) { json(exchange, 200, GatewayNetwork.settings()); return; }

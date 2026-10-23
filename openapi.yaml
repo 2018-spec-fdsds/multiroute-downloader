@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MultiRoute Downloader local API
-  version: '4.1.1'
+  version: '4.2.0'
   description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
     bodies are limited to 1 MiB; explicit Content-Length is optional.
 servers:
@@ -87,6 +87,82 @@ paths:
                 $ref: '#/components/schemas/SourceDownloadResult'
         '400':
           $ref: '#/components/responses/Error'
+  "/api/v1/network/dns":
+    "get":
+      "operationId": "getDnsSettings"
+      "responses":
+        "200":
+          "description": "Application DNS config and readonly status; does not start the native helper."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DnsState"
+    "put":
+      "operationId": "applyDnsSettings"
+      "description": "Validate and persist only the six configuration fields. Applies to subsequent DNS lookups and invalidates the old policy cache; existing payload TCP streams remain. Returns the standalone DNS state. No OS DNS/routes/IP changes. No credentials or readonly revision/status fields are accepted."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/DnsConfig"
+      "responses":
+        "200":
+          "description": "Applied DNS configuration and returned revision."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DnsState"
+        "400":
+          "$ref": "#/components/responses/Error"
+    "post":
+      "operationId": "applyDnsSettingsCompat"
+      "description": "Validate and persist only the six configuration fields. Applies to subsequent DNS lookups and invalidates the old policy cache; existing payload TCP streams remain. Returns the standalone DNS state. No OS DNS/routes/IP changes. No credentials or readonly revision/status fields are accepted."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/DnsConfig"
+      "responses":
+        "200":
+          "description": "Applied DNS configuration and returned revision."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DnsState"
+        "400":
+          "$ref": "#/components/responses/Error"
+  "/api/v1/network/dns/test":
+    "post":
+      "operationId": "testDnsSettings"
+      "description": "Tests an unsaved draft through selected configured gateways without saving or changing revision. HTTP 200 may contain partial failure and ok=false; inspect every row. System success checks OS resolution, not independent gateway WAN reachability. Each query has an 8-second total budget."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/DnsTestRequest"
+      "responses":
+        "200":
+          "description": "Per-gateway DNS results; this is not a file-transfer success report."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DnsTestReport"
+        "400":
+          "$ref": "#/components/responses/Error"
+  "/api/v1/network/dns/providers":
+    "get":
+      "operationId": "getDnsProviders"
+      "description": "Three fixed provider presets with full DoH/DoT configurations. Custom is an allowed configurable provider rather than a fourth preset."
+      "responses":
+        "200":
+          "description": "Supported modes and fixed Cloudflare/Quad9/Google presets."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/DnsProviders"
   /api/v1/network:
     get:
       operationId: getApplicationNetwork
@@ -99,6 +175,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  dns:
+                    $ref: '#/components/schemas/DnsState'
                   virtual_ip:
                     type: string
                   gateways:
@@ -1155,6 +1233,267 @@ components:
               error:
                 type: string
   schemas:
+    "DnsConfig":
+      "type": "object"
+      "additionalProperties": false
+      "properties":
+        "mode":
+          "type": "string"
+          "enum":
+            - "system"
+            - "doh"
+            - "dot"
+          "default": "doh"
+        "provider":
+          "type": "string"
+          "enum":
+            - "cloudflare"
+            - "quad9"
+            - "google"
+            - "custom"
+          "default": "cloudflare"
+        "doh_url":
+          "type": "string"
+          "format": "uri"
+          "description": "HTTPS URL with an authentication hostname; no IP literal, userinfo, query or fragment. Required for custom DoH."
+        "dot_host":
+          "type": "string"
+          "description": "TLS authentication hostname, not an IP literal. Required for custom DoT."
+        "dot_port":
+          "type": "integer"
+          "minimum": 1
+          "maximum": 65535
+          "default": 853
+          "not":
+            "enum":
+              - 53
+        "bootstrap_ips":
+          "type": "array"
+          "maxItems": 8
+          "items":
+            "type": "string"
+            "format": "ipv4"
+          "description": "Literal public IPv4 addresses; at least one is required in encrypted modes. No OS bootstrap lookup."
+      "example":
+        "mode": "doh"
+        "provider": "cloudflare"
+        "doh_url": "https://cloudflare-dns.com/dns-query"
+        "dot_host": "one.one.one.one"
+        "dot_port": 853
+        "bootstrap_ips":
+          - "1.1.1.1"
+          - "1.0.0.1"
+      "description": "Application-scoped configuration only. Omitted preset fields take preset defaults; custom requires its applicable URL/hostname and numeric bootstrap addresses. Fixed presets cannot be altered. DoH/DoT verify trusted TLS, hostname and SNI with no plaintext/system fallback. System mode follows OS/VPN DNS policy and cannot guarantee gateway affinity or encryption. Does not change OS DNS/routes/interface IPs."
+    "DnsState":
+      "type": "object"
+      "properties":
+        "mode":
+          "type": "string"
+          "enum":
+            - "system"
+            - "doh"
+            - "dot"
+          "default": "doh"
+        "provider":
+          "type": "string"
+          "enum":
+            - "cloudflare"
+            - "quad9"
+            - "google"
+            - "custom"
+          "default": "cloudflare"
+        "doh_url":
+          "type": "string"
+          "format": "uri"
+          "description": "HTTPS URL with an authentication hostname; no IP literal, userinfo, query or fragment. Required for custom DoH."
+        "dot_host":
+          "type": "string"
+          "description": "TLS authentication hostname, not an IP literal. Required for custom DoT."
+        "dot_port":
+          "type": "integer"
+          "minimum": 1
+          "maximum": 65535
+          "default": 853
+          "not":
+            "enum":
+              - 53
+        "bootstrap_ips":
+          "type": "array"
+          "maxItems": 8
+          "items":
+            "type": "string"
+            "format": "ipv4"
+          "description": "Literal public IPv4 addresses; at least one is required in encrypted modes. No OS bootstrap lookup."
+        "revision":
+          "type": "integer"
+          "format": "int64"
+          "minimum": 1
+          "readOnly": true
+        "configuration_error":
+          "type": "string"
+          "readOnly": true
+        "encrypted":
+          "type": "boolean"
+          "readOnly": true
+          "description": "May be absent before service initialization."
+        "helper_ready":
+          "type": "boolean"
+          "readOnly": true
+        "timeout_ms":
+          "type": "integer"
+          "enum":
+            - 8000
+          "readOnly": true
+        "plaintext_fallback":
+          "type": "boolean"
+          "enum":
+            - false
+          "readOnly": true
+        "gateway_status":
+          "type": "array"
+          "readOnly": true
+          "items":
+            "type": "object"
+            "properties":
+              "gateway":
+                "type": "string"
+                "format": "ipv4"
+              "mode":
+                "type": "string"
+              "provider":
+                "type": "string"
+              "revision":
+                "type": "integer"
+                "format": "int64"
+              "ok":
+                "type": "boolean"
+              "elapsed_ms":
+                "type": "integer"
+                "format": "int64"
+              "response_bytes":
+                "type": "integer"
+              "error":
+                "type": "string"
+              "at":
+                "type": "string"
+                "format": "date-time"
+      "description": "Standalone DNS config plus readonly runtime state. A successful changed apply returns a new revision; an equivalent apply may keep the current revision. Project the six config fields before writing; never echo readonly metadata."
+    "DnsTestRequest":
+      "type": "object"
+      "required":
+        - "settings"
+      "properties":
+        "settings":
+          "$ref": "#/components/schemas/DnsConfig"
+        "gateways":
+          "type": "array"
+          "minItems": 1
+          "maxItems": 32
+          "uniqueItems": true
+          "items":
+            "type": "string"
+            "format": "ipv4"
+          "description": "Configured gateways. Omitted means all configured gateways."
+        "hostname":
+          "type": "string"
+          "default": "example.com"
+          "description": "Hostname to query for public IPv4 A answers."
+    "DnsTestResult":
+      "type": "object"
+      "required":
+        - "gateway"
+        - "ok"
+        - "elapsed_ms"
+      "properties":
+        "gateway":
+          "type": "string"
+          "format": "ipv4"
+        "ok":
+          "type": "boolean"
+        "addresses":
+          "type": "array"
+          "items":
+            "type": "string"
+            "format": "ipv4"
+        "error":
+          "type": "string"
+        "elapsed_ms":
+          "type": "integer"
+          "format": "int64"
+          "minimum": 0
+    "DnsTestReport":
+      "type": "object"
+      "required":
+        - "mode"
+        - "provider"
+        - "hostname"
+        - "results"
+        - "ok"
+        - "plaintext_fallback"
+        - "os_routes_changed"
+      "properties":
+        "mode":
+          "type": "string"
+          "enum":
+            - "system"
+            - "doh"
+            - "dot"
+          "default": "doh"
+        "provider":
+          "type": "string"
+          "enum":
+            - "cloudflare"
+            - "quad9"
+            - "google"
+            - "custom"
+          "default": "cloudflare"
+        "hostname":
+          "type": "string"
+        "results":
+          "type": "array"
+          "items":
+            "$ref": "#/components/schemas/DnsTestResult"
+        "ok":
+          "type": "boolean"
+          "description": "True only when every requested gateway row succeeded."
+        "plaintext_fallback":
+          "type": "boolean"
+          "enum":
+            - false
+        "os_routes_changed":
+          "type": "boolean"
+          "enum":
+            - false
+    "DnsProviders":
+      "type": "object"
+      "properties":
+        "modes":
+          "type": "array"
+          "items":
+            "type": "string"
+            "enum":
+              - "system"
+              - "doh"
+              - "dot"
+        "plaintext_fallback":
+          "type": "boolean"
+          "enum":
+            - false
+        "providers":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "id":
+                "type": "string"
+                "enum":
+                  - "cloudflare"
+                  - "quad9"
+                  - "google"
+              "doh":
+                "$ref": "#/components/schemas/DnsConfig"
+              "dot":
+                "$ref": "#/components/schemas/DnsConfig"
     Route:
       type: object
       required:

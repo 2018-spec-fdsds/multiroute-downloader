@@ -1,10 +1,32 @@
-# MultiRoute Downloader 4.1.3 — Guide en français
+# MultiRoute Downloader 4.2.0 — Guide en français
 
 [Accueil](../README.md) · [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · **Français** · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
+<a name="dns-settings"></a>
+
+## Paramètres DNS dans 4.2.0
+
+**Instructions pour la version 4.2.0. Vérifiez la version de l’installateur et les sommes publiées ; consultez le NATIVE-INSTALLER-TESTS.json correspondant pour les résultats des plateformes et paquets.**
+
+Ouvrez **Réseau → Résolution DNS**. Le réglage par défaut est **DNS sur HTTPS (DoH), Cloudflare**. Il concerne uniquement MultiRoute et ne change ni DNS, ni routes, ni adresses IP du système.
+
+DoH prend en charge HTTP/2 borné sélectionné par TLS ALPN et HTTP/1.1 lorsque ce protocole est négocié. Compatibilité des fournisseurs et résultats réels figurent dans le rapport final correspondant.
+
+- **DoH :** DNS chiffré sur HTTPS via chaque passerelle sélectionnée. Le certificat TLS est vérifié avec le nom d’hôte de l’URL.
+- **DoT :** DNS chiffré sur TLS via chaque passerelle, port 853 par défaut ; le nom du serveur sert à vérifier le certificat.
+- **DNS système (ordinateur) :** utiliser explicitement la politique DNS de l’ordinateur, du système ou du VPN. Le DNS ne suit pas nécessairement chaque passerelle ; les connexions de fichiers gardent leur passerelle. Ce mode ne garantit pas le chiffrement DNS.
+
+Choisissez Cloudflare, Quad9, Google ou **Personnalisé**. Les préréglages sont fixes ; Personnalisé permet de modifier URL/nom, port et IPv4 publiques numériques d’amorçage. Elles évitent une résolution préalable du fournisseur par le système. DoH/DoT vérifient chaîne de confiance, nom et SNI, sans repli silencieux vers DNS non chiffré ou système. Un échec sécurisé termine cette tentative. Le fournisseur doit être accessible via la passerelle choisie.
+
+Modifiez un brouillon, sélectionnez les passerelles et cliquez sur **Tester DNS**. Le test ne l’enregistre pas et affiche résultat, durée et IPv4 publiques ou erreur par passerelle. Un échec partiel reste visible. En mode Système, une réussite vérifie la résolution du système, pas la liaison Internet indépendante de chaque routeur. **Appliquer les paramètres DNS** valide et enregistre. La révision retournée identifie la configuration appliquée ; actualisations et changements de langue préservent brouillon, curseur et défilement.
+
+Chaque requête dispose de 8 secondes au total. TTL zéro et réduction HTTP Age pour DoH sont conservés ; le cache natif est limité à 300 secondes, séparé par passerelle/révision. Java n’ajoute pas de cache DNS. Système suit le cache du système/JVM. Réponses IPv4 publiques prises en charge ; pas de validation DNSSEC locale ni de résolution IPv6.
+
+API : `GET /api/v1/network/dns` lit configuration et état en lecture seule ; `PUT` ou `POST` applique la configuration. `POST /api/v1/network/dns/test` teste un brouillon ; `GET /api/v1/network/dns/providers` liste les préréglages. Envoyez uniquement les champs de configuration, sans révision/état de GET. [API](../API.ru.txt) · [OpenAPI](../openapi.yaml).
+
 **Correctifs 4.1.3 :** lorsqu’un CDN comme Civitai renvoie HTTP 200 pour une plage commençant à zéro, une plage commençant après zéro est aussi vérifiée. Le premier segment reste limité à sa taille ; les données séquentielles enregistrées compatibles peuvent être reprises en segments. Un HTTP 200 temporaire pour une plage suivante entraîne une nouvelle tentative après 2–30 secondes, en conservant les données et le processus de la passerelle. Le journal persistant par passerelle distingue le trafic reçu de la progression enregistrée. [Notes et limites de validation](releases/4.1.3.en.md) · [Diagnostic des transferts](transfer-diagnostics.en.md).
 
-[Les installateurs 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) incluent un environnement Java 21 privé. L’assistant Windows est en anglais et crée un raccourci de bureau ; Npcap reste requis séparément. macOS utilise libpcap du système. Suivez les étapes d’installation et de sécurité ci-dessous.
+[Les installateurs 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.2.0) incluent un environnement Java 21 privé. L’assistant Windows est en anglais et crée un raccourci de bureau ; Npcap reste requis séparément. macOS utilise libpcap du système. Suivez les étapes d’installation et de sécurité ci-dessous.
 
 Propriétaire du projet: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -119,17 +141,15 @@ L’IP virtuelle appartient à la **pile réseau privée de l’application**. E
 
 Ce transport Ethernet ne prend pas en charge le Wi-Fi, les adaptateurs exclusivement VPN ni les connexions IPv6. Les pairs BitTorrent locaux du LAN ne sont pas acheminés par ce transport. Si plusieurs adaptateurs Ethernet conviennent, l’application peut refuser une sélection ambiguë. Elle ne peut pas transformer une passerelle inaccessible en connexion Internet utilisable.
 
-Les requêtes DNS utilisent la passerelle choisie : d’abord le routeur, puis si nécessaire `1.1.1.1` ou `8.8.8.8` via cette même passerelle. Il n’existe pas de repli vers le résolveur DNS du système. Après un délai UDP dépassé ou une réponse DNS tronquée, TCP est tenté via la même passerelle et la même IP virtuelle, dans un budget DNS total de 8 secondes. DNSSEC, DoH et les requêtes de suivi CNAME distinctes ne sont pas implémentés.
-
-## Installateurs natifs 4.1.3 : Windows et macOS
+## Installateurs natifs 4.2.0 : Windows et macOS
 
 Choisissez l’installateur de votre système dans les [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), s’il est joint à la publication. Chaque paquet est **un seul fichier d’installation**, contenant application, lanceur natif, Java complet et composant réseau. Les sources et les ZIP portables 3.0 restent des distributions distinctes.
 
 | Système | Installateur | Lancement après installation |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe` | **MultiRoute Downloader** dans Démarrer ou via son raccourci de bureau |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg` | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
+| Windows 11 x64 | [MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-Windows-x64-Setup.exe) | **MultiRoute Downloader** dans Démarrer ou via son raccourci de bureau |
+| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.2.0-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-arm64.pkg) | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
+| Intel, macOS 15+ | [MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.2.0/MultiRoute-Downloader-4.2.0-macOS-x86_64.pkg) | **MultiRoute Downloader** dans Applications, Spotlight ou le Dock |
 
 Les douze guides et les captures sont inclus pour une consultation hors ligne. Windows : `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS : dans le Finder, choisissez **Afficher le contenu du paquet** sur l’application installée, puis ouvrez `Contents/app/docs/`. Ouvrez `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` ou `vi.md` avec un éditeur de texte ou un lecteur Markdown.
 
@@ -326,12 +346,12 @@ Tous les chemins de ce tableau sont relatifs à `/api/v1`. Les champs et erreurs
 
 ## Données, mise à jour et dépannage
 
-### Installateurs natifs 4.1.3
+### Installateurs natifs 4.2.0
 
 | Système | Réglages, historique et journaux | Application/Java | Composant réseau |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, avec Java inclus | Composant x64 inclus ; Npcap installé séparément |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, avec Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.2.0/gateway-net` |
 
 Fermez l’application avant une mise à jour avec un nouvel installateur. Sous Windows, supprimez-la par **Paramètres → Applications → Applications installées**. Sous macOS, supprimer la `.app` ne supprime pas automatiquement l’historique ni le composant protégé séparé. Les fichiers téléchargés restent dans le dossier choisi ; ne le supprimez pas seulement pour désinstaller. Le chemin des données diffère du ZIP Windows 3.0 ; conservez votre ancien profil avant migration.
 
@@ -462,7 +482,7 @@ Les contrôles de file/planification règlent `max_active_jobs` (1–32), limite
 
 ## Intégration Chrome et Edge
 
-Ouvrez **Chrome / Edge** dans l’application, autorisez les liens et ouvrez le dossier de l’extension. Une fois: `chrome://extensions` ou `edge://extensions`, mode développeur, **Charger l’extension non empaquetée**, puis `browser-extension` contenant `manifest.json`. Les paquets natifs l’incluent près du JAR; voir [browser-extension/](../browser-extension/). Gardez ce dossier à cet endroit. Décompressez d’abord `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` si utilisé. Cette version n’est pas publiée dans un magasin d’extensions.
+Ouvrez **Chrome / Edge** dans l’application, autorisez les liens et ouvrez le dossier de l’extension. Une fois: `chrome://extensions` ou `edge://extensions`, mode développeur, **Charger l’extension non empaquetée**, puis `browser-extension` contenant `manifest.json`. Les paquets natifs l’incluent près du JAR; voir [browser-extension/](../browser-extension/). Gardez ce dossier à cet endroit. Décompressez d’abord `MultiRoute-Downloader-4.2.0-Chrome-Edge.zip` si utilisé. Cette version n’est pas publiée dans un magasin d’extensions.
 
 MultiRoute doit fonctionner, y compris dans la zone de notification. Envoyez un lien par son menu contextuel ou la fenêtre de l’extension. Dossier, passerelles et profil courants sont utilisés; les choix de dépôt/torrent restent affichés. Le port est 8765; adaptez-le si l’API utilise un autre port. Seule l’URL est envoyée, sans cookies ni mots de passe; les autres téléchargements du navigateur ne sont pas interceptés. Configurez l’accès à la source dans l’application. Si le navigateur demande l’accès local, ne l’accordez qu’à cette extension choisie.
 

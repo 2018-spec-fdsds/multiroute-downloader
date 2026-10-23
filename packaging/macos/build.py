@@ -44,13 +44,14 @@ def native_source_hashes() -> dict[str, str]:
 
 
 def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dict:
-    """Pure C fixtures have no capture, OS enumeration, sockets or user profiles."""
+    """No capture or user profiles; the broker transport uses owned loopback/fake lwIP."""
     owned.mkdir()
     results = {}
-    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"):
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve",
+                 "gateway_dns_broker_protocol", "gateway_dns_broker_transport"):
         source = ROOT / "native/source/tests" / (name + "_test.c")
         executable = owned / name
-        run([clang, "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-finput-charset=UTF-8", "-fexec-charset=UTF-8",
+        run([clang, "-std=c11", "-D_DARWIN_C_SOURCE", "-pthread", "-O2", "-Wall", "-Wextra", "-Werror", "-finput-charset=UTF-8", "-fexec-charset=UTF-8",
              "-isysroot", sdk, "-arch", architecture, "-mmacosx-version-min=11.0",
              source, "-o", executable], timeout=120)
         run(["/usr/bin/codesign", "--force", "--sign", "-", executable], timeout=30)
@@ -80,10 +81,14 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
             assert all(re.fullmatch(r"DNS_TCP_FALLBACK gateway=192\.168\.1\.[1-4] resolver=(?:192\.168\.1\.[1-4]|1\.1\.1\.1) result=(?:ok|failed)", line)
                        for line in completed.stderr.splitlines())
             assert "result=ok" in completed.stderr and "result=failed" in completed.stderr
-        else:
+        elif name == "gateway_socks_resolve":
             assert lines[-1] == "GATEWAY_SOCKS_RESOLVE_TEST_OK checks=145 capture=false sockets=false os_dns=false"
             assert lines[0].startswith("DNS_SELF_TEST_OK ") and len(lines) == 2
             assert not completed.stderr
+        elif name == "gateway_dns_broker_protocol":
+            assert lines[-1] == "GATEWAY_DNS_BROKER_PROTOCOL_TEST_OK checks=191 network_handles=false os_network_changed=false"
+        else:
+            assert lines[-1] == "GATEWAY_DNS_BROKER_TRANSPORT_TEST_OK checks=63 loopback_only=true fake_lwip=true selected_profiles=4 simulated_payload_slots=96 reserved_slots=8 stale_revision_rejected=true os_network_changed=false"
         assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
         results[name] = {"ok": True, "source_sha256": sha256(source),
                          "stdout": completed.stdout, "stderr": completed.stderr,
@@ -94,6 +99,11 @@ def native_fixtures(clang: str, sdk: str, architecture: str, owned: Path) -> dic
             results[name]["checks"] = 169
         elif name == "gateway_socks_resolve":
             results[name]["checks"] = 145
+        elif name == "gateway_dns_broker_protocol":
+            results[name].update(checks=191, network_handles=False)
+        elif name == "gateway_dns_broker_transport":
+            results[name].update(checks=63, loopback_only=True, fake_lwip=True,
+                                 selected_profiles=4, simulated_payload_slots=96, reserved_slots=8)
     return results
 
 

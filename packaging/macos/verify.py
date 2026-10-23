@@ -112,8 +112,10 @@ def verify_native_source_pin(report: dict) -> int:
     actual = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in sorted(inputs)}
     assert report["native_source_sha256"] == actual, "Native input set/bytes differ from the build snapshot."
-    assert set(report["native_pure_fixtures"]) == {"gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"}
-    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve"):
+    assert set(report["native_pure_fixtures"]) == {"gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve",
+                                                   "gateway_dns_broker_protocol", "gateway_dns_broker_transport"}
+    for name in ("gateway_diagnostics", "gateway_topology", "gateway_dns_transport", "gateway_socks_resolve",
+                 "gateway_dns_broker_protocol", "gateway_dns_broker_transport"):
         result = report["native_pure_fixtures"][name]
         assert result["ok"] and not result["capture_executed"] and not result["os_network_changed"]
         assert result["source_sha256"] == actual["native/source/tests/" + name + "_test.c"]
@@ -126,6 +128,13 @@ def verify_native_source_pin(report: dict) -> int:
         elif name == "gateway_socks_resolve":
             assert result["checks"] == 145
             assert result["stdout"].splitlines()[-1] == "GATEWAY_SOCKS_RESOLVE_TEST_OK checks=145 capture=false sockets=false os_dns=false"
+        elif name == "gateway_dns_broker_protocol":
+            assert result["checks"] == 191 and result["network_handles"] is False
+            assert result["stdout"].splitlines()[-1] == "GATEWAY_DNS_BROKER_PROTOCOL_TEST_OK checks=191 network_handles=false os_network_changed=false"
+        elif name == "gateway_dns_broker_transport":
+            assert result["checks"] == 63 and result["loopback_only"] and result["fake_lwip"]
+            assert result["selected_profiles"] == 4 and result["simulated_payload_slots"] == 96 and result["reserved_slots"] == 8
+            assert result["stdout"].splitlines()[-1] == "GATEWAY_DNS_BROKER_TRANSPORT_TEST_OK checks=63 loopback_only=true fake_lwip=true selected_profiles=4 simulated_payload_slots=96 reserved_slots=8 stale_revision_rejected=true os_network_changed=false"
     return len(actual)
 
 
@@ -271,6 +280,67 @@ def verify_transfer42_fixtures(java: Path, jdk: Path, classpath: str, owned: Pat
             "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
             "report": result,
         }
+    return results
+
+
+def verify_dns420_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, version: str) -> dict:
+    """Fresh TLS/broker/API/UI proof through the packaged JAR and owned profiles only."""
+    root = owned / "dns420"
+    classes = root / "classes"
+    classes.mkdir(parents=True)
+    fixtures = {
+        "SecureDnsProtocolTest": ("SECURE-DNS-PROTOCOL-TESTS.json", 42, True, True),
+        "ManagedDnsTest": ("MANAGED-DNS-TESTS.json", 146, True, True),
+        "Http2DnsTest": ("HTTP2-DNS-TESTS.json", 106, True, True),
+        "DnsSettingsUiTest": ("DNS-SETTINGS-UI-TESTS.json", 891, False, False),
+    }
+    generator = ROOT / "packaging/tests/dns_tls_fixture.py"
+    support_hash = hashlib.sha256(generator.read_bytes()).hexdigest()
+    run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
+         "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
+    results = {}
+    for name, (filename, minimum_checks, headless, certificates) in fixtures.items():
+        case = root / name
+        for directory in ("home", "tmp"):
+            (case / directory).mkdir(parents=True)
+        state = case / "state"
+        if certificates:
+            run([sys.executable, generator, "--keytool", jdk / "bin/keytool", "--directory", state],
+                capture_output=True, text=True, timeout=120)
+        else:
+            state.mkdir()
+        completed = run([java, "-Djava.awt.headless=" + str(headless).lower(), "-Dfile.encoding=UTF-8",
+                         "-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8",
+                         "-Duser.home=" + str(case / "home"), "-Djava.io.tmpdir=" + str(case / "tmp"),
+                         "-cp", classpath + os.pathsep + str(classes), "multiroute." + name, state],
+                        capture_output=True, text=True, timeout=180)
+        result = json.loads((state / filename).read_text(encoding="utf-8"))
+        assert result["status"] == "PASS" and result["checks"] >= minimum_checks
+        if "version" in result:
+            assert result["version"] == version
+        assert result["cases"] and "\ufffd" not in completed.stdout + completed.stderr
+        if name == "SecureDnsProtocolTest":
+            assert result["owned_loopback"] and result["no_public_dns"] and result["no_os_fallback"]
+            assert result["headless"] and not result["external_network_used"]
+        elif name == "ManagedDnsTest":
+            assert result["loopback_only"] and not result["external_dns_queries"] and not result["real_os_dns"]
+            assert not result["installed_application_accessed"] and not result["os_network_changed"]
+            assert result["expiry_clock_injected"] and result["generation_race_window_injected"] and len(result["cases"]) >= 10
+        elif name == "Http2DnsTest":
+            assert result["cases"] >= 43 and len(result["case_names"]) == result["cases"]
+            assert result["loopback_only"] and result["real_tls_h2_alpn"] and result["no_public_dns"] and result["no_os_fallback"]
+            assert not result["installed_app_accessed"] and not result["os_network_changed"]
+        else:
+            assert not result["headless"] and result["network_calls"] == 0 and result["real_timer_interval_ms"] == 900
+            assert set(result["languages"]) == set(LANGUAGES) and result["injected_controller"] and result["owned_profile_only"]
+            assert not result["installed_app_accessed"] and not result["os_network_settings_changed"]
+            assert not result["user_profile_or_logs_read"] and not result["user_media_or_clipboard_read"]
+            assert {"embedded_desktop_dirty_dns_draft_caret_scroll_real900ms_timer_and_languages",
+                    "embedded_desktop_clean_dns_caret_scroll_real900ms_status_only_refresh"} <= set(result["cases"])
+        results[name] = {"checks": result["checks"], "headless": headless, "report": result,
+                         "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
+                         "tls_fixture_generator_sha256": support_hash}
+    assert support_hash == hashlib.sha256(generator.read_bytes()).hexdigest()
     return results
 
 
@@ -818,8 +888,11 @@ public final class NativeDesktopFixture {
         run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-Duser.home=" + str(owned / "locales-home"),
              "-cp", classpath + os.pathsep + str(owned), "multiroute.LocalesTest40", owned / "locales"], capture_output=True, text=True)
         locales = json.loads((owned / "locales/LOCALES-TESTS.json").read_text(encoding="utf-8"))
-        assert locales["status"] == "PASS" and locales["checks"] >= 39523
-        assert locales["version"] == report["version"] and locales["catalog_entries"] >= 1407
+        assert locales["status"] == "PASS" and locales["checks"] >= 58511
+        assert locales["version"] == report["version"] and locales["catalog_entries"] == 1693
+        assert locales["dns_keys"] == 32 and locales["dns_protocol_keys"] == 89 and locales["dns_root_keys"] == 37
+        assert locales["dns_protocol_dynamic_and_network_errors"] and locales["dns_root_and_nested_broker_errors"]
+        assert locales["dns_http2_keys"] == 51 and locales["dns_http2_nested_typed_data_utf8"]
         assert set(locales["languages"]) == set(LANGUAGES) and locales["arabic_rtl_and_ltr_data_fields"]
         assert locales["network_calls"] == 0 and not locales["user_data_read"]
         checks.append("twelve-language catalog checks cover the complete current message catalog including Chinese, Korean, Arabic, Italian, Japanese, Hindi and Vietnamese, exact formatting placeholders, Unicode history output, real Swing Arabic direction and left-to-right URL fields")
@@ -827,6 +900,11 @@ public final class NativeDesktopFixture {
         network42 = verify_network42_fixtures(java, jdk, classpath, owned, report["version"])
         hotfix411 = verify_hotfix411_fixtures(java, jdk, classpath, owned, report["version"])
         transfer42 = verify_transfer42_fixtures(java, jdk, classpath, owned, report["version"])
+        dns420 = verify_dns420_fixtures(java, jdk, classpath, owned, report["version"])
+        checks.append("packaged JAR strict DoH and DoT pass 42 owned TLS wire, certificate, deadline, cancellation and numeric-bootstrap cases without public DNS or OS fallback")
+        checks.append("packaged JAR managed DNS passes 146 persistence, revision acknowledgement, rollback, generation-race isolation, broker authentication, reserved egress, malformed readiness, error cooldown and actual loopback API checks without OS DNS or installed profiles")
+        checks.append("packaged JAR HTTP/2 DoH passes 106 checks across 43 owned frame, HPACK, flow-control, limit and real TLS ALPN cases without public DNS or OS fallback")
+        checks.append("packaged JAR DNS settings pass 891 real Swing checks across twelve languages, actual 900ms desktop refreshes, clean and dirty drafts, caret selection and scroll restoration without network calls")
         checks.append("packaged JAR DNS TCP fallback log across twelve languages")
         checks.append("packaged JAR all-tab scrolling across actual desktop timers")
         checks.append("packaged JAR native torrent settings bind IPv4 and IPv6 loopback proxies without sessions or sockets")
@@ -953,7 +1031,7 @@ public final class MacAuthorizationFixture {
         assert installed_markdown_links == app_markdown_links
         assert (installed_app_dir / "LICENSE.txt").read_bytes() == license_bytes
         assert (installed_app_dir / "THIRD-PARTY-NOTICES.txt").read_bytes() == (ROOT / "THIRD-PARTY-NOTICES.txt").read_bytes()
-        checks.append("nine local language guides, both READMEs, compatibility information and historical plus modern theme screenshots match saved sources in the app and expanded installer")
+        checks.append("twelve local language guides, both READMEs, compatibility information and historical plus modern theme screenshots match saved sources in the app and expanded installer")
         checks.append("all relative Markdown links resolve within the app image and expanded installer, including baseline reports and native build instructions")
         candidates = [path for path in expanded.rglob("gateway-net") if "/Library/PrivilegedHelperTools/" in path.as_posix()]
         assert len(candidates) == 1
@@ -989,7 +1067,9 @@ public final class MacAuthorizationFixture {
         assert distribution.find("options").get("hostArchitectures") == architecture
         assert distribution.find("volume-check/allowed-os-versions/os-version").get("min") == report["minimum_macos"]
         checks.append("expanded installer contains the matching helper/checksum and passes native offline self-test")
-        checks.append("native C/header input set is pinned and all four pure native fixtures, including DNS169 and SOCKS RESOLVE145, passed on this Mac CPU without capture")
+        checks.append("native C/header input set is pinned and all six native fixtures, including DNS169, SOCKS RESOLVE145, broker framing191 and reserved transport63, passed on this Mac CPU without capture")
+        checks.append("native broker framing rejects malformed or unauthenticated requests in 191 checks without network handles")
+        checks.append("native reserved DNS egress passes 63 owned loopback fake-lwIP checks with four profiles, 96 simulated payload slots and eight reserved slots without OS network changes")
     result = {
         "ok": True, "architecture": architecture, "version": report["version"], "checks": checks,
         "not_verified": ["physical gateway throughput", "BPF authorization UI", "end-user Finder/Gatekeeper interaction", "real macOS menu-bar tray interaction", "graphical macOS downloads table layout, scrolling and viewport restoration"],
@@ -1017,6 +1097,7 @@ public final class MacAuthorizationFixture {
         "network42_fixtures": network42, "native_source_files_verified": native_input_count,
         "hotfix411_fixtures": hotfix411,
         "transfer42_fixtures": transfer42,
+        "dns420_fixtures": dns420,
         "native_pure_fixtures": report["native_pure_fixtures"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,

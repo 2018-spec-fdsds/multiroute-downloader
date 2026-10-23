@@ -333,3 +333,15 @@ Archive preview: xz 1.12 (0BSD).
 Official artifact: https://repo.maven.apache.org/maven2/org/tukaani/xz/1.12/xz-1.12.jar
 SHA256: 3e158a87bd73d8afb4b6e8239c013b7d049c48563f45860ce99cd2e448cf4a6b
 License/notice files: lib/licenses/XZ-1.12-LICENSE.txt
+
+HTTP/2 DoH HPACK: httpcore5 5.4.4 (Apache License 2.0).
+Official source: https://hc.apache.org/httpcomponents-core-5.4.x/
+Official artifact: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5/5.4.4/httpcore5-5.4.4.jar
+SHA256: b08e3c3a440fec2029e89980134c7c787dd6796454641ad1eafb81478d7e8b0b
+Full license and NOTICE: lib/licenses/HTTPCORE5-5.4.4-LICENSE.txt and HTTPCORE5-5.4.4-NOTICE.txt
+
+HTTP/2 DoH HPACK: httpcore5-h2 5.4.4 (Apache License 2.0).
+Official source: https://hc.apache.org/httpcomponents-core-5.4.x/
+Official artifact: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5-h2/5.4.4/httpcore5-h2-5.4.4.jar
+SHA256: 9a61441889f9b222ce99581977cc549b4dfca7ac9d2841582c1e57a31fa65b48
+Full license and NOTICE: lib/licenses/HTTPCORE5-H2-5.4.4-LICENSE.txt and HTTPCORE5-H2-5.4.4-NOTICE.txt

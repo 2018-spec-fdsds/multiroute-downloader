@@ -8,6 +8,7 @@
 #include <string.h>
 #include <ctype.h>
 #define MR_DNS_MAX_PACKET 4096
+#define MR_DNS_MAX_ANSWER 65535
 #define MR_DNS_MAX_RR 64
 static uint16_t mr_dns_u16(const unsigned char*p){return (uint16_t)(((uint16_t)p[0]<<8)|p[1]);}
 static uint32_t mr_dns_u32(const unsigned char*p){return ((uint32_t)p[0]<<24)|((uint32_t)p[1]<<16)|((uint32_t)p[2]<<8)|p[3];}
@@ -44,7 +45,7 @@ static size_t mr_dns_query(const char*host,uint16_t id,unsigned char*out,size_t 
 typedef struct mr_dns_rr{char owner[254],target[254];uint32_t ip,ttl;uint16_t type;}mr_dns_rr;
 static int mr_dns_answer(const unsigned char*packet,size_t n,uint16_t id,const char*host,uint32_t*ip,uint32_t*ttl){
   uint16_t flags,answers,authority,additional;size_t offset=12;unsigned i,count;char question[254],current[254],seen[9][254];uint32_t minimum=UINT32_MAX;mr_dns_rr records[MR_DNS_MAX_RR];
-  if(n<12||n>MR_DNS_MAX_PACKET||mr_dns_u16(packet)!=id||!mr_dns_host(host,current))return 0;
+  if(n<12||n>MR_DNS_MAX_ANSWER||mr_dns_u16(packet)!=id||!mr_dns_host(host,current))return 0;
   flags=mr_dns_u16(packet+2);if(!(flags&0x8000)||(flags&0x780f)||(flags&0x0200)||mr_dns_u16(packet+4)!=1)return 0;
   answers=mr_dns_u16(packet+6);authority=mr_dns_u16(packet+8);additional=mr_dns_u16(packet+10);count=(unsigned)answers+authority+additional;if(!answers||answers>MR_DNS_MAX_RR||count>128)return 0;
   if(!mr_dns_name(packet,n,&offset,question)||strcmp(question,current)||offset+4>n||mr_dns_u16(packet+offset)!=1||mr_dns_u16(packet+offset+2)!=1)return 0;
@@ -93,7 +94,13 @@ static int gateway_dns_self_test(void) {
 }
 
 #ifndef MR_DNS_PARSER_ONLY
-typedef struct mr_dns_cache_entry{profile*route;char host[254];uint32_t ip;ULONGLONG until;}mr_dns_cache_entry;
+#ifdef MR_DNS_MANAGED_SUPPORT
+static void mr_dns_broker_init(void);
+static uint64_t mr_dns_current_revision(void);
+#else
+static uint64_t mr_dns_current_revision(void){return 0;}
+#endif
+typedef struct mr_dns_cache_entry{profile*route;char host[254];uint32_t ip;ULONGLONG until;uint64_t dns_revision;}mr_dns_cache_entry;
 static mr_dns_cache_entry mr_dns_cache[64];
 static CRITICAL_SECTION mr_dns_lock;
 static unsigned mr_dns_cache_cursor;
@@ -111,9 +118,15 @@ static void mr_dns_unroute(uint16_t port,profile*route){
   profile*expected=route;__atomic_compare_exchange_n(&udp_port_routes[port],&expected,NULL,0,__ATOMIC_SEQ_CST,__ATOMIC_SEQ_CST);
 #endif
 }
-static void gateway_dns_init(void){InitializeCriticalSection(&mr_dns_lock);}
-static int mr_dns_cached(profile*route,const char*host,ip_addr_t*out){unsigned i;ULONGLONG now=GetTickCount64();int found=0;EnterCriticalSection(&mr_dns_lock);for(i=0;i<64;i++)if(mr_dns_cache[i].route==route&&mr_dns_cache[i].until>now&&!strcmp(mr_dns_cache[i].host,host)){ip_addr_set_ip4_u32(out,htonl(mr_dns_cache[i].ip));found=1;break;}LeaveCriticalSection(&mr_dns_lock);return found;}
-static void mr_dns_remember(profile*route,const char*host,uint32_t ip,uint32_t ttl){mr_dns_cache_entry*e;if(!ttl)return;EnterCriticalSection(&mr_dns_lock);e=&mr_dns_cache[mr_dns_cache_cursor++%64];e->route=route;strcpy(e->host,host);e->ip=ip;e->until=GetTickCount64()+(ULONGLONG)ttl*1000;LeaveCriticalSection(&mr_dns_lock);}
+static void gateway_dns_init(void){InitializeCriticalSection(&mr_dns_lock);
+#ifdef MR_DNS_MANAGED_SUPPORT
+  mr_dns_broker_init();
+#endif
+}
+static int mr_dns_cached_revision(profile*route,const char*host,ip_addr_t*out,uint64_t revision){unsigned i;ULONGLONG now=GetTickCount64();int found=0;EnterCriticalSection(&mr_dns_lock);for(i=0;i<64;i++)if(mr_dns_cache[i].route==route&&mr_dns_cache[i].dns_revision==revision&&mr_dns_cache[i].until>now&&!strcmp(mr_dns_cache[i].host,host)){ip_addr_set_ip4_u32(out,htonl(mr_dns_cache[i].ip));found=1;break;}LeaveCriticalSection(&mr_dns_lock);return found;}
+static int mr_dns_cached(profile*route,const char*host,ip_addr_t*out){return mr_dns_cached_revision(route,host,out,mr_dns_current_revision());}
+static void mr_dns_remember_revision(profile*route,const char*host,uint32_t ip,uint32_t ttl,uint64_t revision){mr_dns_cache_entry*e;if(!ttl)return;EnterCriticalSection(&mr_dns_lock);e=&mr_dns_cache[mr_dns_cache_cursor++%64];e->route=route;strcpy(e->host,host);e->ip=ip;e->dns_revision=revision;e->until=GetTickCount64()+(ULONGLONG)ttl*1000;LeaveCriticalSection(&mr_dns_lock);}
+static void mr_dns_remember(profile*route,const char*host,uint32_t ip,uint32_t ttl){mr_dns_remember_revision(route,host,ip,ttl,mr_dns_current_revision());}
 static int mr_dns_exchange(profile*route,const char*host,uint32_t resolver,uint32_t*ip,uint32_t*ttl,ULONGLONG overall_deadline){
   struct netconn*conn=NULL;struct netbuf*query=NULL;ip_addr_t local,remote;unsigned char request[512],response[MR_DNS_MAX_PACKET];uint16_t port=0,id;size_t length;err_t error=ERR_ARG;unsigned tries;ULONGLONG deadline;int found=0;
   id=(uint16_t)LWIP_RAND();length=mr_dns_query(host,id,request,sizeof(request));if(!length)return 0;
@@ -205,11 +218,25 @@ done:
   if(conn)netconn_delete(conn);
   return found;
 }
+#ifdef MR_DNS_MANAGED_SUPPORT
+#include "gateway_dns_broker.h"
+#endif
 static int resolve_remote(profile*route,const char*host,ip_addr_t*destination){
   char normalized[254];uint32_t numeric,ip,ttl;uint32_t resolvers[3];unsigned i;ULONGLONG deadline;
   if(!route||!route->configured||!route->mac_known||cancelled())return 0;
   if(parse_ip(host,&numeric)){if(!mr_dns_public(numeric))return 0;ip_addr_set_ip4_u32(destination,htonl(numeric));return 1;}
   if(!mr_dns_host(host,normalized))return 0;
+#ifdef MR_DNS_MANAGED_SUPPORT
+  {mr_dns_policy policy;
+    if(mr_dns_policy_snapshot(&policy)){
+      if(mr_dns_cached_revision(route,normalized,destination,policy.revision))return mr_dns_policy_current(&policy);
+      deadline=GetTickCount64()+MR_DNS_TOTAL_MS;
+      if(!mr_dns_broker_exchange(route,normalized,&policy,&ip,&ttl,deadline)||!mr_dns_policy_current(&policy)||!route->configured||!route->mac_known||cancelled())return 0;
+      ip_addr_set_ip4_u32(destination,htonl(ip));mr_dns_remember_revision(route,normalized,ip,ttl,policy.revision);return 1;
+    }
+    if(managed_dns_required)return 0;
+  }
+#endif
   if(mr_dns_cached(route,normalized,destination))return 1;
   /* Router DNS first; public fallback queries still use the same gateway netif. */
   resolvers[0]=route->gateway_host;resolvers[1]=0x01010101U;resolvers[2]=0x08080808U;

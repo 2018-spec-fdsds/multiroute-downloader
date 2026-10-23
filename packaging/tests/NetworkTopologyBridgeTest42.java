@@ -87,11 +87,15 @@ public final class NetworkTopologyBridgeTest42 {
 
     private static void actualBridge(Path own) throws Exception {
         Map<String,Object> saved = new LinkedHashMap<>();
-        for (String name : List.of("virtualIp", "gateways", "dataDirectory", "process", "outputPump", "readyFile", "stopFile", "ready", "nativeMacSession")) saved.put(name, field(name));
+        for (String name : List.of("virtualIp", "gateways", "dataDirectory", "process", "outputPump", "readyFile", "stopFile", "ready", "nativeMacSession", "managedDns", "dnsBridge")) saved.put(name, field(name));
         check(saved.get("process") == null, "owned JVM starts without a native process");
         Path file = own.resolve("ready-中文.json"); InertProcess process = new InertProcess();
         Map<String,Object> baseline = report("192.168.1.90", "192.168.1.70", "255.255.255.0", 24, "192.168.1.0/24", GATEWAYS);
+        ManagedDns dns = new ManagedDns(own);
+        ManagedDns.Bridge bridge = dns.beginGeneration();
+        baseline.put("managed_dns", true); baseline.put("dns_revision", 1L); baseline.put("dns_tunnel_port", 18764L);
         try {
+            field("managedDns", dns); field("dnsBridge", bridge);
             field("virtualIp", "192.168.1.70"); field("gateways", GATEWAYS); field("dataDirectory", own);
             field("process", process); field("readyFile", file); field("ready", baseline); field("stopFile", null); field("outputPump", null); field("nativeMacSession", false);
             check(topology(GatewayNetwork.settings()).get("status").equals("pending"), "missing fresh readiness does not reuse cached success");
@@ -130,6 +134,7 @@ public final class NetworkTopologyBridgeTest42 {
             GatewayNetwork.close();
             check(topology(GatewayNetwork.settings()).get("status").equals("pending"), "explicit close clears stale proof and failure state");
         } finally {
+            dns.close();
             for (Map.Entry<String,Object> entry : saved.entrySet()) field(entry.getKey(), entry.getValue());
         }
     }

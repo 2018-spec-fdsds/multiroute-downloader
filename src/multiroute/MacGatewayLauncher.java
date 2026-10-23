@@ -78,10 +78,14 @@ public final class MacGatewayLauncher {
     }
 
     private static Map<String,String> validateArguments(List<String> arguments) throws IOException {
+        boolean managed = arguments != null && arguments.size() == 2 + OPTIONS.size() * 2 &&
+                "--managed-dns".equals(arguments.get(arguments.size() - 1));
+        if (managed) arguments = arguments.subList(0, arguments.size() - 1);
         if (arguments == null || arguments.size() != 1 + OPTIONS.size() * 2 ||
                 !expectedHelper().toString().equals(arguments.get(0)))
             throw new IOException("Only the installed MultiRoute gateway component can be authorized");
         Map<String,String> values = new LinkedHashMap<>();
+        if (managed) values.put("--managed-dns", "true");
         for (int i = 1; i < arguments.size(); i += 2) {
             String option = arguments.get(i), value = arguments.get(i + 1);
             if (!OPTIONS.contains(option) || values.putIfAbsent(option, value) != null ||

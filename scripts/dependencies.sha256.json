@@ -4,6 +4,8 @@
   "commons-io-2.22.0.jar": "2b9a7b1f726fb86216dbd2c8321eabe0221dbd5b1be81c18e1cb53811b104758",
   "commons-lang3-3.21.0.jar": "a2af247ec4db6eb8947e18e23e0433e4871a7c5d0a40e1f92e46ede54ae1defe",
   "flatlaf-3.7.2.jar": "917aff3963c88d797d0fd9b9ccbd70f7681c101df9d11c59e2bc7a3a6c0fabf4",
+  "httpcore5-5.4.4.jar": "b08e3c3a440fec2029e89980134c7c787dd6796454641ad1eafb81478d7e8b0b",
+  "httpcore5-h2-5.4.4.jar": "9a61441889f9b222ce99581977cc549b4dfca7ac9d2841582c1e57a31fa65b48",
   "jlibtorrent-2.0.12.9.jar": "c96316e640397249ecfbbe56c355afef472190b8d47d51a94a03e47eb60c219a",
   "jlibtorrent-linux-arm64-2.0.12.9.jar": "1e6996c4677b20fb0b5f0ef3a100a03ac9b72eed5c5bb107fc97c9d727c01e2b",
   "jlibtorrent-linux-x86_64-2.0.12.9.jar": "588f70db3f2131f7c9a8133cba7883319c29a5434f2ad092ff4e1fb51dc2f088",

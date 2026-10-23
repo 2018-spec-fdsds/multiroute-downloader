@@ -8,6 +8,9 @@ static void ready_hot_fields(FILE *f) {
     for(i=0;i<configured_gateway_order_count;i++){char gateway[16];mr_lan_ip(gateway,configured_gateway_order[i]);if(i)fputc(',',f);json_string(f,gateway);}
   } else for(i=0;i<profile_count;i++)if(profiles[i].configured){if(!first)fputc(',',f);first=0;json_string(f,profiles[i].gateway);}
   fputc(']',f);
+#ifdef MR_DNS_MANAGED_SUPPORT
+  mr_dns_ready_fields(f);
+#endif
 }
 static int read_profile_control(char *data,size_t capacity) {
   char name[4300];size_t n=0;snprintf(name,sizeof(name),"%s.gateways",ready_path);
@@ -23,8 +26,38 @@ static int read_profile_control(char *data,size_t capacity) {
   if(fstat(file,&st)||!S_ISREG(st.st_mode)||st.st_uid!=target_uid||st.st_nlink!=1||(st.st_mode&0077)||st.st_size<0||(uint64_t)st.st_size>=capacity){close(file);return -1;}
   while(n<(size_t)st.st_size){got=read(file,data+n,(size_t)st.st_size-n);if(got<0&&errno==EINTR)continue;if(got<=0){close(file);return -1;}n+=(size_t)got;}close(file);
 #endif
-  data[n]=0;return 1;
+  if(memchr(data,0,n))return -1;data[n]=0;return 1;
 }
+#ifdef MR_DNS_MANAGED_SUPPORT
+/* All fields must terminate with one LF; no hidden/trailing content is accepted. */
+static int parse_dns_profile_tail(char *tail,mr_dns_policy *policy){
+  char *port=tail,*key,*revision,*end;
+  end=strchr(port,'\n');if(!end)return 0;*end=0;key=end+1;
+  end=strchr(key,'\n');if(!end)return 0;*end=0;revision=end+1;
+  end=strchr(revision,'\n');if(!end||end[1])return 0;*end=0;
+  return mr_dns_policy_fields(port,key,revision,policy);
+}
+/* Called before any capture, address claim, or listener. The managed app's
+ * prewritten V4 must describe the exact initial CLI profiles. Missing/corrupt
+ * configuration cannot silently start the legacy plaintext resolver. */
+static int initialize_managed_control(void){
+  char data[1024],*revision_text,*list,*end,*cursor;uint64_t revision;mr_dns_policy policy;int i=0;
+  if(!managed_dns_required)return 1;
+  if(read_profile_control(data,sizeof(data))!=1||strncmp(data,"MR_GATEWAYS_4\n",14))return 0;
+  revision_text=data+14;end=strchr(revision_text,'\n');if(!end)return 0;*end=0;
+  if(!mr_dns_decimal(revision_text,INT64_MAX,&revision))return 0;
+  list=end+1;end=strchr(list,'\n');if(!end)return 0;*end=0;
+  if(!parse_dns_profile_tail(end+1,&policy))return 0;
+  for(cursor=list;*cursor;){char *comma=strchr(cursor,',');size_t n=comma?(size_t)(comma-cursor):strlen(cursor);
+    if(i>=profile_count||n!=strlen(profiles[i].gateway)||memcmp(cursor,profiles[i].gateway,n))return 0;
+    i++;if(!comma)break;cursor=comma+1;if(!*cursor)return 0;
+  }
+  if(i!=profile_count)return 0;
+  mr_dns_policy_commit(&policy);control_revision=revision;
+  configured_gateway_order_count=i;for(i=0;i<profile_count;i++)configured_gateway_order[i]=profiles[i].gateway_host;
+  return 1;
+}
+#endif
 static int hot_add_profile(const char *gateway,uint32_t host) {
   profile *r;ip4_addr_t ip,mask,gw;int index=profile_count;
   if(index>=MAX_PROFILES)return 0;
@@ -42,12 +75,27 @@ static int hot_add_profile(const char *gateway,uint32_t host) {
 static int (*profile_activator)(const char*,uint32_t)=hot_add_profile;
 static int (*profile_topology_reader)(const uint32_t*,size_t,uint32_t*,char*,size_t)=read_selected_topology;
 static int apply_profile_command(char *data) {
-  char *revision_text,*list,*end,*p;unsigned long long revision;uint32_t hosts[32];char names[32][16];int count=0,i,j;
-  if(strncmp(data,"MR_GATEWAYS_3\n",14))return 0;
+  char *revision_text,*list,*end,*p;unsigned long long revision;uint32_t hosts[32];char names[32][16];int count=0,i,j,version4=!strncmp(data,"MR_GATEWAYS_4\n",14);
+#ifdef MR_DNS_MANAGED_SUPPORT
+  mr_dns_policy dns_policy;
+#endif
+  if(!version4&&strncmp(data,"MR_GATEWAYS_3\n",14))return 0;
   revision_text=data+14;end=strchr(revision_text,'\n');if(!end)return 0;*end=0;
   if(!*revision_text)return 0;for(p=revision_text;*p;p++)if(*p<'0'||*p>'9')return 0;
+#ifdef MR_DNS_MANAGED_SUPPORT
+  {uint64_t parsed;if(!mr_dns_decimal(revision_text,INT64_MAX,&parsed))return 0;revision=parsed;}
+#else
   revision=strtoull(revision_text,&p,10);if(!revision||*p||revision<=control_revision)return 0;
-  list=end+1;end=strchr(list,'\n');if(!end||end[1]){control_revision=revision;strcpy(control_error,"Invalid gateway profile command");return 1;}*end=0;
+#endif
+  if(!revision||revision<=control_revision)return 0;
+  list=end+1;end=strchr(list,'\n');if(!end||(!version4&&end[1])){control_revision=revision;strcpy(control_error,"Invalid gateway profile command");return 1;}*end=0;
+  if(version4){
+#ifdef MR_DNS_MANAGED_SUPPORT
+    if(!parse_dns_profile_tail(end+1,&dns_policy)||!mr_dns_policy_permitted(&dns_policy)){control_revision=revision;strcpy(control_error,"Invalid or stale managed DNS policy");return 1;}
+#else
+    control_revision=revision;strcpy(control_error,"Managed DNS is not supported by this gateway component");return 1;
+#endif
+  }
   if(!*list||list[0]==','||strstr(list,",,")||list[strlen(list)-1]==','){control_revision=revision;strcpy(control_error,"Invalid gateway profile command");return 1;}
   for(p=list;*p;){char *comma=strchr(p,',');size_t length=comma?(size_t)(comma-p):strlen(p);
     if(count>=32||length<7||length>15)goto invalid;
@@ -68,6 +116,9 @@ static int apply_profile_command(char *data) {
     else if(profiles[j].listener==INVALID_SOCKET||profiles[j].socks_listener==INVALID_SOCKET){control_revision=revision;strcpy(control_error,"Gateway profile listener is unavailable; restart the application");return 1;}
   }
   EnterCriticalSection(&ready_lock);
+#ifdef MR_DNS_MANAGED_SUPPORT
+  if(version4)mr_dns_policy_commit(&dns_policy);
+#endif
   for(i=0;i<profile_count;i++){int enabled=0;for(j=0;j<count;j++)if(profiles[i].gateway_host==hosts[j]){enabled=1;break;}InterlockedExchange(&profiles[i].configured,enabled);}
   memcpy(configured_gateway_order,hosts,(size_t)count*sizeof(hosts[0]));configured_gateway_order_count=count;
   control_revision=revision;control_error[0]=0;LeaveCriticalSection(&ready_lock);return 1;
@@ -114,6 +165,26 @@ static int profile_control_self_test(void){
   if(!apply_profile_command(command)||control_error[0]||configured_gateway_order_count!=2||configured_gateway_order[0]!=0xc0a80106||configured_gateway_order[1]!=0xc0a80101||profiles[0].proxy_port!=stable)return 9;
   strcpy(command,"MR_GATEWAYS_3\n7\n192.168.1.1,192.168.1.100\n");
   if(!apply_profile_command(command)||!strstr(control_error,"assigned")||profile_count!=32||configured_gateway_order_count!=2||configured_gateway_order[0]!=0xc0a80106||profiles[0].proxy_port!=stable||!profiles[5].configured)return 10;
+#ifdef MR_DNS_MANAGED_SUPPORT
+  {mr_dns_policy policy;ip_addr_t cached;unsigned cursor=mr_dns_cache_cursor;
+    strcpy(command,"MR_GATEWAYS_4\n8\n192.168.1.1,192.168.1.6\n4321\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n1\n");
+    if(!apply_profile_command(command)||control_error[0]||!mr_dns_policy_snapshot(&policy)||policy.revision!=1||policy.broker_port!=4321)return 12;
+    mr_dns_remember_revision(&profiles[0],"example.com",0x5db8d822U,60,1);
+    if(!mr_dns_cached(&profiles[0],"example.com",&cached))return 13;
+    mr_dns_remember_revision(&profiles[0],"ttlzero.example",0x5db8d822U,0,1);
+    if(mr_dns_cache_cursor!=cursor+1||mr_dns_cached(&profiles[0],"ttlzero.example",&cached))return 14;
+    strcpy(command,"MR_GATEWAYS_3\n9\n192.168.1.1,192.168.1.6\n");
+    if(!apply_profile_command(command)||control_error[0]||!mr_dns_policy_current(&policy))return 15;
+    strcpy(command,"MR_GATEWAYS_4\n10\n192.168.1.1,192.168.1.6\n4321\nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n1\n");
+    if(!apply_profile_command(command)||!control_error[0]||!mr_dns_policy_current(&policy))return 16;
+    strcpy(command,"MR_GATEWAYS_4\n11\n192.168.1.1,192.168.1.6\n4321\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n2\n");
+    if(!apply_profile_command(command)||control_error[0]||mr_dns_current_revision()!=2||mr_dns_cached(&profiles[0],"example.com",&cached))return 17;
+    strcpy(command,"MR_GATEWAYS_4\n12\n192.168.1.1,192.168.1.6\n4321\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n1\n");
+    if(!apply_profile_command(command)||!control_error[0]||mr_dns_current_revision()!=2)return 18;
+    memset(&policy,0,sizeof(policy));mr_dns_policy_commit(&policy);memset(mr_dns_cache,0,sizeof(mr_dns_cache));mr_dns_cache_cursor=cursor;
+    puts("MANAGED_DNS_CONTROL_SELF_TEST_OK V4 authenticated policy, V3 retains policy, stale revision/key rejected, cache revision isolation, TTL0 uncached; no network handles");
+  }
+#endif
   profile_activator=old;profile_topology_reader=old_topology;mask_host=oldmask;memset(profiles,0,sizeof(profiles));InterlockedExchange(&profile_count_raw,0);control_revision=0;control_error[0]=0;configured_gateway_order_count=0;
   puts("HOT_PROFILE_SELF_TEST_OK stable ports, live add/remove, ordered profiles, rejected topology leaves old profiles, 32 profiles, no network handles");return 0;
 }
