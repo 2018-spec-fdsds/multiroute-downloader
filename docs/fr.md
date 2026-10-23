@@ -4,7 +4,7 @@
 
 **Correctifs 4.1.3 :** lorsqu’un CDN comme Civitai renvoie HTTP 200 pour une plage commençant à zéro, une plage commençant après zéro est aussi vérifiée. Le premier segment reste limité à sa taille ; les données séquentielles enregistrées compatibles peuvent être reprises en segments. Un HTTP 200 temporaire pour une plage suivante entraîne une nouvelle tentative après 2–30 secondes, en conservant les données et le processus de la passerelle. Le journal persistant par passerelle distingue le trafic reçu de la progression enregistrée. [Notes et limites de validation](releases/4.1.3.en.md) · [Diagnostic des transferts](transfer-diagnostics.en.md).
 
-[Les installateurs 4.1.3](../downloads/v4.1.3/) incluent un environnement Java 21 privé. L’assistant Windows est en anglais et crée un raccourci de bureau ; Npcap reste requis séparément. macOS utilise libpcap du système. Suivez les étapes d’installation et de sécurité ci-dessous.
+[Les installateurs 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) incluent un environnement Java 21 privé. L’assistant Windows est en anglais et crée un raccourci de bureau ; Npcap reste requis séparément. macOS utilise libpcap du système. Suivez les étapes d’installation et de sécurité ci-dessous.
 
 Propriétaire du projet: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 

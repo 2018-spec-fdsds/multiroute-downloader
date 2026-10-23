@@ -4,7 +4,7 @@
 
 **4.1.3 fixes:** CDNs such as Civitai that return HTTP 200 for a range starting at zero are checked with a nonzero range. The first segment stays bounded; compatible saved sequential data can resume as segments. A temporary HTTP 200 for a nonzero range retries after 2–30 seconds while preserving saved data and keeping the gateway worker available. A persistent per-gateway transfer journal distinguishes received traffic from saved progress. [Release notes and validation limits](releases/4.1.3.en.md) · [Transfer diagnostics](transfer-diagnostics.en.md).
 
-[4.1.3 installers](../downloads/v4.1.3/) include a private Java 21 runtime. Windows Setup uses English and creates a desktop shortcut; Npcap remains separately required. macOS uses system libpcap. Follow the installation and security confirmations below.
+[4.1.3 installers](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) include a private Java 21 runtime. Windows Setup uses English and creates a desktop shortcut; Npcap remains separately required. macOS uses system libpcap. Follow the installation and security confirmations below.
 
 MultiRoute Downloader is a Java desktop application that downloads files through one or more **gateways** on your local network. It assigns available parts to those gateways, preserves verified data and assembles the completed file. A local API lets other applications submit and manage downloads. The desktop window is not a web interface.
 

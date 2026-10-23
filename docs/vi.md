@@ -4,7 +4,7 @@
 
 **Bản sửa lỗi 4.1.3:** nếu CDN như Civitai trả HTTP 200 cho vùng byte bắt đầu từ 0, ứng dụng kiểm tra thêm vùng bắt đầu sau 0. Đoạn đầu chỉ được đọc trong giới hạn của đoạn; dữ liệu tải tuần tự đã lưu và khớp nguồn có thể tiếp tục theo từng đoạn. HTTP 200 tạm thời cho vùng phía sau sẽ được thử lại sau 2–30 giây, giữ dữ liệu và luồng xử lý cổng mạng. Nhật ký truyền bền vững theo cổng phân biệt lưu lượng nhận với tiến độ đã lưu. [Ghi chú và giới hạn kiểm tra](releases/4.1.3.en.md) · [Chẩn đoán truyền](transfer-diagnostics.en.md).
 
-[Bộ cài 4.1.3](../downloads/v4.1.3/) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
+[Bộ cài 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
 
 Chủ dự án: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 

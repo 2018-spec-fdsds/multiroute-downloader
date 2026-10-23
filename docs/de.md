@@ -4,7 +4,7 @@
 
 **Korrekturen in 4.1.3:** Bei CDNs wie Civitai wird nach HTTP 200 für einen bei null beginnenden Bytebereich ein Bereich ab einem anderen Offset geprüft. Das erste Segment bleibt begrenzt; passende gespeicherte Daten eines sequenziellen Downloads können als Segmente fortgesetzt werden. Ein vorübergehendes HTTP 200 für einen späteren Bereich führt nach 2–30 Sekunden zu einem neuen Versuch, ohne gespeicherte Daten zu verwerfen oder den Gateway-Worker dauerhaft auszuschließen. Ein dauerhaftes Transferprotokoll je Gateway unterscheidet empfangene Daten von gespeichertem Fortschritt. [Versionshinweise und Prüfgrenzen](releases/4.1.3.en.md) · [Transferdiagnose](transfer-diagnostics.en.md).
 
-[Installationspakete 4.1.3](../downloads/v4.1.3/) enthalten eine private Laufzeit Java 21. Windows Setup ist auf Englisch und erstellt eine Desktopverknüpfung; Npcap wird separat benötigt. macOS verwendet die systemeigene libpcap. Die Installations- und Sicherheitsbestätigungen stehen unten.
+[Installationspakete 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3) enthalten eine private Laufzeit Java 21. Windows Setup ist auf Englisch und erstellt eine Desktopverknüpfung; Npcap wird separat benötigt. macOS verwendet die systemeigene libpcap. Die Installations- und Sicherheitsbestätigungen stehen unten.
 
 Projektinhaber: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 

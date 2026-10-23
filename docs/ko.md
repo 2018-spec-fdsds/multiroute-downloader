@@ -4,7 +4,7 @@
 
 **4.1.3 수정 사항:** Civitai 같은 CDN이 0부터 시작하는 범위에 HTTP 200을 반환하면 0이 아닌 위치의 범위도 검사합니다. 첫 세그먼트는 정해진 크기까지만 읽으며, 원본이 일치하는 기존 순차 다운로드 데이터를 세그먼트로 이어받을 수 있습니다. 이후 범위에 일시적으로 HTTP 200이 반환되면 저장된 데이터와 게이트웨이 작업 스레드를 유지하며 2–30초 후 다시 시도합니다. 게이트웨이별 영구 전송 로그는 수신 트래픽과 저장된 진행량을 구분합니다. [릴리스 노트와 검증 범위](releases/4.1.3.en.md) · [전송 진단](transfer-diagnostics.en.md).
 
-[4.1.3 설치 파일](../downloads/v4.1.3/)에는 전용 Java 21이 포함됩니다. Windows 설치 마법사는 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 필요하며 macOS는 시스템 libpcap을 사용합니다. 아래의 설치 및 보안 확인 절차를 따르십시오.
+[4.1.3 설치 파일](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3)에는 전용 Java 21이 포함됩니다. Windows 설치 마법사는 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 필요하며 macOS는 시스템 libpcap을 사용합니다. 아래의 설치 및 보안 확인 절차를 따르십시오.
 
 프로젝트 소유자: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 

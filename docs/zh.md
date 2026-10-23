@@ -4,7 +4,7 @@
 
 **4.1.3 修复：** 对于 Civitai 等 CDN，若从零开始的字节范围请求返回 HTTP 200，会再检查非零起点的范围。首段读取限制在该段长度内；身份匹配的已有顺序下载数据可转换为分段续传。非零范围临时返回 HTTP 200 时，保留已存数据及网关工作线程，等待 2–30 秒后重试。持久化的分网关传输日志区分接收流量与已保存进度。[版本说明及验证范围](releases/4.1.3.en.md) · [传输诊断](transfer-diagnostics.en.md)。
 
-[4.1.3 安装包](../downloads/v4.1.3/)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
+[4.1.3 安装包](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.3)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
 
 项目所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
 
