@@ -2,7 +2,7 @@
 
 **New in 4.2.0:** application DNS settings with strict Cloudflare DoH by default, DoT and an explicit System/OS/VPN mode. Choose a preset or custom authenticated server, test a draft through selected gateways, then apply it. Secure modes have no silent plaintext fallback; OS DNS, routes and IP settings are unchanged. [DNS instructions](docs/en.md#dns-settings) · [Release notes](docs/releases/4.2.0.en.md).
 
-**Version 4.2.0:** [Windows and macOS installers, extension and checksums](downloads/v4.2.0/README.md). Match the package version and source commit; see the matching `NATIVE-INSTALLER-TESTS.json` for platform and asset verification results.
+**Version 4.2.0:** [Windows and macOS installers, extension and checksums](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/main/downloads/v4.2.0/README.md). Match the package version and source commit; see the matching `NATIVE-INSTALLER-TESTS.json` for platform and asset verification results.
 
 **New in 4.1.3:** Civitai/CDN range probing, bounded first-segment reads and reuse of saved sequential data improve resumable downloads. Temporary HTTP 200 replies for nonzero ranges retry after 2–30 seconds while preserving data and keeping the gateway worker available. A persistent per-gateway journal distinguishes received traffic from saved progress. [Release notes and validation limits](docs/releases/4.1.3.en.md) · [Transfer diagnostics](docs/transfer-diagnostics.en.md).
 
@@ -35,7 +35,7 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files for 4.2.0](downloads/v4.2.0/README.md).
+**Download installers:** [Windows and macOS files for 4.2.0](https://github.com/2018-spec-fdsds/multiroute-downloader/blob/main/downloads/v4.2.0/README.md).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 

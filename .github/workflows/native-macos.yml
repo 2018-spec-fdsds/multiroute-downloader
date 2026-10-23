@@ -84,6 +84,19 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libpcap-dev
       - name: Verify Linux helper, six native fixtures and three Java DNS TLS fixtures without capture
         run: bash packaging/tests/verify_linux_dns.sh "$GITHUB_WORKSPACE" "$RUNNER_TEMP/multiroute-dns420"
+      - name: Preserve owned text diagnostics on Linux verification failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: multiroute-linux-dns-failure
+          path: |
+            ${{ runner.temp }}/multiroute-dns420/*.log
+            ${{ runner.temp }}/multiroute-dns420/*-stderr.txt
+            ${{ runner.temp }}/multiroute-dns420/*-output.txt
+            ${{ runner.temp }}/multiroute-dns420/java-dns/**/*.log
+            ${{ runner.temp }}/multiroute-dns420/**/VERIFICATION.json
+          if-no-files-found: warn
+          retention-days: 7
       - uses: actions/upload-artifact@v4
         with:
           name: multiroute-linux-dns

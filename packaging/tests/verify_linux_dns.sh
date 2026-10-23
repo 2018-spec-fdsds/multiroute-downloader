@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 # Ubuntu prerequisites: build-essential, pkg-config, libpcap-dev.
 # The verification runs as an ordinary user: no capture or OS network changes.
-set -euo pipefail
+set -Eeuo pipefail
 REPO="$(cd -- "${1:?usage: verify_linux_dns.sh REPOSITORY OUTPUT}" && pwd -P)"
 mkdir -p -- "${2:?OUTPUT directory required}"
 OUTPUT="$(cd -- "$2" && pwd -P)"
+dump_owned_failure() {
+  local result=$?
+  trap - ERR
+  printf 'Owned Linux DNS verification failed (exit %s); bounded text diagnostics follow.\n' "$result" >&2
+  while IFS= read -r -d '' logfile; do
+    printf '\n--- %s ---\n' "${logfile#"$OUTPUT"/}" >&2
+    tail -n 80 -- "$logfile" >&2 || true
+  done < <(find "$OUTPUT" -type f \( -name '*.log' -o -name '*-stderr.txt' -o -name '*-output.txt' \) -print0)
+  exit "$result"
+}
+trap dump_owned_failure ERR
 BASE="$REPO/native/source"
 CC="${CC:-cc}"
 export LC_ALL=C.UTF-8 PYTHONUTF8=1 PYTHONIOENCODING=utf-8
