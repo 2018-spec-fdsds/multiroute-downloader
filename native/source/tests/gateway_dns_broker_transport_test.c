@@ -119,7 +119,8 @@ static TEST_THREAD_RESULT broker_server(TEST_THREAD_ARGUMENT ignored){
     s=accept(broker_listener,NULL,NULL);if(s==INVALID_SOCKET)continue;mr_dns_os_nonblocking(s);deadline=GetTickCount64()+2000;
     if(!mr_dns_os_bytes(s,header,100,0,deadline,NULL))goto close_client;
     assert(!memcmp(header,"MRDNS2",6));mr_dns_policy_snapshot(&policy);assert(mr_dns_same_key(header+6,policy.key));assert(mr_dns_padded_gateway(header+70,gateway));
-    for(size_t i=0;i<8;i++)revision=(revision<<8)|header[86+i];assert(revision==policy.revision);assert(mr_dns_u32(header+94)>0&&mr_dns_u32(header+94)<=8000);
+    for(size_t i=0;i<8;i++){revision=(revision<<8)|header[86+i];}
+    assert(revision==policy.revision);assert(mr_dns_u32(header+94)>0&&mr_dns_u32(header+94)<=8000);
     n=mr_dns_u16(header+98);assert(n>=12&&n<=4096);if(!mr_dns_os_bytes(s,query,n,0,deadline,NULL))goto close_client;
     assert(mr_dns_name(query,n,&offset,host));index=gateway[strlen(gateway)-1]-'1';assert(index>=0&&index<4);InterlockedIncrement(&broker_calls);InterlockedIncrement(&per_route[index]);
     if(!strcmp(host,"slow.example"))Sleep(150);
@@ -180,7 +181,8 @@ int main(void){
   check(mr_dns_tunnel_connections==8&&connection_count==96);extra=mr_dns_broker_connect(mr_dns_tunnel_port,GetTickCount64()+1000,NULL);check(extra!=INVALID_SOCKET&&!mr_dns_os_bytes(extra,&status,1,0,GetTickCount64()+500,NULL));closesocket(extra);
   for(unsigned i=0;i<8;i++){const char *message="owned TLS bytes";size_t length=strlen(message);check(mr_dns_os_bytes(sockets[i],(void*)message,length,1,GetTickCount64()+1000,NULL));check(mr_dns_os_bytes(sockets[i],echo,length,0,GetTickCount64()+1000,NULL)&&!memcmp(echo,message,length));closesocket(sockets[i]);}
   started=GetTickCount64();while(mr_dns_tunnel_connections&&GetTickCount64()-started<2000)Sleep(5);check(!mr_dns_tunnel_connections&&created==deleted);for(unsigned i=0;i<4;i++)check(egress_per_route[i]==2);
-  for(unsigned i=0;i<65536;i++)assert(!port_routes[i]&&!udp_port_routes[i]&&!bound_ports[i]);check(legacy_queries==0);
+  for(unsigned i=0;i<65536;i++){assert(!port_routes[i]&&!udp_port_routes[i]&&!bound_ports[i]);}
+  check(legacy_queries==0);
   InterlockedExchange(&stopped,1);mr_dns_tunnel_stop();shutdown(broker_listener,SD_BOTH);closesocket(broker_listener);Sleep(100);
 #ifdef _WIN32
   WSACleanup();

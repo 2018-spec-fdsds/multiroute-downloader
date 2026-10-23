@@ -33,14 +33,17 @@ static int mr_dns_os_pending(int error){
 static int mr_dns_route_live(profile *route){return !cancelled()&&(!route||(route->configured&&route->mac_known));}
 static int mr_dns_os_wait(SOCKET s,int writing,ULONGLONG deadline,profile *route){
   while(mr_dns_route_live(route)&&GetTickCount64()<deadline){fd_set set;struct timeval wait;ULONGLONG now=GetTickCount64(),remaining;int result;
-    if(now>=deadline)return 0;remaining=deadline-now;
-    if(remaining>50)remaining=50;wait.tv_sec=0;wait.tv_usec=(long)remaining*1000;FD_ZERO(&set);FD_SET(s,&set);
+    if(now>=deadline){return 0;}
+    remaining=deadline-now;
+    if(remaining>50){remaining=50;}
+    wait.tv_sec=0;wait.tv_usec=(long)remaining*1000;FD_ZERO(&set);FD_SET(s,&set);
 #ifdef _WIN32
     result=select(0,writing?NULL:&set,writing?&set:NULL,NULL,&wait);
 #else
     result=select(s+1,writing?NULL:&set,writing?&set:NULL,NULL,&wait);
 #endif
-    if(result>0)return 1;if(result<0&&!mr_dns_os_pending(WSAGetLastError()))return 0;
+    if(result>0){return 1;}
+    if(result<0&&!mr_dns_os_pending(WSAGetLastError()))return 0;
   }return 0;
 }
 static int mr_dns_os_bytes(SOCKET s,void *data,size_t size,int writing,ULONGLONG deadline,profile *route){
@@ -80,7 +83,8 @@ static int mr_dns_broker_exchange(profile *route,const char *host,const mr_dns_p
   if(!mr_dns_os_bytes(s,answer,length,0,deadline,route)||!mr_dns_route_live(route)||!mr_dns_policy_current(policy))goto done;
   found=mr_dns_answer(answer,length,id,host,ip,ttl);
 done:
-  if(answer)free(answer);if(s!=INVALID_SOCKET){shutdown(s,SD_BOTH);closesocket(s);}
+  if(answer){free(answer);}
+  if(s!=INVALID_SOCKET){shutdown(s,SD_BOTH);closesocket(s);}
   if(!found){fprintf(stderr,"DNS_BROKER_FAILURE gateway=%s dns_revision=%llu no_fallback=true\n",route->gateway,(unsigned long long)policy->revision);fflush(stderr);}return found;
 }
 typedef struct mr_dns_tunnel_client{SOCKET local;profile *route;struct netconn *conn;uint16_t port;}mr_dns_tunnel_client;
@@ -128,7 +132,8 @@ static MR_DNS_THREAD_RESULT mr_dns_tunnel_serve(MR_DNS_THREAD_ARGUMENT pointer){
   if(!mr_dns_tunnel_open(c,&request,deadline)){mr_dns_tunnel_error(c->local,"Selected DNS gateway TCP connection failed",deadline);goto done;}
   if(mr_dns_os_bytes(c->local,&success,1,1,deadline,c->route))mr_dns_tunnel_pump(c,deadline);
 done:
-  if(c->port)mr_dns_tcp_unroute(c->port,c->route);if(c->conn)netconn_delete(c->conn);
+  if(c->port){mr_dns_tcp_unroute(c->port,c->route);}
+  if(c->conn)netconn_delete(c->conn);
   shutdown(c->local,SD_BOTH);closesocket(c->local);free(c);InterlockedDecrement(&mr_dns_tunnel_connections);return 0;
 }
 static MR_DNS_THREAD_RESULT mr_dns_tunnel_accept(MR_DNS_THREAD_ARGUMENT ignored){
@@ -139,7 +144,8 @@ static MR_DNS_THREAD_RESULT mr_dns_tunnel_accept(MR_DNS_THREAD_ARGUMENT ignored)
 #else
     socklen_t peer_size=sizeof(peer);thread_handle thread;
 #endif
-    if(listener==INVALID_SOCKET)break;FD_ZERO(&set);FD_SET(listener,&set);
+    if(listener==INVALID_SOCKET){break;}
+    FD_ZERO(&set);FD_SET(listener,&set);
 #ifdef _WIN32
     if(select(0,&set,NULL,NULL,&wait)<=0)continue;
 #else
@@ -173,7 +179,8 @@ static int mr_dns_tunnel_start(void){
 #else
   thread=spawn_thread(mr_dns_tunnel_accept,NULL);if(thread)detach_thread(thread);
 #endif
-  if(thread)return 1;mr_dns_tunnel_listener=INVALID_SOCKET;mr_dns_tunnel_port=0;closesocket(s);return 0;
+  if(thread){return 1;}
+  mr_dns_tunnel_listener=INVALID_SOCKET;mr_dns_tunnel_port=0;closesocket(s);return 0;
 }
 static void mr_dns_tunnel_stop(void){SOCKET s=mr_dns_tunnel_listener;mr_dns_tunnel_listener=INVALID_SOCKET;if(s!=INVALID_SOCKET)closesocket(s);}
 #undef MR_DNS_THREAD_RESULT
