@@ -43,12 +43,13 @@ MULTIROUTE_BUILD_OUTPUT="$OUTPUT/gateway-net" bash "$BASE/build_linux.sh" >"$OUT
 grep -F 'MANAGED_DNS_CONTROL_SELF_TEST_OK' "$OUTPUT/self-test.txt"
 grep -F 'MANAGED_DNS_SELF_TEST_OK' "$OUTPUT/self-test.txt"
 READY="$OUTPUT/ready-managed-missing.json"
-set +e
-"$OUTPUT/gateway-net" --managed-dns --ready-file "$READY" --stop-file "$READY.stop" \
+if "$OUTPUT/gateway-net" --managed-dns --ready-file "$READY" --stop-file "$READY.stop" \
   --parent-pid "$$" --drop-uid "$(id -u)" --drop-gid "$(id -g)" \
-  >"$OUTPUT/managed-missing.txt" 2>"$OUTPUT/managed-missing-stderr.txt"
-RESULT=$?
-set -e
+  >"$OUTPUT/managed-missing.txt" 2>"$OUTPUT/managed-missing-stderr.txt"; then
+  RESULT=0
+else
+  RESULT=$?
+fi
 test "$RESULT" -eq 2
 python3 "$REPO/packaging/tests/verify_linux_java_dns.py" "$REPO" "$OUTPUT/java-dns"
 python3 - "$REPO" "$OUTPUT" <<'PY'
