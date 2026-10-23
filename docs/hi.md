@@ -1,8 +1,10 @@
-# MultiRoute Downloader 4.1.1 — हिन्दी उपयोगकर्ता निर्देश
+# MultiRoute Downloader 4.1.3 — हिन्दी उपयोगकर्ता निर्देश
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md) · [Home](../README.md)
 
-**4.1.1 में सुधार:** UDP का समय समाप्त होने या अधूरा DNS उत्तर मिलने पर उसी गेटवे और वर्चुअल IP से TCP पर दोबारा प्रयास किया जाता है; DNS की कुल समय-सीमा 8 सेकंड है। अपने-आप होने वाला रीफ़्रेश अब स्क्रॉल की स्थिति को ऊपर नहीं ले जाता। [रिलीज़ नोट्स](releases/4.1.1.en.md)।
+**4.1.3 में सुधार:** Civitai जैसे CDN यदि शून्य से शुरू होने वाली बाइट सीमा पर HTTP 200 लौटाते हैं, तो शून्य से आगे शुरू होने वाली सीमा भी जाँची जाती है। पहला सेगमेंट अपनी निर्धारित लंबाई तक ही पढ़ता है; स्रोत से मेल खाने वाला पहले से सहेजा गया क्रमिक डेटा सेगमेंट के रूप में जारी रह सकता है। बाद की सीमा पर अस्थायी HTTP 200 मिलने पर सहेजा डेटा और गेटवे वर्कर बनाए रखते हुए 2–30 सेकंड बाद फिर प्रयास होता है। हर गेटवे का स्थायी ट्रांसफ़र लॉग प्राप्त ट्रैफ़िक और सहेजी प्रगति को अलग दिखाता है। [रिलीज़ नोट्स और जाँच की सीमाएँ](releases/4.1.3.en.md) · [ट्रांसफ़र निदान](transfer-diagnostics.en.md)।
+
+[4.1.3 इंस्टॉलर](../downloads/v4.1.3/) में निजी Java 21 शामिल है। Windows सेटअप अंग्रेज़ी में है और डेस्कटॉप शॉर्टकट बनाता है; Npcap अलग से आवश्यक है। macOS सिस्टम की libpcap उपयोग करता है। नीचे दिए इंस्टॉलेशन और सुरक्षा पुष्टि के चरणों का पालन करें।
 
 परियोजना स्वामी: [2018-spec-fdsds](https://github.com/2018-spec-fdsds)।
 
@@ -29,11 +31,11 @@ Java में `java.desktop`, `java.net.http`, `jdk.httpserver`, `java.xml` आ
 
 ## 3. स्थापना और सुरक्षा स्वीकृतियाँ
 
-[रिलीज़ 4.1.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.1) में संलग्न होने पर उपयुक्त एक इंस्टॉलर डाउनलोड करें और प्रकाशित SHA-256 से तुलना करें।
+[रिलीज़ 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3) में संलग्न होने पर उपयुक्त एक इंस्टॉलर डाउनलोड करें और प्रकाशित SHA-256 से तुलना करें।
 
-- Windows: `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe`।
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg`।
-- Intel, macOS 15+: `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg`।
+- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`।
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`।
+- Intel, macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`।
 
 ### Windows
 
@@ -110,7 +112,7 @@ assembly के बाद एक पढ़ाई में **MD5, SHA-256, SHA-5
 
 चलते समय API `http://127.0.0.1:8765/api/v1` पर है। JSON UTF-8 और body के लिए `Content-Type: application/json` इस्तेमाल करें। स्थानीय कार्य बनाने/चलाने में API token नहीं चाहिए; source credentials अलग हैं। केवल उसी कंप्यूटर से पहुँच है; LAN/इंटरनेट पर port न खोलें। `--headless` केवल API चलाता है। native launcher इस्तेमाल करें; `.cmd` उदाहरण portable के हैं।
 
-जाँच: `GET /api/v1/health`, सामान्य उत्तर `{"ok":true,"version":"4.1.1"}`। पहले UI में नेटवर्क सेट करें या `POST /api/v1/network` को यह दें:
+जाँच: `GET /api/v1/health`, सामान्य उत्तर `{"ok":true,"version":"4.1.3"}`। पहले UI में नेटवर्क सेट करें या `POST /api/v1/network` को यह दें:
 
 ```json
 {
@@ -188,7 +190,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.1/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
+native Mac घटक `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` है। Windows portable 3.0 launch folder का `data/` इस्तेमाल करता है, जिसे `data-location.config`/`--data-dir` बदल सकते हैं। Linux private Java `~/.local/share/MultiRouteResume/runtime`, protected component `/usr/local/libexec/MultiRouteResume/3.0/gateway-net` है। वास्तविक डाउनलोड आपके चुने स्थान पर अलग रह सकते हैं।
 
 `logs/downloads-history.jsonl` UTF-8 line JSON और `logs/downloads-history.log` तारीख/समय वाला readable text है। पुनः आरंभ के बाद append होते हैं और कार्य हटाने/भाषा बदलने से पुराना पाठ नहीं लिखा जाता। text लिखने के समय की भाषा रखता है; UI वर्तमान भाषा में दिखाता है। viewer अधिकतम पिछली 1,000 घटनाएँ/2 MiB पढ़ता है; पूरा बढ़ता archive disk पर है, ज़रूरत पर अलग संग्रह करें। नाम और निरपेक्ष path रहते हैं, source URL/password/token नहीं। साझा करने से पहले निजी paths जाँचें।
 
@@ -235,7 +237,7 @@ API डाउनलोड, अपलोड, सूची और पूर्व�
 
 ## Chrome और Edge एकीकरण
 
-ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
+ऐप में **Chrome / Edge** एकीकरण खोलकर लिंक भेजने की अनुमति दें और एक्सटेंशन फ़ोल्डर खोलें। एक बार `chrome://extensions` या `edge://extensions` में डेवलपर मोड चालू करें, “अनपैक किया गया लोड करें” चुनें और `manifest.json` वाला `browser-extension` दें। नेटिव इंस्टॉलर इसे JAR के पास देता है; स्रोत में [browser-extension/](../browser-extension/) भी है। चुना फ़ोल्डर न हटाएँ। अलग `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` पहले निकालें। यह स्टोर में प्रकाशित नहीं है।
 
 MultiRoute चलता रहे, ट्रे भी पर्याप्त है। लिंक के मेनू या एक्सटेंशन पॉपअप से URL भेजें। वर्तमान फ़ोल्डर, गेटवे और साइट प्रोफ़ाइल लगते हैं; आवश्यक repository/torrent चयन बना रहता है। डिफ़ॉल्ट पोर्ट 8765 को बदले API पोर्ट से मिलाएँ। केवल URL भेजता है, cookies/पासवर्ड नहीं और अन्य ब्राउज़र डाउनलोड नहीं पकड़ता। स्रोत पहुँच ऐप में सेट करें। स्थानीय कनेक्शन अनुमति माँगी जाए तो केवल इस चुने एक्सटेंशन को दें।
 

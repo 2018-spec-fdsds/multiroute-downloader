@@ -1,8 +1,10 @@
-# MultiRoute Downloader 4.1.1 — Guida in italiano
+# MultiRoute Downloader 4.1.3 — Guida in italiano
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
-**Correzioni 4.1.1:** dopo un timeout UDP o una risposta DNS troncata, il tentativo TCP usa lo stesso gateway e lo stesso IP virtuale; il limite complessivo DNS è di 8 secondi. Gli aggiornamenti automatici non riportano più in alto le viste scorrevoli. [Note di rilascio](releases/4.1.1.en.md).
+**Correzioni 4.1.3:** se una CDN come Civitai risponde HTTP 200 a un intervallo che parte da zero, viene controllato anche un intervallo con inizio diverso da zero. Il primo segmento resta limitato alla sua dimensione; i dati sequenziali salvati compatibili possono proseguire come segmenti. Un HTTP 200 temporaneo per un intervallo successivo viene ritentato dopo 2–30 secondi, conservando i dati e il worker del gateway. Il registro persistente per gateway distingue il traffico ricevuto dall’avanzamento salvato. [Note e limiti della verifica](releases/4.1.3.en.md) · [Diagnostica trasferimenti](transfer-diagnostics.en.md).
+
+[Gli installer 4.1.3](../downloads/v4.1.3/) includono Java 21 privato. Il programma di installazione Windows è in inglese e crea un collegamento sul desktop; Npcap resta necessario separatamente. macOS usa libpcap di sistema. Seguire le istruzioni di installazione e sicurezza sotto.
 
 Proprietario del progetto: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -29,11 +31,11 @@ La lingua scelta richiede font installati che coprano i suoi caratteri. Su Linux
 
 ## 3. Installazione e conferme di sicurezza
 
-Scegliere un solo installer dalla [release 4.1.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.1), se allegato, e confrontarlo con lo SHA-256 pubblicato:
+Scegliere un solo installer dalla [release 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3), se allegato, e confrontarlo con lo SHA-256 pubblicato:
 
-- Windows: `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe`.
-- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg`.
-- Intel, macOS 15+: `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`.
+- Apple Silicon, macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`.
+- Intel, macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -110,7 +112,7 @@ Tutti i riferimenti noti devono coincidere prima della pubblicazione. Un errore 
 
 A programma aperto l’API si trova su `http://127.0.0.1:8765/api/v1`. Richieste e risposte sono JSON UTF-8; usare `Content-Type: application/json` per il corpo. Non serve un API token per creare/gestire lavori locali; le credenziali della fonte sono separate. Accetta soltanto il computer locale: non esporre la porta in LAN o Internet. `--headless` esegue soltanto l’API. Usare il launcher nativo; gli esempi `.cmd` riguardano portable.
 
-Controllo: `GET /api/v1/health`, risposta normale `{"ok":true,"version":"4.1.1"}`. Prima configurare la rete nella finestra o inviare a `POST /api/v1/network`:
+Controllo: `GET /api/v1/health`, risposta normale `{"ok":true,"version":"4.1.3"}`. Prima configurare la rete nella finestra o inviare a `POST /api/v1/network`:
 
 ```json
 {
@@ -188,7 +190,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.1/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
+Il componente nativo macOS è `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net`. Windows portable 3.0 usa `data/` presso il launcher, modificabile con `data-location.config` o `--data-dir`. Il runtime Linux privato è `~/.local/share/MultiRouteResume/runtime` e il componente protetto `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. I file scaricati sono nella destinazione scelta e possono essere altrove.
 
 `logs/downloads-history.jsonl` è JSON per riga UTF-8; `logs/downloads-history.log` è testo leggibile datato. Vengono aggiunti eventi tra i riavvii senza riscrivere il passato al cambio lingua o alla rimozione del lavoro. Il testo mantiene la lingua di scrittura; la GUI rende gli eventi nella lingua attuale. La finestra legge al massimo la coda di 1.000 eventi/2 MiB, lasciando l’archivio completo sul disco. Cresce con l’uso: archiviarlo separatamente se necessario. Contiene nomi e percorsi assoluti, senza URL sorgenti, password o token; controllare i percorsi prima di condividerlo.
 
@@ -235,7 +237,7 @@ Nei controlli coda/orario impostare `max_active_jobs` (1–32), limiti globali/p
 
 ## Integrazione Chrome ed Edge
 
-Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
+Aprire **Chrome / Edge** nell’app, consentire l’invio dei link e aprire la cartella estensione. Una volta: `chrome://extensions` o `edge://extensions`, modalità sviluppatore, **Carica estensione non pacchettizzata**, quindi scegliere `browser-extension` con `manifest.json`. Il pacchetto nativo la include accanto al JAR; nel sorgente: [browser-extension/](../browser-extension/). Lasciarla al suo posto. Estrarre prima l’eventuale `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip`. Nessuna pubblicazione negli store.
 
 MultiRoute deve funzionare, anche nella tray. Inviare l’URL dal menu del link o dal popup. Usa cartella, gateway e profilo attuali; restano le selezioni repository/torrent. La porta predefinita è 8765, da adattare se l’API cambia. Viene inviato solo l’URL, senza cookie/password e senza intercettare altri download. Configurare l’accesso alla fonte nell’app. Concedere l’eventuale permesso di connessione locale soltanto a questa estensione scelta.
 

@@ -1,8 +1,10 @@
-# MultiRoute Downloader 4.1.1 — Guía en español
+# MultiRoute Downloader 4.1.3 — Guía en español
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · **Español** · [Français](fr.md) · [Inicio](../README.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
-**Correcciones de 4.1.1:** si UDP agota el tiempo o devuelve una respuesta DNS truncada, se reintenta por TCP usando la misma puerta de enlace y la misma IP virtual; el límite total de DNS es de 8 segundos. La actualización automática ya no desplaza las vistas hacia arriba. [Notas de la versión](releases/4.1.1.en.md).
+**Correcciones de 4.1.3:** si un CDN como Civitai devuelve HTTP 200 para un intervalo que empieza en cero, se comprueba otro intervalo que empieza después de cero. El primer segmento se limita a su tamaño; los datos secuenciales guardados compatibles pueden continuar como segmentos. Un HTTP 200 temporal para un intervalo posterior se reintenta tras 2–30 segundos, conservando los datos y el trabajador de la puerta de enlace. El registro persistente por puerta de enlace distingue el tráfico recibido del progreso guardado. [Notas y límites de validación](releases/4.1.3.en.md) · [Diagnóstico de transferencias](transfer-diagnostics.en.md).
+
+[Los instaladores 4.1.3](../downloads/v4.1.3/) incluyen Java 21 privado. El asistente de Windows está en inglés y crea un acceso directo en el escritorio; Npcap se requiere por separado. macOS usa libpcap del sistema. Siga las instrucciones de instalación y seguridad que aparecen abajo.
 
 MultiRoute Downloader es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
 
@@ -66,15 +68,15 @@ La versión 3.0 utiliza un transporte IPv4 sobre Ethernet. Wi-Fi, una conexión 
 
 El idioma elegido necesita fuentes instaladas con sus caracteres. En Linux mínimo instale paquetes de la distribución, por ejemplo Noto CJK para chino/coreano y una familia Noto árabe. Java usa las fuentes de sustitución de la plataforma; la aplicación no instala ni incluye paquetes de fuentes. La cobertura depende del equipo.
 
-## Instaladores nativos 4.1.1: Windows y macOS
+## Instaladores nativos 4.1.3: Windows y macOS
 
 Elija el instalador de su sistema en [GitHub Releases](https://github.com/2018-spec-fdsds/multiroute-downloader/releases), si está adjunto a la publicación. Cada paquete es **un solo archivo de instalación**, con aplicación, lanzador nativo, Java completo y componente de red. Las fuentes y los ZIP portátiles 3.0 son distribuciones distintas.
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe` | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg` | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
 
 Las doce guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` o `vi.md` con un editor de texto o visor Markdown.
 
@@ -278,12 +280,12 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## 7. Datos, actualización y desinstalación
 
-### Instaladores nativos 4.1.1
+### Instaladores nativos 4.1.3
 
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |
 | Windows | `%LOCALAPPDATA%\MultiRoute Downloader\data` | `%LOCALAPPDATA%\MultiRoute Downloader App`, con Java incluido | Componente x64 incluido; Npcap instalado aparte |
-| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.1/gateway-net` |
+| macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app`, con Java | `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net` |
 
 Cierre la aplicación antes de actualizar con un nuevo instalador. En Windows, elimínela desde **Configuración → Aplicaciones → Aplicaciones instaladas**. En macOS, eliminar la `.app` no borra automáticamente el historial ni el componente protegido separado. Los archivos descargados siguen en el destino elegido; no borre esa carpeta solo para desinstalar. La ruta de datos es distinta de Windows portátil 3.0; conserve su perfil anterior antes de migrar.
 
@@ -418,7 +420,7 @@ Configure `max_active_jobs` (1–32), límites globales/por puerta y ventana dia
 
 ## Integración con Chrome y Edge
 
-Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
+Abra **Chrome / Edge** en la aplicación, permita enviar enlaces y abra la carpeta de la extensión. Una vez: visite `chrome://extensions` o `edge://extensions`, active modo desarrollador, pulse **Cargar descomprimida** y elija `browser-extension` con `manifest.json`. Los instaladores nativos la incluyen junto al JAR; también está en [browser-extension/](../browser-extension/). Mantenga la carpeta en su ubicación. Extraiga primero `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` si lo usa. No está publicada en una tienda de extensiones.
 
 MultiRoute debe estar abierto, incluso en la bandeja. Envíe un enlace desde su menú contextual o la ventana de la extensión. Se usan carpeta, puertas y perfil actuales; la selección de repositorio/torrent sigue disponible. El puerto es 8765; ajústelo si cambió el de API. Solo se envía URL, sin cookies ni contraseñas; no intercepta otras descargas del navegador. Configure el acceso al origen en la aplicación. Si el navegador pide permiso de conexión local, concédalo solo a esta extensión elegida.
 

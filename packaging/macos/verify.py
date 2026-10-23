@@ -227,6 +227,53 @@ def verify_hotfix411_fixtures(java: Path, jdk: Path, classpath: str, owned: Path
     return results
 
 
+def verify_transfer42_fixtures(java: Path, jdk: Path, classpath: str, owned: Path, version: str) -> dict:
+    """Compile the saved transfer fixtures freshly and exercise only the packaged app JAR."""
+    root = owned / "transfer42"
+    classes = root / "classes"
+    classes.mkdir(parents=True)
+    fixtures = {
+        "WholePreservation42Test": ("report.json", 62),
+        "TransferJournalTest42": ("TRANSFER-JOURNAL-TESTS.json", 231),
+    }
+    run([jdk / "bin/javac", "--release", "17", "-encoding", "UTF-8", "-cp", classpath,
+         "-d", classes, *[ROOT / "packaging/tests" / (name + ".java") for name in fixtures]], timeout=120)
+    results = {}
+    for name, (filename, minimum_checks) in fixtures.items():
+        case = root / name
+        for directory in ("home", "tmp", "state"):
+            (case / directory).mkdir(parents=True)
+        completed = run([java, "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8",
+                         "-Dstdout.encoding=UTF-8", "-Dstderr.encoding=UTF-8",
+                         "-Duser.home=" + str(case / "home"), "-Djava.io.tmpdir=" + str(case / "tmp"),
+                         "-cp", classpath + os.pathsep + str(classes), "multiroute." + name, case / "state"],
+                        capture_output=True, text=True, timeout=180)
+        result = json.loads((case / "state" / filename).read_text(encoding="utf-8"))
+        assert result["status"] == "PASS" and result["checks"] >= minimum_checks
+        if "version" in result:
+            assert result["version"] == version
+        assert "\ufffd" not in completed.stdout and "\ufffd" not in completed.stderr
+        if name == "WholePreservation42Test":
+            assert not result["native_network_used"]
+            assert re.fullmatch(r"[a-f0-9]{64}", result["payload_sha256"])
+        else:
+            assert not result["user_logs_read"] and result["network_calls"] == 0
+            assert result["payload_files_modified"] == "Owned fixture only"
+            required = {
+                "preserve_and_explicit_reset_keep_discarded_prefix_gateway_and_wire_history_without_touching_payload",
+                "all_12_languages_UTF8_restart_and_language_changes_do_not_duplicate_or_erase_independent_history",
+                "parallel_progress_accepts_full_job_wire_total_separate_from_own_attempt",
+                "rotation_4_MiB_current_plus_three_archives",
+            }
+            assert required <= set(result["cases"])
+        results[name] = {
+            "checks": result["checks"], "headless": True,
+            "fixture_source_sha256": hashlib.sha256((ROOT / "packaging/tests" / (name + ".java")).read_bytes()).hexdigest(),
+            "report": result,
+        }
+    return results
+
+
 def desktop_shortcut_fragment(script: str) -> str:
     return script.split("# BEGIN_DESKTOP_SHORTCUT_USER\n", 1)[1].split("# END_DESKTOP_SHORTCUT_USER", 1)[0]
 
@@ -779,12 +826,15 @@ public final class NativeDesktopFixture {
 
         network42 = verify_network42_fixtures(java, jdk, classpath, owned, report["version"])
         hotfix411 = verify_hotfix411_fixtures(java, jdk, classpath, owned, report["version"])
+        transfer42 = verify_transfer42_fixtures(java, jdk, classpath, owned, report["version"])
         checks.append("packaged JAR DNS TCP fallback log across twelve languages")
         checks.append("packaged JAR all-tab scrolling across actual desktop timers")
         checks.append("packaged JAR native torrent settings bind IPv4 and IPv6 loopback proxies without sessions or sockets")
         checks.append("packaged JAR torrent bootstrap resolves public IPv4 addresses through selected SOCKS RESOLVE endpoints with bounded concurrent DNS and no native session or capture helper")
         checks.append("packaged JAR network diagnostics, durable error journal and authoritative topology bridge pass in fresh owned profiles with no physical gateways or OS network changes")
         checks.append("owned non-headless Swing topology label, translated tooltips and status changes pass using injected snapshots and no real gateway requests")
+        checks.append("packaged JAR recovers a whole-file prefix into shared segments, retries transient ignored ranges across four owned gateways, preserves partial and sparse data after failures, and verifies Unicode output against the publisher checksum")
+        checks.append("packaged JAR transfer journal retains distinct attempted, saved and total wire bytes, gateway and range history, twelve-language Unicode rendering, bounded asynchronous priority, rotation and disk-failure handling without user logs or external networking")
 
         for fixture_name in ("SiteProfilesTest40", "ArchivePreviewTest40", "TransfersApiTest40", "ProfileRoutesTest40", "ScheduleQueueTest40", "BrowserBridgeTest40"):
             fixture_source = ROOT / "packaging/tests" / (fixture_name + ".java")
@@ -966,6 +1016,7 @@ public final class MacAuthorizationFixture {
         "browser_bridge40_fixture_checks": browser_bridge["checks"],
         "network42_fixtures": network42, "native_source_files_verified": native_input_count,
         "hotfix411_fixtures": hotfix411,
+        "transfer42_fixtures": transfer42,
         "native_pure_fixtures": report["native_pure_fixtures"],
         "graphical_macos_downloads_table_layout_verified": False,
         "real_user_desktop_modified": False,

@@ -1,8 +1,10 @@
-# MultiRoute Downloader 4.1.1 — دليل الاستخدام بالعربية
+# MultiRoute Downloader 4.1.3 — دليل الاستخدام بالعربية
 
 [English](en.md) · [Русский](ru.md) · [Deutsch](de.md) · [Español](es.md) · [Français](fr.md) · [中文](zh.md) · [한국어](ko.md) · [العربية](ar.md) · [Italiano](it.md) · [Home](../README.md) · [日本語](ja.md) · [हिन्दी](hi.md) · [Tiếng Việt](vi.md)
 
-**إصلاحات 4.1.1:** عند انتهاء مهلة UDP أو وصول رد DNS مبتور، تُعاد المحاولة عبر TCP باستخدام البوابة نفسها وعنوان IP الافتراضي نفسه؛ المهلة الكلية لـ DNS هي 8 ثوانٍ. لم يعد التحديث التلقائي يعيد موضع التمرير إلى الأعلى. [ملاحظات الإصدار](releases/4.1.1.en.md).
+**إصلاحات 4.1.3:** إذا أعادت شبكة CDN مثل Civitai الحالة HTTP 200 لنطاق يبدأ من الصفر، يُفحص نطاق يبدأ بعد الصفر أيضاً. تقتصر قراءة الجزء الأول على حجمه؛ ويمكن متابعة البيانات المتوافقة المحفوظة من تنزيل تسلسلي على شكل أجزاء. عند وصول HTTP 200 مؤقتاً لنطاق لاحق، تُحفظ البيانات ويظل عامل البوابة متاحاً وتُعاد المحاولة بعد 2–30 ثانية. يميّز سجل النقل الدائم لكل بوابة بين حركة البيانات المستلمة والتقدم المحفوظ. [ملاحظات الإصدار وحدود التحقق](releases/4.1.3.en.md) · [تشخيص النقل](transfer-diagnostics.en.md).
+
+[تتضمن حزم 4.1.3](../downloads/v4.1.3/) بيئة Java 21 خاصة. يعمل معالج Windows بالإنجليزية وينشئ اختصاراً على سطح المكتب؛ وتبقى Npcap مطلوبة بشكل منفصل. يستخدم macOS مكتبة libpcap الخاصة بالنظام. اتبع خطوات التثبيت وتأكيدات الأمان أدناه.
 
 مالك المشروع: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -29,11 +31,11 @@ MultiRoute Downloader تطبيق سطح مكتب بلغة Java لتنزيل ال
 
 ## 3. التثبيت وتأكيدات الأمان
 
-نزّل ملفاً واحداً مناسباً من [إصدار 4.1.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.1)، إذا كان مرفقاً بالإصدار، وقارن SHA-256 بالقيمة المنشورة:
+نزّل ملفاً واحداً مناسباً من [إصدار 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3)، إذا كان مرفقاً بالإصدار، وقارن SHA-256 بالقيمة المنشورة:
 
-- Windows: `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe`.
-- Apple Silicon، macOS 26+: `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg`.
-- Intel، macOS 15+: `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg`.
+- Windows: `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe`.
+- Apple Silicon، macOS 26+: `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg`.
+- Intel، macOS 15+: `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg`.
 
 ### Windows
 
@@ -110,7 +112,7 @@ MultiRoute Downloader تطبيق سطح مكتب بلغة Java لتنزيل ال
 
 أثناء التشغيل تتوفر API على `http://127.0.0.1:8765/api/v1`. الطلبات والردود JSON بترميز UTF-8، ومع الجسم استخدم `Content-Type: application/json`. لا يلزم API token لإنشاء المهمات وإدارتها محلياً؛ بيانات اعتماد المصدر منفصلة. الاتصال من الكمبيوتر نفسه فقط؛ لا تعرض المنفذ للشبكة أو الإنترنت. الخيار `--headless` للتشغيل دون نافذة. استخدم مشغل الحزمة الأصلية؛ أمثلة `.cmd` تخص portable.
 
-الفحص: `GET /api/v1/health` والرد المعتاد `{"ok":true,"version":"4.1.1"}`. اضبط الشبكة في الواجهة أولاً، أو أرسل إلى `POST /api/v1/network`:
+الفحص: `GET /api/v1/health` والرد المعتاد `{"ok":true,"version":"4.1.3"}`. اضبط الشبكة في الواجهة أولاً، أو أرسل إلى `POST /api/v1/network`:
 
 ```json
 {
@@ -188,7 +190,7 @@ print(job["id"])
 | macOS | `~/Library/Application Support/MultiRoute Downloader/data` | `/Applications/MultiRoute Downloader.app` |
 | Linux | `~/.local/share/MultiRouteResume/data` | `~/.local/share/MultiRouteResume/` |
 
-مكوّن macOS الأصلي هو `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.1/gateway-net`. يستخدم Windows portable 3.0 مجلد `data/` بجانب المشغل مع إمكانية `data-location.config` أو `--data-dir`. Java الخاصة بـ Linux في `~/.local/share/MultiRouteResume/runtime` ومكوّنه المحمي في `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. ملفات التنزيل في الوجهة المختارة وقد تكون خارج هذه المسارات.
+مكوّن macOS الأصلي هو `/Library/PrivilegedHelperTools/MultiRouteResume/4.1.3/gateway-net`. يستخدم Windows portable 3.0 مجلد `data/` بجانب المشغل مع إمكانية `data-location.config` أو `--data-dir`. Java الخاصة بـ Linux في `~/.local/share/MultiRouteResume/runtime` ومكوّنه المحمي في `/usr/local/libexec/MultiRouteResume/3.0/gateway-net`. ملفات التنزيل في الوجهة المختارة وقد تكون خارج هذه المسارات.
 
 الملف `logs/downloads-history.jsonl` هو JSON سطري UTF-8، و`logs/downloads-history.log` سجل مقروء بتاريخ ووقت. تضاف الأحداث بعد إعادة التشغيل ولا يُعاد كتابة الماضي عند تغيير اللغة أو حذف المهمة. يحافظ النص على لغة لحظة الكتابة، بينما تعرض الواجهة اللغة الحالية. تقرأ النافذة ذيلاً حتى 1,000 حدث/2 MiB فقط، ويظل السجل الكامل على القرص وينمو مع الاستخدام، فاحفظ أرشيفاً منفصلاً عند الحاجة. يسجل الأسماء والمسارات المطلقة دون URL المصدر أو كلمات المرور أو token؛ راجع المسارات قبل المشاركة.
 
@@ -235,7 +237,7 @@ print(job["id"])
 
 ## تكامل Chrome وEdge
 
-افتح تكامل **Chrome / Edge** في التطبيق واسمح بإرسال الروابط وافتح مجلد الإضافة. مرة واحدة: افتح `chrome://extensions` أو `edge://extensions`، فعّل وضع المطور واختر “تحميل إضافة غير مضغوطة” وحدد `browser-extension` المحتوي على `manifest.json`. يضم التثبيت الأصلي المجلد بجوار JAR ويوجد في [browser-extension/](../browser-extension/) بالمصدر. أبقه في مكانه؛ فك `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip` أولًا إن استخدمته. الإضافة ليست منشورة في متجر المتصفح.
+افتح تكامل **Chrome / Edge** في التطبيق واسمح بإرسال الروابط وافتح مجلد الإضافة. مرة واحدة: افتح `chrome://extensions` أو `edge://extensions`، فعّل وضع المطور واختر “تحميل إضافة غير مضغوطة” وحدد `browser-extension` المحتوي على `manifest.json`. يضم التثبيت الأصلي المجلد بجوار JAR ويوجد في [browser-extension/](../browser-extension/) بالمصدر. أبقه في مكانه؛ فك `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip` أولًا إن استخدمته. الإضافة ليست منشورة في متجر المتصفح.
 
 يجب أن يعمل MultiRoute ولو في صينية النظام. أرسل الرابط من قائمته السياقية أو نافذة الإضافة. تُستخدم المجلدات والبوابات وملف الموقع الحالي وتبقى اختيارات المستودع/torrent عند الحاجة. المنفذ الافتراضي 8765؛ طابقه مع منفذ API إن تغيّر. يُرسل URL فقط دون cookies أو كلمات مرور ودون اعتراض التنزيلات الأخرى. اضبط وصول المصدر في التطبيق. إن طُلب إذن اتصال محلي فامنحه لهذه الإضافة المختارة فقط.
 

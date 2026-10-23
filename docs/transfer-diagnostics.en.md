@@ -1,4 +1,4 @@
-# Download transfer diagnostics (4.1.2)
+# Download transfer diagnostics (4.1.3)
 
 Open **Settings → Log** to view translated transfer events. **Open logs folder** opens the active data directory's logs.
 

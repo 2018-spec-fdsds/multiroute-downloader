@@ -1,13 +1,13 @@
 # MultiRoute Downloader
 
-**New in 4.1.1:** DNS retries over TCP after UDP timeouts or truncated responses, using the same gateway and application virtual IP. Automatic refresh preserves scrolling across network settings, downloads, uploads and logs. [Release notes and validation limits](docs/releases/4.1.1.en.md).
+**New in 4.1.3:** Civitai/CDN range probing, bounded first-segment reads and reuse of saved sequential data improve resumable downloads. Temporary HTTP 200 replies for nonzero ranges retry after 2–30 seconds while preserving data and keeping the gateway worker available. A persistent per-gateway journal distinguishes received traffic from saved progress. [Release notes and validation limits](docs/releases/4.1.3.en.md) · [Transfer diagnostics](docs/transfer-diagnostics.en.md).
 
 **New in 4.0.1:** select several downloads with Ctrl/Cmd-click or Shift, or select every visible row with Ctrl/Cmd+A, then remove them with one confirmation. Removing files is optional and off by default. Selection survives automatic list refreshes; failed removals remain selected for retry.
 
 **New in 4.0:** saved site profiles with isolated accounts, verified FTP/FTPS/SFTP uploads and remote browsing, plus bounded ZIP/TAR/7Z/RAR previews. Uploads require remote read permission for full SHA-256 verification. One upload file uses one gateway; multiple files can run in parallel. [Full instructions](docs/en.md#saved-sites-uploads-and-archive-previews-40).
 
 Java desktop download manager with resumable segments through selectable LAN
-gateways and a localhost API. Native installer version: **4.1.1**; portable ZIP
+gateways and a localhost API. Native installer version: **4.1.3**; portable ZIP
 distributions for **3.0** remain available.
 
 [English](docs/en.md) · [Русский](docs/ru.md) · [Deutsch](docs/de.md) ·
@@ -31,7 +31,7 @@ Project owner: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
 **Retained from 3.4:** MD5 and SHA-512 whole-file verification alongside SHA-256, automatic reference lookup, manual expected values and per-algorithm results in the UI and API. The transparent tray icon with black digits is retained.
 
-**Download installers:** [Windows and macOS files in the downloads folder](https://github.com/2018-spec-fdsds/multiroute-downloader/tree/main/downloads/v4.1.1).
+**Download installers:** [Windows and macOS files in the downloads folder](downloads/v4.1.3/).
 
 The default download folder is resolved for the current user at launch: `%USERPROFILE%\Downloads` on Windows and `~/Downloads` on macOS/Linux. A saved default follows the current profile; a folder you select manually is retained.
 
@@ -95,18 +95,18 @@ Batch import: one URL per line, preview before submission.
 
 ## Download and install
 
-### Native Windows and macOS installers (4.1.1)
+### Native Windows and macOS installers (4.1.3)
 
-Choose a single installer file from [release 4.1.1](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.1).
-The application, full Java runtime and compiled
+Choose a single installer file from [release 4.1.3](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.1.3).
+The application, private Java 21 runtime and compiled
 network component are included. After installation, open the app from its normal
 icon; a command window or Terminal session is not required.
 
 | Platform | Installer | Installed application |
 | --- | --- | --- |
-| Windows 11 x64 | `MultiRoute-Downloader-4.1.1-Windows-x64-Setup.exe` | **MultiRoute Downloader** in Start or its desktop shortcut |
-| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.1-macOS-arm64.pkg` | `/Applications/MultiRoute Downloader.app` |
-| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.1-macOS-x86_64.pkg` | `/Applications/MultiRoute Downloader.app` |
+| Windows 11 x64 | `MultiRoute-Downloader-4.1.3-Windows-x64-Setup.exe` | **MultiRoute Downloader** in Start or its desktop shortcut |
+| Apple Silicon, macOS 26+ | `MultiRoute-Downloader-4.1.3-macOS-arm64.pkg` | `/Applications/MultiRoute Downloader.app` |
+| Intel, macOS 15+ | `MultiRoute-Downloader-4.1.3-macOS-x86_64.pkg` | `/Applications/MultiRoute Downloader.app` |
 
 Windows checks Npcap from the application. If missing, it offers a verified
 download of the official installer and a normal interactive UAC installation;
@@ -144,7 +144,7 @@ native `.pkg` application uses graphical authorization instead.
 ## Computer and network requirements
 
 - A full Java 17+ runtime for the native CPU architecture, including
-  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 4.1.1
+  `java.desktop`, `java.net.http`, `jdk.httpserver` and `java.xml`. Native 4.1.3
   installers include a suitable runtime; portable/Linux deployment checks or
   downloads one when necessary.
 - Wired Ethernet in the same IPv4 LAN as the selected Internet gateways.
@@ -210,7 +210,7 @@ built Java JAR before it downloads prerequisites.
 - Earlier 3.0 baseline: [application checks](CHECKS.ru.md),
   [application report](TEST-REPORT.json) and
   [deployment and documentation checks](DEPLOYMENT-TEST-REPORT.json).
-- [4.1.1 release notes](docs/releases/4.1.en.md) describe the new network diagnostics and subnet behavior. Controlled interface snapshots exercise same-subnet IP changes; a real DHCP change during a live multi-router transfer has not been verified. Target-system installation/security dialogs and physical gateway WAN behavior still require validation.
+- [4.1.3 release notes](docs/releases/4.1.3.en.md) distinguish the completed installed-app transfer from the checks recorded for the new release packages. [Network diagnostics](docs/network-diagnostics.en.md) describe subnet validation; a real DHCP change during a live multi-router transfer remains unverified. Gateway availability must be assessed per connection; one completed download does not establish working WAN access through every configured router.
 - Installers are unsigned; macOS packages are not Developer ID signed or notarized. Installer instructions correspond to the package source commit recorded in the matching report.
 - The native gateway transport supports public IPv4. Wi-Fi-only/VPN-only
   adapters, IPv6-only sources and local LAN torrent peers are outside this mode.
@@ -238,7 +238,7 @@ The image uses owned synthetic Unicode demo tasks. Its counters are not a throug
 
 ## Browser integration
 
-Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.1.1-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
+Open the desktop **Chrome / Edge** integration dialog, enable link delivery and open its extension folder. Once in Chrome, open `chrome://extensions`; in Edge open `edge://extensions`. Turn on Developer mode, choose **Load unpacked** and select the `browser-extension` folder containing `manifest.json`. The native installers include it beside the application JAR; a source checkout also provides [browser-extension/](browser-extension/). Keep this folder in place. If using the separate `MultiRoute-Downloader-4.1.3-Chrome-Edge.zip`, extract it first and select its folder. This release is loaded locally, not published in a browser store.
 
 Keep MultiRoute running, including in the tray. Right-click a link and choose the MultiRoute download action, or use the extension popup to send a URL. The desktop uses the currently selected folder, gateways and site profile; repository/torrent choices still appear when needed. The popup port defaults to 8765; set it to the application’s actual local API port if changed. Only the URL is sent: browser cookies/passwords are not copied and ordinary browser downloads are not intercepted. Configure required source access in the application. If the browser requests permission for the local connection, approve it only for this chosen extension.
 
