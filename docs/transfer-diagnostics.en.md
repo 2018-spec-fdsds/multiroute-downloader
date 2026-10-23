@@ -11,7 +11,7 @@ Open **Settings → Log** to view translated transfer events. **Open logs folder
 - `wire_total_bytes`: cumulative received payload across the job, including repeat traffic;
 - completion, interruption, failure reason and preservation of saved data.
 
-Progress summaries are limited to one per attempt every 12 seconds. Attempt boundaries are recorded separately. `prefix_restarted` denotes an explicitly requested discard; `discarded_bytes` distinguishes it from a retry that preserves data. This patch prevents automatic whole-file resets. Source URLs and authentication secrets are excluded from this journal.
+Progress summaries are limited to one per attempt every 12 seconds. Attempt boundaries are recorded separately. `prefix_restarted` denotes an explicitly requested discard; `discarded_bytes` distinguishes it from a retry that preserves data. This patch prevents automatic whole-file resets. Structured event fields omit source URLs and authentication secrets. Filesystem exception text in `reason` may include a local filename or path; review the log before sharing it.
 
 ## Resume and source behavior
 
