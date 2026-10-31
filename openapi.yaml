@@ -1,0 +1,4106 @@
+openapi: 3.0.3
+info:
+  title: MultiRoute Downloader local API
+  version: 4.3.7
+  description: Localhost-only native desktop/headless API. Canonical JSON is independent of UI language. Request
+    bodies are limited to 1 MiB; explicit Content-Length is optional. JSON text is UTF-8. No ordinary API token
+    is used. External management requires the signed automation_api capability; additional product capabilities
+    are checked independently. Licensing is bound to the installation key, not MAC/IP. Narrow
+    Free diagnostics and private authenticated lifecycle calls are listed below. Do not expose this localhost API
+    to LAN/Internet.
+servers:
+- url: http://127.0.0.1:8765
+paths:
+  /api/v1/sources/inspect:
+    post:
+      operationId: inspectSource
+      description: Inspect HTTP/HTTPS/FTP/FTPS/SFTP, authenticated Hugging Face, torrent/magnet, HTTPS Metalink
+        .meta4 and HTTPS WebDAV (webdavs:// or source_type=webdav). A selected application gateway transports new
+        source protocols/metadata. FTP is passive; FTPS uses explicit TLS for control and data; SFTP requires a
+        pinned verified SHA256 host key. Raw metainfo/resume data and credential secrets are not returned. Ordinary
+        files use a probe request and can report unknown size -1.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  description: HTTP(S) URL, magnet:? URI or explicitly supplied local .torrent path.
+                source_type:
+                  type: string
+                  enum:
+                  - torrent
+                  - metalink
+                  - webdav
+                  description: Optional; explicitly treats a URL without a .torrent extension as torrent metainfo.
+                revision:
+                  type: string
+                  pattern: ^[a-fA-F0-9]{40}$
+                  description: Optional exact repository commit.
+                route:
+                  $ref: '#/components/schemas/Route'
+                routes:
+                  type: array
+                  description: Alternative to route; the first enabled route reads metadata. Torrent and magnet
+                    require type=gateway.
+                  items:
+                    $ref: '#/components/schemas/Route'
+                site_profile_id:
+                  type: string
+                  format: uuid
+                  description: Explicit saved site profile. Credentials are isolated by profile and exact origin;
+                    no global credential fallback for a selected profile.
+      responses:
+        '200':
+          description: Source metadata or file choices.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/HubSource'
+                - $ref: '#/components/schemas/TorrentSource'
+                - $ref: '#/components/schemas/SourceListing'
+                - $ref: '#/components/schemas/FileSource'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/sources/download:
+    post:
+      operationId: downloadSelectedSourceFiles
+      description: Create selected Hugging Face/Metalink/WebDAV jobs, one torrent job or one ordinary source file.
+        selected_files is required for repository/listing or multi-file torrent. names and metadata bind selection;
+        compatible old jobs are returned with reused=true without restarting. Returns jobs/source batch shape. Jobs
+        start through queue policy. Auth must first be saved via source-auth. Torrent piece hashes and publisher
+        whole/piece SHA are verified; identical size alone never establishes mirror identity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSourceDownload'
+      responses:
+        '201':
+          description: New selected jobs started, compatible existing jobs returned without restarting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDownloadResult'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - batch_downloads for several selected source/torrent files
+      - extra_gateways for more than 2 gateways in shared use
+      - extra_concurrent_downloads to run more than 3 downloads concurrently; queue setting still applies
+  /api/v1/network/dns:
+    get:
+      operationId: getDnsSettings
+      responses:
+        '200':
+          description: Application DNS config and readonly status; does not start the native helper.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsState'
+      x-required-capabilities: []
+    put:
+      operationId: applyDnsSettings
+      description: Validate and persist only the six configuration fields. Applies to subsequent DNS lookups and
+        invalidates the old policy cache; existing payload TCP streams remain. Returns the standalone DNS state.
+        No OS DNS/routes/IP changes. No credentials or readonly revision/status fields are accepted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsConfig'
+      responses:
+        '200':
+          description: Applied DNS configuration and returned revision.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsState'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: applyDnsSettingsCompat
+      description: Validate and persist only the six configuration fields. Applies to subsequent DNS lookups and
+        invalidates the old policy cache; existing payload TCP streams remain. Returns the standalone DNS state.
+        No OS DNS/routes/IP changes. No credentials or readonly revision/status fields are accepted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsConfig'
+      responses:
+        '200':
+          description: Applied DNS configuration and returned revision.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsState'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/network/dns/test:
+    post:
+      operationId: testDnsSettings
+      description: Tests an unsaved draft through selected configured gateways without saving or changing revision.
+        HTTP 200 may contain partial failure and ok=false; inspect every row. System success checks OS resolution,
+        not independent gateway WAN reachability. Each query has an 8-second total budget.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsTestRequest'
+      responses:
+        '200':
+          description: Per-gateway DNS results; this is not a file-transfer success report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsTestReport'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/network/dns/providers:
+    get:
+      operationId: getDnsProviders
+      description: Three fixed provider presets with full DoH/DoT configurations. Custom is an allowed configurable
+        provider rather than a fourth preset.
+      responses:
+        '200':
+          description: Supported modes and fixed Cloudflare/Quad9/Google presets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsProviders'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/network:
+    get:
+      operationId: getApplicationNetwork
+      responses:
+        '200':
+          description: Virtual IPv4, configured routers and network helper state. No OS routes or IP configuration
+            are edited. network_validation contains fresh native subnet evidence; GET never starts the helper.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dns:
+                    $ref: '#/components/schemas/DnsState'
+                  virtual_ip:
+                    type: string
+                  gateways:
+                    type: array
+                    items:
+                      type: string
+                  running:
+                    type: boolean
+                  os_routes_changed:
+                    type: boolean
+                    enum:
+                    - false
+                  network_validation:
+                    type: object
+                    required:
+                    - status
+                    - message
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - pending
+                        - valid
+                        - error
+                      message:
+                        type: string
+                        description: Canonical diagnostic text; desktop presentation translates it.
+                      computer_ipv4:
+                        type: string
+                      netmask:
+                        type: string
+                      prefix_length:
+                        type: integer
+                        minimum: 1
+                        maximum: 30
+                      network_cidr:
+                        type: string
+                      interface_index:
+                        type: integer
+                      network_generation:
+                        type: integer
+                        description: Increases when the observed computer IPv4 changes on the selected LAN.
+                  application_mac:
+                    $ref: '#/components/schemas/ApplicationMac'
+      x-required-capabilities: []
+    post:
+      operationId: configureApplicationNetwork
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - virtual_ip
+              - gateways
+              properties:
+                virtual_ip:
+                  type: string
+                  example: 192.168.1.70
+                gateways:
+                  type: array
+                  minItems: 1
+                  maxItems: 8
+                  uniqueItems: true
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Configuration applied and saved.
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      description: Configure 1..8 gateways, default four. Same virtual IP allows appending/removing profiles during
+        transfers without restarting other gateway connections. Removal disables affected job routes and returns
+        unfinished chunks; at least one gateway must remain for every unfinished job. Added profiles are not automatically
+        selected in existing jobs. Same-IP topology editing works offline; actual address/route checks occur explicitly
+        or when the helper starts. Changing virtual IP requires active jobs to pause.
+      x-required-capabilities:
+      - automation_api
+  /api/v1/gateways/speed:
+    post:
+      operationId: measureGatewaySpeed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - gateway
+              properties:
+                gateway:
+                  type: string
+                  example: 192.168.1.3
+                url:
+                  type: string
+                  description: Optional HTTP(S) Range file; defaults to the Selectel sample.
+      responses:
+        '200':
+          description: Actual bytes and throughput through the specified router.
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/health:
+    get:
+      operationId: health
+      responses:
+        '200':
+          description: Controller is running.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  version:
+                    type: string
+      x-required-capabilities: []
+  /api/v1/jobs:
+    get:
+      operationId: listJobs
+      responses:
+        '200':
+          description: All jobs and their current progress.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - jobs
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+      x-required-capabilities: []
+    post:
+      operationId: createJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateJob'
+      responses:
+        '201':
+          description: Job(s) accepted through persisted queue policy; may still be queued. Existing compatible
+            jobs are reused without automatic restart. Idempotent replay returns the earlier creation result.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Job'
+                - $ref: '#/components/schemas/SourceDownloadResult'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Za-z0-9_.:-]{1,128}$
+        description: 'Same canonical input replays earlier result with idempotent_replay=true. Different input with
+          same key fails. Persistent profile-scoped registry: 1024 keys, 7-day registry TTL; manifests permit interrupted-write
+          recovery. Use a new key after removing the associated single job.'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - batch_downloads for several selected source/torrent files
+      - extra_gateways for more than 2 gateways in shared use
+      - extra_concurrent_downloads to run more than 3 downloads concurrently; queue setting still applies
+  /api/v1/jobs/{id}:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    get:
+      operationId: getJob
+      responses:
+        '200':
+          description: One job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+      x-required-capabilities: []
+    delete:
+      operationId: removeJob
+      parameters:
+      - name: delete_files
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Explicitly delete this job's downloaded files and unfinished parts.
+      description: Stops the selected job and removes its history record. By default all downloaded files and unfinished
+        parts/cache are kept. With delete_files=true removes only owned unfinished data and verified published files
+        of this job. Never removes the download directory or unrelated files. Destructive file deletion may be partial
+        if filesystem operations fail.
+      responses:
+        '200':
+          description: Job removed; files kept unless delete_files=true.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  id:
+                    type: string
+                  removed:
+                    type: boolean
+                  completed_files_kept:
+                    type: boolean
+                  unfinished_parts_kept:
+                    type: boolean
+                  kept_paths:
+                    type: array
+                    items:
+                      type: string
+                  deleted_files:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/routes:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    put:
+      operationId: replaceJobGateways
+      description: Replaces the full enabled gateway set for an existing HTTP or torrent job. Select one to 8 distinct
+        gateways from current network settings. Checked before applying; running jobs keep verified parts, cancel
+        unfinished transfers on removed gateways and give new work to added gateways. Historical route counters
+        are retained with enabled=false. Paused/failed jobs remain stopped. Completed/verifying jobs and jobs stopping
+        or under maintenance reject the operation. An unfinished transfer with no new payload for 60 seconds is
+        cancelled and returned to the shared pool after its writer releases storage. Does not edit OS routes, the
+        virtual IP or global gateway configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceJobGateways'
+      responses:
+        '200':
+          description: Updated job with the desired enabled gateways; verified progress retained.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: replaceJobGatewaysCompat
+      description: Compatible alias of PUT at the same path; the body is the full desired gateway set, not an incremental
+        patch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceJobGateways'
+      responses:
+        '200':
+          description: Updated job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/directory:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: changeJobDirectory
+      description: Changes the output folder of a paused or failed job, retaining verified parts and without starting
+        the download. Select a folder with enough free space; existing files are never overwritten.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - directory
+              properties:
+                directory:
+                  type: string
+      responses:
+        '200':
+          description: Updated job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/pause:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: pauseJob
+      responses:
+        '200':
+          description: Paused job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/resume:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: resumeJob
+      responses:
+        '200':
+          description: Resumed job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/routes/test:
+    post:
+      operationId: testRoute
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+      responses:
+        '200':
+          description: Egress probe and gateway check.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  egress_ip:
+                    type: string
+                  gateway_hint:
+                    type: string
+                  expected_gateway:
+                    type: string
+                  gateway_match:
+                    type: boolean
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/routes/speed:
+    post:
+      operationId: measureRouteSpeed
+      description: Downloads a bounded sample through the actual route transport, without creating a job or saving
+        a file. Compare channels with sequential calls.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - route
+              properties:
+                route:
+                  $ref: '#/components/schemas/Route'
+                url:
+                  type: string
+                  description: HTTP(S) Range source. Empty or omitted selects the Selectel test file.
+      responses:
+        '200':
+          description: Measured throughput for this channel.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - ok
+                - mbps
+                - mib_per_second
+                - bytes
+                - elapsed_ms
+                - url
+                - limit_reached
+                properties:
+                  ok:
+                    type: boolean
+                  mbps:
+                    type: number
+                    description: Megabits per second; decimal units.
+                  mib_per_second:
+                    type: number
+                    description: Mebibytes per second.
+                  bytes:
+                    type: integer
+                    format: int64
+                  elapsed_ms:
+                    type: number
+                  url:
+                    type: string
+                    format: uri
+                  route_name:
+                    type: string
+                  gateway:
+                    type: string
+                  limit_reached:
+                    type: boolean
+                  max_bytes:
+                    type: integer
+                    format: int64
+                  duration_limit_ms:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/routes/discover:
+    get:
+      operationId: discoverGateways
+      description: Collects IPv4 LAN worker announcements for up to two seconds. Verify any chosen gateway with
+        the route probe before use.
+      responses:
+        '200':
+          description: Advertised gateway IP to worker endpoint mapping.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - gateways
+                properties:
+                  gateways:
+                    type: object
+                    additionalProperties:
+                      type: string
+                      format: uri
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/routes/inspect:
+    post:
+      operationId: inspectLocalGateway
+      description: Checks the application Ethernet path and gateway ARP response. Uses a private virtual IP, never
+        edits OS routes or addresses.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - gateway
+              properties:
+                gateway:
+                  type: string
+                  description: Requested LAN gateway of the application TCP/IP stack.
+                url:
+                  type: string
+                  description: Source URL. Empty selects the standard speed source.
+      responses:
+        '200':
+          description: Route availability and a visible explanation, including invalid or unconfirmed gateway addresses.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - gateway
+                - available
+                - type
+                - status
+                - message
+                properties:
+                  gateway:
+                    type: string
+                  available:
+                    type: boolean
+                  type:
+                    type: string
+                    enum:
+                    - gateway
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  destination:
+                    type: string
+                  gateway_hint:
+                    type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/dialogs/directory:
+    post:
+      operationId: chooseDirectory
+      description: Opens a native folder chooser on the controller computer when a graphical desktop is available.
+        Headless clients should supply the directory path directly when creating a job.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                initial:
+                  type: string
+                  description: Initial directory.
+      responses:
+        '200':
+          description: Selected path or cancellation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  cancelled:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/queue:
+    get:
+      operationId: getQueueSettings
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueSettings'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    put:
+      operationId: updateQueueSettings
+      description: Partial queue policy update; payload bytes/s (0 unlimited), computer local timezone, equal start/end
+        all day, overnight windows supported. Scheduled pauses become queued; manually paused jobs remain paused.
+        Lowering concurrency stops new starts without cancelling current jobs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueOptions'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueSettings'
+        '400': &id001
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: updateQueueSettingsCompat
+      description: Partial queue policy update; payload bytes/s (0 unlimited), computer local timezone, equal start/end
+        all day, overnight windows supported. Scheduled pauses become queued; manually paused jobs remain paused.
+        Lowering concurrency stops new starts without cancelling current jobs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueOptions'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueSettings'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/options:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    put:
+      operationId: updateJobOptions
+      description: Partial update. Higher priority starts first; start_after_ms is Unix milliseconds. Optional seeding
+        defaults off and follows verified assembly through selected gateways, limited by time or measured ratio.
+        Upload-only sessions do not request missing pieces; upload cap 1 MiB/s per session. Saving unchanged file
+        priorities does not restart transfer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobOptions'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400': *id001
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - download_priorities for non-default priority; stored priority is retained without enforcement in Free
+    post:
+      operationId: updateJobOptionsCompat
+      description: Partial update. Higher priority starts first; start_after_ms is Unix milliseconds. Optional seeding
+        defaults off and follows verified assembly through selected gateways, limited by time or measured ratio.
+        Upload-only sessions do not request missing pieces; upload cap 1 MiB/s per session. Saving unchanged file
+        priorities does not restart transfer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobOptions'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - download_priorities for non-default priority; stored priority is retained without enforcement in Free
+  /api/v1/jobs/batch:
+    post:
+      operationId: createJobBatch
+      description: 1..128 independent job inputs. One invalid entry does not undo successful entries. Each entry
+        can have an idempotency_key; header applies only to the single POST /jobs operation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchJobs'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResult'
+        '400': *id001
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      - batch_downloads
+  /api/v1/events:
+    get:
+      operationId: subscribeEvents
+      description: 'SSE: initial snapshot, then job/queue/network events, numeric IDs and 15-second heartbeat. At
+        most 32 subscribers, 64 buffered events each. Slow clients receive reset(reason=slow_consumer) and should
+        fetch GET /jobs. No Last-Event-ID replay; reconnect starts fresh snapshot. Publishers never block on a client.'
+      responses:
+        '200':
+          description: Continuous canonical event stream.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '503':
+          description: Event subscriber limit reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/source-auth:
+    get:
+      operationId: listSourceCredentials
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PublicSourceAuth'
+        '400': *id001
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: saveSourceCredentials
+      description: Create/replace exact-origin source credentials in protected encrypted local storage. Never copied
+        into job manifests by this endpoint. TLS certificates/SSH host keys are verified. Auth is applied only to
+        matching redirect origins; private/gated Hugging Face still requires actual account access.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceAuthInput'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSourceAuth'
+        '400': *id001
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    put:
+      operationId: saveSourceCredentialsPut
+      description: Create/replace exact-origin source credentials in protected encrypted local storage. Never copied
+        into job manifests by this endpoint. TLS certificates/SSH host keys are verified. Auth is applied only to
+        matching redirect origins; private/gated Hugging Face still requires actual account access.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceAuthInput'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSourceAuth'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/source-auth/{credentialId}:
+    parameters:
+    - name: credentialId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    delete:
+      operationId: deleteSourceCredentials
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        '400': *id001
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/sources/auth:
+    get:
+      operationId: listSourceCredentialsAuthAlias
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PublicSourceAuth'
+        '400': &id002
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: saveSourceCredentialsAuthAlias
+      description: Create/replace exact-origin source credentials in protected encrypted local storage. Never copied
+        into job manifests by this endpoint. TLS certificates/SSH host keys are verified. Auth is applied only to
+        matching redirect origins; private/gated Hugging Face still requires actual account access.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceAuthInput'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSourceAuth'
+        '400': *id002
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    put:
+      operationId: saveSourceCredentialsPutAuthAlias
+      description: Create/replace exact-origin source credentials in protected encrypted local storage. Never copied
+        into job manifests by this endpoint. TLS certificates/SSH host keys are verified. Auth is applied only to
+        matching redirect origins; private/gated Hugging Face still requires actual account access.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceAuthInput'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSourceAuth'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/sources/auth/{credentialId}:
+    parameters:
+    - name: credentialId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    delete:
+      operationId: deleteSourceCredentialsCredentialAlias
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/site-profiles:
+    get:
+      operationId: listSiteProfiles
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfiles'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: saveSiteProfile
+      description: Create or edit a flat encrypted site profile. Public response omits credentials. Profiles sharing
+        an origin remain isolated. Blank secrets preserve prior values only on same-origin/same-type edits unless
+        replace_credentials=true. At most 128 profiles. No network operation is performed by saving.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteProfileInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfile'
+        '400': &id003
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - extra_site_profiles to create beyond 3; existing legacy profiles may still be used/edited/deleted
+    put:
+      operationId: replaceSiteProfile
+      description: Create or edit a flat encrypted site profile. Public response omits credentials. Profiles sharing
+        an origin remain isolated. Blank secrets preserve prior values only on same-origin/same-type edits unless
+        replace_credentials=true. At most 128 profiles. No network operation is performed by saving.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteProfileInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteProfile'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      x-license-conditions:
+      - extra_site_profiles to create beyond 3; existing legacy profiles may still be used/edited/deleted
+  /api/v1/site-profiles/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    delete:
+      operationId: deleteSiteProfile
+      description: Remove only the profile and its stored credentials. Jobs and local/remote files are retained.
+        A dependent task retains the original profile binding and cannot switch accounts in place; recreate it with
+        a valid profile if the original was removed.
+      responses:
+        '200':
+          description: Profile removed; returns ok=true.
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/uploads:
+    get:
+      operationId: listUploads
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Uploads'
+      x-required-capabilities: []
+    post:
+      operationId: createUpload
+      description: Queue a verified FTP, explicit FTPS or SFTP upload through selected gateways. Uses a temporary
+        remote file, compares an existing prefix before resume and requires full SHA-256 remote readback before
+        publication. Remote read/write/rename permissions are needed; verification consumes download traffic. One
+        file uses one gateway; independent uploads run in parallel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpload'
+      responses:
+        '201':
+          description: Upload queued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/uploads/{id}:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    get:
+      operationId: getUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+      x-required-capabilities: []
+    delete:
+      operationId: removeUpload
+      description: Stop and remove the upload task. Keeps the local source and all remote final/partial files.
+      responses:
+        '200':
+          description: Returns id, removed=true, local_files_kept=true and remote_files_kept=true.
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/uploads/{id}/pause:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: pauseUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/uploads/{id}/resume:
+    parameters:
+    - $ref: '#/components/parameters/JobId'
+    post:
+      operationId: resumeUpload
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Upload'
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/remote/list:
+    post:
+      operationId: listRemoteFiles
+      description: Read a bounded FTP/explicit-FTPS/SFTP directory through a selected application gateway. Requires
+        MLSD or supported Unix LIST for FTP; Unicode FTP paths require UTF-8 support. Does not upload or remove
+        files.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteListRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteListing'
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/archives/preview:
+    post:
+      operationId: previewArchive
+      description: 'List remote ZIP/TAR/7Z/RAR4/RAR5 metadata without extraction or execution. Requires selected
+        gateway, byte ranges and stable ETag or Last-Modified. Limits: 16 MiB fetched metadata, 10000 entries, 60
+        seconds; 7z header memory 64 MiB. Truncation is explicit. Encrypted RAR headers are unsupported/password-required;
+        archive passwords are not persisted. This is a listing, not content integrity verification.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchivePreviewRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchivePreview'
+        '400': *id003
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/browser/status:
+    parameters:
+    - &id004
+      name: Origin
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - chrome-extension://ljdklefabmaecjalfhjoicmgedmjjkbl
+    get:
+      operationId: statusFromBrowserExtension
+      description: Opt-in bridge reserved for the bundled fixed-ID Chrome/Edge extension. Disabled by default; exact
+        Origin is mandatory. Only this scoped bridge permits extension CORS. Ordinary local API browser-origin guards
+        are unchanged. The desktop application must already be running; a headless-only controller has no graphical
+        receiver.
+      responses:
+        '200':
+          description: Application/version/ready state.
+        '403':
+          description: Disabled bridge or different/missing extension origin.
+        '503':
+          description: No live desktop receiver.
+      x-required-capabilities: []
+    options:
+      description: Scoped preflight for the fixed extension origin; only GET/POST and Content-Type are allowed.
+      responses:
+        '204':
+          description: Allowed preflight.
+        '403':
+          description: Origin, method or requested headers are not allowed.
+      x-required-capabilities: []
+  /api/v1/browser/download:
+    parameters:
+    - *id004
+    post:
+      operationId: downloadFromBrowserExtension
+      description: Opt-in bridge reserved for the bundled fixed-ID Chrome/Edge extension. Disabled by default; exact
+        Origin is mandatory. Only this scoped bridge permits extension CORS. Ordinary local API browser-origin guards
+        are unchanged. The desktop application must already be running; a headless-only controller has no graphical
+        receiver.
+      responses:
+        '202':
+          description: URL delivered to the desktop flow, accepted=true; not proof of completed download.
+        '403':
+          description: Disabled bridge or different/missing extension origin.
+        '503':
+          description: No live desktop receiver.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrowserLink'
+      x-required-capabilities: []
+    options:
+      description: Scoped preflight for the fixed extension origin; only GET/POST and Content-Type are allowed.
+      responses:
+        '204':
+          description: Allowed preflight.
+        '403':
+          description: Origin, method or requested headers are not allowed.
+      x-required-capabilities: []
+  /api/v1/jobs/{id}/checksum:
+    put:
+      operationId: updateExpectedChecksum
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+      description: Save the latest manual reference without changing bytes, chunks, URL/ETag, offsets or the running
+        transfer. Final verification uses the latest checksum_revision. Publisher source_* references remain independently
+        checked. A nonempty whole-file reference is valid for one selected torrent file only. This integrity feature
+        is Free in the desktop UI; ordinary external API use requires automation_api.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditableChecksum'
+      responses:
+        '200':
+          description: Reference saved; current job snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+    post:
+      operationId: updateExpectedChecksumPost
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+      description: Save the latest manual reference without changing bytes, chunks, URL/ETag, offsets or the running
+        transfer. Final verification uses the latest checksum_revision. Publisher source_* references remain independently
+        checked. A nonempty whole-file reference is valid for one selected torrent file only. This integrity feature
+        is Free in the desktop UI; ordinary external API use requires automation_api.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditableChecksum'
+      responses:
+        '200':
+          description: Reference saved; current job snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/jobs/{id}/checksum/recheck:
+    post:
+      operationId: recheckCompletedChecksum
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+      description: Read the existing completed local file and return its integrity result after hashing (may take
+        time). No HTTP request, automatic repair, redownload, deletion or progress reset. A mismatch keeps transfer
+        status complete and sets integrity_status=mismatch. Missing/unreadable files produce an error result/error
+        response. Concurrent recheck, remove/move of this job and application MAC changes are blocked while checking.
+        Free via UI; normal external API access requires automation_api.
+      responses:
+        '200':
+          description: Local verification finished; current job snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+  /api/v1/license/status:
+    get:
+      operationId: getOfflineLicenseStatus
+      responses:
+        '200':
+          description: Read-only public offline license metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfflineLicenseStatus'
+      x-required-capabilities: []
+  /api/v1/license/policy:
+    get:
+      operationId: getLicensePolicy
+      responses:
+        '200':
+          description: Effective feature limits and transfer/checksum activity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicensePolicySnapshot'
+      x-required-capabilities: []
+  /api/v1/instance:
+    get:
+      operationId: getInstanceInfo
+      description: Read-only instance metadata. No private lifecycle secret is returned. idle_stop_supported=true
+        when idle-only shutdown is available.
+      responses:
+        '200':
+          description: Instance metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  pid:
+                    type: integer
+                  started_at:
+                    type: string
+                  idle_stop_supported:
+                    type: boolean
+      x-required-capabilities: []
+  /api/v1/instance/stop:
+    post:
+      operationId: stopExactPrivateInstance
+      description: Private local lifecycle only, not a general download-management token. Requires the exact current
+        instance X-Instance-Key secret, obtained by a trusted local lifecycle controller. Never publish/log it.
+        With idle_only=true, both managers atomically check no active/queued/retrying/checksum work and reserve
+        closing; busy returns 409 instance_busy. Omitted query retains ordinary legacy stop. Version 4.2.9 did not
+        support atomic idle-stop.
+      parameters:
+      - name: idle_only
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Use true for safe update shutdown. Duplicate/unknown query options are rejected.
+      security:
+      - PrivateInstanceKey: []
+      responses:
+        '202':
+          description: Exact instance accepted shutdown.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          description: Missing/wrong private instance secret or rejected Host/Origin.
+        '409':
+          description: Application is busy; no shutdown reservation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    enum:
+                    - instance_busy
+                  error:
+                    type: string
+      x-required-capabilities: []
+  /:
+    get:
+      operationId: getApplicationInfo
+      responses:
+        '200':
+          description: Desktop application/API metadata; not a web UI.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  application:
+                    type: string
+                  interface:
+                    type: string
+                    enum:
+                    - desktop
+                  version:
+                    type: string
+                  api:
+                    type: string
+      x-required-capabilities: []
+  /index.html:
+    get:
+      operationId: getApplicationInfoIndex
+      responses:
+        '200':
+          description: Desktop application/API metadata; not a web UI.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  application:
+                    type: string
+                  interface:
+                    type: string
+                    enum:
+                    - desktop
+                  version:
+                    type: string
+                  api:
+                    type: string
+      x-required-capabilities: []
+  /api/state:
+    get:
+      operationId: listJobsLegacyState
+      responses:
+        '200':
+          description: All jobs and their current progress.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - jobs
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+      x-required-capabilities: []
+  /api/jobs/{id}:
+    get:
+      operationId: getJobLegacy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+      responses:
+        '200':
+          description: One job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/Error'
+      x-required-capabilities: []
+  /api/v1/statistics/traffic:
+    get:
+      operationId: getGatewayTrafficHistory
+      parameters:
+      - name: month
+        in: query
+        schema:
+          type: string
+          pattern: ^(all|[0-9]{4}-[0-9]{2})$
+          default: all
+        description: all-time or one calendar month YYYY-MM; period is a compatibility alias. Monthly attribution
+          uses the stored statistics timezone.
+      description: Historical traffic by gateway/month. Requires automation_api AND gateway_statistics; live speed/status
+        in UI remains Free.
+      responses:
+        '200':
+          description: Historical traffic snapshot.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      - gateway_statistics
+  /api/v1/statistics/traffic/export.csv:
+    get:
+      operationId: exportGatewayTrafficHistory
+      parameters:
+      - name: month
+        in: query
+        schema:
+          type: string
+          pattern: ^(all|[0-9]{4}-[0-9]{2})$
+          default: all
+        description: all-time or one calendar month YYYY-MM; period is a compatibility alias. Monthly attribution
+          uses the stored statistics timezone.
+      description: Historical UTF-8 CSV; requires automation_api AND gateway_statistics.
+      responses:
+        '200':
+          description: Traffic CSV.
+          content:
+            text/csv:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      - gateway_statistics
+  /api/v1/uploads/batch:
+    post:
+      operationId: createUploadBatch
+      description: Requires automation_api AND batch_downloads. Gateway union policy still applies; the download
+        concurrency quota of 3 is not an upload quota.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - uploads
+              properties:
+                uploads:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CreateUpload'
+      responses:
+        '200':
+          description: Per-upload results; some items may fail independently.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/ProRequired'
+      x-required-capabilities:
+      - automation_api
+      - batch_downloads
+components:
+  parameters:
+    JobId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-f0-9]{12}$
+  responses:
+    Error:
+      description: Request error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    ProRequired:
+      description: 'HTTP 403 when a required signed capability is missing: code=pro_required and feature identify
+        it. Host/Origin rejection can also return a generic error without these fields.'
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - error
+            properties: &id006
+              error:
+                type: string
+              code:
+                type: string
+                enum:
+                - pro_required
+              feature:
+                type: string
+                enum: &id007
+                - extra_gateways
+                - extra_concurrent_downloads
+                - extra_site_profiles
+                - download_priorities
+                - gateway_priorities
+                - gateway_statistics
+                - batch_downloads
+                - automation_api
+                - premium_appearance
+  schemas:
+    DnsConfig:
+      type: object
+      additionalProperties: false
+      properties:
+        mode:
+          type: string
+          enum:
+          - system
+          - doh
+          - dot
+          default: doh
+        provider:
+          type: string
+          enum:
+          - cloudflare
+          - quad9
+          - google
+          - custom
+          default: cloudflare
+        doh_url:
+          type: string
+          format: uri
+          description: HTTPS URL with an authentication hostname; no IP literal, userinfo, query or fragment. Required
+            for custom DoH.
+        dot_host:
+          type: string
+          description: TLS authentication hostname, not an IP literal. Required for custom DoT.
+        dot_port:
+          type: integer
+          minimum: 1
+          maximum: 65535
+          default: 853
+          not:
+            enum:
+            - 53
+        bootstrap_ips:
+          type: array
+          maxItems: 8
+          items:
+            type: string
+            format: ipv4
+          description: Literal public IPv4 addresses; at least one is required in encrypted modes. No OS bootstrap
+            lookup.
+        dnssec:
+          type: string
+          enum:
+          - 'off'
+          - validate
+          - require
+          default: validate
+          description: Local cryptographic validation for DoH/DoT. Validate permits authenticated insecure delegations;
+            require accepts only secure results. Bogus and indeterminate results are rejected. System mode permits
+            off only and defaults to off.
+      example:
+        mode: doh
+        provider: cloudflare
+        doh_url: https://cloudflare-dns.com/dns-query
+        dot_host: one.one.one.one
+        dot_port: 853
+        bootstrap_ips:
+        - 1.1.1.1
+        - 1.0.0.1
+        dnssec: validate
+      description: Application-scoped configuration only. Omitted preset fields take preset defaults; custom requires
+        its applicable URL/hostname and numeric bootstrap addresses. Fixed presets cannot be altered. DoH/DoT verify
+        trusted TLS, hostname and SNI with no plaintext/system fallback. System mode follows OS/VPN DNS policy and
+        cannot guarantee gateway affinity or encryption. Does not change OS DNS/routes/interface IPs. DNSSEC settings
+        are application scoped and use local dnsjava validation over the same authenticated gateway transport. The
+        preset endpoint is fixed; its DNSSEC policy remains editable.
+      allOf:
+      - oneOf:
+        - required:
+          - mode
+          properties:
+            mode:
+              enum:
+              - system
+            dnssec:
+              enum:
+              - 'off'
+        - properties:
+            mode:
+              enum:
+              - doh
+              - dot
+    DnsState:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - system
+          - doh
+          - dot
+          default: doh
+        provider:
+          type: string
+          enum:
+          - cloudflare
+          - quad9
+          - google
+          - custom
+          default: cloudflare
+        doh_url:
+          type: string
+          format: uri
+          description: HTTPS URL with an authentication hostname; no IP literal, userinfo, query or fragment. Required
+            for custom DoH.
+        dot_host:
+          type: string
+          description: TLS authentication hostname, not an IP literal. Required for custom DoT.
+        dot_port:
+          type: integer
+          minimum: 1
+          maximum: 65535
+          default: 853
+          not:
+            enum:
+            - 53
+        bootstrap_ips:
+          type: array
+          maxItems: 8
+          items:
+            type: string
+            format: ipv4
+          description: Literal public IPv4 addresses; at least one is required in encrypted modes. No OS bootstrap
+            lookup.
+        revision:
+          type: integer
+          format: int64
+          minimum: 1
+          readOnly: true
+        configuration_error:
+          type: string
+          readOnly: true
+        encrypted:
+          type: boolean
+          readOnly: true
+          description: May be absent before service initialization.
+        helper_ready:
+          type: boolean
+          readOnly: true
+        timeout_ms:
+          type: integer
+          enum:
+          - 8000
+          readOnly: true
+        plaintext_fallback:
+          type: boolean
+          enum:
+          - false
+          readOnly: true
+        gateway_status:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              gateway:
+                type: string
+                format: ipv4
+              mode:
+                type: string
+              provider:
+                type: string
+              revision:
+                type: integer
+                format: int64
+              ok:
+                type: boolean
+              elapsed_ms:
+                type: integer
+                format: int64
+              response_bytes:
+                type: integer
+              error:
+                type: string
+              at:
+                type: string
+                format: date-time
+              dnssec:
+                type: string
+                enum:
+                - 'off'
+                - validate
+                - require
+                default: validate
+                description: Local cryptographic validation for DoH/DoT. Validate permits authenticated insecure
+                  delegations; require accepts only secure results. Bogus and indeterminate results are rejected.
+                  System mode permits off only and defaults to off.
+              dnssec_status:
+                type: string
+                enum:
+                - secure
+                - insecure
+                - bogus
+                - indeterminate
+                - not_checked
+                description: Local verdict; an upstream AD flag alone is never trusted. Insecure does not authenticate
+                  the answer and is rejected by require mode.
+              dnssec_reason_code:
+                type: string
+              dnssec_reason:
+                type: string
+              dnssec_aux_queries:
+                type: integer
+                minimum: 0
+              dnssec_validated_ttl:
+                type: integer
+                minimum: 0
+        dnssec:
+          type: string
+          enum:
+          - 'off'
+          - validate
+          - require
+          default: validate
+          description: Local cryptographic validation for DoH/DoT. Validate permits authenticated insecure delegations;
+            require accepts only secure results. Bogus and indeterminate results are rejected. System mode permits
+            off only and defaults to off.
+        dnssec_validation:
+          type: string
+          enum:
+          - local
+          - disabled
+          readOnly: true
+        dnssec_trust_anchors:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              key_tag:
+                type: integer
+              algorithm:
+                type: integer
+              digest_type:
+                type: integer
+              digest:
+                type: string
+          description: Bundled IANA root DS anchors. Updated with application releases; automatic RFC 5011 anchor
+            management is not implemented.
+      description: Standalone DNS config plus readonly runtime state. A successful changed apply returns a new revision;
+        an equivalent apply may keep the current revision. Project the seven config fields before writing; never
+        echo readonly metadata.
+    DnsTestRequest:
+      type: object
+      required:
+      - settings
+      properties:
+        settings:
+          $ref: '#/components/schemas/DnsConfig'
+        gateways:
+          type: array
+          minItems: 1
+          maxItems: 8
+          uniqueItems: true
+          items:
+            type: string
+            format: ipv4
+          description: Configured gateways. Omitted means all configured gateways.
+        hostname:
+          type: string
+          default: example.com
+          description: Hostname to query for public IPv4 A answers.
+    DnsTestResult:
+      type: object
+      required:
+      - gateway
+      - ok
+      - elapsed_ms
+      properties:
+        gateway:
+          type: string
+          format: ipv4
+        ok:
+          type: boolean
+        addresses:
+          type: array
+          items:
+            type: string
+            format: ipv4
+        error:
+          type: string
+        elapsed_ms:
+          type: integer
+          format: int64
+          minimum: 0
+        dnssec:
+          type: string
+          enum:
+          - 'off'
+          - validate
+          - require
+          default: validate
+          description: Local cryptographic validation for DoH/DoT. Validate permits authenticated insecure delegations;
+            require accepts only secure results. Bogus and indeterminate results are rejected. System mode permits
+            off only and defaults to off.
+        dnssec_status:
+          type: string
+          enum:
+          - secure
+          - insecure
+          - bogus
+          - indeterminate
+          - not_checked
+          description: Local verdict; an upstream AD flag alone is never trusted. Insecure does not authenticate
+            the answer and is rejected by require mode.
+        dnssec_reason_code:
+          type: string
+        dnssec_reason:
+          type: string
+        dnssec_aux_queries:
+          type: integer
+          minimum: 0
+        dnssec_validated_ttl:
+          type: integer
+          minimum: 0
+    DnsTestReport:
+      type: object
+      required:
+      - mode
+      - provider
+      - hostname
+      - results
+      - ok
+      - plaintext_fallback
+      - os_routes_changed
+      properties:
+        mode:
+          type: string
+          enum:
+          - system
+          - doh
+          - dot
+          default: doh
+        provider:
+          type: string
+          enum:
+          - cloudflare
+          - quad9
+          - google
+          - custom
+          default: cloudflare
+        hostname:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DnsTestResult'
+        ok:
+          type: boolean
+          description: True only when every requested gateway row succeeded.
+        plaintext_fallback:
+          type: boolean
+          enum:
+          - false
+        os_routes_changed:
+          type: boolean
+          enum:
+          - false
+        dnssec:
+          type: string
+          enum:
+          - 'off'
+          - validate
+          - require
+          default: validate
+          description: Local cryptographic validation for DoH/DoT. Validate permits authenticated insecure delegations;
+            require accepts only secure results. Bogus and indeterminate results are rejected. System mode permits
+            off only and defaults to off.
+        dnssec_validation:
+          type: string
+          enum:
+          - local
+          - disabled
+          readOnly: true
+    DnsProviders:
+      type: object
+      properties:
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+            - system
+            - doh
+            - dot
+        plaintext_fallback:
+          type: boolean
+          enum:
+          - false
+        providers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                enum:
+                - cloudflare
+                - quad9
+                - google
+              doh:
+                $ref: '#/components/schemas/DnsConfig'
+              dot:
+                $ref: '#/components/schemas/DnsConfig'
+    Route:
+      type: object
+      required:
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - direct
+          - worker
+          - gateway
+        gateway:
+          type: string
+          description: LAN router used by the application stack or expected next-hop for a worker.
+        gateway_priority:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: Optional per-job override of queue.gateway_priorities for this route. Higher values are preferred for metadata and whole/single-segment files and receive more parallel range workers for multi-segment files. Equal values retain selected-route order. An explicit nonzero value requires the independent gateway_priorities Pro capability; saved values are ignored without it. Omit to inherit the global gateway setting; explicit zero overrides it.
+        virtual_ip:
+          type: string
+          description: Application virtual IPv4 for a gateway route; defaults to configured IP.
+        endpoint:
+          type: string
+          format: uri
+          description: Required only for a legacy worker. Ignored for gateway routes.
+        token:
+          type: string
+          writeOnly: true
+          description: Optional. Omit or leave empty for a worker without a token; otherwise supply the configured
+            token of at least 16 characters.
+        enabled:
+          type: boolean
+          default: false
+          description: Set true explicitly to activate this route when creating a job.
+        bytes:
+          type: integer
+          format: int64
+          readOnly: true
+        chunks:
+          type: integer
+          format: int64
+          readOnly: true
+        last_error:
+          type: string
+          readOnly: true
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+    RouteMetrics:
+      allOf:
+      - $ref: '#/components/schemas/Route'
+      - type: object
+        properties:
+          received_bytes:
+            type: integer
+            format: int64
+            minimum: 0
+          speed_bps:
+            type: number
+            minimum: 0
+            description: Actual received payload bytes per second; zero when stopped.
+          bytes:
+            type: integer
+            format: int64
+            minimum: 0
+            description: Verified bytes saved through this gateway.
+          chunks:
+            type: integer
+            minimum: 0
+          last_error:
+            type: string
+          peers:
+            type: integer
+            format: int64
+            minimum: 0
+          seeds:
+            type: integer
+            format: int64
+            minimum: 0
+          uploaded_bytes:
+            type: integer
+            format: int64
+            minimum: 0
+          upload_speed_bps:
+            type: integer
+            format: int64
+            minimum: 0
+          tracker_status:
+            type: string
+          source_url_active:
+            type: string
+            format: uri
+    ReplaceJobGateways:
+      type: object
+      required:
+      - routes
+      properties:
+        routes:
+          type: array
+          minItems: 1
+          maxItems: 8
+          description: Full desired set of 1 to 8 distinct configured gateways. At least one enabled gateway is
+            required; omitted historical routes become disabled. No OS route changes.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/Route'
+            - type: object
+              required:
+              - type
+              - gateway
+              - enabled
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - gateway
+                enabled:
+                  type: boolean
+                  description: Set true to include this gateway; false entries are ignored.
+    CreateJob:
+      type: object
+      required:
+      - url
+      - routes
+      properties:
+        expected_md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+          description: Optional expected whole-file MD5. It detects accidental corruption and does not replace strong
+            source identity, mirror trust or BitTorrent piece verification. Manual whole-file checksums require
+            exactly one selected file.
+        expected_sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+          description: Optional expected whole-file SHA-512. Every supplied or discovered checksum must match before
+            publishing the completed file. Legacy expected_sha256 remains supported.
+        url:
+          type: string
+          description: HTTP/HTTPS/FTP/explicit FTPS/SFTP file, webdavs:// source, HTTPS Metalink, Hugging Face,
+            .torrent URL/local path or magnet. HTTP without Range supports one whole transfer of any size, including
+            unknown Content-Length; no resume/distribution is claimed.
+        source_type:
+          type: string
+          enum:
+          - torrent
+          - metalink
+          - webdav
+          description: Explicit source metadata format override.
+        info_hash_v1:
+          type: string
+          pattern: ^[a-fA-F0-9]{40}$
+          description: Optional expected torrent info-hash from inspect; source mismatch is rejected.
+        info_hash_v2:
+          type: string
+          pattern: ^[a-fA-F0-9]{64}$
+          description: Optional expected v2 torrent info-hash from inspect.
+        directory:
+          type: string
+          description: Absolute or relative destination directory.
+        filename:
+          type: string
+        expected_sha256:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{64}$
+          description: Optional trusted SHA-256; the controller also discovers published SHA-256 automatically.
+        chunk_mb:
+          type: integer
+          minimum: 1
+          maximum: 64
+          default: 20
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+          minItems: 1
+          description: At most 8 enabled independent gateways after normalization; historical disabled/legacy route
+            descriptions can remain.
+        selected_files:
+          type: array
+          minItems: 1
+          maxItems: 1000
+          uniqueItems: true
+          description: Paths from inspect; required for a repository or multi-file torrent. Pad files are not selectable.
+          items:
+            type: string
+        revision:
+          type: string
+          pattern: ^[a-fA-F0-9]{40}$
+          description: Exact Hugging Face commit chosen from inspect.
+        idempotency_key:
+          type: string
+          pattern: ^[A-Za-z0-9_.:-]{1,128}$
+          description: Alternative to Idempotency-Key header on POST /jobs; per-item key in batch.
+        mirrors:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            type: string
+            format: uri
+          description: Trusted alternative file URLs; requires expected_sha256. Publisher Metalink provides these
+            automatically.
+        priority:
+          type: integer
+          format: int64
+          minimum: -100
+          maximum: 100
+          default: 0
+        start_after_ms:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 253402300799000
+          default: 0
+        file_priorities:
+          type: object
+          maxProperties: 1000
+          additionalProperties:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 7
+          description: Only originally selected torrent paths. 0 skips; 1..7 influences pending piece order. Changing
+            live priorities pauses/requeues the torrent with verified parts preserved.
+        seeding_enabled:
+          type: boolean
+          default: false
+        seeding_minutes:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 1440
+          default: 30
+        seeding_ratio:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 100
+          default: 1.0
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+    CreateSourceDownload:
+      allOf:
+      - $ref: '#/components/schemas/CreateJob'
+    TorrentFile:
+      type: object
+      required:
+      - path
+      - size
+      properties:
+        md5:
+          type: string
+          pattern: ^$|^[a-f0-9]{32}$
+          description: Local whole-file MD5 after assembly; separate from mandatory torrent piece checks.
+        sha512:
+          type: string
+          pattern: ^$|^[a-f0-9]{128}$
+          description: Local whole-file SHA-512 after assembly; separate from mandatory torrent piece checks.
+        index:
+          type: integer
+        path:
+          type: string
+          description: Exact portable path from authenticated metainfo, including the torrent root folder when applicable.
+        size:
+          type: integer
+          format: int64
+          minimum: 0
+        pad:
+          type: boolean
+        sha256:
+          type: string
+          description: Calculated local whole-file SHA-256 after assembly; piece hashes are verified separately.
+        verified:
+          type: boolean
+    TorrentSource:
+      type: object
+      required:
+      - kind
+      - name
+      - files
+      - info_hash_v1
+      - info_hash_v2
+      properties:
+        kind:
+          type: string
+          enum:
+          - torrent
+        source:
+          type: string
+        name:
+          type: string
+        info_hash_v1:
+          type: string
+        info_hash_v2:
+          type: string
+        size:
+          type: integer
+          format: int64
+        pieces:
+          type: integer
+        checksum_source:
+          type: string
+          enum:
+          - bittorrent-piece-hashes
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/TorrentFile'
+    HubFile:
+      type: object
+      required:
+      - path
+      - filename
+      - url
+      - size
+      - sha256
+      - checksum_source
+      - storage
+      properties:
+        path:
+          type: string
+          description: Path relative to the repository root.
+        filename:
+          type: string
+        url:
+          type: string
+          format: uri
+          description: Commit-pinned resolve URL; signed CDN redirects are resolved freshly for each segment.
+        size:
+          type: integer
+          format: int64
+          minimum: 0
+        sha256:
+          type: string
+          pattern: ^$|^[a-f0-9]{64}$
+          description: Whole assembled-file LFS SHA-256; empty for Git files without published SHA-256. Never the
+            Xet storage hash.
+        checksum_source:
+          type: string
+          enum:
+          - ''
+          - huggingface-lfs-sha256
+        storage:
+          type: string
+          enum:
+          - git
+          - lfs
+          - xet
+    HubSource:
+      type: object
+      required:
+      - kind
+      - source_url
+      - repo_id
+      - repo_type
+      - revision
+      - files
+      properties:
+        kind:
+          type: string
+          enum:
+          - file
+          - repository
+        source_url:
+          type: string
+          format: uri
+        repo_id:
+          type: string
+        repo_type:
+          type: string
+          enum:
+          - model
+          - dataset
+          - space
+        revision:
+          type: string
+          pattern: ^[a-f0-9]{40}$
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubFile'
+    SourceDownloadResult:
+      type: object
+      required:
+      - jobs
+      - source
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+        total_size:
+          type: integer
+          format: int64
+          description: Selected-file byte total.
+        reused_count:
+          type: integer
+          minimum: 0
+          description: Compatible existing HTTP/Hugging Face jobs returned without starting them.
+        source:
+          type: object
+          required:
+          - kind
+          properties:
+            kind:
+              type: string
+              enum:
+              - file
+              - repository
+              - torrent
+              - metalink
+              - webdav
+            name:
+              type: string
+            info_hash_v1:
+              type: string
+            info_hash_v2:
+              type: string
+            repo_id:
+              type: string
+            revision:
+              type: string
+    DownloadLifecycleEvent:
+      type: object
+      required:
+      - event_id
+      - job_id
+      - kind
+      - time
+      - filename
+      - path
+      properties:
+        event_id:
+          type: string
+          format: uuid
+        job_id:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+        kind:
+          type: string
+          enum:
+          - started
+          - resumed
+          - paused
+          - completed
+          - recovered
+          - failed
+        time:
+          type: string
+          format: date-time
+          description: Actual observed event time in ISO 8601 UTC.
+        filename:
+          type: string
+          description: Full display filename recorded when this event occurred.
+        path:
+          type: string
+          description: Absolute destination path recorded when this event occurred.
+        paths:
+          type: array
+          items:
+            type: string
+          description: Absolute selected-file destination paths for a torrent job, when present.
+        reason:
+          type: string
+          enum:
+          - pause
+          - shutdown
+          - maintenance
+          description: Optional pause reason.
+      additionalProperties: false
+    Job:
+      type: object
+      required:
+      - id
+      - url
+      - filename
+      - status
+      properties:
+        first_started_at:
+          type: string
+          format: date-time
+          description: First observed execution start in ISO 8601 UTC. Absent before execution or when an old job
+            has no observed original start.
+        last_resumed_at:
+          type: string
+          format: date-time
+          description: Latest observed continuation in ISO 8601 UTC; absent until a continuation is recorded.
+        completed_at:
+          type: string
+          format: date-time
+          description: Observed successful completion after verification and publication. Recovery of an older published
+            file does not invent this timestamp.
+        lifecycle_history:
+          type: array
+          readOnly: true
+          description: Persisted observed lifecycle events for this job. Queued jobs have no execution-start event
+            yet; historical timestamps of legacy jobs are never guessed.
+          items:
+            $ref: '#/components/schemas/DownloadLifecycleEvent'
+        expected_md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+        expected_sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+        md5:
+          type: string
+          pattern: ^$|^[a-f0-9]{32}$
+          description: Calculated local whole-file MD5; empty before calculation. Calculation alone is distinct
+            from comparison with a publisher or manual reference.
+        sha512:
+          type: string
+          pattern: ^$|^[a-f0-9]{128}$
+          description: Calculated local whole-file SHA-512; empty before calculation. Multiple selected torrent
+            files expose their individual values in files.
+        checksum_sources:
+          type: object
+          description: Reference provenance per algorithm. Only algorithms with a known reference appear; a calculated
+            local hash without a reference does not receive a publisher source label.
+          additionalProperties:
+            type: string
+          properties:
+            md5:
+              type: string
+            sha256:
+              type: string
+            sha512:
+              type: string
+        checksum_warnings:
+          type: object
+          description: Optional reference lookup warnings keyed by algorithm, replaced on each metadata probe. A
+            missing reference is never reported as a successful publisher comparison. Supplied references still
+            must match, and published conflicts remain fatal.
+          additionalProperties:
+            type: string
+          properties:
+            md5:
+              type: string
+            sha256:
+              type: string
+            sha512:
+              type: string
+        id:
+          type: string
+        reused:
+          type: boolean
+          description: Returned during duplicate creation when an existing compatible HTTP/Hugging Face job was
+            selected; the job was not restarted.
+        directory_updated:
+          type: boolean
+          description: Returned by a directory change.
+        resume_preserved:
+          type: boolean
+          description: Verified parts retained during a directory change.
+        kind:
+          type: string
+          enum:
+          - torrent
+          description: Present for BitTorrent jobs; omitted for older HTTP jobs.
+        url:
+          type: string
+        directory:
+          type: string
+        filename:
+          type: string
+        expected_sha256:
+          type: string
+        checksum_source:
+          type: string
+          description: huggingface-lfs-sha256, Repr-Digest, file.sha256, SHA256SUMS, manual, bittorrent-piece-hashes,
+            or empty when no reference checksum exists. BitTorrent piece verification is separate from local whole-file
+            SHA-256. Partial-response Digest/Content-Digest are never interpreted as whole-file checksums.
+        sha256:
+          type: string
+        info_hash_v1:
+          type: string
+        info_hash_v2:
+          type: string
+        pieces_complete:
+          type: integer
+        pieces_total:
+          type: integer
+        pieces_verified:
+          type: boolean
+          description: True only after native BitTorrent hash verification of assembled requested pieces.
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/TorrentFile'
+        size:
+          type: integer
+          format: int64
+          description: Bytes; -1 while a source streams without known length. Final size is exact.
+        downloaded:
+          type: integer
+          format: int64
+          description: Verified completed bytes for segmented transfers; written bytes for an active whole-stream
+            transfer, reset to zero when restarted.
+        elapsed_ms:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Persisted active download time; pause and final verification excluded.
+        speed_bps:
+          type: number
+          minimum: 0
+          description: Aggregate payload bytes per second over a three-second moving window; zero when stopped.
+        eta_seconds:
+          type: integer
+          format: int64
+          nullable: true
+          minimum: 0
+          description: Estimated remaining transfer time; null when unknown.
+        received_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Actual received payload including retries.
+        progress_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Durable bytes plus HTTP bytes in flight; may decrease on a retry.
+        status:
+          type: string
+          enum:
+          - queued
+          - running
+          - retrying
+          - paused
+          - verifying
+          - complete
+          - failed
+          - seeding
+        error:
+          type: string
+        source_url:
+          type: string
+          description: Original selected Hugging Face source.
+        source_path:
+          type: string
+          description: Selected repository-relative path.
+        repo_id:
+          type: string
+        revision:
+          type: string
+          description: Pinned source commit.
+        storage:
+          type: string
+          enum:
+          - git
+          - lfs
+          - xet
+        source_size:
+          type: integer
+          format: int64
+        source_sha256:
+          type: string
+          description: Source-published assembled-file SHA-256 when available.
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteMetrics'
+        priority:
+          type: integer
+          format: int64
+          minimum: -100
+          maximum: 100
+          default: 0
+        start_after_ms:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 253402300799000
+          default: 0
+        file_priorities:
+          type: object
+          maxProperties: 1000
+          additionalProperties:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 7
+          description: Only originally selected torrent paths. 0 skips; 1..7 influences pending piece order. Changing
+            live priorities pauses/requeues the torrent with verified parts preserved.
+        seeding_enabled:
+          type: boolean
+          default: false
+        seeding_minutes:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 1440
+          default: 30
+        seeding_ratio:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 100
+          default: 1.0
+        idempotent_replay:
+          type: boolean
+        resumable:
+          type: boolean
+          description: False for whole-stream sources ignoring Range or without publisher identity.
+        distribution_supported:
+          type: boolean
+          description: False for a whole-file transfer using one selected gateway.
+        peers:
+          type: integer
+          format: int64
+          minimum: 0
+        seeds:
+          type: integer
+          format: int64
+          minimum: 0
+        uploaded_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+        seeding_elapsed_seconds:
+          type: integer
+          format: int64
+          minimum: 0
+        seeding_ratio_actual:
+          type: number
+          minimum: 0
+        seeding_outcome:
+          type: string
+          enum:
+          - time_limit
+          - ratio_limit
+          - paused
+          - disabled
+        tracker_states:
+          type: array
+          items:
+            type: object
+            properties:
+              gateway:
+                type: string
+              status:
+                type: string
+        mirrors:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            type: string
+            format: uri
+          description: Trusted alternative file URLs; requires expected_sha256. Publisher Metalink provides these
+            automatically.
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+        expected_checksum:
+          type: string
+          description: Latest editable manual reference, possibly empty. For creation use expected_md5/expected_sha256/expected_sha512.
+        integrity_error:
+          type: string
+          description: Local integrity diagnostic, independent of transfer status.
+        expected_checksum_algorithm:
+          type: string
+          enum:
+          - ''
+          - md5
+          - sha256
+          - sha512
+        checksum_revision:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Reference revision; -1 means verification has not yet completed for the current reference.
+        integrity_revision:
+          type: integer
+          format: int64
+          minimum: -1
+          description: Reference revision; -1 means verification has not yet completed for the current reference.
+        expected_checksum_changed_at:
+          type: string
+          format: date-time
+          description: UTC timestamp when this event exists.
+        integrity_started_at:
+          type: string
+          format: date-time
+          description: UTC timestamp when this event exists.
+        integrity_checked_at:
+          type: string
+          format: date-time
+          description: UTC timestamp when this event exists.
+        integrity_status:
+          type: string
+          enum:
+          - none
+          - pending
+          - checking
+          - verified
+          - mismatch
+          - error
+          description: Integrity is separate from transfer status. Complete plus mismatch/error is possible after
+            a local recheck.
+        checksum_checking:
+          type: boolean
+          description: True during a completed-file local recheck or final verification, even when transfer status
+            is complete. Such a job is not idle for update/MAC-change purposes.
+    QueueOptions:
+      type: object
+      additionalProperties: false
+      properties:
+        gateway_priorities:
+          type: object
+          maxProperties: 32
+          default: {}
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
+          description: Valid gateway IPv4 keys. Higher values prefer a gateway; ties are stable. Changing this map to include nonzero values requires gateway_priorities Pro, independently of download_priorities. Values are retained but ignored on downgrade. Existing job routes may explicitly override them. Live updates do not reset downloaded bytes. Multi-segment files keep one worker per selected gateway and allocate up to three extra workers per gateway in proportion to the highest positive priority, subject to a global 32-worker cap. This controls allocation, not guaranteed bandwidth.
+        max_retry_attempts:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          default: 0
+          description: Consecutive retries per failed network operation, excluding the initial attempt. Zero retries indefinitely. Manual pauses and unsafe resume/integrity/storage failures are never overridden.
+        max_active_jobs:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 32
+          default: 2
+        global_limit_bps:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000000000000
+          default: 0
+        gateway_limit_bps:
+          type: object
+          maxProperties: 32
+          additionalProperties:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 1000000000000
+          description: Gateway IPv4 keys; bytes/s, zero unlimited.
+        schedule_enabled:
+          type: boolean
+          default: false
+        schedule_start:
+          type: string
+          pattern: ^(?:[01][0-9]|2[0-3]):[0-5][0-9]$
+          default: 00:00
+        schedule_end:
+          type: string
+          pattern: ^(?:[01][0-9]|2[0-3]):[0-5][0-9]$
+          default: 00:00
+    QueueSettings:
+      type: object
+      properties:
+        gateway_priorities:
+          type: object
+          maxProperties: 32
+          default: {}
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
+          description: Saved gateway IPv4 priorities; retained even when the capability is absent.
+        gateway_priorities_allowed:
+          type: boolean
+          readOnly: true
+          description: Whether the independent gateway_priorities Pro capability is active.
+        effective_gateway_priorities:
+          type: object
+          readOnly: true
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
+          description: Global priorities currently applied; empty without the capability. Per-job route overrides are applied separately.
+        max_retry_attempts:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          default: 0
+          description: Consecutive retries per failed network operation; zero retries indefinitely.
+        max_active_jobs:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 32
+          default: 2
+        global_limit_bps:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000000000000
+          default: 0
+        gateway_limit_bps:
+          type: object
+          maxProperties: 32
+          additionalProperties:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 1000000000000
+          description: Gateway IPv4 keys; bytes/s, zero unlimited.
+        schedule_enabled:
+          type: boolean
+          default: false
+        schedule_start:
+          type: string
+          pattern: ^(?:[01][0-9]|2[0-3]):[0-5][0-9]$
+          default: 00:00
+        schedule_end:
+          type: string
+          pattern: ^(?:[01][0-9]|2[0-3]):[0-5][0-9]$
+          default: 00:00
+        active_jobs:
+          type: integer
+          format: int64
+          minimum: 0
+        schedule_timezone:
+          type: string
+          readOnly: true
+    JobOptions:
+      type: object
+      additionalProperties: false
+      properties:
+        priority:
+          type: integer
+          format: int64
+          minimum: -100
+          maximum: 100
+          default: 0
+        start_after_ms:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 253402300799000
+          default: 0
+        file_priorities:
+          type: object
+          maxProperties: 1000
+          additionalProperties:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 7
+          description: Only originally selected torrent paths. 0 skips; 1..7 influences pending piece order. Changing
+            live priorities pauses/requeues the torrent with verified parts preserved.
+        seeding_enabled:
+          type: boolean
+          default: false
+        seeding_minutes:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 1440
+          default: 30
+        seeding_ratio:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 100
+          default: 1.0
+    BatchJobs:
+      type: object
+      required:
+      - jobs
+      properties:
+        jobs:
+          type: array
+          minItems: 1
+          maxItems: 128
+          items:
+            $ref: '#/components/schemas/CreateJob'
+    BatchResult:
+      type: object
+      required:
+      - results
+      - success_count
+      properties:
+        success_count:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 128
+        results:
+          type: array
+          items:
+            type: object
+            required:
+            - index
+            - ok
+            properties:
+              index:
+                type: integer
+                format: int64
+                minimum: 0
+                maximum: 127
+              ok:
+                type: boolean
+              job:
+                oneOf:
+                - $ref: '#/components/schemas/Job'
+                - $ref: '#/components/schemas/SourceDownloadResult'
+              error:
+                type: string
+    SourceFile:
+      type: object
+      required:
+      - path
+      - filename
+      - url
+      - size
+      - sha256
+      - checksum_source
+      properties:
+        md5:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{32}$
+          description: Optional source-published whole-file MD5 when the source metadata provides it.
+        sha512:
+          type: string
+          pattern: ^$|^[a-fA-F0-9]{128}$
+          description: Optional source-published whole-file SHA-512 when the source metadata provides it.
+        path:
+          type: string
+        filename:
+          type: string
+        url:
+          type: string
+          format: uri
+        size:
+          type: integer
+          format: int64
+          minimum: 0
+        sha256:
+          type: string
+          pattern: ^$|^[a-f0-9]{64}$
+        checksum_source:
+          type: string
+        mirrors:
+          type: array
+          maxItems: 32
+          items:
+            type: string
+            format: uri
+        piece_length:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 67108864
+        piece_hashes:
+          type: array
+          maxItems: 100000
+          items:
+            type: string
+            pattern: ^[a-f0-9]{64}$
+        etag:
+          type: string
+        modified:
+          type: string
+    SourceListing:
+      type: object
+      required:
+      - kind
+      - source_url
+      - files
+      properties:
+        kind:
+          type: string
+          enum:
+          - metalink
+          - webdav
+          - file
+        source_url:
+          type: string
+          format: uri
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceFile'
+      additionalProperties: false
+    FileSource:
+      type: object
+      required:
+      - kind
+      - source_url
+      properties:
+        kind:
+          type: string
+          enum:
+          - file
+        source_url:
+          type: string
+          format: uri
+        size:
+          type: integer
+          format: int64
+          minimum: -1
+        range_support:
+          type: boolean
+        etag:
+          type: string
+        modified:
+          type: string
+        sha256:
+          type: string
+        checksum_source:
+          type: string
+        protocol:
+          type: string
+          enum:
+          - http
+          - https
+          - ftp
+          - ftps
+          - sftp
+          - webdavs
+      additionalProperties: false
+    SourceAuthInput:
+      type: object
+      required:
+      - origin
+      - type
+      properties:
+        origin:
+          type: string
+          format: uri
+          description: Exact origin, including scheme and effective port; no path/query/userinfo.
+        type:
+          type: string
+          enum:
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+        name:
+          type: string
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          writeOnly: true
+        cookie:
+          type: string
+          writeOnly: true
+        headers:
+          type: object
+          minProperties: 1
+          maxProperties: 5
+          additionalProperties:
+            type: string
+            writeOnly: true
+          description: Only authorization, cookie, referer, x-api-key, x-auth-token; no control characters.
+        host_key_sha256:
+          type: string
+          pattern: ^SHA256:[A-Za-z0-9+/]{43}=?$
+          description: SFTP requires a fingerprint verified independently; mismatching host keys are rejected.
+    PublicSourceAuth:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        origin:
+          type: string
+          format: uri
+        type:
+          type: string
+        name:
+          type: string
+        host_key_sha256:
+          type: string
+      description: No password, token, username, cookie or custom header values are returned.
+    SiteProfileInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Omit to create; provide the existing UUID to edit.
+        name:
+          type: string
+          description: Required when creating a new profile.
+        base_url:
+          type: string
+          description: Absolute HTTP/HTTPS/webdavs/FTP/FTPS/SFTP base URL without userinfo, query or fragment. Relative
+            transfer URLs are resolved as children of this base.
+        download_directory:
+          type: string
+          description: Absolute local download folder, or empty.
+        remote_directory:
+          type: string
+          description: Optional remote folder default.
+        gateways:
+          type: array
+          maxItems: 8
+          uniqueItems: true
+          items:
+            type: string
+            format: ipv4
+        type:
+          type: string
+          enum: &id005
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          default: none
+        auth_type:
+          type: string
+          enum: *id005
+          description: Alias used when type is omitted.
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          writeOnly: true
+        cookie:
+          type: string
+          writeOnly: true
+        headers:
+          type: object
+          minProperties: 1
+          maxProperties: 5
+          additionalProperties:
+            type: string
+            writeOnly: true
+          description: Only authorization, cookie, referer, x-api-key, x-auth-token; no control characters.
+          writeOnly: true
+        host_key_sha256:
+          type: string
+          pattern: ^SHA256:[A-Za-z0-9+/]{43}=?$
+          description: SFTP requires a fingerprint verified independently; mismatching host keys are rejected.
+        replace_credentials:
+          type: boolean
+          default: false
+          description: For same-origin/same-type edits, blank or omitted secret fields keep old credentials. True
+            replaces the complete set; required credential fields must then be supplied.
+    SiteProfile:
+      type: object
+      required:
+      - id
+      - name
+      - base_url
+      - origin
+      - type
+      - credentials_configured
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Omit to create; provide the existing UUID to edit.
+        name:
+          type: string
+          description: Required when creating a new profile.
+        base_url:
+          type: string
+          description: Absolute HTTP/HTTPS/webdavs/FTP/FTPS/SFTP base URL without userinfo, query or fragment. Relative
+            transfer URLs are resolved as children of this base.
+        download_directory:
+          type: string
+          description: Absolute local download folder, or empty.
+        remote_directory:
+          type: string
+          description: Optional remote folder default.
+        gateways:
+          type: array
+          maxItems: 8
+          uniqueItems: true
+          items:
+            type: string
+            format: ipv4
+        type:
+          type: string
+          enum:
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          default: none
+        auth_type:
+          type: string
+          enum:
+          - none
+          - basic
+          - bearer
+          - cookie
+          - headers
+          - ftp
+          - sftp
+          description: Alias used when type is omitted.
+        origin:
+          type: string
+          description: Canonical origin, including effective scheme/port.
+        credentials_configured:
+          type: boolean
+        host_key_sha256:
+          type: string
+          description: Previously verified SFTP host-key fingerprint; not a password.
+    SiteProfiles:
+      type: object
+      required:
+      - profiles
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/SiteProfile'
+    RemoteListRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: Absolute remote URL, or relative to a selected site profile base.
+        route:
+          $ref: '#/components/schemas/Route'
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+    RemoteEntry:
+      type: object
+      required:
+      - name
+      - path
+      - url
+      - directory
+      - size
+      - modified
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        url:
+          type: string
+        directory:
+          type: boolean
+        size:
+          type: integer
+          format: int64
+        modified:
+          type: string
+    RemoteListing:
+      type: object
+      required:
+      - url
+      - entries
+      properties:
+        url:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteEntry'
+    CreateUpload:
+      type: object
+      required:
+      - local_path
+      - target_url
+      properties:
+        local_path:
+          type: string
+          description: Absolute path of an existing regular local file. The file must not change while uploading.
+        target_url:
+          type: string
+          description: Complete remote FTP/explicit-FTPS/SFTP file URL; a directory URL is insufficient. Relative
+            paths use the selected profile base.
+        routes:
+          type: array
+          minItems: 1
+          maxItems: 8
+          items:
+            $ref: '#/components/schemas/Route'
+          description: At least one enabled type=gateway route is required after applying profile defaults. May
+            be omitted when the selected profile supplies gateways. One file uses one gateway at a time; independent
+            files run in parallel.
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+        overwrite:
+          type: boolean
+          default: false
+          description: Opt-in replacement. Server protocols do not universally provide atomic no-replace publication
+            against external clients.
+    Upload:
+      type: object
+      required:
+      - id
+      - filename
+      - local_path
+      - target_url
+      - status
+      - size
+      - uploaded_bytes
+      - speed_bps
+      - elapsed_ms
+      - eta_seconds
+      - routes
+      properties:
+        id:
+          type: string
+          pattern: ^[a-f0-9]{12}$
+        filename:
+          type: string
+        local_path:
+          type: string
+        target_url:
+          type: string
+        remote_filename:
+          type: string
+        status:
+          type: string
+          description: Queued, transfer, verification, pause, failure or completion state.
+        size:
+          type: integer
+          format: int64
+        uploaded_bytes:
+          type: integer
+          format: int64
+        speed_bps:
+          type: integer
+          format: int64
+          description: Current bytes per second, not bits per second.
+        elapsed_ms:
+          type: integer
+          format: int64
+        eta_seconds:
+          type: integer
+          format: int64
+          description: -1 while unknown.
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+        overwrite:
+          type: boolean
+        error:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_resumed_at:
+          type: string
+          format: date-time
+        paused_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        sha256:
+          type: string
+          pattern: ^[a-fA-F0-9]{64}$
+        verified:
+          type: boolean
+        verification:
+          type: string
+          description: sha256-readback after full remote verification.
+        first_started_at:
+          type: string
+          format: date-time
+    Uploads:
+      type: object
+      required:
+      - uploads
+      properties:
+        uploads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Upload'
+    ArchivePreviewRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: Absolute remote URL, or relative to a selected site profile base.
+        route:
+          $ref: '#/components/schemas/Route'
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+        site_profile_id:
+          type: string
+          format: uuid
+          description: Explicit saved site profile. Credentials are isolated by profile and exact origin; no global
+            credential fallback for a selected profile.
+        password:
+          type: string
+          maxLength: 1024
+          writeOnly: true
+          description: Optional supported encrypted-header password. Not persisted.
+        charset:
+          type: string
+          description: Optional original filename charset; default UTF-8.
+    ArchiveEntry:
+      type: object
+      required:
+      - name
+      - path
+      - size
+      - compressed_size
+      - directory
+      - encrypted
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        size:
+          type: integer
+          format: int64
+          description: -1 when unknown.
+        compressed_size:
+          type: integer
+          format: int64
+          description: -1 when unknown.
+        directory:
+          type: boolean
+        encrypted:
+          type: boolean
+    ArchivePreview:
+      type: object
+      required:
+      - url
+      - format
+      - entries
+      - metadata_budget_bytes
+      - bytes_fetched
+      - truncated
+      - range_supported
+      properties:
+        url:
+          type: string
+        format:
+          type: string
+          enum:
+          - ''
+          - ZIP
+          - TAR
+          - 7Z
+          - RAR4
+          - RAR5
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArchiveEntry'
+        metadata_budget_bytes:
+          type: integer
+          enum:
+          - 16777216
+        bytes_fetched:
+          type: integer
+          format: int64
+        truncated:
+          type: boolean
+        range_supported:
+          type: boolean
+        password_required:
+          type: boolean
+        message:
+          type: string
+    BrowserLink:
+      type: object
+      additionalProperties: false
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          maxLength: 16384
+          description: One explicit HTTP(S)/FTP/FTPS/SFTP/webdavs/magnet link without embedded credentials or fragment.
+            No cookies, headers or arbitrary job options.
+    LicenseRequirementError:
+      type: object
+      required:
+      - error
+      - code
+      - feature
+      properties: *id006
+    EditableChecksum:
+      type: object
+      additionalProperties: false
+      required:
+      - expected_checksum
+      properties:
+        expected_checksum:
+          type: string
+          description: 'Empty clears the manual reference; otherwise 32/64/128 hexadecimal digits after stripping
+            outer whitespace, case-insensitive: MD5/SHA-256/SHA-512. Exactly this one string property is accepted.
+            This setter is separate from creation fields expected_md5/expected_sha256/expected_sha512.'
+    OfflineLicenseStatus:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - offline
+        edition:
+          type: string
+          enum:
+          - free
+          - pro
+        status:
+          type: string
+        binding:
+          type: string
+          description: 'Windows: windows_dpapi_current_user; software_key_file on current Linux/macOS implementation.'
+        features:
+          type: array
+          items:
+            type: string
+          description: Signed capability IDs; legacy reserved IDs remain recognized, but do not replace active 4.3.0
+            rights.
+        holder_label:
+          type: string
+        license_id:
+          type: string
+        major_min:
+          type: integer
+        major_max:
+          type: integer
+      description: Public metadata only, no full license token or private key. GET does not create an installation
+        identity. License belongs to the installation key, not MAC/IP, with no time expiry.
+    LicensePolicySnapshot:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - offline
+        edition:
+          type: string
+          enum:
+          - free
+          - pro
+        status:
+          type: string
+        binding:
+          type: string
+          description: 'Windows: windows_dpapi_current_user; software_key_file on current Linux/macOS implementation.'
+        features:
+          type: object
+          properties:
+            extra_gateways:
+              type: boolean
+            extra_concurrent_downloads:
+              type: boolean
+            extra_site_profiles:
+              type: boolean
+            download_priorities:
+              type: boolean
+            gateway_priorities:
+              type: boolean
+            gateway_statistics:
+              type: boolean
+            batch_downloads:
+              type: boolean
+            automation_api:
+              type: boolean
+            premium_appearance:
+              type: boolean
+          additionalProperties: false
+        holder_label:
+          type: string
+        license_id:
+          type: string
+        major_min:
+          type: integer
+        major_max:
+          type: integer
+        granted_features:
+          type: array
+          items:
+            type: string
+            enum: *id007
+        max_gateways:
+          type: integer
+          format: int64
+          minimum: 0
+        max_concurrent_downloads:
+          type: integer
+          format: int64
+          minimum: 0
+        max_site_profiles:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Free creation cap is 3; see site_profiles_unlimited for Pro. Existing legacy profiles are
+            retained.
+        active_downloads:
+          type: integer
+          format: int64
+          minimum: 0
+        active_download_count:
+          type: integer
+          format: int64
+          minimum: 0
+        site_profiles:
+          type: integer
+          format: int64
+          minimum: 0
+        siteprofile_count:
+          type: integer
+          format: int64
+          minimum: 0
+        configured_max_active_jobs:
+          type: integer
+          format: int64
+          minimum: 0
+        effective_max_active_jobs:
+          type: integer
+          format: int64
+          minimum: 0
+        active_uploads:
+          type: integer
+          format: int64
+          minimum: 0
+        pending_or_active_downloads:
+          type: integer
+          format: int64
+          minimum: 0
+        active_checksum_checks:
+          type: integer
+          format: int64
+          minimum: 0
+        active_transfers:
+          type: integer
+          format: int64
+          minimum: 0
+        site_profiles_unlimited:
+          type: boolean
+        checksum_checking:
+          type: boolean
+        network_busy:
+          type: boolean
+        used_gateways:
+          type: array
+          items:
+            type: string
+      description: 'Capabilities are independent. Free effective limits: 2 shared gateways, 3 concurrent download
+        tasks, 3 new profiles. active_transfers includes pending/running downloads (including checksum workers)
+        and uploads; checksum work is not double-counted. Complete alone is not proof of idle.'
+    ApplicationMac:
+      type: object
+      properties:
+        mac:
+          type: string
+          description: Canonical local-unicast xx:xx:xx:xx:xx:xx; may be empty before initialization.
+        pool:
+          type: string
+          enum:
+          - locally_administered_unicast_46_bit
+        source:
+          type: string
+          enum:
+          - derived_client_identifier
+          - override
+          - uninitialized
+        conflict_status:
+          type: string
+          enum:
+          - not_checked
+          - not_detected
+          - detected
+        global_availability_proven:
+          type: boolean
+          enum:
+          - false
+      description: Own stable application MAC in manual-IP and DHCP modes, distinct from the physical NIC MAC. Pool
+        is not DHCP. Checks observed devices and cooperative MultiRoute announcements; no conflict detected is not
+        a global availability guarantee. GET only observes state; it never starts helper/capture/probes. MAC changes
+        are provided by desktop UI, not a new external endpoint.
+  securitySchemes:
+    PrivateInstanceKey:
+      type: apiKey
+      in: header
+      name: X-Instance-Key
+      description: Private per-instance lifecycle secret only. Not a Pro license key and not an ordinary API token.
+x-free-diagnostic-GET-allowlist:
+- /
+- /index.html
+- /api/v1/instance
+- /api/v1/health
+- /api/v1/license/status
+- /api/v1/license/policy
+- /api/state
+- /api/v1/jobs
+- /api/v1/uploads
+- /api/v1/network
+- /api/v1/network/dns
+- /api/jobs/{id}
+- /api/v1/jobs/{id}
+- /api/v1/uploads/{id}
+x-free-diagnostic-id-pattern: ^[a-f0-9]{12}$
+x-free-lifecycle-POST-allowlist:
+- /api/v1/instance/stop
+x-free-browser-exception: 'Existing opt-in fixed-extension-Origin bridge: status and one URL passed to the desktop
+  UI; no general management/batch API access.'
+x-free-limits:
+  gateways_in_use_union_download_upload: 2
+  concurrent_download_tasks: 3
+  new_site_profiles: 3
+  appearance:
+  - graphite
+  - system
+  artificial_speed_throttle: false
+  upload_concurrency_limit_of_three: false
+x-active-Pro-capabilities: *id007
+x-partial-license-policy: Only explicitly granted signed capabilities are enabled. Existing profiles, gateway lists
+  and transfer progress are retained. Basic resume, checksums, protected DNS, live speed/status and scheduling remain
+  available in the UI. Normal external API calls still require automation_api.

@@ -1,0 +1,380 @@
+{
+  "generator": "multiroute-public-release436-v1",
+  "status": "PASS",
+  "version": "4.3.6",
+  "application_jar_sha256": "3638324e0a9ea101227f5a9edb101a4862bd64b789af529209c485c6eebf8a80",
+  "core": {
+    "fixture_groups": [
+      {
+        "name": "DesktopAdditions434Test",
+        "status": "PASS"
+      },
+      {
+        "name": "BulkJobActionsTest",
+        "status": "PASS"
+      },
+      {
+        "name": "ContextJobLogMenuTest",
+        "status": "PASS"
+      },
+      {
+        "name": "GatewayPriorityMeterTest434",
+        "status": "PASS"
+      },
+      {
+        "name": "MacAuthorizationAttemptsTest",
+        "status": "PASS"
+      },
+      {
+        "name": "NetworkApplyRollbackTest426",
+        "status": "PASS"
+      },
+      {
+        "name": "GatewayDhcpIdentityTest426",
+        "status": "PASS"
+      },
+      {
+        "name": "ProfileLocationFirstLaunchTest",
+        "status": "PASS"
+      },
+      {
+        "name": "ProfileLocationTest423",
+        "status": "PASS"
+      },
+      {
+        "name": "MacComponentCompatibilityTest436",
+        "status": "PASS"
+      },
+      {
+        "name": "MacApplicationIdentityTest",
+        "status": "PASS"
+      },
+      {
+        "name": "RemainingColumnTest",
+        "status": "PASS"
+      },
+      {
+        "name": "RemainingColumnUITest",
+        "status": "PASS"
+      }
+    ],
+    "remaining_bytes_numeric_sort_unknown_size_and_twelve_languages_verified": true,
+    "safe_native_profile_path_recovery_owned_fixtures_verified": true,
+    "mac_authorization_retry_guard_owned_fixtures_verified": true,
+    "mac_native_component_compatibility_and_application_identity_verified": true,
+    "original_application_sources_published": false
+  },
+  "windows": {
+    "status": "PASS",
+    "architecture": "x64",
+    "installer": "MultiRoute-Downloader-4.3.6-Windows-x64-Setup.exe",
+    "installer_sha256": "8401e63be1ac7f244881cfa2f8e0faac6b412801280393693b3fca24eb667df0",
+    "package_size": 193080832,
+    "native_launcher_and_unicode_argv_verified": true,
+    "java_runtime": "21.0.12.1",
+    "native_gateway_sha256": "781fbd910eaa81b84b8a9c60553c871fe7cf8b218525614e42a39520483a6a0d",
+    "packaged_legal_checks": 555,
+    "native_isolated_api_started_and_stopped": true,
+    "all_program_files_identical_to_executed_image": true,
+    "actual_msi_cabinet_files_checked": 504,
+    "installed_program_files_matching_native_image": 503,
+    "jpackage_build_metadata_converted_to_installed_identity_marker": true,
+    "final_documentation_matches_frozen_stage": true,
+    "final_installer_msi_language": 1033,
+    "desktop_shortcut_in_actual_msi": true,
+    "installer_executed": false,
+    "real_LAN_measured": false,
+    "developer_signed": false
+  },
+  "macos": {
+    "arm64": {
+      "status": "PASS",
+      "architecture": "arm64",
+      "minimum_macos": "26.0",
+      "package": "MultiRoute-Downloader-4.3.6-macOS-arm64.pkg",
+      "package_size": 191614392,
+      "package_sha256": "8e58bb393a73f85e1d53ebd26a4f1f738e01d505646a23e3d130560db6896d76",
+      "native_component_version": "4.3.1",
+      "own_remaining_column_ui_renders": {
+        "en": {
+          "file": "remaining-en.png",
+          "sha256": "fb7717ff959614568be78a8d2a2ff060d60ad0c7cf81d47fb46b1e9b0dc0f285",
+          "width": 1080,
+          "height": 672
+        },
+        "ru": {
+          "file": "remaining-ru.png",
+          "sha256": "6b4aac51c802508c81bbec24938643f5b7e4190f853da6eee8b5f23c341275d3",
+          "width": 1080,
+          "height": 672
+        }
+      },
+      "java_runtime": "Temurin 21.0.12.1+1",
+      "report_sha256": "be920c019b21311badfeecc011cb6f9bfefabfc7acdc803443981e050f786e31",
+      "compiled_fixture_groups": [
+        {
+          "name": "MacRuntime430Test",
+          "status": "PASS",
+          "checks": 51
+        },
+        {
+          "name": "MacLegal430Test",
+          "status": "PASS",
+          "checks": 613
+        },
+        {
+          "name": "GatewayPrioritiesTest434",
+          "status": "PASS",
+          "checks": 112
+        },
+        {
+          "name": "StorageSpaceTest",
+          "status": "PASS",
+          "checks": 121
+        },
+        {
+          "name": "DownloadRetryTest",
+          "status": "PASS",
+          "checks": 74
+        },
+        {
+          "name": "ErrorHelpTest434",
+          "status": "PASS",
+          "checks": 1110
+        },
+        {
+          "name": "RemainingColumnTest",
+          "status": "PASS",
+          "checks": 17
+        },
+        {
+          "name": "RemainingColumnUITest",
+          "status": "PASS",
+          "checks": 10
+        },
+        {
+          "name": "ProfileLocationFirstLaunchTest",
+          "status": "PASS",
+          "checks": 66
+        },
+        {
+          "name": "ProfileLocationTest423",
+          "status": "PASS",
+          "checks": 93
+        },
+        {
+          "name": "MacAuthorizationAttemptsTest",
+          "status": "PASS",
+          "checks": 44
+        },
+        {
+          "name": "MacComponentCompatibilityTest436",
+          "status": "PASS",
+          "checks": 82
+        },
+        {
+          "name": "MacBranding436Test",
+          "status": "PASS",
+          "checks": 75
+        }
+      ],
+      "native_fixture_groups": 11,
+      "readonly_privilege_snapshot": {
+        "BPF_or_capture_used": false,
+        "OS_or_profile_modified": false,
+        "address_values_written": false,
+        "macOS_redaction_observed": false,
+        "privileges_permanently_dropped": true,
+        "real_mac_difference_observed": false,
+        "status": "PASS_READ_ONLY_PRIVILEGE_SNAPSHOT",
+        "wired_candidates": 3
+      },
+      "installer_running_guard_checks": 96,
+      "actual_mac_taskbar_branding_verified": true,
+      "posix_first_launch_profile_verified": true,
+      "administrator_dialog_label_observed": false,
+      "package_payload_matches_tested_image": true,
+      "vendor_runtime_and_library_pins_verified": true,
+      "native_launcher_verified": true,
+      "receipt_and_BOM_verified": true,
+      "outer_adhoc_signature_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "original_application_sources_included": false,
+      "owner_issuer_included": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    },
+    "x86_64": {
+      "status": "PASS",
+      "architecture": "x86_64",
+      "minimum_macos": "15.0",
+      "package": "MultiRoute-Downloader-4.3.6-macOS-x86_64.pkg",
+      "package_size": 185330849,
+      "package_sha256": "43a00442b1f5a5c9b170e1b3e028470d76b27407fbad1fad31d5d26da4f05d0a",
+      "native_component_version": "4.3.1",
+      "own_remaining_column_ui_renders": {
+        "en": {
+          "file": "remaining-en.png",
+          "sha256": "5c9b7487244ca341f70b4957297a39588564095a08ad5505d2048854746a27ad",
+          "width": 1280,
+          "height": 792
+        },
+        "ru": {
+          "file": "remaining-ru.png",
+          "sha256": "80d517652a3531f62ac201a6bac22707f81fef77d5ebd01aa1e6dedefee084aa",
+          "width": 1280,
+          "height": 792
+        }
+      },
+      "java_runtime": "Temurin 21.0.12.1+1",
+      "report_sha256": "c5775032b116e1a87876810ef8776e1150d7d631eaddb7620c0501a9619cf999",
+      "compiled_fixture_groups": [
+        {
+          "name": "MacRuntime430Test",
+          "status": "PASS",
+          "checks": 51
+        },
+        {
+          "name": "MacLegal430Test",
+          "status": "PASS",
+          "checks": 613
+        },
+        {
+          "name": "GatewayPrioritiesTest434",
+          "status": "PASS",
+          "checks": 112
+        },
+        {
+          "name": "StorageSpaceTest",
+          "status": "PASS",
+          "checks": 121
+        },
+        {
+          "name": "DownloadRetryTest",
+          "status": "PASS",
+          "checks": 74
+        },
+        {
+          "name": "ErrorHelpTest434",
+          "status": "PASS",
+          "checks": 1110
+        },
+        {
+          "name": "RemainingColumnTest",
+          "status": "PASS",
+          "checks": 17
+        },
+        {
+          "name": "RemainingColumnUITest",
+          "status": "PASS",
+          "checks": 10
+        },
+        {
+          "name": "ProfileLocationFirstLaunchTest",
+          "status": "PASS",
+          "checks": 66
+        },
+        {
+          "name": "ProfileLocationTest423",
+          "status": "PASS",
+          "checks": 93
+        },
+        {
+          "name": "MacAuthorizationAttemptsTest",
+          "status": "PASS",
+          "checks": 44
+        },
+        {
+          "name": "MacComponentCompatibilityTest436",
+          "status": "PASS",
+          "checks": 82
+        },
+        {
+          "name": "MacBranding436Test",
+          "status": "PASS",
+          "checks": 75
+        }
+      ],
+      "native_fixture_groups": 11,
+      "readonly_privilege_snapshot": {
+        "BPF_or_capture_used": false,
+        "OS_or_profile_modified": false,
+        "address_values_written": false,
+        "macOS_redaction_observed": false,
+        "privileges_permanently_dropped": true,
+        "real_mac_difference_observed": false,
+        "status": "PASS_READ_ONLY_PRIVILEGE_SNAPSHOT",
+        "wired_candidates": 1
+      },
+      "installer_running_guard_checks": 96,
+      "actual_mac_taskbar_branding_verified": true,
+      "posix_first_launch_profile_verified": true,
+      "administrator_dialog_label_observed": false,
+      "package_payload_matches_tested_image": true,
+      "vendor_runtime_and_library_pins_verified": true,
+      "native_launcher_verified": true,
+      "receipt_and_BOM_verified": true,
+      "outer_adhoc_signature_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "original_application_sources_included": false,
+      "owner_issuer_included": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    }
+  },
+  "macos_ci": {
+    "run_id": 41068950692,
+    "head_sha": "78ad93932992de12bf8143509a7f8b677a8b543d",
+    "url": "https://github.com/2018-spec-fdsds/multiroute-downloader/actions/runs/41068950692",
+    "all_jobs_success": true
+  },
+  "browser_extension": {
+    "version": "4.3.6",
+    "manifest_version": 3,
+    "distribution": "included_in_installers",
+    "single_link_bridge_available_in_Free": true,
+    "general_external_management_requires_automation_api": true
+  },
+  "documentation": {
+    "interface_and_guide_languages": 12,
+    "fresh_current_images": 25,
+    "native_window_images": 19,
+    "actual_avatar_component_renders": 6,
+    "demonstration_data_not_a_bandwidth_benchmark": true
+  },
+  "licensing": {
+    "free_gateways": 2,
+    "free_concurrent_downloads": 3,
+    "free_new_site_profiles": 3,
+    "pro_max_gateways": 8,
+    "pro_max_concurrent_downloads": 32,
+    "independent_signed_capabilities": 9,
+    "owner_issuer_or_private_keys_included": false
+  },
+  "limits": [
+    "Physical gateway throughput, real LAN/DHCP hardware and macOS privilege dialogs were not exercised by the release fixtures. The actual system authorization caller label is not physically verified.",
+    "The first privileged Ethernet BPF start may still request normal macOS administrator authorization. Wired Ethernet remains required for multi-gateway transport; no new Wi-Fi transport is claimed.",
+    "Installers are unsigned; macOS packages are not Developer ID signed or notarized.",
+    "Installer metadata and payloads were verified; privileged installers were not executed."
+  ],
+  "files": {
+    "MultiRoute-Downloader-4.3.6-Windows-x64-Setup.exe": {
+      "bytes": 193080832,
+      "md5": "16a9cfaf74b2d2f398f83832bda8a027",
+      "sha256": "8401e63be1ac7f244881cfa2f8e0faac6b412801280393693b3fca24eb667df0",
+      "sha512": "6ce24ea714ae7ca0117a3bf7107efa0e309f1f4a4ea8e6fc9bcb84c5db8ae7507fa55f15082613e194455d6317346f2ff9d7dd11075569599d664b4b7d63bd47"
+    },
+    "MultiRoute-Downloader-4.3.6-macOS-arm64.pkg": {
+      "bytes": 191614392,
+      "md5": "59361212075a5375f86f79a7b2650b51",
+      "sha256": "8e58bb393a73f85e1d53ebd26a4f1f738e01d505646a23e3d130560db6896d76",
+      "sha512": "37df94d1a589f017609f58abf5b5f3773879ab8718208edd0c184bbb6e63dad3ca23bbc2d2699f521b2f33f107fc8629c6a2cbfad05c790af489ed918288cee2"
+    },
+    "MultiRoute-Downloader-4.3.6-macOS-x86_64.pkg": {
+      "bytes": 185330849,
+      "md5": "d9050a8b0bb41ed8a56381cdbc7875ab",
+      "sha256": "43a00442b1f5a5c9b170e1b3e028470d76b27407fbad1fad31d5d26da4f05d0a",
+      "sha512": "59f91a3bdfe0bc703339719af7c87034bd06f79664eeaf94dafef4099fbdf0042a5a6dea9cc28e270048158734acf5ea4fad96a756abc1ec1d441cade9450aa1"
+    }
+  }
+}

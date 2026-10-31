@@ -1,0 +1,80 @@
+Bundled jlibtorrent 2.0.12.9 runtime notices
+=========================================
+
+The Java wrapper and the five platform JNI JARs in lib/ are the unmodified
+FrostWire artifacts. Each JNI JAR contains one native shared library. No
+separate OpenSSL shared library is required: all five native binaries contain
+the version marker "OpenSSL 3.6.0 1 Oct 2025".
+
+JLIBTORRENT-LICENSE-MIT.txt
+  Copyright (C) 2016 FrostWire, LLC.
+  https://raw.githubusercontent.com/frostwire/frostwire-jlibtorrent/master/LICENSE.md
+  Existing text was checked against the official source, ignoring newline style.
+
+LIBTORRENT-LICENSE-BSD.txt
+  Official libtorrent v2.0.12 LICENSE, including its third-party notices.
+  https://raw.githubusercontent.com/arvidn/libtorrent/v2.0.12/LICENSE
+  Existing text was checked against the official source, ignoring newline style.
+
+OPENSSL-3.6-LICENSE-APACHE-2.0.txt
+  OpenSSL 3.6.0 is licensed under Apache License 2.0.
+  Copyright (c) 1998-2025 The OpenSSL Project Authors
+  Copyright (c) 1995-1998 Eric A. Young, Tim J. Hudson
+  https://raw.githubusercontent.com/openssl/openssl/openssl-3.6.0/LICENSE.txt
+  Copyright attribution source:
+  https://raw.githubusercontent.com/openssl/openssl/openssl-3.6.0/README.md
+  The official release root contains LICENSE.txt and no separate NOTICE file.
+
+BOOST-LICENSE-1.0.txt
+  https://www.boost.org/LICENSE_1_0.txt
+  Boost is used by the native libtorrent runtime. Its license is also included
+  in LIBTORRENT-LICENSE-BSD.txt; this standalone copy makes it easy to locate.
+
+GCC-COPYING-GPL-3.0.txt and GCC-RUNTIME-LIBRARY-EXCEPTION-3.1.txt
+  The Windows/Linux JNI binaries include GCC C++ and compiler runtime code.
+  The official upstream build configurations select static libstdc++/libgcc;
+  the binaries contain GCC13 (and Linux x86_64 GCC11) version markers.
+  The applicable runtime license consists of GPL version3 together with the
+  GCC Runtime Library Exception version3.1. Keep both documents together.
+  https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-13.3.0/COPYING3
+  https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-13.3.0/COPYING.RUNTIME
+  Build configuration references:
+  https://raw.githubusercontent.com/frostwire/frostwire-jlibtorrent/master/swig/config/windows-x86_64-config.jam
+  https://raw.githubusercontent.com/frostwire/frostwire-jlibtorrent/master/swig/config/linux-x86_64-config.jam
+  https://raw.githubusercontent.com/frostwire/frostwire-jlibtorrent/master/swig/config/linux-arm64-config.jam
+
+MINGW-W64-WINPTHREADS-LICENSE.txt
+  Windows JNI is built with the MinGW-w64 GCC POSIX toolchain. This file keeps
+  the MinGW-w64 winpthreads MIT and Lockless Inc. BSD notices with that runtime.
+  https://raw.githubusercontent.com/mingw-w64/mingw-w64/master/mingw-w64-libraries/winpthreads/COPYING
+
+SWIG is a wrapper-generation build tool and is not bundled as an executable.
+Its generated wrapper output does not impose the SWIG compiler's GPL terms
+on the application; the wrapper is distributed under jlibtorrent's MIT terms.
+Official clarification: https://www.swig.org/legal.html
+
+macOS JNI links the operating system's libc++.1.dylib and libSystem.B.dylib.
+Linux JNI links the operating system's libc.so.6 and libm.so.6. Those system
+shared libraries are not included in this distribution.
+
+License documents were retrieved from the listed primary sources on2026-10-11.
+This addition changes documentation only; no JAR/native binary was modified.
+
+DNSSEC dependency sources (4.2.2)
+
+DNSSEC validation: dnsjava 3.6.5 (BSD-3-Clause).
+Official source tag: https://github.com/dnsjava/dnsjava/tree/v3.6.5-1
+dnsjava 3.6.5 (BSD-3-Clause).
+Official artifact: https://repo.maven.apache.org/maven2/dnsjava/dnsjava/3.6.5/dnsjava-3.6.5.jar
+SHA256: d1208e39e4ba17ec643ac5832b8b17dcaf5e3ae28f8c65904a755e23523cd94a
+slf4j-api 1.7.36 (MIT).
+Official artifact: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar
+SHA256: d3ef575e3e4979678dc01bf1dcce51021493b4d11fb7f1be8ad982877c16a1c0
+slf4j-nop 1.7.36 (MIT).
+Official artifact: https://repo.maven.apache.org/maven2/org/slf4j/slf4j-nop/1.7.36/slf4j-nop-1.7.36.jar
+SHA256: c214958b07816cb4412b30c7bdbd4308ffdc6ba2a83767b8f3a9229cbd9274d6
+Full licenses: lib/licenses/DNSJAVA-3.6.5-LICENSE.txt and lib/licenses/SLF4J-1.7.36-LICENSE.txt.
+SLF4J NOP is the only logging binding; application diagnostics use the existing application journal.
+Optional JNA/JNA-platform and test-only Bouncy Castle are not included for DNSSEC.
+License source: https://raw.githubusercontent.com/dnsjava/dnsjava/v3.6.5-1/LICENSE
+License source: https://raw.githubusercontent.com/qos-ch/slf4j/v_1.7.36/LICENSE.txt

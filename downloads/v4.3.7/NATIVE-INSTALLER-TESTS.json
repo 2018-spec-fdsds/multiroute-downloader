@@ -1,0 +1,428 @@
+{
+  "generator": "multiroute-public-release437-v1",
+  "status": "PASS",
+  "version": "4.3.7",
+  "application_jar_sha256": "22539b7dbbcf9f9527a9a95ba0ba13b6f90132a5e5297c26105d1e501fddf81d",
+  "core": {
+    "fixture_groups": [
+      {
+        "name": "DesktopAdditions434Test",
+        "status": "PASS"
+      },
+      {
+        "name": "BulkJobActionsTest",
+        "status": "PASS"
+      },
+      {
+        "name": "ContextJobLogMenuTest",
+        "status": "PASS"
+      },
+      {
+        "name": "GatewayPriorityMeterTest434",
+        "status": "PASS"
+      },
+      {
+        "name": "MacAuthorizationAttemptsTest",
+        "status": "PASS"
+      },
+      {
+        "name": "NetworkApplyRollbackTest426",
+        "status": "PASS"
+      },
+      {
+        "name": "GatewayDhcpIdentityTest426",
+        "status": "PASS"
+      },
+      {
+        "name": "ProfileLocationFirstLaunchTest",
+        "status": "PASS"
+      },
+      {
+        "name": "ProfileLocationTest423",
+        "status": "PASS"
+      },
+      {
+        "name": "MacComponentCompatibilityTest436",
+        "status": "PASS"
+      },
+      {
+        "name": "MacApplicationIdentityTest",
+        "status": "PASS"
+      },
+      {
+        "name": "GatewayDhcpErrorTest",
+        "status": "PASS"
+      },
+      {
+        "name": "RemainingColumnTest",
+        "status": "PASS"
+      },
+      {
+        "name": "RemainingColumnUITest",
+        "status": "PASS"
+      }
+    ],
+    "remaining_bytes_numeric_sort_unknown_size_and_twelve_languages_verified": true,
+    "safe_native_profile_path_recovery_owned_fixtures_verified": true,
+    "mac_authorization_retry_guard_owned_fixtures_verified": true,
+    "mac_native_component_compatibility_and_application_identity_verified": true,
+    "existing_gateway_dhcp_error_catalog_twelve_languages_verified": true,
+    "original_application_sources_published": false
+  },
+  "windows": {
+    "status": "PASS",
+    "architecture": "x64",
+    "installer": "MultiRoute-Downloader-4.3.7-Windows-x64-Setup.exe",
+    "installer_sha256": "80ee5e79b0654968978f85c3d05db22b6c99b824bf4426c2e4d91418ae9dbbb4",
+    "package_size": 196078080,
+    "native_launcher_and_unicode_argv_verified": true,
+    "java_runtime": "21.0.12.1",
+    "native_gateway_sha256": "781fbd910eaa81b84b8a9c60553c871fe7cf8b218525614e42a39520483a6a0d",
+    "packaged_legal_checks": 555,
+    "native_isolated_api_started_and_stopped": true,
+    "all_program_files_identical_to_executed_image": true,
+    "actual_msi_cabinet_files_checked": 533,
+    "installed_program_files_matching_native_image": 532,
+    "jpackage_build_metadata_converted_to_installed_identity_marker": true,
+    "final_documentation_matches_frozen_stage": true,
+    "final_installer_msi_language": 1033,
+    "desktop_shortcut_in_actual_msi": true,
+    "installer_executed": false,
+    "real_LAN_measured": false,
+    "developer_signed": false
+  },
+  "macos": {
+    "arm64": {
+      "status": "PASS",
+      "architecture": "arm64",
+      "minimum_macos": "26.0",
+      "package": "MultiRoute-Downloader-4.3.7-macOS-arm64.pkg",
+      "package_size": 195579840,
+      "package_sha256": "d05bd6df44ea8bb723273ed02267f8a3f31f721b39765ff2e2ed19f259b50896",
+      "native_component_version": "4.3.2",
+      "own_remaining_column_ui_renders": {
+        "en": {
+          "file": "remaining-en.png",
+          "sha256": "fb7717ff959614568be78a8d2a2ff060d60ad0c7cf81d47fb46b1e9b0dc0f285",
+          "width": 1080,
+          "height": 672
+        },
+        "ru": {
+          "file": "remaining-ru.png",
+          "sha256": "6b4aac51c802508c81bbec24938643f5b7e4190f853da6eee8b5f23c341275d3",
+          "width": 1080,
+          "height": 672
+        }
+      },
+      "java_runtime": "Temurin 21.0.12.1+1",
+      "report_sha256": "622ad081a0e9bded519ebf31ca0154f488233642086456ee839bcbcce3a03327",
+      "compiled_fixture_groups": [
+        {
+          "name": "MacRuntime430Test",
+          "status": "PASS",
+          "checks": 51
+        },
+        {
+          "name": "MacLegal430Test",
+          "status": "PASS",
+          "checks": 613
+        },
+        {
+          "name": "GatewayPrioritiesTest434",
+          "status": "PASS",
+          "checks": 112
+        },
+        {
+          "name": "StorageSpaceTest",
+          "status": "PASS",
+          "checks": 121
+        },
+        {
+          "name": "DownloadRetryTest",
+          "status": "PASS",
+          "checks": 74
+        },
+        {
+          "name": "ErrorHelpTest434",
+          "status": "PASS",
+          "checks": 1110
+        },
+        {
+          "name": "RemainingColumnTest",
+          "status": "PASS",
+          "checks": 17
+        },
+        {
+          "name": "RemainingColumnUITest",
+          "status": "PASS",
+          "checks": 10
+        },
+        {
+          "name": "ProfileLocationFirstLaunchTest",
+          "status": "PASS",
+          "checks": 66
+        },
+        {
+          "name": "ProfileLocationTest423",
+          "status": "PASS",
+          "checks": 93
+        },
+        {
+          "name": "MacAuthorizationAttemptsTest",
+          "status": "PASS",
+          "checks": 44
+        },
+        {
+          "name": "MacComponentCompatibilityTest436",
+          "status": "PASS",
+          "checks": 82
+        },
+        {
+          "name": "MacBranding436Test",
+          "status": "PASS",
+          "checks": 75
+        },
+        {
+          "name": "GatewayDhcpErrorTest",
+          "status": "PASS",
+          "checks": 82
+        }
+      ],
+      "native_fixture_groups": 12,
+      "capture_setup_boundary": {
+        "status": "PASS",
+        "actual_saved_open_capture_executed": true,
+        "function_reimplemented": false,
+        "fake_pcap_checks": 237,
+        "fake_pcap_testcases": 24,
+        "actual_acd_checks": 14,
+        "actual_offline_bpf_checks": 12,
+        "real_live_capture_calls": 0,
+        "root_requests": 0,
+        "actual_system_libpcap_offline_only": true
+      },
+      "readonly_privilege_snapshot": {
+        "BPF_or_capture_used": false,
+        "OS_or_profile_modified": false,
+        "address_values_written": false,
+        "macOS_redaction_observed": false,
+        "privileges_permanently_dropped": true,
+        "real_mac_difference_observed": false,
+        "status": "PASS_READ_ONLY_PRIVILEGE_SNAPSHOT",
+        "wired_candidates": 3
+      },
+      "installer_running_guard_checks": 96,
+      "actual_mac_taskbar_branding_verified": true,
+      "posix_first_launch_profile_verified": true,
+      "administrator_dialog_label_observed": false,
+      "package_payload_matches_tested_image": true,
+      "vendor_runtime_and_library_pins_verified": true,
+      "native_launcher_verified": true,
+      "receipt_and_BOM_verified": true,
+      "outer_adhoc_signature_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "original_application_sources_included": false,
+      "owner_issuer_included": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    },
+    "x86_64": {
+      "status": "PASS",
+      "architecture": "x86_64",
+      "minimum_macos": "15.0",
+      "package": "MultiRoute-Downloader-4.3.7-macOS-x86_64.pkg",
+      "package_size": 189293898,
+      "package_sha256": "4dfce98a2e399984874d2e601d982dda44fa25ca6fe17e0626b2870ddbff7438",
+      "native_component_version": "4.3.2",
+      "own_remaining_column_ui_renders": {
+        "en": {
+          "file": "remaining-en.png",
+          "sha256": "5c9b7487244ca341f70b4957297a39588564095a08ad5505d2048854746a27ad",
+          "width": 1280,
+          "height": 792
+        },
+        "ru": {
+          "file": "remaining-ru.png",
+          "sha256": "80d517652a3531f62ac201a6bac22707f81fef77d5ebd01aa1e6dedefee084aa",
+          "width": 1280,
+          "height": 792
+        }
+      },
+      "java_runtime": "Temurin 21.0.12.1+1",
+      "report_sha256": "597803356eeb8e4decd4447dd662a9f23ee5bdf654dab73b3508f1f62c95ef22",
+      "compiled_fixture_groups": [
+        {
+          "name": "MacRuntime430Test",
+          "status": "PASS",
+          "checks": 51
+        },
+        {
+          "name": "MacLegal430Test",
+          "status": "PASS",
+          "checks": 613
+        },
+        {
+          "name": "GatewayPrioritiesTest434",
+          "status": "PASS",
+          "checks": 112
+        },
+        {
+          "name": "StorageSpaceTest",
+          "status": "PASS",
+          "checks": 121
+        },
+        {
+          "name": "DownloadRetryTest",
+          "status": "PASS",
+          "checks": 74
+        },
+        {
+          "name": "ErrorHelpTest434",
+          "status": "PASS",
+          "checks": 1110
+        },
+        {
+          "name": "RemainingColumnTest",
+          "status": "PASS",
+          "checks": 17
+        },
+        {
+          "name": "RemainingColumnUITest",
+          "status": "PASS",
+          "checks": 10
+        },
+        {
+          "name": "ProfileLocationFirstLaunchTest",
+          "status": "PASS",
+          "checks": 66
+        },
+        {
+          "name": "ProfileLocationTest423",
+          "status": "PASS",
+          "checks": 93
+        },
+        {
+          "name": "MacAuthorizationAttemptsTest",
+          "status": "PASS",
+          "checks": 44
+        },
+        {
+          "name": "MacComponentCompatibilityTest436",
+          "status": "PASS",
+          "checks": 82
+        },
+        {
+          "name": "MacBranding436Test",
+          "status": "PASS",
+          "checks": 75
+        },
+        {
+          "name": "GatewayDhcpErrorTest",
+          "status": "PASS",
+          "checks": 82
+        }
+      ],
+      "native_fixture_groups": 12,
+      "capture_setup_boundary": {
+        "status": "PASS",
+        "actual_saved_open_capture_executed": true,
+        "function_reimplemented": false,
+        "fake_pcap_checks": 237,
+        "fake_pcap_testcases": 24,
+        "actual_acd_checks": 14,
+        "actual_offline_bpf_checks": 12,
+        "real_live_capture_calls": 0,
+        "root_requests": 0,
+        "actual_system_libpcap_offline_only": true
+      },
+      "readonly_privilege_snapshot": {
+        "BPF_or_capture_used": false,
+        "OS_or_profile_modified": false,
+        "address_values_written": false,
+        "macOS_redaction_observed": false,
+        "privileges_permanently_dropped": true,
+        "real_mac_difference_observed": false,
+        "status": "PASS_READ_ONLY_PRIVILEGE_SNAPSHOT",
+        "wired_candidates": 1
+      },
+      "installer_running_guard_checks": 96,
+      "actual_mac_taskbar_branding_verified": true,
+      "posix_first_launch_profile_verified": true,
+      "administrator_dialog_label_observed": false,
+      "package_payload_matches_tested_image": true,
+      "vendor_runtime_and_library_pins_verified": true,
+      "native_launcher_verified": true,
+      "receipt_and_BOM_verified": true,
+      "outer_adhoc_signature_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "original_application_sources_included": false,
+      "owner_issuer_included": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    }
+  },
+  "macos_ci": {
+    "run_id": 41077496783,
+    "head_sha": "72c7078c89d1e100bfd35845f1fcd98b4852554b",
+    "url": "https://github.com/2018-spec-fdsds/multiroute-downloader/actions/runs/41077496783",
+    "all_jobs_success": true
+  },
+  "browser_extension": {
+    "version": "4.3.7",
+    "manifest_version": 3,
+    "distribution": "included_in_installers",
+    "single_link_bridge_available_in_Free": true,
+    "general_external_management_requires_automation_api": true
+  },
+  "documentation": {
+    "interface_and_guide_languages": 12,
+    "fresh_current_images": 25,
+    "new_assets_directory": "docs/images/v4.3.7/",
+    "native_window_images": 19,
+    "actual_avatar_component_renders": 6,
+    "demonstration_data_not_a_bandwidth_benchmark": true,
+    "release_436_history_preserved": true,
+    "public_macos_onboarding": {
+      "manifest_sha256": "1a07b2aeb8913a16c3ea6fee15b2b2a16a68d6914929bc9cd4bf486876d24d0f",
+      "guides": 12,
+      "english_index": "docs/macos/README.md",
+      "package_documentation_unchanged": true,
+      "public_body_sha256": "b5746b5f75320af65e2624fc2a3275987e99059bff68ee09199e0a77edc911d5"
+    }
+  },
+  "licensing": {
+    "free_gateways": 2,
+    "free_concurrent_downloads": 3,
+    "free_new_site_profiles": 3,
+    "pro_max_gateways": 8,
+    "pro_max_concurrent_downloads": 32,
+    "independent_signed_capabilities": 9,
+    "owner_issuer_or_private_keys_included": false
+  },
+  "limits": [
+    "Physical gateway throughput, real LAN/DHCP hardware and macOS privilege dialogs were not exercised by the release fixtures. The actual system authorization caller label is not physically verified.",
+    "The first privileged Ethernet BPF start may still request normal macOS administrator authorization. Wired Ethernet remains required for multi-gateway transport; no new Wi-Fi transport is claimed.",
+    "Installers are unsigned; macOS packages are not Developer ID signed or notarized.",
+    "Installer metadata and payloads were verified; privileged installers were not executed."
+  ],
+  "files": {
+    "MultiRoute-Downloader-4.3.7-Windows-x64-Setup.exe": {
+      "bytes": 196078080,
+      "md5": "e01110e627d12fd2688eb39670cd2f50",
+      "sha256": "80ee5e79b0654968978f85c3d05db22b6c99b824bf4426c2e4d91418ae9dbbb4",
+      "sha512": "6154eb40b67de3b08546a180b755b7dcd08a0f0d4f75b27d2c55ca9d120fdc915b176031c12c4bcc28b98828aceedd96ab4aa970b699954f725dd8ba240029e8"
+    },
+    "MultiRoute-Downloader-4.3.7-macOS-arm64.pkg": {
+      "bytes": 195579840,
+      "md5": "268f52173d271331460f30f520a21520",
+      "sha256": "d05bd6df44ea8bb723273ed02267f8a3f31f721b39765ff2e2ed19f259b50896",
+      "sha512": "705485d943ac2d13a0b12102ee24a5b64b512eda1d1b868abbe4943be5f14787921f43b71c73bf89347f4761cc1cd86ebca4506a2ba2c9dea10f0846128e73dc"
+    },
+    "MultiRoute-Downloader-4.3.7-macOS-x86_64.pkg": {
+      "bytes": 189293898,
+      "md5": "180082fdd11a9a525340b459e9576256",
+      "sha256": "4dfce98a2e399984874d2e601d982dda44fa25ca6fe17e0626b2870ddbff7438",
+      "sha512": "fbe148c898b06eed88b62f2755cfdd55399b5e2b37a50ef19b4a422730112f8ff5a3c645fb35569b31bfcccefa911da316cfc25806008ba853134fcd251d1636"
+    }
+  }
+}

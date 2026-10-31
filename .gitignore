@@ -1,0 +1,25 @@
+.DS_Store
+Thumbs.db
+
+# Application implementation and signing/customer files
+src/
+*.java
+*.c
+*.h
+*.cpp
+*.hpp
+*.cs
+*.py
+*.pyw
+*.js
+*.ts
+*.tsx
+*.rs
+*.go
+*.mrissuer
+*.key
+*.pfx
+*.p12
+*.mrlicense
+*.mrrequest
+*-sources.zip

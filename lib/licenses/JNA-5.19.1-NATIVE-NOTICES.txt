@@ -1,0 +1,41 @@
+JNA 5.19.1 native component attributions
+
+This distributor document preserves the original complete source header from
+native/dispatch.c at upstream tag 5.19.1 (not the implementation code).
+The embedded libffi runtime permission/copyright is supplied in full in
+JNA-5.19.1-LIBFFI-LICENSE.txt. JNA selects Apache-2.0; libffi remains MIT.
+
+/*
+ * @(#)dispatch.c       1.9 98/03/22
+ *
+ * Copyright (c) 1998 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (c) 2007-2013 Timothy Wall. All Rights Reserved.
+ * Copyright (c) 2007 Wayne Meissner. All Rights Reserved.
+ *
+ * The contents of this file is dual-licensed under 2 
+ * alternative Open Source/Free licenses: LGPL 2.1 or later and 
+ * Apache License 2.0. (starting with JNA version 4.0.0).
+ * 
+ * You can freely decide which license you want to apply to 
+ * the project.
+ * 
+ * You may obtain a copy of the LGPL License at:
+ * 
+ * http://www.gnu.org/licenses/licenses.html
+ * 
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "LGPL2.1".
+ * 
+ * You may obtain a copy of the Apache License at:
+ * 
+ * http://www.apache.org/licenses/
+ * 
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "AL2.0".
+ */
+
+The upstream native/libffi/LICENSE-BUILDTOOLS states that its GPL-licensed
+msvcc.sh/testing helpers are build/test tooling only and that libffi is not
+derived from them. Those source tools are not shipped in these two runtime
+JARs. This statement does not apply a GPL license to JNA/libffi runtime.
+Source: https://github.com/java-native-access/jna/blob/5.19.1/native/libffi/LICENSE-BUILDTOOLS

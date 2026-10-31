@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "version": "4.3.8",
+  "application_jar_sha256": "2505cedfdfb901582e4b8e6a189fed5aacb75be904573ca4a0c939d31940518c",
+  "validation_scope": "Targeted interface checks, native launch and installer package verification; no full-product regression rerun.",
+  "full_product_retested": false,
+  "baseline_version": "4.3.7",
+  "native_component_version": "4.3.2",
+  "windows": {
+    "status": "PASS",
+    "native_launcher_checked": true,
+    "unicode_checked": true,
+    "targeted_ui_checks": 1574,
+    "runtime_libraries_native_and_legal_byte_identical": true,
+    "product_language": 1033,
+    "desktop_shortcut_in_actual_msi": true,
+    "installer_executed": false
+  },
+  "macos": {
+    "arm64": {
+      "status": "PASS",
+      "minimum_macos": "26.0",
+      "package_sha256": "36eef8ea2175a5ea29d04c34c3cbc3ca901cb05c7ab3a8a7fa3a7b013dad47ea",
+      "native_component_version": "4.3.2",
+      "unchanged_runtime_libraries_native_branding_and_legal_verified": true,
+      "native_launcher_checked": true,
+      "targeted_ui_checks": 1574,
+      "package_payload_and_BOM_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    },
+    "x86_64": {
+      "status": "PASS",
+      "minimum_macos": "15.0",
+      "package_sha256": "1c411683c389beffc7b52e77505daaf3e35f7f8020642ecb051b8afe85f486ae",
+      "native_component_version": "4.3.2",
+      "unchanged_runtime_libraries_native_branding_and_legal_verified": true,
+      "native_launcher_checked": true,
+      "targeted_ui_checks": 1574,
+      "package_payload_and_BOM_verified": true,
+      "developer_id_signed": false,
+      "notarized": false,
+      "physical_LAN_or_DHCP_hardware_proven": false
+    }
+  },
+  "files": {
+    "MultiRoute-Downloader-4.3.8-Windows-x64-Setup.exe": {
+      "bytes": 196099072,
+      "md5": "852fc361137f4d5dda3ecb3f36335c86",
+      "sha256": "28bfbeb50218a3f11e6eb2055bf4681c2355387423423768c3a745a7c028429d",
+      "sha512": "f2b5e714e4887d33bb665f3acc4d411cea2b38793c61d35dcdbfa8a89c95aaa2f8f4f3f05f0db680d0a4ac7d612870f7d9df01a1ea3023eecee18496c1d1f341"
+    },
+    "MultiRoute-Downloader-4.3.8-macOS-arm64.pkg": {
+      "bytes": 195593682,
+      "md5": "8c96299fb6d082a22d7e7cd636baaf36",
+      "sha256": "36eef8ea2175a5ea29d04c34c3cbc3ca901cb05c7ab3a8a7fa3a7b013dad47ea",
+      "sha512": "a0ddbea9526f05fa1ebae392c701bb56e72fd92c24ae47c6f181015a3b3d329fa8b6852b73e36ed3cfd0579818d29a8356b1197216cf4081fabe19b3a341a8cc"
+    },
+    "MultiRoute-Downloader-4.3.8-macOS-x86_64.pkg": {
+      "bytes": 189315035,
+      "md5": "92d55e7d49e8eb868a3015e9160a410e",
+      "sha256": "1c411683c389beffc7b52e77505daaf3e35f7f8020642ecb051b8afe85f486ae",
+      "sha512": "d252279c4eeb599c71ba073e3154c18d028dd5a5a1855f02c92e25caf0e650642fd502a2e18b2d81ef0c06080300f475dde85530eae376a25e6756f7fc3bb323"
+    }
+  },
+  "source_code_published": false,
+  "owner_issuer_or_private_keys_published": false,
+  "documentation": {
+    "languages": 12,
+    "gallery_images": 29,
+    "screenshots_version": "4.3.7",
+    "screenshots_regenerated": false,
+    "qr_preserved": true
+  },
+  "limitations": [
+    "No physical gateway, DHCP or BPF capture tests were repeated.",
+    "Privileged installers were not executed; real user data and operating-system network settings were not changed.",
+    "macOS packages are not Developer ID signed or notarized."
+  ]
+}

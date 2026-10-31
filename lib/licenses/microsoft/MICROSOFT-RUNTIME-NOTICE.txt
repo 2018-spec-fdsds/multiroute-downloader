@@ -1,0 +1,48 @@
+MICROSOFT RUNTIME: COPYRIGHT, TERMS AND UNRESOLVED DISTRIBUTION RIGHTS
+
+© Microsoft Corporation. All rights reserved.
+
+The Windows Java runtime contains Microsoft Visual C++ runtime and Universal
+CRT/API-set DLLs. The original application native helper also uses MSVC static
+runtime code. These components retain their Microsoft terms. They are not
+relicensed under the application's license or the OpenJDK GPL/Classpath terms.
+The OpenJDK corresponding-source kit does not contain Microsoft DLL sources and
+does not grant a redistribution entitlement for Microsoft code.
+
+The accompanying full EULA and REDIST text documents are preserved for reference
+and recipient notice. Their presence is not a claim that every agreement applies
+to the installed toolchain, that its eligibility conditions are satisfied, or
+that copying an end-user EULA grants redistribution permission.
+
+VISUAL-C-RUNTIME-2015-2022-EULA.txt is the Runtime end-user agreement. It grants
+installation/use rights; by itself it does not authorize bundling or publishing
+the runtime with another application.
+
+VS2022-COMMUNITY-EULA.txt and VS2022-BUILD-TOOLS-EULA.txt explain conditional
+development/distribution rights and the Visual Studio product entitlement
+required by those terms. An eligible individual may have a no-fee Community
+path. The publisher's applicable entitlement/acceptance and the actual supplier
+redistribution chain remain unverified; a paid OEM license is not assumed.
+
+WINDOWS-SDK-EULA.txt and WINDOWS-SDK-REDIST.txt describe Distributable Code,
+linked-library output and listed runtime DLL distribution, subject to their
+conditions. The inspected Windows package has five API-set names not found in
+the inspected 2024 REDIST list. The corresponding newer SDK Redist directory
+contains those names, but this alone is not treated as proof of the complete
+distribution grant for the exact bundled versions.
+
+No complete public-redistribution compliance certification is made by this page.
+Microsoft entitlement and provenance questions remain separate unresolved audit
+items. Original notices must be preserved; Microsoft files may not be treated as
+modifiable open-source code merely because they accompany OpenJDK.
+
+Primary official sources:
+https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/
+https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/
+https://visualstudio.microsoft.com/license-terms/vs2022-ga-community/
+https://aka.ms/WinSDKLicenseURL
+https://learn.microsoft.com/en-us/legal/windows-sdk/redist
+
+The EULA plain text was extracted without omitting paragraphs from the official
+Microsoft DOCX/RTF documents. Original formatting/list markers may differ.
+Original Microsoft terms, not an explanatory translation, control.

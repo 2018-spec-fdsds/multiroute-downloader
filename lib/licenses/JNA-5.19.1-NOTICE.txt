@@ -1,0 +1,65 @@
+JNA / JNA Platform 5.19.1 — distributor attribution
+
+The unmodified upstream JARs are distributed under the Apache License 2.0
+option expressly provided by upstream LICENSE and both Maven POMs.
+JNA native jnidispatch includes libffi under its separate MIT permission.
+The alternative LGPL-2.1-or-later text is retained unchanged for completeness;
+its presence does not change this distribution choice or JLayer's independent LGPL terms.
+
+Project: Java Native Access (JNA), Timothy Wall and named contributors.
+Upstream: https://github.com/java-native-access/jna/tree/5.19.1
+Neither upstream JAR contains a separate NOTICE entry. This is a distributor
+attribution document, not a claim that upstream supplied a NOTICE file.
+
+Complete original header of src/com/sun/jna/Native.java:
+/* Copyright (c) 2007-2015 Timothy Wall, All Rights Reserved
+ *
+ * The contents of this file is dual-licensed under 2
+ * alternative Open Source/Free licenses: LGPL 2.1 or later and
+ * Apache License 2.0. (starting with JNA version 4.0.0).
+ *
+ * You can freely decide which license you want to apply to
+ * the project.
+ *
+ * You may obtain a copy of the LGPL License at:
+ *
+ * http://www.gnu.org/licenses/licenses.html
+ *
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "LGPL2.1".
+ *
+ * You may obtain a copy of the Apache License at:
+ *
+ * http://www.apache.org/licenses/
+ *
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "AL2.0".
+ */
+
+Complete original header of contrib/platform/src/com/sun/jna/platform/win32/Crypt32Util.java:
+/* Copyright (c) 2010 Daniel Doubrovkine, All Rights Reserved
+ *
+ * The contents of this file is dual-licensed under 2
+ * alternative Open Source/Free licenses: LGPL 2.1 or later and
+ * Apache License 2.0. (starting with JNA version 4.0.0).
+ *
+ * You can freely decide which license you want to apply to
+ * the project.
+ *
+ * You may obtain a copy of the LGPL License at:
+ *
+ * http://www.gnu.org/licenses/licenses.html
+ *
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "LGPL2.1".
+ *
+ * You may obtain a copy of the Apache License at:
+ *
+ * http://www.apache.org/licenses/
+ *
+ * A copy is also included in the downloadable source code package
+ * containing JNA, in file "AL2.0".
+ */
+
+Further native header and libffi copyright/permission are preserved in
+JNA-5.19.1-NATIVE-NOTICES.txt and JNA-5.19.1-LIBFFI-LICENSE.txt.
