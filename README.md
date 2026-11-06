@@ -22,6 +22,8 @@
 
 **On macOS:** [Install, first start and permissions](docs/macos/en.md) · [Русский](docs/macos/ru.md) · [12 languages](docs/macos/README.md)
 
+**HLS video (4.5+):** [Illustrated Chrome / Edge walkthrough](docs/hls/HLS-CHROME-EDGE.en.md) · [Try the GitHub test stream](docs/examples/hls/README.md)
+
 ## Why MultiRoute exists
 
 The idea came from a familiar home-network problem: wired broadband, a mobile router and a backup Internet connection were all available, but a large download still used only the computer’s default gateway. When that connection slowed down or failed, the other links could not help.
