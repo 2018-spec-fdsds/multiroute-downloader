@@ -39,6 +39,14 @@ Actual gains depend on independent uplinks, source limits and the local network.
 
 ![Shared gateways, reliable progress, verification, protected DNS and transfer controls](docs/images/multiroute-features.svg)
 
+### Traffic paths
+
+![MultiRoute traffic with and without the system VPN](docs/images/traffic-paths-en.svg)
+
+This LAN example uses **192.168.1.60** for Windows and **192.168.1.70** for MultiRoute. The virtual address sends file segments through the selected routers while other applications follow Windows routing. With HAPP as the system HTTP proxy, **127.0.0.1:10809** is the listener on the PC. The VPN client reaches its server over the physical connection. The remote site sees the public exit address.
+
+In the 4.6.7 desktop video mode, the **OS** symbol identifies the system path. Checking a URL and transferring its data are separate stages. A red **×** is a failed check for that URL on that path. A gateway that passes the check can fetch segments alongside the system path.
+
 ### Useful with a single connection, too
 
 Use supported resume, published-checksum comparison, protected DNS, batch queues, schedules, site profiles, uploads and the local API. Start with one gateway; add others when available.
