@@ -1,0 +1,97 @@
+name: Native macOS packages from compiled binaries
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download approved draft binaries without executing them
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = '2018-spec-fdsds/multiroute-downloader'
+          mkdir -p "$RUNNER_TEMP/mr469-inputs"
+          gh release download 'v4.6.9' --repo "$GITHUB_REPOSITORY" --pattern 'MultiRoute-4.6.9-MacInputs.zip' --dir "$RUNNER_TEMP/mr469-inputs"
+          gh release download 'v4.3.9' --repo "$GITHUB_REPOSITORY" --pattern 'MultiRoute-Downloader-4.3.9-macOS-*.pkg' --dir "$RUNNER_TEMP/mr469-inputs"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compiled-macos-inputs
+          path: ${{ runner.temp }}/mr469-inputs/*
+          if-no-files-found: error
+          retention-days: 1
+  macos:
+    needs: prepare
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-26
+            architecture: arm64
+          - runner: macos-15-intel
+            architecture: x86_64
+    runs-on: ${{ matrix.runner }}
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          name: compiled-macos-inputs
+          path: ${{ runner.temp }}/mr469-inputs
+      - name: Verify and unpack compiled input archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import hashlib, os, stat, zipfile
+          root=Path(os.environ['RUNNER_TEMP'])/'mr469-inputs'
+          path=root/'MultiRoute-4.6.9-MacInputs.zip'
+          assert hashlib.sha256(path.read_bytes()).hexdigest()=='85e1493a5c9477f1fd1cb349da0cad2b47822e7aa0ac2d05b45c2b2e7a3b0df2'
+          destination=root/'compiled';destination.mkdir()
+          with zipfile.ZipFile(path) as archive:
+              entries=archive.infolist();names=[item.filename for item in entries]
+              assert len(names)==len(set(names)) and len(names)<2500
+              assert sum(item.file_size for item in entries)<384*1024*1024
+              for item in entries:
+                  name=PurePosixPath(item.filename)
+                  assert chr(92) not in item.filename
+                  assert not name.is_absolute() and '..' not in name.parts and ':' not in item.filename and '\\' not in item.filename
+                  assert name.suffix.lower() not in {'.java','.c','.h','.cpp','.hpp','.py','.pyw'}
+                  assert stat.S_IFMT(item.external_attr>>16)!=stat.S_IFLNK and not item.is_dir()
+              assert archive.testzip() is None
+              archive.extractall(destination)
+          PY
+      - name: Repackage and verify native image using compiled fixtures only
+        env:
+          ARCHITECTURE: ${{ matrix.architecture }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          unset GH_TOKEN GITHUB_TOKEN
+          python3 "$RUNNER_TEMP/mr469-inputs/compiled/packager.pyc" --architecture "$ARCHITECTURE" --inputs "$RUNNER_TEMP/mr469-inputs/compiled" --baseline "$RUNNER_TEMP/mr469-inputs/MultiRoute-Downloader-4.3.9-macOS-${ARCHITECTURE}.pkg" --output "$RUNNER_TEMP/mr469-output"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: multiroute-binary-macos-${{ matrix.architecture }}
+          path: |
+            ${{ runner.temp }}/mr469-output/*.pkg
+            ${{ runner.temp }}/mr469-output/*report.json
+          if-no-files-found: error
+          retention-days: 7
