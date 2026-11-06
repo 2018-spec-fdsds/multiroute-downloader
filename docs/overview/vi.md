@@ -12,7 +12,7 @@
 <p align="center"><strong>Tải tệp lớn bằng những kết nối bạn đã có.</strong><br />Kết hợp các cổng mạng băng rộng và di động độc lập để tải tệp lớn, giữ lại tiến độ khi được hỗ trợ tiếp tục tải và kiểm tra tệp đã hoàn tất.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>Tải 4.3.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>Tải 4.6.9</strong></a> ·
   <a href="../../downloads/README.md">Bản tải xuống hiện hành</a> ·
   <a href="../vi.md">Hướng dẫn sử dụng</a> ·
   <a href="../../API.ru.txt">Tài liệu API</a> ·
@@ -40,22 +40,22 @@ Dùng tính năng tiếp tục tải khi được hỗ trợ, so sánh mã kiể
 
 ## Tải xuống và cài đặt
 
-**Phiên bản hiện hành: 4.3.9.** Trình cài đặt gốc bao gồm Java 21 riêng cho ứng dụng và thành phần mạng của nền tảng. Mở ứng dụng bằng biểu tượng thông thường.
+**Phiên bản hiện hành: 4.6.9.** Trình cài đặt gốc bao gồm Java 21 riêng cho ứng dụng và thành phần mạng của nền tảng. Mở ứng dụng bằng biểu tượng thông thường.
 
 | Máy tính của bạn | Trình cài đặt một tệp |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Tích hợp Chrome / Edge](../vi.md#chrome-and-edge-integration) · [Mã kiểm tra và báo cáo](../../downloads/v4.3.9/README.md) · [Chi tiết bản tải xuống](../../downloads/README.md)
+[Tích hợp Chrome / Edge](../vi.md#chrome-and-edge-integration) · [Mã kiểm tra và báo cáo](../../downloads/v4.6.9/README.md) · [Chi tiết bản tải xuống](../../downloads/README.md)
 
 Windows Setup dùng tiếng Anh và tạo lối tắt trên màn hình nền. Npcap được kiểm tra riêng và trình cài đặt chính thức sẽ được đề xuất khi cần; macOS dùng libpcap của hệ thống. Xem hướng dẫn bằng ngôn ngữ của bạn để biết cách cài đặt và xác nhận bảo mật. Trình cài đặt gốc công khai hỗ trợ Windows và macOS; ở đây không có trình cài đặt Linux 4.x.
 
-**Free / Pro trong 4.3.9:** Free dùng tối đa **2 cổng mạng**, **3 lượt tải đồng thời** và tạo **3 hồ sơ trang**, với giao diện Graphite/System. Các khả năng Pro tương ứng cho phép tối đa **8 cổng mạng**, **32 lượt tải đồng thời**, thêm hồ sơ, mức ưu tiên, lịch sử/báo cáo cổng mạng, thao tác theo lô, API bên ngoài và các kiểu giao diện bổ sung. Free không cố ý giới hạn tốc độ tải xuống. [Chi tiết đầy đủ về các khả năng](../licensing.en.md).
+**Free / Pro trong 4.6.9:** Free dùng tối đa **2 cổng mạng**, **3 lượt tải đồng thời** và tạo **3 hồ sơ trang**, với giao diện Graphite/System. Các khả năng Pro tương ứng cho phép tối đa **8 cổng mạng**, **32 lượt tải đồng thời**, thêm hồ sơ, mức ưu tiên, lịch sử/báo cáo cổng mạng, thao tác theo lô, API bên ngoài và các kiểu giao diện bổ sung. Free không cố ý giới hạn tốc độ tải xuống. [Chi tiết đầy đủ về các khả năng](../licensing.en.md).
 
 
-## Điểm mới trong 4.3.9
+## Điểm mới trong 4.6.9
 
 - **Phản hồi cổng mạng Mac với địa chỉ thủ công.** Thiết lập bắt gói POSIX được sửa để địa chỉ thủ công của ứng dụng và DHCP đều nhận phản hồi gửi đến MAC riêng của ứng dụng, giống hành vi Windows hiện có. Ping hệ thống thành công chỉ kiểm tra kết nối của máy tính, không chứng minh địa chỉ ảo của ứng dụng nhận được phản hồi.
 
@@ -85,7 +85,7 @@ Windows Setup dùng tiếng Anh và tạo lối tắt trên màn hình nền. Np
 
 ## Theo dõi rõ ràng các lượt truyền
 
-Không gian làm việc 4.3.9 lấy tệp làm trung tâm: cột tên và kích thước riêng biệt, tiến độ từng tệp, tốc độ tổng và từng cổng mạng, biểu đồ tốc độ cùng thông tin chi tiết về tệp. Graphite và System có trong Free; các kiểu giao diện bổ sung như Rose cần khả năng Pro tương ứng.
+Không gian làm việc 4.6.9 lấy tệp làm trung tâm: cột tên và kích thước riêng biệt, tiến độ từng tệp, tốc độ tổng và từng cổng mạng, biểu đồ tốc độ cùng thông tin chi tiết về tệp. Graphite và System có trong Free; các kiểu giao diện bổ sung như Rose cần khả năng Pro tương ứng.
 
 ![MultiRoute Downloader 4.3.7 — hàng đợi tải xuống và tốc độ cổng mạng](../images/v4.3.7/downloads-en-ae5b55131583.png)
 
@@ -264,7 +264,7 @@ Quản lý tổng quát qua API bên ngoài cần khả năng Pro tương ứng;
 
 Ứng dụng dùng địa chỉ IPv4 cục bộ riêng và MAC của ứng dụng để các cổng mạng đã chọn hoạt động độc lập với cổng mạng mặc định của hệ điều hành, không thay đổi định tuyến của hệ điều hành hoặc MAC của bộ điều hợp vật lý. Dùng một địa chỉ còn trống trong đúng mạng con thực tế. Giữ địa chỉ đặt thủ công ngoài phạm vi cấp phát DHCP tự động, hoặc dành riêng/loại trừ địa chỉ đó trên các máy chủ DHCP trong LAN; sau đó dùng **Check and apply** (Kiểm tra và áp dụng) trong Thiết lập mạng. [Chọn và kiểm tra địa chỉ](../vi.md#application-virtual-ip).
 
-Các gói Windows 4.3.9 hiện hành đã vượt qua kiểm tra nâng cấp/khởi động cục bộ; các gói macOS đã vượt qua kiểm tra thành phần gốc và môi trường chạy Java trên các máy chạy CI mục tiêu. Truyền dữ liệu qua cổng mạng LAN/DHCP trên Mac thật vẫn cần xác minh bằng phần cứng. [Báo cáo xác minh](../../NATIVE-INSTALLER-TESTS.json).
+Các gói Windows 4.6.9 hiện hành đã vượt qua kiểm tra nâng cấp/khởi động cục bộ; các gói macOS đã vượt qua kiểm tra thành phần gốc và môi trường chạy Java trên các máy chạy CI mục tiêu. Truyền dữ liệu qua cổng mạng LAN/DHCP trên Mac thật vẫn cần xác minh bằng phần cứng. [Báo cáo xác minh](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Chủ sở hữu và giấy phép
 
@@ -272,4 +272,4 @@ Các gói Windows 4.3.9 hiện hành đã vượt qua kiểm tra nâng cấp/kh�
 
 [Giấy phép](../../LICENSE.txt) · [Tóm tắt giấy phép](../../LICENSING.md) · [Thông báo của bên thứ ba](../../THIRD-PARTY-NOTICES.txt)
 
-Khu vực phân phối này chứa trình cài đặt 4.3.9 hiện hành và tài liệu sử dụng.
+Khu vực phân phối này chứa trình cài đặt 4.6.9 hiện hành và tài liệu sử dụng.

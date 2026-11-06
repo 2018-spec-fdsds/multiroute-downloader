@@ -7,12 +7,14 @@
 </p>
 <!-- product-languages:end -->
 
+<p align="center"><img src="docs/images/v4.6.9/multiroute-4.6.9-courier-walk.gif" width="492" alt="Курьер во время загрузки" /></p>
+
 <p align="center"><img src="docs/images/overview/ru/hero.svg" width="1320" alt="MultiRoute Downloader — несколько подключений, одна загрузка" /></p>
 
 <p align="center"><strong>Скачивайте большие файлы через доступные вам подключения.</strong><br />Объединяйте независимые проводные и мобильные шлюзы для больших загрузок, сохраняйте прогресс и проверяйте готовый файл.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>Скачать 4.3.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>Скачать 4.6.9</strong></a> ·
   <a href="downloads/README.md">Актуальные загрузки</a> ·
   <a href="docs/ru.md">Инструкция</a> ·
   <a href="API.ru.txt">Работа с API</a> ·
@@ -52,19 +54,19 @@ MultiRoute объединяет эти независимые подключен
 
 ## Скачать и установить
 
-**Текущая версия — 4.3.9.** Native-установщики включают отдельную Java 21 и сетевой компонент платформы. Приложение открывается обычным значком.
+**Текущая версия — 4.6.9.** Native-установщики включают отдельную Java 21 и сетевой компонент платформы. Приложение открывается обычным значком.
 
 | Ваш компьютер | Установщик одним файлом |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [PKG для Apple Silicon](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [PKG для Intel](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [PKG для Apple Silicon](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [PKG для Intel](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Интеграция Chrome / Edge](docs/ru.md#chrome-and-edge-integration) · [Контрольные суммы и отчёт](downloads/v4.3.9/README.md) · [Подробнее о скачивании](downloads/README.md)
+[Интеграция Chrome / Edge](docs/ru.md#chrome-and-edge-integration) · [Контрольные суммы и отчёт](downloads/v4.6.9/README.md) · [Подробнее о скачивании](downloads/README.md)
 
 Windows Setup работает на английском и создаёт ярлык на рабочем столе. Npcap проверяется отдельно: при необходимости предлагается официальный установщик. macOS использует системную libpcap. Установку и подтверждения безопасности описывает инструкция на вашем языке. Готовые native-установщики здесь предназначены для Windows и macOS; установщика Linux 4.x в этом разделе пока нет.
 
-**Free / Pro в 4.3.9:** Free использует до **2 шлюзов**, **3 одновременных загрузок** и позволяет создавать **3 профиля сайтов**, с оформлением Graphite/System. Соответствующие права Pro открывают до **8 шлюзов**, **32 загрузок**, дополнительные профили, приоритеты, историю/отчёты по шлюзам, пакетные операции, внешний API и дополнительные оформления. Искусственного ограничения скорости в Free нет. [Подробности возможностей](docs/licensing.ru.md).
+**Free / Pro в 4.6.9:** Free использует до **2 шлюзов**, **3 одновременных загрузок** и позволяет создавать **3 профиля сайтов**, с оформлением Graphite/System. Соответствующие права Pro открывают до **8 шлюзов**, **32 загрузок**, дополнительные профили, приоритеты, историю/отчёты по шлюзам, пакетные операции, внешний API и дополнительные оформления. Искусственного ограничения скорости в Free нет. [Подробности возможностей](docs/licensing.ru.md).
 
 
 
@@ -100,26 +102,26 @@ Windows Setup работает на английском и создаёт яр�
 <details>
 <summary><strong>Справочник ошибок с поиском — 25 тем на двенадцати языках</strong></summary>
 
-![MultiRoute Downloader 4.3.7 — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
+![MultiRoute Downloader — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
 
 </details>
 
 ## Наглядно следите за передачами
 
-В рабочем пространстве 4.3.7 главное место отдано файлам: отдельные колонки имени и размера, прогресс каждого задания, общая и поканальные скорости, график и свойства файла. Graphite и System доступны в Free; дополнительным оформлениям, включая Rose, нужно соответствующее право Pro.
+В рабочем пространстве главное место отдано файлам: отдельные колонки имени и размера, прогресс каждого задания, общая и поканальные скорости, график и свойства файла. Graphite и System доступны в Free; дополнительным оформлениям, включая Rose, нужно соответствующее право Pro.
 
-![MultiRoute Downloader 4.3.7 — очередь загрузок и скорости шлюзов](docs/images/v4.3.7/downloads-ru-e2abcb69ce95.png)
+![MultiRoute Downloader — очередь загрузок и скорости шлюзов](docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png)
 
 *Окна текущего приложения Windows, снятые с изолированным демонстрационным профилем. Файлы, прогресс, скорости и возможности Pro показаны для знакомства с интерфейсом, а не для измерения производительности.*
 
 <details>
 <summary><strong>Настройки сети и история скорости</strong></summary>
 
-![Адрес приложения и защищённый DNS](docs/images/v4.3.7/network-dns-e29dfdba1007.png)
+![Адрес приложения и защищённый DNS](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![Выбор шлюзов и проверка скорости](docs/images/v4.3.7/network-gateways-aee0a7897f48.png)
+![Выбор шлюзов и проверка скорости](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![MultiRoute Downloader 4.3.7 — история скорости загрузки](docs/images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader — история скорости загрузки](docs/images/v4.3.7/speed-graph-a85815544945.png)
 
 </details>
 
@@ -130,7 +132,7 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.3.7/downloads-en-ae5b55131583.png"><img src="docs/images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png" width="420" alt="Graphite" /></a></td>
 <td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
@@ -193,11 +195,11 @@ Windows Setup работает на английском и создаёт яр�
 <table>
 <tr>
 <td width="50%" valign="top"><strong>Настройки приложения</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Настройки приложения" /></a></td>
-<td width="50%" valign="top"><strong>Оформление, курьер и звуки</strong><br /><a href="docs/images/v4.3.7/appearance-cebf121d5de7.png"><img src="docs/images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Оформление, курьер и звуки" /></a></td>
+<td width="50%" valign="top"><strong>Оформление, курьер и звуки</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png" width="420" alt="Оформление, курьер и звуки" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Адрес приложения и защищённый DNS</strong><br /><a href="docs/images/v4.3.7/network-dns-e29dfdba1007.png"><img src="docs/images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Адрес приложения и защищённый DNS" /></a></td>
-<td width="50%" valign="top"><strong>Выбор шлюзов и проверка скорости</strong><br /><a href="docs/images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="docs/images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Выбор шлюзов и проверка скорости" /></a></td>
+<td width="50%" valign="top"><strong>Адрес приложения и защищённый DNS</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Адрес приложения и защищённый DNS" /></a></td>
+<td width="50%" valign="top"><strong>Выбор шлюзов и проверка скорости</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Выбор шлюзов и проверка скорости" /></a></td>
 </tr>
 </table>
 
@@ -293,6 +295,6 @@ Windows Setup работает на английском и создаёт яр�
 
 [Лицензия](LICENSE.txt) · [Краткое описание условий](LICENSING.md) · [Сторонние компоненты](THIRD-PARTY-NOTICES.txt)
 
-Этот раздел содержит актуальные установщики 4.3.9 и пользовательскую документацию.
+Этот раздел содержит актуальные установщики 4.6.9 и пользовательскую документацию.
 
 [Support the project](docs/support.md) · Voluntary support via QR code.

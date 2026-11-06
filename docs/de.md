@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — Anleitung auf Deutsch
+# MultiRoute Downloader 4.6.9 — Anleitung auf Deutsch
 
 [macOS: Installation, Start und Berechtigungen](macos/de.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — Aktueller Funktionsumfang, Free und Pro
+## 4.6.9 — Aktueller Funktionsumfang, Free und Pro
 
-Diese Anleitung beschreibt MultiRoute Downloader 4.3.9. Native Installationspakete und veröffentlichte Prüfsummen finden Sie im [Release 4.3.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9). Die folgenden Abschnitte beschreiben den aktuellen Funktionsumfang und die Lizenzrechte.
+Diese Anleitung beschreibt MultiRoute Downloader 4.6.9. Native Installationspakete und veröffentlichte Prüfsummen finden Sie im [Release 4.6.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9). Die folgenden Abschnitte beschreiben den aktuellen Funktionsumfang und die Lizenzrechte.
 
 ### Lizenzgrenzen und Funktionen
 
@@ -52,7 +52,7 @@ Der Referenzwert wird ohne Neustart oder Fortschrittsverlust gespeichert. MD5, S
 
 Die abschließende Prüfung verwendet den zuletzt gespeicherten Referenzwert. Änderungen löschen keine Bytes und starten die Übertragung nicht neu. Eine lokale Nachprüfung behält die fertige Datei und meldet Übereinstimmung, Abweichung oder Fehler getrennt vom Downloadstatus. Herausgeberreferenzen bleiben unabhängig erhalten. Eine Gesamtprüfsumme gilt nur für eine Torrentdatei. Integrität ist kein Nachweis harmlosen Inhalts; bevorzugen Sie vertrauenswürdige SHA-256/SHA-512-Referenzen.
 
-### API-Zugriff in 4.3.9
+### API-Zugriff in 4.6.9
 
 Die lokale JSON-API verwendet UTF-8 ohne gewöhnliches API-Token. Externe Steuerung benötigt automation_api; weitere Rechte werden zusätzlich geprüft. Dieses Recht allein erlaubt weder Stapelaufträge noch zusätzliche Gateways. Free behält eng begrenzte Lesediagnostik, den privat authentifizierten Lebenszyklus und die optionale Übergabe eines einzelnen Browserlinks. Siehe [API](../API.ru.txt) und [OpenAPI](../openapi.yaml); den Port nicht für LAN/Internet öffnen.
 
@@ -66,7 +66,7 @@ Dateiname und Größe stehen in getrennten Spalten. Die Größe wird numerisch u
 Bewegen Sie den Zeiger über den Dateinamen: Der Tooltip zeigt vollständigen Namen, Speicherpfad, Übertragungsprotokoll und Quelladresse oder lokalen Quellpfad. Torrent-Aufgaben zeigen BitTorrent, auch wenn ihre Metadaten über HTTPS geöffnet wurden. Eine vorhandene Repository-Adresse folgt der tatsächlichen Datei-URL. Eingebettete Zugangsdaten, Abfragewerte und Fragmente werden ausgeblendet; ein erkannter öffentlicher Magnet-Infohash kann sichtbar bleiben. Gespeicherte URL und Übertragungszustand bleiben unverändert.
 
 
-### Gateway-Prioritäten und Übertragungsdiagnose in 4.3.9
+### Gateway-Prioritäten und Übertragungsdiagnose in 4.6.9
 
 Legen Sie in den Netzwerkeinstellungen für jedes Gateway eine Priorität von **0 bis 1000** fest; der Wert steht auch an der Gateway-Anzeige. Ein höherer Wert bevorzugt das Gateway bei kleinen oder vollständigen Dateiübertragungen und teilt ihm bei großen Dateien mehr parallele Segmente zu. Andere ausgewählte, funktionierende Gateways helfen weiter. Gleiche Werte behalten die Auswahlreihenfolge bei; bei Ausfall oder Stillstand kann ein anderes ausgewähltes Gateway übernehmen. Dies garantiert kein bestimmtes Geschwindigkeitsverhältnis.
 
@@ -76,11 +76,11 @@ In den Einstellungen stehen die Anzahl gleichzeitiger Downloads innerhalb der Li
 
 Das individuelle Protokoll bleibt auch für abgeschlossene Dateien verfügbar. Einstellungen → Fehler und Lösungen öffnet eine durchsuchbare Offline-Hilfe mit 25 Themen in allen 12 Oberflächensprachen. Speicherort und Dateieigenschaften zeigen freien Platz in GB. Ein voller lokaler Datenträger wird ausdrücklich gemeldet, gespeicherte Teile bleiben erhalten und der Fehler wird nicht endlos als Netzwerkfehler wiederholt. Beim Warten nach dem Fortsetzen eines kleinen Segments bleibt der gespeicherte Präfix im Fortschritt sichtbar.
 
-### Verbleibende Download-Daten · 4.3.9
+### Verbleibende Download-Daten · 4.6.9
 
 Die Download-Tabelle enthält eine eigene Spalte **Restdaten**. Sie zeigt die noch zu ladende Datenmenge unabhängig von der verbleibenden Zeit und wird numerisch sortiert. Gespeicherter und laufender Fortschritt werden berücksichtigt; der Wert wird nie negativ. Bei unbekannter Gesamtgröße erscheint ein Gedankenstrich.
 
-### Sichererer Mac-Start und Gateway-Einrichtung · 4.3.9
+### Sichererer Mac-Start und Gateway-Einrichtung · 4.6.9
 
 Der native Mac-Start erkennt den alten relativen Standardpfad, auch ohne führenden Schrägstrich. Er verwendet ein bestätigtes vorhandenes Profil oder einen leeren Standardordner des Benutzers. Mehrdeutige benutzerdefinierte Pfade erfordern weiterhin eine ausdrückliche Auswahl.
 
@@ -90,7 +90,7 @@ Die Mac-Netzwerkkomponente 4.3.2 berücksichtigt eine von macOS ausgeblendete Ad
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Mac-Gateway-Antworten mit manueller Adresse · 4.3.9
+### Mac-Gateway-Antworten mit manueller Adresse · 4.6.9
 
 Die POSIX-Erfassung wird korrigiert: Manuelle Anwendungsadresse und DHCP verwenden beide einen Empfangsmodus für Antworten an die eigene Anwendungs-MAC, entsprechend dem bisherigen Windows-Verhalten. Ein erfolgreicher System-Ping prüft die Verbindung des Computers, nicht den Empfang an der virtuellen Anwendungsadresse.
 
@@ -176,7 +176,7 @@ API: `dnssec` akzeptiert `off`, `validate`, `require`; System-DNS nur `off`. `dn
 
 **HTTP-Bereichsverarbeitung:** Bei CDNs wie Civitai wird nach HTTP 200 für einen bei null beginnenden Bytebereich ein Bereich ab einem anderen Offset geprüft. Das erste Segment bleibt begrenzt; passende gespeicherte Daten eines sequenziellen Downloads können als Segmente fortgesetzt werden. Ein vorübergehendes HTTP 200 für einen späteren Bereich führt nach 2–30 Sekunden zu einem neuen Versuch, ohne gespeicherte Daten zu verwerfen oder den Gateway-Worker dauerhaft auszuschließen. Ein dauerhaftes Transferprotokoll je Gateway unterscheidet empfangene Daten von gespeichertem Fortschritt. [Transferdiagnose](transfer-diagnostics.en.md).
 
-[Installationspakete 4.3.9](../downloads/v4.3.9/README.md) enthalten eine private Laufzeit Java 21. Windows Setup ist auf Englisch und erstellt eine Desktopverknüpfung; Npcap wird separat benötigt. macOS verwendet die systemeigene libpcap. Die Installations- und Sicherheitsbestätigungen stehen unten.
+[Installationspakete 4.6.9](../downloads/v4.6.9/README.md) enthalten eine private Laufzeit Java 21. Windows Setup ist auf Englisch und erstellt eine Desktopverknüpfung; Npcap wird separat benötigt. macOS verwendet die systemeigene libpcap. Die Installations- und Sicherheitsbestätigungen stehen unten.
 
 Projektinhaber: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -261,13 +261,13 @@ Die virtuelle IP gehört zum **privaten Netzwerkstack der Anwendung**. Sie ermö
 
 WLAN, reine VPN-Adapter und IPv6-Verbindungen werden von diesem Ethernet-Transport nicht unterstützt. Auch Verbindungen zu lokalen LAN-BitTorrent-Peers werden nicht über ihn geführt. Bei mehreren passenden Ethernet-Adaptern kann die Auswahl als mehrdeutig abgelehnt werden. Ein nicht erreichbares Gateway wird durch die Anwendung nicht zu einem nutzbaren Internetanschluss.
 
-## Native Installationspakete 4.3.9: Windows und macOS
+## Native Installationspakete 4.6.9: Windows und macOS
 
 | System | Installationsdatei | Start nach der Installation |
 | --- | --- | --- |
-| Windows 11 x64 | [MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) | **MultiRoute Downloader** im Startmenü oder über die Desktopverknüpfung |
-| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
-| Intel, macOS 15+ | [MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
+| Windows 11 x64 | [MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) | **MultiRoute Downloader** im Startmenü oder über die Desktopverknüpfung |
+| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
+| Intel, macOS 15+ | [MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) | **MultiRoute Downloader** in Programme, Spotlight oder Dock |
 
 Die zwölf Sprach-Anleitungen und Screenshots sind auch offline enthalten. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: im Finder beim installierten Programm **Paketinhalt zeigen** wählen, dann `Contents/app/docs/` öffnen. `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` oder `vi.md` in einem Text- oder Markdown-Programm öffnen.
 
@@ -392,7 +392,7 @@ Alle Pfade in der Tabelle beziehen sich auf `/api/v1`. Vollständige Felder und 
 
 ## Daten, Aktualisierung und Fehlersuche
 
-### Native Pakete 4.3.9
+### Native Pakete 4.6.9
 
 | System | Einstellungen, Verlauf und Protokolle | Programm/Laufzeit | Netzwerkhelfer |
 | --- | --- | --- | --- |

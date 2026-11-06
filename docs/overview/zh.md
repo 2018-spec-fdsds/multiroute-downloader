@@ -11,7 +11,7 @@
 <p align="center"><strong>利用现有的网络连接下载大文件。</strong><br />汇集独立的宽带与移动网络网关来下载大文件，保留受支持的断点续传进度，并校验完成后的文件。</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>下载 4.3.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>下载 4.6.9</strong></a> ·
   <a href="../../downloads/README.md">当前下载</a> ·
   <a href="../zh.md">用户指南</a> ·
   <a href="../../API.ru.txt">API 参考</a> ·
@@ -39,22 +39,22 @@ MultiRoute 将这些独立连接汇入同一个下载工作区。可用网关从
 
 ## 下载与安装
 
-**当前版本：4.3.9。** 原生安装包包含专用 Java 21 运行时和对应平台的网络组件。通过应用的常规图标即可启动。
+**当前版本：4.6.9。** 原生安装包包含专用 Java 21 运行时和对应平台的网络组件。通过应用的常规图标即可启动。
 
 | 你的计算机 | 单文件安装包 |
 | --- | --- |
-| **Windows 11 · x64** | [Windows 安装程序 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows 安装程序 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Chrome / Edge 集成](../zh.md#chrome-and-edge-integration) · [校验值与报告](../../downloads/v4.3.9/README.md) · [下载详情](../../downloads/README.md)
+[Chrome / Edge 集成](../zh.md#chrome-and-edge-integration) · [校验值与报告](../../downloads/v4.6.9/README.md) · [下载详情](../../downloads/README.md)
 
 Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独检查，必要时提供其官方安装程序；macOS 使用系统 libpcap。安装步骤和安全确认操作请参阅对应语言的指南。此处公开的原生安装包覆盖 Windows 和 macOS；不包含 Linux 4.x 安装包。
 
-**4.3.9 中的 Free / Pro：** Free 最多使用 **2 个网关**、**3 个同时下载任务**，并可创建 **3 个站点配置**，支持 Graphite（石墨色）/System（跟随系统）外观。相应 Pro 功能支持最多 **8 个网关**、**32 个同时下载任务**、更多站点配置、优先级、网关历史记录/报告、批量操作、外部 API 和更多外观样式。Free 不会刻意限制下载速度。[完整功能说明](../licensing.en.md)。
+**4.6.9 中的 Free / Pro：** Free 最多使用 **2 个网关**、**3 个同时下载任务**，并可创建 **3 个站点配置**，支持 Graphite（石墨色）/System（跟随系统）外观。相应 Pro 功能支持最多 **8 个网关**、**32 个同时下载任务**、更多站点配置、优先级、网关历史记录/报告、批量操作、外部 API 和更多外观样式。Free 不会刻意限制下载速度。[完整功能说明](../licensing.en.md)。
 
 
-## 4.3.9 新功能
+## 4.6.9 新功能
 
 - **Mac 手动地址的网关回复.** 修正 POSIX 捕获设置，让手动应用地址与 DHCP 都能接收发往应用自身 MAC 的回复，与现有 Windows 行为一致。系统 ping 成功只证明电脑自身的连接正常，不能证明应用虚拟地址能收到网关回复。
 
@@ -84,7 +84,7 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 ## 清晰掌握传输状态
 
-4.3.9 工作区以文件为中心：独立的名称与大小列、各文件进度、总速度和各网关速度、速度图表及文件详情。Free 包含 Graphite 和 System 外观；Rose 等其他样式需要相应的 Pro 功能。
+4.6.9 工作区以文件为中心：独立的名称与大小列、各文件进度、总速度和各网关速度、速度图表及文件详情。Free 包含 Graphite 和 System 外观；Rose 等其他样式需要相应的 Pro 功能。
 
 ![MultiRoute Downloader 4.3.7 — 下载队列与网关速度](../images/v4.3.7/downloads-en-ae5b55131583.png)
 
@@ -263,7 +263,7 @@ API 在本机 **`http://127.0.0.1:8765/api/v1`** 运行。例如，以 `Content-
 
 应用使用自己的本地 IPv4 地址和应用 MAC，使所选网关能够独立于操作系统默认网关运行，无需更改操作系统路由或物理适配器的 MAC。请在实际所在的同一子网中选择一个空闲地址。手动指定的地址应位于 DHCP 自动分配范围之外，或者在局域网 DHCP 服务器上为其保留/排除；然后在“网络设置”中使用 **Check and apply（检查并应用）**。[地址选择与检查](../zh.md#application-virtual-ip)。
 
-当前 4.3.9 Windows 安装包已通过本地升级/启动检查；macOS 安装包已在目标 CI 运行器上通过原生组件和 Java 运行时检查。实体 Mac 上经由局域网/DHCP 网关的传输仍需硬件验证。[验证报告](../../NATIVE-INSTALLER-TESTS.json)。
+当前 4.6.9 Windows 安装包已通过本地升级/启动检查；macOS 安装包已在目标 CI 运行器上通过原生组件和 Java 运行时检查。实体 Mac 上经由局域网/DHCP 网关的传输仍需硬件验证。[验证报告](../../NATIVE-INSTALLER-TESTS.json)。
 
 ## 所有者与许可
 
@@ -271,4 +271,4 @@ API 在本机 **`http://127.0.0.1:8765/api/v1`** 运行。例如，以 `Content-
 
 [许可](../../LICENSE.txt) · [许可摘要](../../LICENSING.md) · [第三方声明](../../THIRD-PARTY-NOTICES.txt)
 
-此分发区域提供当前 4.3.9 安装程序和用户文档。
+此分发区域提供当前 4.6.9 安装程序和用户文档。

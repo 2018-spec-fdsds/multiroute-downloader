@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — Hướng dẫn tiếng Việt
+# MultiRoute Downloader 4.6.9 — Hướng dẫn tiếng Việt
 
 [macOS: cài đặt, khởi động và quyền truy cập](macos/vi.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — Tính năng hiện tại, Free và Pro
+## 4.6.9 — Tính năng hiện tại, Free và Pro
 
-Hướng dẫn này mô tả MultiRoute Downloader 4.3.9 và các thiết lập hiện hành. Lấy gói dành cho nền tảng của bạn từ [bản tải xuống đã công bố](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest), đối chiếu SHA-256 rồi làm theo hướng dẫn cài đặt và bảo mật bên dưới. Các giới hạn Free và khả năng Pro dưới đây áp dụng cho 4.3.9.
+Hướng dẫn này mô tả MultiRoute Downloader 4.6.9 và các thiết lập hiện hành. Lấy gói dành cho nền tảng của bạn từ [bản tải xuống đã công bố](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest), đối chiếu SHA-256 rồi làm theo hướng dẫn cài đặt và bảo mật bên dưới. Các giới hạn Free và khả năng Pro dưới đây áp dụng cho 4.6.9.
 
 ### Giới hạn và tính năng giấy phép
 
@@ -52,7 +52,7 @@ Lưu giá trị tham chiếu không khởi động lại hay xóa tiến độ. 
 
 Kiểm tra cuối dùng giá trị tham chiếu được lưu gần nhất. Sửa giá trị không xóa byte đã tải hoặc khởi động lại truyền. Kiểm tra lại cục bộ giữ tệp hoàn tất và báo khớp, không khớp hoặc lỗi riêng biệt. Tham chiếu của nhà phát hành được giữ độc lập. Một checksum toàn tệp chỉ áp dụng cho một tệp torrent. Toàn vẹn không chứng minh nội dung vô hại; nên dùng tham chiếu SHA-256/SHA-512 đáng tin cậy.
 
-### Truy cập API trong 4.3.9
+### Truy cập API trong 4.6.9
 
 API JSON cục bộ dùng UTF-8, không có token API thông thường. Điều khiển bên ngoài cần automation_api; các quyền khác vẫn được kiểm tra, nên quyền này không tự cho phép tải hàng loạt hoặc thêm gateway. Free giữ chẩn đoán đọc giới hạn, vòng đời được xác thực riêng và cầu nối tùy chọn cho một liên kết trình duyệt. Xem [API](../API.ru.txt), [OpenAPI](../openapi.yaml); không mở cổng ra LAN/Internet.
 
@@ -66,7 +66,7 @@ Tên và kích thước tệp nay có các cột riêng. Kích thước được
 Di chuột lên tên tệp để xem tên đầy đủ, đường dẫn lưu, giao thức truyền và địa chỉ hoặc đường dẫn nguồn cục bộ. Tác vụ torrent hiển thị BitTorrent kể cả khi siêu dữ liệu được mở qua HTTPS. Địa chỉ kho, nếu có, xuất hiện sau URL thực của tệp. Thông tin xác thực nhúng, giá trị truy vấn và đoạn fragment bị ẩn; infohash magnet công khai được nhận diện có thể còn hiển thị. URL đã lưu và trạng thái truyền không thay đổi.
 
 
-### Ưu tiên cổng mạng và chẩn đoán truyền tải trong 4.3.9
+### Ưu tiên cổng mạng và chẩn đoán truyền tải trong 4.6.9
 
 Trong cài đặt mạng, đặt ưu tiên cho mỗi cổng mạng từ **0 đến 1000**; giá trị cũng xuất hiện cạnh chỉ báo chính. Số lớn hơn ưu tiên cổng đó cho tệp nhỏ hoặc lượt truyền toàn bộ tệp và giao thêm phân đoạn song song cho tệp lớn. Các cổng được chọn khác đang hoạt động vẫn hỗ trợ. Giá trị bằng nhau giữ nguyên thứ tự chọn; cổng được chọn khác có thể tiếp nhận công việc khi cổng ưu tiên bị lỗi hoặc ngừng truyền. Điều này không bảo đảm một tỷ lệ tốc độ cố định.
 
@@ -76,11 +76,11 @@ Cài đặt cho phép chọn số lượt tải đồng thời trong giới hạ
 
 Tệp đã tải xong vẫn có nhật ký riêng. Mục Lỗi và giải pháp trong cài đặt mở hướng dẫn ngoại tuyến có tìm kiếm với 25 chủ đề bằng cả 12 ngôn ngữ giao diện. Vị trí lưu và thuộc tính hiển thị dung lượng trống theo GB. Khi đĩa cục bộ đầy, ứng dụng báo rõ, giữ các phần đã lưu và không lặp lại vô hạn như lỗi mạng. Phần đầu đã lưu vẫn được tính trong tiến độ khi một phân đoạn nhỏ được tiếp tục đang chờ dữ liệu mới.
 
-### Dữ liệu còn phải tải · 4.3.9
+### Dữ liệu còn phải tải · 4.6.9
 
 Bảng tải xuống có cột **Dữ liệu còn lại** riêng. Cột này hiển thị số byte còn phải tải, tách biệt với thời gian ước tính và được sắp xếp theo số. Giá trị tính cả tiến độ đã lưu và đang nhận, không xuống dưới 0 và hiển thị dấu gạch ngang khi chưa biết tổng kích thước.
 
-### Khởi động Mac và thiết lập cổng mạng tin cậy hơn · 4.3.9
+### Khởi động Mac và thiết lập cổng mạng tin cậy hơn · 4.6.9
 
 Khởi động gốc trên Mac nhận ra đường dẫn mặc định tương đối cũ, kể cả khi thiếu dấu gạch chéo đầu, và dùng hồ sơ hiện có đã xác minh hoặc thư mục mặc định trống thuộc người dùng. Vị trí tùy chỉnh mơ hồ vẫn yêu cầu chọn rõ ràng thay vì đoán.
 
@@ -90,7 +90,7 @@ Thành phần mạng Mac 4.3.2 xử lý MAC bộ điều hợp bị macOS ẩn v
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Phản hồi cổng mạng Mac với địa chỉ thủ công · 4.3.9
+### Phản hồi cổng mạng Mac với địa chỉ thủ công · 4.6.9
 
 Thiết lập bắt gói POSIX được sửa để địa chỉ thủ công của ứng dụng và DHCP đều nhận phản hồi gửi đến MAC riêng của ứng dụng, giống hành vi Windows hiện có. Ping hệ thống thành công chỉ kiểm tra kết nối của máy tính, không chứng minh địa chỉ ảo của ứng dụng nhận được phản hồi.
 
@@ -182,7 +182,7 @@ API thêm `dnssec`: `off`, `validate`, `require`; chế độ Hệ thống chỉ
 
 **Xử lý phạm vi byte HTTP:** nếu CDN như Civitai trả HTTP 200 cho vùng byte bắt đầu từ 0, ứng dụng kiểm tra thêm vùng bắt đầu sau 0. Đoạn đầu chỉ được đọc trong giới hạn của đoạn; dữ liệu tải tuần tự đã lưu và khớp nguồn có thể tiếp tục theo từng đoạn. HTTP 200 tạm thời cho vùng phía sau sẽ được thử lại sau 2–30 giây, giữ dữ liệu và luồng xử lý cổng mạng. Nhật ký truyền bền vững theo cổng phân biệt lưu lượng nhận với tiến độ đã lưu. [Chẩn đoán truyền](transfer-diagnostics.en.md).
 
-[Bộ cài 4.3.9](../downloads/v4.3.9/README.md) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
+[Bộ cài 4.6.9](../downloads/v4.6.9/README.md) kèm Java 21 riêng. Trình cài Windows dùng tiếng Anh và tạo lối tắt trên màn hình; vẫn cần cài Npcap riêng. macOS dùng libpcap của hệ thống. Làm theo các bước cài đặt và xác nhận bảo mật bên dưới.
 
 Chủ dự án: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -228,11 +228,11 @@ Trước khi cập nhật, hãy chờ tải xuống, tải lên và kiểm tra t
 
 ## Cài đặt và xác nhận bảo mật
 
-Chọn một bộ cài trong [bản phát hành 4.3.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9), nếu được đính kèm, và đối chiếu SHA-256 công bố.
+Chọn một bộ cài trong [bản phát hành 4.6.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9), nếu được đính kèm, và đối chiếu SHA-256 công bố.
 
-- Windows: [MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe).
-- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg).
-- Intel, macOS 15+: [MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg).
+- Windows: [MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe).
+- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg).
+- Intel, macOS 15+: [MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg).
 
 ### Windows
 
@@ -313,7 +313,7 @@ Khi đang chạy, API ở `http://127.0.0.1:8765/api/v1`. Yêu cầu/đáp ứng
 
 Các ví dụ API dưới đây cần khả năng `automation_api`. Ví dụ bật bốn tuyến nên cũng cần khả năng `extra_gateways` phù hợp; đây không phải lựa chọn mặc định trong giao diện. Tự chỉ định tuyến theo cổng sẵn có và giới hạn giấy phép: tối đa 2 trong Free hoặc tối đa 8 với khả năng Pro tương ứng.
 
-Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.3.9"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
+Kiểm tra: `GET /api/v1/health`, bình thường `{"ok":true,"version":"4.6.9"}`. Cấu hình mạng trước trong UI hoặc gửi tới `POST /api/v1/network`:
 
 ```json
 {

@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — 한국어 안내서
+# MultiRoute Downloader 4.6.9 — 한국어 안내서
 
 [macOS: 설치, 첫 실행 및 권한](macos/ko.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — 현재 기능, Free와 Pro
+## 4.6.9 — 현재 기능, Free와 Pro
 
-이 안내서는 현재 버전 4.3.9의 설치, 네트워크 설정과 일상적인 사용 방법을 설명합니다. [게시된 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)에서 시스템에 맞는 설치 프로그램을 받고 공개 체크섬과 비교하세요. Free와 Pro의 기능 및 한도는 다음과 같습니다.
+이 안내서는 현재 버전 4.6.9의 설치, 네트워크 설정과 일상적인 사용 방법을 설명합니다. [게시된 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)에서 시스템에 맞는 설치 프로그램을 받고 공개 체크섬과 비교하세요. Free와 Pro의 기능 및 한도는 다음과 같습니다.
 
 ### 라이선스 제한 및 기능
 
@@ -52,7 +52,7 @@ MultiRoute는 수동 IP와 DHCP에서 자체 고정 MAC을 사용하며 OS 네�
 
 최종 검사는 마지막으로 저장한 기준값을 사용합니다. 편집해도 받은 바이트를 지우거나 전송을 다시 시작하지 않습니다. 로컬 재검사는 완료 파일을 보존하고 일치, 불일치 또는 오류를 별도로 표시합니다. 게시자 기준값은 독립적으로 유지됩니다. 전체 파일 체크섬 하나는 torrent 파일 하나에만 적용됩니다. 무결성은 콘텐츠의 무해함을 보장하지 않으므로 신뢰할 수 있는 SHA-256/SHA-512 기준값을 권장합니다.
 
-### 4.3.9 API 접근
+### 4.6.9 API 접근
 
 로컬 JSON API는 UTF-8을 사용하며 일반 API 토큰이 없습니다. 외부 제어에는 automation_api가 필요하며 다른 권한도 검사하므로 이 권한만으로 일괄 작업이나 추가 게이트웨이를 사용할 수 없습니다. Free에는 제한된 읽기 진단, 비공개 인증 수명주기와 선택적 브라우저 단일 링크 전달이 남습니다. [API](../API.ru.txt), [OpenAPI](../openapi.yaml)를 참고하고 포트를 LAN/인터넷에 공개하지 마세요.
 
@@ -66,7 +66,7 @@ System 스타일은 표 텍스트, 입력란과 컨트롤에 시스템 배경에
 파일 이름에 포인터를 올리면 전체 이름, 저장 경로, 전송 프로토콜과 원본 주소 또는 로컬 원본 경로가 표시됩니다. 메타데이터를 HTTPS로 열었어도 토렌트 작업은 BitTorrent로 표시됩니다. 저장소 주소가 있으면 실제 파일 URL 다음에 표시됩니다. 포함된 인증 정보, 쿼리 값과 프래그먼트는 숨겨지며, 인식된 공개 magnet infohash는 표시될 수 있습니다. 저장된 URL과 전송 상태는 바뀌지 않습니다.
 
 
-### 4.3.9의 게이트웨이 우선순위와 전송 진단
+### 4.6.9의 게이트웨이 우선순위와 전송 진단
 
 네트워크 설정에서 각 게이트웨이의 우선순위를 **0~1000**으로 지정합니다. 기본 화면의 게이트웨이 표시 옆에도 값이 보입니다. 값이 높으면 작은 파일이나 전체 파일 전송에서 우선 사용하며 큰 파일의 병렬 세그먼트도 더 많이 배정됩니다. 선택된 다른 정상 게이트웨이도 계속 참여합니다. 값이 같으면 선택 순서를 유지하고, 우선 게이트웨이가 실패하거나 멈추면 다른 선택된 게이트웨이가 작업을 이어받을 수 있습니다. 일정한 속도 비율을 보장하지는 않습니다.
 
@@ -76,11 +76,11 @@ System 스타일은 표 텍스트, 입력란과 컨트롤에 시스템 배경에
 
 완료된 파일도 개별 로그를 볼 수 있습니다. 설정의 오류 및 해결 방법은 12개 인터페이스 언어로 25개 주제를 검색하는 오프라인 안내서입니다. 저장 위치와 속성에 여유 공간(GB)이 표시됩니다. 로컬 디스크가 가득 차면 명확히 알리고 저장된 부분을 보존하며 네트워크 오류처럼 무한 반복하지 않습니다. 작은 세그먼트를 재개한 뒤 데이터를 기다리는 동안 저장된 접두 부분도 진행률에 계속 반영됩니다.
 
-### 남은 다운로드 데이터 · 4.3.9
+### 남은 다운로드 데이터 · 4.6.9
 
 다운로드 표에 **남은 다운로드 용량** 열이 추가되었습니다. 예상 남은 시간과 별도로 아직 받을 바이트를 표시하고 숫자로 정렬합니다. 저장된 진행 상황과 수신 중인 진행 상황을 반영하며 0보다 작아지지 않습니다. 전체 크기를 모르면 대시가 표시됩니다.
 
-### 더 안정적인 Mac 시작과 게이트웨이 설정 · 4.3.9
+### 더 안정적인 Mac 시작과 게이트웨이 설정 · 4.6.9
 
 Mac 기본 실행은 처음 슬래시가 빠진 경우를 포함한 이전 상대 기본 경로를 인식합니다. 확인된 기존 프로필 또는 사용자의 빈 기본 폴더를 사용합니다. 모호한 사용자 지정 위치는 추측하지 않고 명시적 선택을 요구합니다.
 
@@ -90,7 +90,7 @@ Mac 네트워크 구성 요소 4.3.2은 macOS가 어댑터 MAC을 숨기는 경�
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Mac 수동 주소의 게이트웨이 응답 · 4.3.9
+### Mac 수동 주소의 게이트웨이 응답 · 4.6.9
 
 POSIX 캡처 설정을 수정하여 수동 앱 주소와 DHCP 모두 앱 자체 MAC으로 오는 응답을 받도록 했습니다. 기존 Windows 동작과 같습니다. 시스템 ping 성공은 컴퓨터의 연결만 확인하며 앱 가상 주소의 게이트웨이 응답 수신을 증명하지 않습니다.
 
@@ -148,7 +148,7 @@ DHCP 진단은 일반 오류로 대체되지 않고 열두 언어의 구체적�
 
 ## DNS 설정
 
-**4.3.9 설치 파일 버전과 공개 체크섬을 확인하고, 플랫폼 및 패키지 검증 결과는 해당 NATIVE-INSTALLER-TESTS.json을 참조하십시오.**
+**4.6.9 설치 파일 버전과 공개 체크섬을 확인하고, 플랫폼 및 패키지 검증 결과는 해당 NATIVE-INSTALLER-TESTS.json을 참조하십시오.**
 
 **네트워크 → DNS 확인**을 엽니다. 기본값은 **DNS over HTTPS(DoH), Cloudflare**입니다. MultiRoute 전용 설정이며 OS DNS, 경로 또는 인터페이스 IP를 변경하지 않습니다.
 
@@ -182,7 +182,7 @@ API의 `dnssec` 값은 `off`, `validate`, `require`이며 시스템 모드는 `o
 
 **세그먼트 다운로드와 CDN:** Civitai 같은 CDN이 0부터 시작하는 범위에 HTTP 200을 반환하면 0이 아닌 위치의 범위도 검사합니다. 첫 세그먼트는 정해진 크기까지만 읽으며, 원본이 일치하는 기존 순차 다운로드 데이터를 세그먼트로 이어받을 수 있습니다. 이후 범위에 일시적으로 HTTP 200이 반환되면 저장된 데이터와 게이트웨이 작업 스레드를 유지하며 2–30초 후 다시 시도합니다. 게이트웨이별 영구 전송 로그는 수신 트래픽과 저장된 진행량을 구분합니다. [전송 진단](transfer-diagnostics.en.md).
 
-[4.3.9 설치 파일](../downloads/v4.3.9/README.md)에는 전용 Java 21이 포함됩니다. Windows 설치 마법사는 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 필요하며 macOS는 시스템 libpcap을 사용합니다. 아래의 설치 및 보안 확인 절차를 따르십시오.
+[4.6.9 설치 파일](../downloads/v4.6.9/README.md)에는 전용 Java 21이 포함됩니다. Windows 설치 마법사는 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 필요하며 macOS는 시스템 libpcap을 사용합니다. 아래의 설치 및 보안 확인 절차를 따르십시오.
 
 프로젝트 소유자: [2018-spec-fdsds](https://github.com/2018-spec-fdsds).
 
@@ -228,11 +228,11 @@ Windows/macOS 설치 프로그램에는 전용 Java 21과 컴파일된 네트워
 
 ## 설치와 보안 확인
 
-[4.3.9 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9)에서 시스템에 맞는 단일 설치 파일을 받고 공개 SHA-256과 비교합니다.
+[4.6.9 릴리스](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9)에서 시스템에 맞는 단일 설치 파일을 받고 공개 SHA-256과 비교합니다.
 
-- Windows: [MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe).
-- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg).
-- Intel, macOS 15+: [MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg).
+- Windows: [MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe).
+- Apple Silicon, macOS 26+: [MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg).
+- Intel, macOS 15+: [MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg).
 
 ### Windows
 
@@ -315,7 +315,7 @@ Windows/Linux에서는 **Ctrl**을 누른 채 클릭하고 macOS에서는 **Cmd*
 
 아래의 외부 관리 예제에는 `automation_api` 권한이 필요합니다. 게이트웨이 네 개를 쓰는 예제 구성에는 `extra_gateways` 권한도 필요합니다. 실제 네트워크와 라이선스에 맞게 `gateways`와 `routes`를 조정하세요. Free는 동시에 게이트웨이 2개까지, 해당 Pro 권한이 있으면 8개까지 사용할 수 있습니다.
 
-상태 확인: `GET /api/v1/health`, 정상 예 `{"ok":true,"version":"4.3.9"}`. 먼저 창에서 네트워크를 설정하거나 다음을 `POST /api/v1/network`에 보냅니다.
+상태 확인: `GET /api/v1/health`, 정상 예 `{"ok":true,"version":"4.6.9"}`. 먼저 창에서 네트워크를 설정하거나 다음을 `POST /api/v1/network`에 보냅니다.
 
 ```json
 {

@@ -1,0 +1,9 @@
+# MultiRoute Downloader 4.6.9
+
+- [Windows 11 x64 — EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe)
+- [macOS 26+ Apple Silicon — PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg)
+- [macOS 15+ Intel — PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg)
+
+[SHA-256](../../SHA256SUMS.txt) · [SHA-512](../../SHA512SUMS.txt) · [MD5](../../MD5SUMS.txt)
+
+Java 21 is included. / Java 21 включена в установщики.

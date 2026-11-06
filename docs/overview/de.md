@@ -11,7 +11,7 @@
 <p align="center"><strong>Laden Sie große Dateien mit den Verbindungen herunter, die Sie bereits haben.</strong><br />Kombinieren Sie unabhängige Breitband- und Mobilfunk-Gateways für große Downloads, bewahren Sie den Fortschritt fortsetzbarer Übertragungen und prüfen Sie die fertige Datei.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>4.3.9 herunterladen</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>4.6.9 herunterladen</strong></a> ·
   <a href="../../downloads/README.md">Aktuelle Downloads</a> ·
   <a href="../de.md">Benutzerhandbuch</a> ·
   <a href="../../API.ru.txt">API-Referenz</a> ·
@@ -39,24 +39,24 @@ Nutzen Sie unterstütztes Fortsetzen, den Vergleich veröffentlichter Prüfsumme
 
 ## Herunterladen und installieren
 
-**Aktuelle Version: 4.3.9.** Native Installationspakete enthalten eine eigene Java-21-Laufzeit und die Netzwerkkomponente der jeweiligen Plattform. Öffnen Sie die Anwendung über ihr normales Symbol.
+**Aktuelle Version: 4.6.9.** Native Installationspakete enthalten eine eigene Java-21-Laufzeit und die Netzwerkkomponente der jeweiligen Plattform. Öffnen Sie die Anwendung über ihr normales Symbol.
 
 | Ihr Computer | Installer als Einzeldatei |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Chrome-/Edge-Integration](../de.md#chrome-and-edge-integration) · [Prüfsummen und Bericht](../../downloads/v4.3.9/README.md) · [Download-Details](../../downloads/README.md)
+[Chrome-/Edge-Integration](../de.md#chrome-and-edge-integration) · [Prüfsummen und Bericht](../../downloads/v4.6.9/README.md) · [Download-Details](../../downloads/README.md)
 
 Windows Setup ist englischsprachig und erstellt eine Desktop-Verknüpfung. Npcap wird separat geprüft; bei Bedarf wird der offizielle Installer angeboten. macOS verwendet das systemeigene libpcap. Hinweise zur Installation und zu Sicherheitsbestätigungen finden Sie im Handbuch Ihrer Sprache. Öffentliche native Installationspakete gibt es für Windows und macOS; ein Linux-Installer für 4.x ist hier nicht enthalten.
 
-**Free / Pro in 4.3.9:** Free nutzt bis zu **2 Gateways**, **3 gleichzeitige Downloads** und erlaubt das Anlegen von **3 Website-Profilen**, mit Graphite-/Systemdarstellung. Die entsprechenden Pro-Funktionen erlauben bis zu **8 Gateways**, **32 gleichzeitige Downloads**, zusätzliche Profile, Prioritäten, Gateway-Verlauf und -Berichte, Stapelaktionen, die externe API und weitere Designs. Free drosselt die Download-Geschwindigkeit nicht absichtlich. [Alle Funktionsdetails](../licensing.en.md).
+**Free / Pro in 4.6.9:** Free nutzt bis zu **2 Gateways**, **3 gleichzeitige Downloads** und erlaubt das Anlegen von **3 Website-Profilen**, mit Graphite-/Systemdarstellung. Die entsprechenden Pro-Funktionen erlauben bis zu **8 Gateways**, **32 gleichzeitige Downloads**, zusätzliche Profile, Prioritäten, Gateway-Verlauf und -Berichte, Stapelaktionen, die externe API und weitere Designs. Free drosselt die Download-Geschwindigkeit nicht absichtlich. [Alle Funktionsdetails](../licensing.en.md).
 
 
 
 
-## Neu in 4.3.9
+## Neu in 4.6.9
 
 - **Mac-Gateway-Antworten mit manueller Adresse.** Die POSIX-Erfassung wird korrigiert: Manuelle Anwendungsadresse und DHCP verwenden beide einen Empfangsmodus für Antworten an die eigene Anwendungs-MAC, entsprechend dem bisherigen Windows-Verhalten. Ein erfolgreicher System-Ping prüft die Verbindung des Computers, nicht den Empfang an der virtuellen Anwendungsadresse.
 
@@ -86,7 +86,7 @@ Dies behebt einen Unterschied im Erfassungsmodus, nicht jede Ursache unerreichba
 
 ## Ihre Übertragungen im Blick
 
-Der Arbeitsbereich von 4.3.9 stellt Ihre Dateien in den Mittelpunkt: getrennte Spalten für Name und Größe, individueller Fortschritt, Gesamtgeschwindigkeit und Geschwindigkeit je Gateway, ein Geschwindigkeitsdiagramm und Dateidetails. Graphite und System sind in Free enthalten; zusätzliche Designs wie Rose erfordern die entsprechende Pro-Funktion.
+Der Arbeitsbereich von 4.6.9 stellt Ihre Dateien in den Mittelpunkt: getrennte Spalten für Name und Größe, individueller Fortschritt, Gesamtgeschwindigkeit und Geschwindigkeit je Gateway, ein Geschwindigkeitsdiagramm und Dateidetails. Graphite und System sind in Free enthalten; zusätzliche Designs wie Rose erfordern die entsprechende Pro-Funktion.
 
 ![MultiRoute Downloader 4.3.7 — Downloadwarteschlange und Gateway-Geschwindigkeiten](../images/v4.3.7/downloads-en-ae5b55131583.png)
 
@@ -265,7 +265,7 @@ Die allgemeine Steuerung über die externe API erfordert die entsprechende Pro-F
 
 Die Anwendung nutzt eine eigene lokale IPv4-Adresse und eine eigene Anwendungs-MAC-Adresse, damit die ausgewählten Gateways unabhängig vom Standardgateway des Betriebssystems arbeiten können, ohne Betriebssystemrouten oder die MAC-Adresse des physischen Adapters zu ändern. Verwenden Sie eine freie Adresse im tatsächlich genutzten Subnetz. Wählen Sie bei manueller Vergabe eine Adresse außerhalb des automatischen DHCP-Bereichs oder reservieren Sie sie auf den DHCP-Servern des LANs bzw. schließen Sie sie von deren Vergabe aus; nutzen Sie anschließend **Prüfen und anwenden** in den Netzwerkeinstellungen. [Adressauswahl und Prüfungen](../de.md#application-virtual-ip).
 
-Die aktuellen Windows-Pakete der Version 4.3.9 haben einen lokalen Upgrade- und Starttest bestanden; die macOS-Pakete haben Prüfungen der nativen Komponenten und der Java-Laufzeit auf den vorgesehenen CI-Runnern bestanden. Gateway-Übertragungen über physische Mac-LAN-/DHCP-Konfigurationen müssen noch auf Hardware validiert werden. [Prüfbericht](../../NATIVE-INSTALLER-TESTS.json).
+Die aktuellen Windows-Pakete der Version 4.6.9 haben einen lokalen Upgrade- und Starttest bestanden; die macOS-Pakete haben Prüfungen der nativen Komponenten und der Java-Laufzeit auf den vorgesehenen CI-Runnern bestanden. Gateway-Übertragungen über physische Mac-LAN-/DHCP-Konfigurationen müssen noch auf Hardware validiert werden. [Prüfbericht](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Urheber und Lizenz
 
@@ -273,4 +273,4 @@ Erstellt von **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. Die kost
 
 [Lizenz](../../LICENSE.txt) · [Lizenzübersicht](../../LICENSING.md) · [Hinweise zu Drittanbietern](../../THIRD-PARTY-NOTICES.txt)
 
-Dieser Distributionsbereich enthält die aktuellen Installer der Version 4.3.9 und die Benutzerdokumentation.
+Dieser Distributionsbereich enthält die aktuellen Installer der Version 4.6.9 und die Benutzerdokumentation.

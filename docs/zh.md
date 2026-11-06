@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — 中文使用说明
+# MultiRoute Downloader 4.6.9 — 中文使用说明
 
 [macOS：安装、首次启动与权限](macos/zh.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — 当前功能、Free 与 Pro
+## 4.6.9 — 当前功能、Free 与 Pro
 
-本指南介绍当前版本 4.3.9 的安装、网络配置和日常操作。请从[已发布版本](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)获取与系统匹配的安装包，并核对公布的校验和。Free 与 Pro 的功能和上限如下。
+本指南介绍当前版本 4.6.9 的安装、网络配置和日常操作。请从[已发布版本](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)获取与系统匹配的安装包，并核对公布的校验和。Free 与 Pro 的功能和上限如下。
 
 ### 许可证限制与功能
 
@@ -52,7 +52,7 @@ MultiRoute 在手动 IP 和 DHCP 模式下使用独立固定 MAC，不更改系�
 
 最终校验使用最近保存的参考值。编辑参考值不会清除已下载字节或重启传输。本地复查保留完成的文件，单独报告匹配、不匹配或错误。发布者的参考值独立保留。一个完整文件校验值不能代表多个 torrent 文件。完整性校验不保证内容无害；安全用途优先采用可信 SHA-256/SHA-512 参考值。
 
-### 4.3.9 的 API 访问
+### 4.6.9 的 API 访问
 
 本地 JSON API 使用 UTF-8，无普通 API 令牌。外部管理需要 automation_api，同时还会检查其他权限；仅此权限不能启用批量任务或更多网关。Free 保留有限的只读诊断、私密认证的生命周期操作和可选的浏览器单链接桥接。参阅 [API](../API.ru.txt) 和 [OpenAPI](../openapi.yaml)；不要向局域网或互联网开放端口。
 
@@ -66,7 +66,7 @@ System 外观为表格文字、输入框和控件提供与系统背景相适应�
 将指针悬停在文件名上，可查看完整名称、保存路径、传输协议和来源地址或本地来源路径。即使元数据通过 HTTPS 打开，种子任务也显示 BitTorrent。如有仓库地址，它会显示在实际文件 URL 之后。嵌入的凭据、查询参数值和片段均被隐藏；已识别的公开 magnet infohash 可以保留。保存的下载地址和传输状态不会改变。
 
 
-### 4.3.9 的网关优先级与传输诊断
+### 4.6.9 的网关优先级与传输诊断
 
 在网络设置中，为每个网关设置 **0 到 1000** 的优先级；主界面的网关指示器旁也显示该值。数值越高，小文件或整文件传输越优先使用该网关；大文件也会分配更多并行分段。其他已选且正常的网关仍会参与。相同数值保留选择顺序；首选网关故障或停滞时，其他已选网关可以接手。这不保证固定的速度比例。
 
@@ -76,11 +76,11 @@ System 外观为表格文字、输入框和控件提供与系统背景相适应�
 
 已完成文件仍可查看单独日志。设置中的“错误与解决方案”提供离线搜索指南，含 25 个主题，覆盖全部 12 种界面语言。保存位置和文件属性显示可用空间（GB）。本地磁盘已满会明确提示，保留已保存部分，不会作为网络错误无限重试。恢复小分段后等待新数据时，已保存前缀仍计入进度。
 
-### 剩余下载数据 · 4.3.9
+### 剩余下载数据 · 4.6.9
 
 下载列表新增独立的 **剩余下载量** 列。它显示尚需下载的字节数，与预计剩余时间分开，并支持按数值排序。该值包含已保存和正在接收的进度，不会小于零；总大小未知时显示短横线。
 
-### 更可靠的 Mac 启动和网关设置 · 4.3.9
+### 更可靠的 Mac 启动和网关设置 · 4.6.9
 
 Mac 原生启动可识别旧版相对默认路径，包括缺少开头斜杠的情况，并使用已验证的现有配置，或初始化用户拥有的空默认目录。存在歧义的自定义位置仍需用户明确选择，不会盲目猜测。
 
@@ -90,7 +90,7 @@ Mac 网络组件 4.3.2 可处理被 macOS 隐藏的网卡 MAC，同时保留保�
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Mac 手动地址的网关回复 · 4.3.9
+### Mac 手动地址的网关回复 · 4.6.9
 
 修正 POSIX 捕获设置，让手动应用地址与 DHCP 都能接收发往应用自身 MAC 的回复，与现有 Windows 行为一致。系统 ping 成功只证明电脑自身的连接正常，不能证明应用虚拟地址能收到网关回复。
 
@@ -148,7 +148,7 @@ DHCP 诊断保留十二种语言的具体说明，不再被通用错误替代。
 
 ## DNS 设置
 
-**请核对 4.3.9 安装包版本和公布的校验和；平台及安装文件验证结果见对应的 NATIVE-INSTALLER-TESTS.json。**
+**请核对 4.6.9 安装包版本和公布的校验和；平台及安装文件验证结果见对应的 NATIVE-INSTALLER-TESTS.json。**
 
 打开**网络 → DNS 解析**。默认是 **DNS over HTTPS（DoH），Cloudflare**。此设置仅属于 MultiRoute，不修改系统 DNS、路由或网卡 IP。
 
@@ -182,7 +182,7 @@ API 的 `dnssec` 接受 `off`、`validate`、`require`；系统模式仅接受 `
 
 **分段下载与 CDN：** 对于 Civitai 等 CDN，若从零开始的字节范围请求返回 HTTP 200，会再检查非零起点的范围。首段读取限制在该段长度内；身份匹配的已有顺序下载数据可转换为分段续传。非零范围临时返回 HTTP 200 时，保留已存数据及网关工作线程，等待 2–30 秒后重试。持久化的分网关传输日志区分接收流量与已保存进度。[传输诊断](transfer-diagnostics.en.md)。
 
-[4.3.9 安装包](../downloads/v4.3.9/README.md)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
+[4.6.9 安装包](../downloads/v4.6.9/README.md)包含独立 Java 21。Windows 安装向导使用英语并创建桌面快捷方式；Npcap 仍需单独安装。macOS 使用系统 libpcap。请遵循下方的完整安装与安全确认步骤。
 
 项目所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
 
@@ -228,11 +228,11 @@ Windows/macOS 安装包包含独立 Java 21 和已编译的网络组件。Window
 
 ## 安装与安全确认
 
-从 [4.3.9 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9) 选择与系统匹配的单文件安装包，并与公布的 SHA-256 比较：
+从 [4.6.9 发布页](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9) 选择与系统匹配的单文件安装包，并与公布的 SHA-256 比较：
 
-- Windows：[MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe)。
-- Apple Silicon，macOS 26+：[MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg)。
-- Intel，macOS 15+：[MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg)。
+- Windows：[MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe)。
+- Apple Silicon，macOS 26+：[MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg)。
+- Intel，macOS 15+：[MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg)。
 
 ### Windows
 
@@ -313,7 +313,7 @@ Windows/macOS 安装包包含独立 Java 21 和已编译的网络组件。Window
 
 以下外部管理示例需要 `automation_api` 权限。示例中的四网关配置还需要 `extra_gateways` 权限；请按实际网络和许可调整 `gateways` 与 `routes`。Free 最多同时使用 2 个网关，具备对应 Pro 权限时最多使用 8 个。
 
-健康检查：`GET /api/v1/health`，正常响应含 `{"ok":true,"version":"4.3.9"}`。先在界面配置网络，或向 `POST /api/v1/network` 发送：
+健康检查：`GET /api/v1/health`，正常响应含 `{"ok":true,"version":"4.6.9"}`。先在界面配置网络，或向 `POST /api/v1/network` 发送：
 
 ```json
 {

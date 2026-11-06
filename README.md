@@ -7,12 +7,14 @@
 </p>
 <!-- product-languages:end -->
 
+<p align="center"><img src="docs/images/v4.6.9/multiroute-4.6.9-courier-walk.gif" width="492" alt="Courier during a download" /></p>
+
 <p align="center"><img src="docs/images/multiroute-hero-4.3.7.svg" width="1320" alt="MultiRoute Downloader — More connections. One download." /></p>
 
 <p align="center"><strong>Download large files with the connections you already have.</strong><br />Combine independent broadband and mobile gateways for large downloads, preserve resumable progress and check the finished file.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>Download 4.3.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>Download 4.6.9</strong></a> ·
   <a href="downloads/README.md">Current downloads</a> ·
   <a href="docs/en.md">User guide</a> ·
   <a href="docs/support.md">Support the project</a> ·
@@ -53,19 +55,19 @@ Use supported resume, published-checksum comparison, protected DNS, batch queues
 
 ## Download and install
 
-**Current version: 4.3.9.** Native installers include private Java 21 and the platform network component. Open the application from its normal icon.
+**Current version: 4.6.9.** Native installers include private Java 21 and the platform network component. Open the application from its normal icon.
 
 | Your computer | Single-file installer |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Chrome / Edge integration](docs/en.md#chrome-and-edge-integration) · [Checksums and report](downloads/v4.3.9/README.md) · [Download details](downloads/README.md)
+[Chrome / Edge integration](docs/en.md#chrome-and-edge-integration) · [Checksums and report](downloads/v4.6.9/README.md) · [Download details](downloads/README.md)
 
 Windows Setup uses English and creates a desktop shortcut. Npcap is checked separately and its official installer is offered when needed; macOS uses system libpcap. See your language guide for installation and security confirmations. Public native installers cover Windows and macOS; a Linux 4.x installer is not included here.
 
-**Free / Pro in 4.3.9:** Free uses up to **2 gateways**, **3 simultaneous downloads** and creates **3 site profiles**, with Graphite/System appearance. The corresponding Pro capabilities allow up to **8 gateways**, **32 simultaneous downloads**, additional profiles, priorities, gateway history/reports, batch operations, the external API and extra styles. Free does not deliberately throttle download speed. [Full capability details](docs/licensing.en.md).
+**Free / Pro in 4.6.9:** Free uses up to **2 gateways**, **3 simultaneous downloads** and creates **3 site profiles**, with Graphite/System appearance. The corresponding Pro capabilities allow up to **8 gateways**, **32 simultaneous downloads**, additional profiles, priorities, gateway history/reports, batch operations, the external API and extra styles. Free does not deliberately throttle download speed. [Full capability details](docs/licensing.en.md).
 
 
 
@@ -101,26 +103,26 @@ This addresses one capture-mode mismatch, not every cause of an unreachable gate
 <details>
 <summary><strong>Searchable error guide — 25 topics in twelve languages</strong></summary>
 
-![MultiRoute Downloader 4.3.7 — Searchable error guide — 25 topics in twelve languages](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
+![MultiRoute Downloader — Searchable error guide — 25 topics in twelve languages](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
 
 </details>
 
 ## See your transfers clearly
 
-The 4.3.7 workspace puts your files at the center: separate name and size columns, individual progress, total and per-gateway speed, a speed graph and file details. Graphite and System are included in Free; additional styles such as Rose require the corresponding Pro capability.
+The workspace puts your files at the center: separate name and size columns, individual progress, total and per-gateway speed, a speed graph and file details. Graphite and System are included in Free; additional styles such as Rose require the corresponding Pro capability.
 
-![MultiRoute Downloader 4.3.7 — download queue and gateway speeds](docs/images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader — download queue and gateway speeds](docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png)
 
 *Current Windows interface, captured in an isolated demonstration profile. Example files, progress, speeds and Pro-enabled views illustrate the controls and are not performance measurements.*
 
 <details>
 <summary><strong>Network settings and speed history</strong></summary>
 
-![Application address and protected DNS](docs/images/v4.3.7/network-dns-e29dfdba1007.png)
+![Application address and protected DNS](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![Gateway selection and speed checks](docs/images/v4.3.7/network-gateways-aee0a7897f48.png)
+![Gateway selection and speed checks](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![MultiRoute Downloader 4.3.7 — download speed history](docs/images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader — download speed history](docs/images/v4.3.7/speed-graph-a85815544945.png)
 
 </details>
 
@@ -131,7 +133,7 @@ Choose from nine appearances: Graphite, Nordic, Streams Studio, Neon, Community,
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.3.7/downloads-en-ae5b55131583.png"><img src="docs/images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png" width="420" alt="Graphite" /></a></td>
 <td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
@@ -194,11 +196,11 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 <table>
 <tr>
 <td width="50%" valign="top"><strong>Application settings</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Application settings" /></a></td>
-<td width="50%" valign="top"><strong>Appearance, courier and sounds</strong><br /><a href="docs/images/v4.3.7/appearance-cebf121d5de7.png"><img src="docs/images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Appearance, courier and sounds" /></a></td>
+<td width="50%" valign="top"><strong>Appearance, courier and sounds</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png" width="420" alt="Appearance, courier and sounds" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Application address and protected DNS</strong><br /><a href="docs/images/v4.3.7/network-dns-e29dfdba1007.png"><img src="docs/images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Application address and protected DNS" /></a></td>
-<td width="50%" valign="top"><strong>Gateway selection and speed checks</strong><br /><a href="docs/images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="docs/images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Gateway selection and speed checks" /></a></td>
+<td width="50%" valign="top"><strong>Application address and protected DNS</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Application address and protected DNS" /></a></td>
+<td width="50%" valign="top"><strong>Gateway selection and speed checks</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Gateway selection and speed checks" /></a></td>
 </tr>
 </table>
 
@@ -301,4 +303,4 @@ Created by **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. Free use i
 
 [Licence](LICENSE.txt) · [Licence summary](LICENSING.md) · [Third-party notices](THIRD-PARTY-NOTICES.txt)
 
-This distribution area contains the current 4.3.9 installers and user documentation.
+This distribution area contains the current 4.6.9 installers and user documentation.

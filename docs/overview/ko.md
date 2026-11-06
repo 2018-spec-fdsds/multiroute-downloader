@@ -11,7 +11,7 @@
 <p align="center"><strong>이미 보유한 인터넷 연결로 대용량 파일을 다운로드하세요.</strong><br />독립적인 유선 인터넷과 모바일 게이트웨이를 함께 활용해 대용량 파일을 다운로드하고, 지원되는 이어받기 진행 상황을 보존하며, 완료된 파일을 검증하세요.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>4.3.9 다운로드</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>4.6.9 다운로드</strong></a> ·
   <a href="../../downloads/README.md">현재 다운로드</a> ·
   <a href="../ko.md">사용자 가이드</a> ·
   <a href="../../API.ru.txt">API 참조</a> ·
@@ -39,22 +39,22 @@ MultiRoute는 이러한 독립적인 회선을 하나의 다운로드 작업 공
 
 ## 다운로드 및 설치
 
-**현재 버전: 4.3.9.** 네이티브 설치 프로그램에는 앱 전용 Java 21과 플랫폼별 네트워크 구성 요소가 포함되어 있습니다. 일반 앱 아이콘으로 실행하세요.
+**현재 버전: 4.6.9.** 네이티브 설치 프로그램에는 앱 전용 Java 21과 플랫폼별 네트워크 구성 요소가 포함되어 있습니다. 일반 앱 아이콘으로 실행하세요.
 
 | 컴퓨터 | 단일 파일 설치 프로그램 |
 | --- | --- |
-| **Windows 11 · x64** | [Windows 설치 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows 설치 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Chrome / Edge 연동](../ko.md#chrome-and-edge-integration) · [체크섬 및 보고서](../../downloads/v4.3.9/README.md) · [다운로드 상세 정보](../../downloads/README.md)
+[Chrome / Edge 연동](../ko.md#chrome-and-edge-integration) · [체크섬 및 보고서](../../downloads/v4.6.9/README.md) · [다운로드 상세 정보](../../downloads/README.md)
 
 Windows 설치 프로그램은 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 확인하고 필요하면 공식 설치 프로그램을 안내합니다. macOS는 시스템 libpcap을 사용합니다. 설치 방법과 보안 확인 절차는 해당 언어의 가이드를 참조하세요. 공개 네이티브 설치 프로그램은 Windows와 macOS용이며, 여기에는 Linux 4.x 설치 프로그램이 포함되어 있지 않습니다.
 
-**4.3.9의 Free / Pro:** Free는 최대 **게이트웨이 2개**, **동시 다운로드 3개**를 사용하고 **사이트 프로필 3개**를 만들 수 있으며, Graphite(흑연색)/System(시스템 설정) 외관을 제공합니다. 해당 Pro 기능은 최대 **게이트웨이 8개**, **동시 다운로드 32개**, 추가 프로필, 우선순위, 게이트웨이 기록/보고서, 일괄 작업, 외부 API와 추가 스타일을 지원합니다. Free는 다운로드 속도를 의도적으로 제한하지 않습니다. [전체 기능 상세 정보](../licensing.en.md).
+**4.6.9의 Free / Pro:** Free는 최대 **게이트웨이 2개**, **동시 다운로드 3개**를 사용하고 **사이트 프로필 3개**를 만들 수 있으며, Graphite(흑연색)/System(시스템 설정) 외관을 제공합니다. 해당 Pro 기능은 최대 **게이트웨이 8개**, **동시 다운로드 32개**, 추가 프로필, 우선순위, 게이트웨이 기록/보고서, 일괄 작업, 외부 API와 추가 스타일을 지원합니다. Free는 다운로드 속도를 의도적으로 제한하지 않습니다. [전체 기능 상세 정보](../licensing.en.md).
 
 
-## 4.3.9의 새로운 기능
+## 4.6.9의 새로운 기능
 
 - **Mac 수동 주소의 게이트웨이 응답.** POSIX 캡처 설정을 수정하여 수동 앱 주소와 DHCP 모두 앱 자체 MAC으로 오는 응답을 받도록 했습니다. 기존 Windows 동작과 같습니다. 시스템 ping 성공은 컴퓨터의 연결만 확인하며 앱 가상 주소의 게이트웨이 응답 수신을 증명하지 않습니다.
 
@@ -84,7 +84,7 @@ Windows 설치 프로그램은 영어로 표시되며 바탕 화면 바로 가�
 
 ## 전송 상황을 한눈에 확인하세요
 
-4.3.9 작업 공간은 파일을 중심으로 구성됩니다. 이름과 크기를 별도 열로 표시하고, 파일별 진행 상황, 전체 및 게이트웨이별 속도, 속도 그래프와 파일 상세 정보를 제공합니다. Free에는 Graphite와 System 외관이 포함됩니다. Rose 같은 추가 스타일에는 해당 Pro 기능이 필요합니다.
+4.6.9 작업 공간은 파일을 중심으로 구성됩니다. 이름과 크기를 별도 열로 표시하고, 파일별 진행 상황, 전체 및 게이트웨이별 속도, 속도 그래프와 파일 상세 정보를 제공합니다. Free에는 Graphite와 System 외관이 포함됩니다. Rose 같은 추가 스타일에는 해당 Pro 기능이 필요합니다.
 
 ![MultiRoute Downloader 4.3.7 — 다운로드 대기열과 게이트웨이 속도](../images/v4.3.7/downloads-en-ae5b55131583.png)
 
@@ -263,7 +263,7 @@ API는 로컬의 **`http://127.0.0.1:8765/api/v1`** 에서 실행됩니다. 예�
 
 앱은 자체 로컬 IPv4 주소와 앱 MAC을 사용합니다. 따라서 선택한 게이트웨이가 OS 기본 게이트웨이와 독립적으로 작동하며, OS 경로나 물리 어댑터의 MAC을 변경하지 않습니다. 실제로 연결된 동일 서브넷에서 비어 있는 주소를 사용하세요. 수동 주소를 DHCP 자동 할당 범위 밖에 두거나 LAN DHCP 서버에서 예약/제외한 뒤, 네트워크 설정에서 **Check and apply(확인 및 적용)** 를 사용하세요. [주소 선택 및 확인](../ko.md#application-virtual-ip).
 
-현재 4.3.9 Windows 패키지는 로컬 업그레이드/시작 검사를 통과했습니다. macOS 패키지는 대상 CI 실행기에서 네이티브 구성 요소 및 Java 런타임 검사를 통과했습니다. 실제 Mac에서 LAN/DHCP 게이트웨이를 통한 전송은 아직 하드웨어 검증이 필요합니다. [검증 보고서](../../NATIVE-INSTALLER-TESTS.json).
+현재 4.6.9 Windows 패키지는 로컬 업그레이드/시작 검사를 통과했습니다. macOS 패키지는 대상 CI 실행기에서 네이티브 구성 요소 및 Java 런타임 검사를 통과했습니다. 실제 Mac에서 LAN/DHCP 게이트웨이를 통한 전송은 아직 하드웨어 검증이 필요합니다. [검증 보고서](../../NATIVE-INSTALLER-TESTS.json).
 
 ## 소유자와 라이선스
 
@@ -271,4 +271,4 @@ API는 로컬의 **`http://127.0.0.1:8765/api/v1`** 에서 실행됩니다. 예�
 
 [라이선스](../../LICENSE.txt) · [라이선스 요약](../../LICENSING.md) · [타사 고지](../../THIRD-PARTY-NOTICES.txt)
 
-이 배포 영역에는 현재 4.3.9 설치 프로그램과 사용자 문서가 포함되어 있습니다.
+이 배포 영역에는 현재 4.6.9 설치 프로그램과 사용자 문서가 포함되어 있습니다.

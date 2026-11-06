@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — 日本語ガイド
+# MultiRoute Downloader 4.6.9 — 日本語ガイド
 
 [macOS：インストール、初回起動と権限](macos/ja.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — 現在の機能と Free／Pro
+## 4.6.9 — 現在の機能と Free／Pro
 
-このガイドは、現在のバージョン 4.3.9 のインストール、ネットワーク設定、日常の操作を説明します。[公開済みリリース](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)からお使いのシステムに合うインストーラーを取得し、公開チェックサムと照合してください。Free と Pro の機能と上限は以下のとおりです。
+このガイドは、現在のバージョン 4.6.9 のインストール、ネットワーク設定、日常の操作を説明します。[公開済みリリース](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/latest)からお使いのシステムに合うインストーラーを取得し、公開チェックサムと照合してください。Free と Pro の機能と上限は以下のとおりです。
 
 ### ライセンスの上限と機能
 
@@ -52,7 +52,7 @@ MultiRoute は手動 IP と DHCP の両方で専用の固定 MAC を使い、OS 
 
 最終検証には最後に保存した参照値を使用します。編集しても受信済みバイトを消去せず、転送を再開し直しません。ローカル再検証は完成ファイルを保持し、一致、不一致、エラーを別に表示します。公開元の参照値は独立して保持します。全体ハッシュ 1 個は torrent の 1 ファイルだけに対応します。整合性は内容の無害性を保証しないため、信頼できる SHA-256/SHA-512 を推奨します。
 
-### 4.3.9 の API アクセス
+### 4.6.9 の API アクセス
 
 ローカル JSON API は UTF-8 を使用し、通常の API トークンはありません。外部制御には automation_api が必要で、他の権限も確認されるため、それだけで一括処理や追加ゲートウェイは使えません。Free には限定した読み取り診断、非公開認証のライフサイクル処理、有効化できるブラウザーの単一リンク連携が残ります。[API](../API.ru.txt) と [OpenAPI](../openapi.yaml) を参照し、ポートを LAN／インターネットへ公開しないでください。
 
@@ -66,7 +66,7 @@ System 外観では、表の文字、入力欄、操作部にシステム背景�
 ファイル名にポインターを合わせると、完全な名前、保存先、転送プロトコル、ソースのアドレスまたはローカルパスを確認できます。メタデータを HTTPS で開いた場合も、トレントのプロトコルは BitTorrent と表示されます。リポジトリアドレスがあれば実際のファイル URL の後に表示されます。埋め込み認証情報、クエリ値、フラグメントは非表示で、認識された公開 magnet infohash は表示される場合があります。保存済み URL と転送状態は変わりません。
 
 
-### 4.3.9 のゲートウェイ優先度と転送診断
+### 4.6.9 のゲートウェイ優先度と転送診断
 
 ネットワーク設定で各ゲートウェイの優先度を **0～1000** に設定します。メイン画面のゲートウェイ表示の横にも値が表示されます。値が高いゲートウェイは小さなファイルやファイル全体の転送で優先され、大きなファイルではより多くの並列セグメントが割り当てられます。他の選択済み正常ゲートウェイも引き続き参加します。同じ値では選択順を保ち、優先ゲートウェイが失敗または停止した場合は別の選択済みゲートウェイが引き継げます。一定の速度比率を保証するものではありません。
 
@@ -76,11 +76,11 @@ System 外観では、表の文字、入力欄、操作部にシステム背景�
 
 完了したファイルの個別ログも参照できます。設定の「エラーと解決方法」は、全 12 言語に対応した 25 項目の検索可能なオフラインガイドです。保存先とプロパティには空き容量を GB 単位で表示します。ローカルディスクの容量不足は明示され、保存済み部分を保持してネットワークの無限再試行にはしません。小さなセグメントの再開後に新しいデータを待つ間も、保存済みの先頭部分を進捗に表示します。
 
-### 残りのダウンロードデータ · 4.3.9
+### 残りのダウンロードデータ · 4.6.9
 
 ダウンロード一覧に **残りのダウンロード量** 列を追加しました。残り時間の予測とは別に、未ダウンロードのバイト数を表示し、数値順で並べ替えられます。保存済みと受信中の進捗を反映し、ゼロ未満にはなりません。合計サイズが不明な場合はダッシュを表示します。
 
-### Mac の起動とゲートウェイ設定をより確実に · 4.3.9
+### Mac の起動とゲートウェイ設定をより確実に · 4.6.9
 
 Mac のネイティブ起動では、先頭のスラッシュがない場合を含む旧来の相対既定パスを認識し、確認済みの既存プロファイルまたはユーザー所有の空の既定フォルダーを使います。曖昧なカスタム場所は推測せず、明示的な選択を求めます。
 
@@ -90,7 +90,7 @@ Mac ネットワーク部品 4.3.2 は macOS がアダプターの MAC を隠す
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Mac の手動アドレスでのゲートウェイ応答 · 4.3.9
+### Mac の手動アドレスでのゲートウェイ応答 · 4.6.9
 
 POSIX のキャプチャ設定を修正し、手動のアプリアドレスと DHCP の両方でアプリ独自の MAC 宛ての応答を受信できるモードを使います。既存の Windows 動作と同じです。システム ping の成功はコンピューター自身の接続確認であり、アプリの仮想アドレスへの応答受信を証明しません。
 
@@ -148,7 +148,7 @@ OS やデスクトップのポリシーが登録項目を無効にする場合�
 
 ## DNS 設定
 
-**4.3.9 インストーラーのバージョンと公開チェックサムを照合し、プラットフォームおよびパッケージの検証結果は対応する NATIVE-INSTALLER-TESTS.json で確認してください。**
+**4.6.9 インストーラーのバージョンと公開チェックサムを照合し、プラットフォームおよびパッケージの検証結果は対応する NATIVE-INSTALLER-TESTS.json で確認してください。**
 
 **ネットワーク → DNS 名前解決**を開きます。既定値は **DNS over HTTPS（DoH）、Cloudflare** です。MultiRoute 専用の設定で、OS の DNS、ルート、インターフェース IP は変更しません。
 
@@ -182,7 +182,7 @@ API の `dnssec` は `off`、`validate`、`require` を受け付け、システ�
 
 **セグメントダウンロードと CDN：** Civitai などの CDN がゼロから始まる範囲に HTTP 200 を返す場合、ゼロ以外から始まる範囲も確認します。最初のセグメントは指定サイズまで読み取り、元のファイルと一致する保存済みの連続データを分割ダウンロードへ引き継げます。後続の範囲に一時的な HTTP 200 が返ると、保存済みデータとゲートウェイのワーカーを維持して 2～30 秒後に再試行します。ゲートウェイ別の永続ログで受信量と保存済み進捗を区別できます。[転送診断](transfer-diagnostics.en.md)。
 
-[4.3.9 インストーラー](../downloads/v4.3.9/README.md)には専用の Java 21 が含まれます。Windows のセットアップは英語で表示され、デスクトップにショートカットを作成します。Npcap は別途必要です。macOS はシステムの libpcap を使用します。以下のインストール手順とセキュリティ確認に従ってください。
+[4.6.9 インストーラー](../downloads/v4.6.9/README.md)には専用の Java 21 が含まれます。Windows のセットアップは英語で表示され、デスクトップにショートカットを作成します。Npcap は別途必要です。macOS はシステムの libpcap を使用します。以下のインストール手順とセキュリティ確認に従ってください。
 
 プロジェクト所有者：[2018-spec-fdsds](https://github.com/2018-spec-fdsds)。
 
@@ -228,11 +228,11 @@ Windows/macOS インストーラーには専用 Java 21 とコンパイル済み
 
 ## インストールと安全確認
 
-[リリース 4.3.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9) から、お使いのシステムに合う単一ファイルのインストーラーを取得し、公開 SHA-256 と照合します。
+[リリース 4.6.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9) から、お使いのシステムに合う単一ファイルのインストーラーを取得し、公開 SHA-256 と照合します。
 
-- Windows：[MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe)。
-- Apple Silicon、macOS 26+：[MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg)。
-- Intel、macOS 15+：[MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg)。
+- Windows：[MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe)。
+- Apple Silicon、macOS 26+：[MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg)。
+- Intel、macOS 15+：[MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg)。
 
 ### Windows
 
@@ -313,7 +313,7 @@ Windows/Linux では **Ctrl**、macOS では **Cmd** を押しながらクリッ
 
 以下の外部管理の例には `automation_api` 権限が必要です。四つのゲートウェイを使用する例の構成には、`extra_gateways` 権限も必要です。実際のネットワークとライセンスに合わせて `gateways` と `routes` を調整してください。Free は同時に最大 2 つ、対応する Pro 権限がある場合は最大 8 つのゲートウェイを使用できます。
 
-確認は `GET /api/v1/health`、通常 `{"ok":true,"version":"4.3.9"}`。先に画面で設定するか `POST /api/v1/network` に次を送ります。
+確認は `GET /api/v1/health`、通常 `{"ok":true,"version":"4.6.9"}`。先に画面で設定するか `POST /api/v1/network` に次を送ります。
 
 ```json
 {

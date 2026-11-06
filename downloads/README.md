@@ -1,8 +1,8 @@
-# MultiRoute Downloader 4.3.9 downloads
+# MultiRoute Downloader 4.6.9 downloads
 
-[Product page](../README.md) · [Русская страница](../README.ru.md) · [Files, checksums and report](v4.3.9/README.md)
+[Product page](../README.md) · [Русская страница](../README.ru.md) · [Files, checksums and report](v4.6.9/README.md)
 
-**MultiRoute Downloader 4.3.9 — Free and Pro.** Choose a package for your computer.
+**MultiRoute Downloader 4.6.9 — Free and Pro.** Choose a package for your computer.
 
 Choose Windows 11 x64, Apple Silicon/macOS 26+ or Intel/macOS 15+. The application installers include Java 21. Chrome / Edge integration is included in the application installer.
 
@@ -13,9 +13,9 @@ Choose Windows 11 x64, Apple Silicon/macOS 26+ or Intel/macOS 15+. The applicati
 
 The gateway limit is shared by downloads and uploads. Extra download tasks wait in the queue. Existing profiles and saved data are retained. Free keeps the single-link browser bridge and narrow service diagnostics. See [the user guide](../docs/en.md) and [application terms](../LICENSE.txt).
 
-## Скачать 4.3.9
+## Скачать 4.6.9
 
-**MultiRoute Downloader 4.3.9 — Free и Pro.** Выберите пакет для своего компьютера.
+**MultiRoute Downloader 4.6.9 — Free и Pro.** Выберите пакет для своего компьютера.
 
 Выберите Windows 11 x64, Apple Silicon/macOS 26+ или Intel/macOS 15+. Java 21 включена в установщики приложения. Интеграция Chrome / Edge включена в установщик приложения.
 
@@ -26,7 +26,7 @@ The gateway limit is shared by downloads and uploads. Extra download tasks wait 
 
 Лимит шлюзов общий для скачиваний и отправок. Лишние задания скачивания ждут в очереди. Сохранённые профили и данные остаются. В Free доступны передача одиночной ссылки из браузера и узкая служебная диагностика. См. [инструкцию](../docs/ru.md) и [условия приложения](../LICENSE.txt).
 
-[Файлы, контрольные суммы и отчёт 4.3.9](v4.3.9/README.ru.md)
+[Файлы, контрольные суммы и отчёт 4.6.9](v4.6.9/README.ru.md)
 
 Keep your data directory and saved parts when updating. Wait for active transfers and final verification to finish before replacing the application.
 

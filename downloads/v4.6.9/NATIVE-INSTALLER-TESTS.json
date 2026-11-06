@@ -1,0 +1,35 @@
+{
+  "version": "4.6.9",
+  "status": "PASS",
+  "application_jar_sha256": "1de0cf4fb99e5cd7db7148d3f32f09873e1980bef2d309c015c8150ff425fe94",
+  "application_sources_published": false,
+  "windows": {
+    "installer_sha256": "a6c17eef2b7c91be3181e526f8e5e04cafb7ba0a4cdbdd8b60e38e0ad9e6da3d",
+    "embedded_files_verified": 500,
+    "installer_language": "en-US (1033)",
+    "desktop_shortcut": true
+  },
+  "macos": [
+    {
+      "architecture": "arm64",
+      "package_name": "MultiRoute-Downloader-4.6.9-macOS-arm64.pkg",
+      "package_bytes": 306039676,
+      "package_sha256": "0409e932c22fd926dec67bdfc1e1cb004c25250d012bed43db434f7b135e2fc0",
+      "targeted_checks": 885
+    },
+    {
+      "architecture": "x86_64",
+      "package_name": "MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg",
+      "package_bytes": 299761568,
+      "package_sha256": "886513501bd3b91a0f52925d6ae7c217bcefc0f46d1b395bf016432da10aa4e3",
+      "targeted_checks": 885
+    }
+  ],
+  "courier": {
+    "appearances": 4,
+    "walking_and_running_series": 32,
+    "phases_per_series": 72,
+    "native_ui_scenarios": 48,
+    "native_ui_frames": 5184
+  }
+}

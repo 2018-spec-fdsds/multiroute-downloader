@@ -11,7 +11,7 @@
 <p align="center"><strong>Téléchargez de gros fichiers avec les connexions dont vous disposez déjà.</strong><br />Combinez des passerelles haut débit et mobiles indépendantes pour les gros téléchargements, conservez la progression des transferts pouvant être repris et vérifiez le fichier terminé.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9"><strong>Télécharger 4.3.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>Télécharger 4.6.9</strong></a> ·
   <a href="../../downloads/README.md">Téléchargements actuels</a> ·
   <a href="../fr.md">Guide d’utilisation</a> ·
   <a href="../../API.ru.txt">Référence de l’API</a> ·
@@ -39,24 +39,24 @@ Profitez de la reprise lorsqu’elle est prise en charge, de la comparaison avec
 
 ## Téléchargement et installation
 
-**Version actuelle : 4.3.9.** Les installateurs natifs incluent leur propre environnement Java 21 et le composant réseau de la plateforme. Ouvrez l’application depuis son icône habituelle.
+**Version actuelle : 4.6.9.** Les installateurs natifs incluent leur propre environnement Java 21 et le composant réseau de la plateforme. Ouvrez l’application depuis son icône habituelle.
 
 | Votre ordinateur | Installateur en un seul fichier |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
 
-[Intégration Chrome / Edge](../fr.md#chrome-and-edge-integration) · [Sommes de contrôle et rapport](../../downloads/v4.3.9/README.md) · [Détails des téléchargements](../../downloads/README.md)
+[Intégration Chrome / Edge](../fr.md#chrome-and-edge-integration) · [Sommes de contrôle et rapport](../../downloads/v4.6.9/README.md) · [Détails des téléchargements](../../downloads/README.md)
 
 L’installateur Windows est en anglais et crée un raccourci sur le bureau. Npcap est vérifié séparément et son installateur officiel est proposé si nécessaire ; macOS utilise libpcap du système. Consultez le guide dans votre langue pour l’installation et les confirmations de sécurité. Les installateurs natifs publics couvrent Windows et macOS ; aucun installateur Linux 4.x n’est fourni ici.
 
-**Free / Pro dans 4.3.9 :** Free permet d’utiliser jusqu’à **2 passerelles**, **3 téléchargements simultanés** et de créer **3 profils de sites**, avec les apparences Graphite/Système. Les fonctions Pro correspondantes autorisent jusqu’à **8 passerelles**, **32 téléchargements simultanés**, des profils supplémentaires, les priorités, l’historique et les rapports des passerelles, les opérations par lots, l’API externe et des styles supplémentaires. Free ne bride pas volontairement la vitesse de téléchargement. [Détail complet des fonctions](../licensing.en.md).
+**Free / Pro dans 4.6.9 :** Free permet d’utiliser jusqu’à **2 passerelles**, **3 téléchargements simultanés** et de créer **3 profils de sites**, avec les apparences Graphite/Système. Les fonctions Pro correspondantes autorisent jusqu’à **8 passerelles**, **32 téléchargements simultanés**, des profils supplémentaires, les priorités, l’historique et les rapports des passerelles, les opérations par lots, l’API externe et des styles supplémentaires. Free ne bride pas volontairement la vitesse de téléchargement. [Détail complet des fonctions](../licensing.en.md).
 
 
 
 
-## Nouveautés de 4.3.9
+## Nouveautés de 4.6.9
 
 - **Réponses des passerelles Mac avec une adresse manuelle.** La capture POSIX est corrigée pour que l’adresse manuelle de l’application et DHCP utilisent tous deux un mode recevant les réponses à sa propre MAC, comme sous Windows. Un ping système réussi vérifie la connexion de l’ordinateur, pas la réception à l’adresse virtuelle de l’application.
 
@@ -86,7 +86,7 @@ Cela corrige une différence de mode de capture, pas toutes les causes de passer
 
 ## Vos transferts en un coup d’œil
 
-L’espace de travail de 4.3.9 place vos fichiers au centre : colonnes distinctes pour le nom et la taille, progression individuelle, débit total et par passerelle, graphique de débit et détails des fichiers. Graphite et System sont inclus dans Free ; les styles supplémentaires, comme Rose, nécessitent la fonction Pro correspondante.
+L’espace de travail de 4.6.9 place vos fichiers au centre : colonnes distinctes pour le nom et la taille, progression individuelle, débit total et par passerelle, graphique de débit et détails des fichiers. Graphite et System sont inclus dans Free ; les styles supplémentaires, comme Rose, nécessitent la fonction Pro correspondante.
 
 ![MultiRoute Downloader 4.3.7 — file de téléchargements et débits des passerelles](../images/v4.3.7/downloads-en-ae5b55131583.png)
 
@@ -265,7 +265,7 @@ Le pilotage général par l’API externe nécessite la fonction Pro corresponda
 
 L’application utilise sa propre adresse IPv4 locale et sa propre adresse MAC applicative afin que les passerelles choisies fonctionnent indépendamment de la passerelle par défaut du système d’exploitation, sans modifier les routes système ni l’adresse MAC de l’adaptateur physique. Utilisez une adresse libre dans le sous-réseau réellement utilisé. Gardez toute adresse manuelle en dehors de l’attribution automatique DHCP, ou réservez-la/excluez-la sur les serveurs DHCP du réseau local ; utilisez ensuite **Vérifier et appliquer** dans les paramètres réseau. [Choix de l’adresse et vérifications](../fr.md#application-virtual-ip).
 
-Les paquets Windows 4.3.9 actuels ont passé un contrôle local de mise à niveau et de démarrage ; les paquets macOS ont passé les contrôles des composants natifs et de l’environnement Java sur les exécuteurs CI ciblés. Les transferts par passerelles sur un réseau LAN/DHCP avec un Mac physique doivent encore être validés sur le matériel. [Rapport de vérification](../../NATIVE-INSTALLER-TESTS.json).
+Les paquets Windows 4.6.9 actuels ont passé un contrôle local de mise à niveau et de démarrage ; les paquets macOS ont passé les contrôles des composants natifs et de l’environnement Java sur les exécuteurs CI ciblés. Les transferts par passerelles sur un réseau LAN/DHCP avec un Mac physique doivent encore être validés sur le matériel. [Rapport de vérification](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Auteur et licence
 
@@ -273,4 +273,4 @@ Créé par **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. L’utilis
 
 [Licence](../../LICENSE.txt) · [Résumé de la licence](../../LICENSING.md) · [Mentions relatives aux tiers](../../THIRD-PARTY-NOTICES.txt)
 
-Cet espace de distribution contient les installateurs actuels de la version 4.3.9 et la documentation utilisateur.
+Cet espace de distribution contient les installateurs actuels de la version 4.6.9 et la documentation utilisateur.

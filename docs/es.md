@@ -1,4 +1,4 @@
-# MultiRoute Downloader 4.3.9 — Guía en español
+# MultiRoute Downloader 4.6.9 — Guía en español
 
 [macOS: instalación, inicio y permisos](macos/es.md)
 
@@ -12,9 +12,9 @@
 
 <a name="current-free-pro"></a>
 
-## 4.3.9 — Funciones actuales, Free y Pro
+## 4.6.9 — Funciones actuales, Free y Pro
 
-Esta guía describe MultiRoute Downloader 4.3.9. Los instaladores nativos y las sumas de comprobación publicadas están en la [versión 4.3.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.3.9). Las secciones siguientes describen sus funciones actuales y capacidades de licencia.
+Esta guía describe MultiRoute Downloader 4.6.9. Los instaladores nativos y las sumas de comprobación publicadas están en la [versión 4.6.9](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9). Las secciones siguientes describen sus funciones actuales y capacidades de licencia.
 
 ### Límites y funciones de licencia
 
@@ -52,7 +52,7 @@ La referencia se guarda sin reiniciar ni borrar el progreso. Se detecta MD5, SHA
 
 La verificación final usa la última referencia guardada. Editarla no borra bytes ni reinicia la transferencia. La comprobación local conserva el archivo terminado e informa coincidencia, discrepancia o error por separado. Las referencias del editor se conservan de forma independiente. Una suma corresponde a un único archivo torrent. La integridad no demuestra que el contenido sea seguro; prefiera referencias SHA-256/SHA-512 fiables.
 
-### Acceso a la API en 4.3.9
+### Acceso a la API en 4.6.9
 
 La API JSON local usa UTF-8 sin token API ordinario. El control externo necesita automation_api; se comprueban además los otros permisos. Ese permiso por sí solo no permite lotes ni puertas adicionales. Free conserva diagnóstico limitado de lectura, ciclo de vida con autenticación privada y envío opcional de un enlace desde el navegador. Consulte [API](../API.ru.txt) y [OpenAPI](../openapi.yaml); no exponga el puerto a LAN/Internet.
 
@@ -66,7 +66,7 @@ El nombre y el tamaño del archivo tienen columnas separadas. El tamaño se orde
 Al situar el puntero sobre el nombre se muestran el nombre completo, la ruta de destino, el protocolo y la dirección o ruta local de origen. Las tareas torrent indican BitTorrent aunque los metadatos se abrieran por HTTPS. La dirección del repositorio, si existe, aparece después de la URL real del archivo. Se ocultan credenciales, valores de consulta y fragmentos; puede mantenerse un infohash público magnet reconocido. La URL guardada y el estado de transferencia no cambian.
 
 
-### Prioridades de las puertas de enlace y diagnóstico en 4.3.9
+### Prioridades de las puertas de enlace y diagnóstico en 4.6.9
 
 En los ajustes de red, asigne a cada puerta de enlace una prioridad de **0 a 1000**; su indicador principal también muestra el valor. Un número mayor le da preferencia para archivos pequeños o transferencias completas y le asigna más segmentos paralelos en archivos grandes. Las demás puertas seleccionadas que funcionen siguen ayudando. Los valores iguales conservan el orden de selección; otra puerta seleccionada puede asumir el trabajo si la preferida falla o se detiene. No se garantiza una proporción concreta de velocidades.
 
@@ -76,11 +76,11 @@ Los ajustes permiten elegir el número de descargas simultáneas dentro del lím
 
 El registro individual sigue disponible para archivos completados. Ajustes → Errores y soluciones abre una guía sin conexión con búsqueda: 25 temas en los 12 idiomas de la interfaz. El destino y las propiedades muestran espacio disponible en GB. La falta de espacio local se indica expresamente, conserva las partes guardadas y no se repite indefinidamente como error de red. El prefijo guardado sigue visible en el progreso mientras un segmento pequeño reanudado espera datos.
 
-### Datos que faltan por descargar · 4.3.9
+### Datos que faltan por descargar · 4.6.9
 
 La tabla incluye la columna **Datos restantes**. Muestra los bytes pendientes por separado del tiempo estimado y se ordena numéricamente. Incluye el progreso guardado y en curso, nunca baja de cero y muestra un guion mientras se desconoce el tamaño total.
 
-### Inicio de Mac y configuración de puertas más fiables · 4.3.9
+### Inicio de Mac y configuración de puertas más fiables · 4.6.9
 
 El inicio nativo de Mac reconoce la antigua ruta predeterminada relativa, incluso si falta la barra inicial. Usa un perfil existente verificado o una carpeta predeterminada vacía del usuario. Las ubicaciones personalizadas ambiguas requieren una elección explícita.
 
@@ -90,7 +90,7 @@ El componente de red Mac 4.3.2 admite que macOS oculte la MAC del adaptador y co
 
 **macOS:** `/Applications/MultiRoute Downloader.app` · `/Library/PrivilegedHelperTools/MultiRouteResume/4.3.2/{gateway-net,gateway-launch}`.
 
-### Respuestas de las puertas de Mac con dirección manual · 4.3.9
+### Respuestas de las puertas de Mac con dirección manual · 4.6.9
 
 Se corrige la captura POSIX para que tanto la dirección manual de la aplicación como DHCP reciban respuestas dirigidas a la MAC propia, como ya sucede en Windows. Un ping del sistema correcto comprueba la conexión del equipo, no la recepción en la dirección virtual de la aplicación.
 
@@ -176,7 +176,7 @@ API: `dnssec` acepta `off`, `validate`, `require`; el modo Sistema solo `off`. S
 
 **Tratamiento de intervalos HTTP:** si un CDN como Civitai devuelve HTTP 200 para un intervalo que empieza en cero, se comprueba otro intervalo que empieza después de cero. El primer segmento se limita a su tamaño; los datos secuenciales guardados compatibles pueden continuar como segmentos. Un HTTP 200 temporal para un intervalo posterior se reintenta tras 2–30 segundos, conservando los datos y el trabajador de la puerta de enlace. El registro persistente por puerta de enlace distingue el tráfico recibido del progreso guardado. [Diagnóstico de transferencias](transfer-diagnostics.en.md).
 
-[Los instaladores 4.3.9](../downloads/v4.3.9/README.md) incluyen Java 21 privado. El asistente de Windows está en inglés y crea un acceso directo en el escritorio; Npcap se requiere por separado. macOS usa libpcap del sistema. Siga las instrucciones de instalación y seguridad que aparecen abajo.
+[Los instaladores 4.6.9](../downloads/v4.6.9/README.md) incluyen Java 21 privado. El asistente de Windows está en inglés y crea un acceso directo en el escritorio; Npcap se requiere por separado. macOS usa libpcap del sistema. Siga las instrucciones de instalación y seguridad que aparecen abajo.
 
 MultiRoute Downloader es una aplicación de escritorio Java para descargar archivos a través de una o varias **puertas de enlace** de su red local. Distribuye los segmentos disponibles entre ellas, conserva los datos comprobados y reúne el archivo final. Incluye una API local para otras aplicaciones. La ventana de escritorio no es una interfaz web.
 
@@ -246,13 +246,13 @@ La aplicación admite Linux, pero este repositorio de distribuciones no publica 
 
 Antes de actualizar, espere a que terminen las descargas, subidas y verificaciones finales activas. Salga desde la bandeja y ejecute el instalador nuevo completo. Conserve la carpeta de datos, los archivos descargados y las partes guardadas.
 
-## Instaladores nativos 4.3.9: Windows y macOS
+## Instaladores nativos 4.6.9: Windows y macOS
 
 | Sistema | Instalador | Inicio después de instalar |
 | --- | --- | --- |
-| Windows 11 x64 | [MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-Windows-x64-Setup.exe) | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
-| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.3.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-arm64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
-| Intel, macOS 15+ | [MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.3.9/MultiRoute-Downloader-4.3.9-macOS-x86_64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Windows 11 x64 | [MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) | **MultiRoute Downloader** en Inicio o su acceso directo de escritorio |
+| Apple Silicon, macOS 26+ | [MultiRoute-Downloader-4.6.9-macOS-arm64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
+| Intel, macOS 15+ | [MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) | **MultiRoute Downloader** en Aplicaciones, Spotlight o Dock |
 
 Las doce guías y las capturas están incluidas para consultarlas sin Internet. Windows: `%LOCALAPPDATA%/MultiRoute Downloader App/app/docs/`. macOS: en Finder elija **Mostrar contenido del paquete** en la aplicación instalada y abra `Contents/app/docs/`. Abra `en.md`, `ru.md`, `de.md`, `es.md`, `fr.md`, `zh.md`, `ko.md`, `ar.md`, `it.md`, `ja.md`, `hi.md` o `vi.md` con un editor de texto o visor Markdown.
 
@@ -374,7 +374,7 @@ La configuración inicial de red se establece en la ventana o con `POST /network
 
 ## Datos, actualización y desinstalación
 
-### Instaladores nativos 4.3.9
+### Instaladores nativos 4.6.9
 
 | Sistema | Ajustes, historial y registros | Aplicación/Java | Componente de red |
 | --- | --- | --- | --- |

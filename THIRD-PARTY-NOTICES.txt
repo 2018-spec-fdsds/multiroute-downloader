@@ -400,3 +400,10 @@ explicitly a distributor attribution, retaining original source headers.
 The earlier DNSSEC paragraph describes DNSSEC only; JNA is now bundled for
 DPAPI. JNA/libffi are not used to change routes, firewall or OS security policy.
 No original MultiRoute application source is included with these libraries.
+
+Courier animation motion references
+The data used for the courier animation was obtained from mocap.cs.cmu.edu.
+CMU Graphics Lab Motion Capture Database, subjects 07/01 (walk) and 09/01 (run).
+The collection was supported by NSF Grant #0196217.
+Motion data is available for all uses at https://mocap.cs.cmu.edu/.
+Courier photographic artwork was generated for MultiRoute Downloader.
