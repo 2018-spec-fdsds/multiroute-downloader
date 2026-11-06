@@ -2,7 +2,7 @@
 
 [Русский](HLS-CHROME-EDGE.ru.md)
 
-> Requires **MultiRoute Downloader 4.5.0 or later** and an extension with HLS discovery. App illustrations use 4.5.1. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+> Requires **MultiRoute Downloader 4.5.2 or later** and an extension with HLS discovery. App illustrations use 4.5.2. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 HLS video is a playlist plus many small media fragments. MultiRoute discovers the playlist through an opt-in browser extension, lets you select an available quality, downloads fragments through your selected gateways and assembles a supported video file. The web page address and the playlist address are usually different.
 
@@ -51,6 +51,14 @@ Pin **MultiRoute Downloader** from the browser's Extensions menu if you want its
 
 These are the standard local installation procedures documented by [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) and [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading).
 
+### Already installed? Reload the extension itself
+
+After updating the application, open `chrome://extensions/` or `edge://extensions/`. Find the **MultiRoute Downloader card** and click its **↻ / Reload** control. In Chrome, enable Developer mode if the icon is hidden. Confirm extension version **4.5.2 or newer**, return to the video page and open the extension again.
+
+**Refresh list inside the popup** refreshes stream metadata; it does not load updated extension files. If the version stays old, check the installed extension folder. The standard Windows folder is `%LOCALAPPDATA%\MultiRoute Downloader App\app\browser-extension`; open your installation's folder from MultiRoute settings.
+
+Old Chrome error records can remain after a fix. If `Cannot create item with duplicate id multiroute-download` appears again, check the loaded version and whether a new error is generated after reloading. Repeated menu registration is corrected in 4.5.2.
+
 ## 3. Discover the video playlist
 
 1. Open the page containing the video in a normal HTTP/HTTPS tab.
@@ -60,6 +68,9 @@ These are the standard local installation procedures documented by [Chrome](http
 5. Close the popup and **play the video**. Detection observes future playlist responses; it cannot retroactively discover a playlist loaded before you enabled it.
 6. Open the popup again. Click **Refresh list** if needed. The list also refreshes while the popup is open.
 7. Find the relevant stream and click **Download this stream**.
+
+
+If the browser permission dialog closes the extension popup, reopen it after granting access. If detection is still off, click **Detect in this tab** again, then play the video.
 
 ![Detect HLS in the current tab and send a stream](../images/hls/04-detect-hls-popup-en.png)
 
