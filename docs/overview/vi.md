@@ -19,6 +19,18 @@
   <a href="../../README.ru.md">Русский</a>
 </p>
 
+<!-- capabilities-4.6.9:start -->
+## Các khả năng khác trong 4.6.9
+
+Chrome/Edge phát hiện video HLS được hỗ trợ: chọn chất lượng, tải tiếp và ghép các đoạn. Không áp dụng cho luồng mã hóa, có DRM hoặc phát trực tiếp không được hỗ trợ. OS chỉ đường hệ thống theo cấu hình OS/VPN; máy khách VPN tới máy chủ qua kết nối vật lý. Hệ thống và cổng được kiểm tra riêng; cổng không đổi tuyến của ứng dụng khác. Chọn thư mục mặc định, video, âm thanh, hình ảnh và phần mở rộng. Bốn nhân vật giao hàng trưởng thành thể hiện trạng thái, kích thước 40–200%; túi thể hiện tổng dữ liệu còn lại. API cục bộ tạo và theo dõi lượt tải tùy giấy phép và cấu hình.
+
+![MultiRoute 4.6.9](../images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+
+[OS / VPN](../images/v4.6.9/multiroute-4.6.9-network-en.png) · [40–200%](../images/v4.6.9/multiroute-4.6.9-appearance-en.png)
+
+![OS / VPN / Gateways](../images/traffic-paths-en.svg)
+<!-- capabilities-4.6.9:end -->
+
 ## Vì sao có MultiRoute
 
 Ý tưởng xuất phát từ một vấn đề quen thuộc trong mạng gia đình: đã có sẵn băng rộng có dây, bộ định tuyến di động và một kết nối Internet dự phòng, nhưng lượt tải tệp lớn vẫn chỉ dùng cổng mạng mặc định của máy tính. Khi kết nối đó chậm lại hoặc gặp sự cố, các đường truyền còn lại không thể hỗ trợ.

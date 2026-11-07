@@ -18,6 +18,18 @@
   <a href="../../README.ru.md">Русский</a>
 </p>
 
+<!-- capabilities-4.6.9:start -->
+## Más posibilidades en 4.6.9
+
+Chrome/Edge detecta vídeo HLS compatible: calidad disponible, reanudación y ensamblaje de fragmentos. Se excluyen flujos cifrados, con DRM y directos no compatibles. OS indica la ruta del sistema según OS/VPN; el cliente VPN llega al servidor por la conexión física. Sistema y puertas se comprueban por separado; los gateways no cambian las rutas de otras aplicaciones. Configure carpetas predeterminadas y destinos de vídeo, audio e imágenes con extensiones editables. Cuatro mensajeros adultos muestran el estado, con tamaño del 40–200 %; el saco indica los datos totales pendientes. La API local crea y supervisa descargas según licencia y configuración.
+
+![MultiRoute 4.6.9](../images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+
+[OS / VPN](../images/v4.6.9/multiroute-4.6.9-network-en.png) · [40–200%](../images/v4.6.9/multiroute-4.6.9-appearance-en.png)
+
+![OS / VPN / Gateways](../images/traffic-paths-en.svg)
+<!-- capabilities-4.6.9:end -->
+
 ## Por qué existe MultiRoute
 
 La idea surgió de un problema habitual en las redes domésticas: había una conexión de banda ancha por cable, un router móvil y una conexión a Internet de respaldo, pero una descarga grande seguía utilizando solo la puerta de enlace predeterminada del ordenador. Cuando esa conexión se ralentizaba o fallaba, los demás enlaces no podían ayudar.

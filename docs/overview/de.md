@@ -18,6 +18,18 @@
   <a href="../../README.ru.md">Русский</a>
 </p>
 
+<!-- capabilities-4.6.9:start -->
+## Weitere Möglichkeiten in 4.6.9
+
+Chrome/Edge erkennt unterstützte HLS-Videos; Qualität wählen, Fragmente fortsetzen und zusammenfügen. Verschlüsselte, DRM-geschützte und nicht unterstützte Live-Streams sind ausgeschlossen. OS bezeichnet den Systempfad gemäß OS-/VPN-Konfiguration; der VPN-Client erreicht seinen Server über die physische Verbindung. Systempfad und Gateways werden getrennt geprüft; Gateway-Transfers ändern die Systemrouten anderer Apps nicht. Standardordner und Video-, Audio- und Bildordner bieten anpassbare Erweiterungen. Vier erwachsene Kurierfiguren zeigen den Status, Größe 40–200 %; der Sack zeigt die insgesamt verbleibenden Daten. Die lokale API erstellt und überwacht Downloads abhängig von Lizenz und Konfiguration.
+
+![MultiRoute 4.6.9](../images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+
+[OS / VPN](../images/v4.6.9/multiroute-4.6.9-network-en.png) · [40–200%](../images/v4.6.9/multiroute-4.6.9-appearance-en.png)
+
+![OS / VPN / Gateways](../images/traffic-paths-en.svg)
+<!-- capabilities-4.6.9:end -->
+
 ## Warum es MultiRoute gibt
 
 Die Idee entstand aus einem vertrauten Problem im Heimnetz: Ein kabelgebundener Breitbandanschluss, ein Mobilfunkrouter und eine Reserveverbindung ins Internet waren verfügbar, doch ein großer Download nutzte weiterhin nur das Standardgateway des Computers. Wenn diese Verbindung langsamer wurde oder ausfiel, konnten die anderen Anschlüsse nicht helfen.

@@ -18,6 +18,18 @@
   <a href="../../README.ru.md">Русский</a>
 </p>
 
+<!-- capabilities-4.6.9:start -->
+## 4.6.9 的更多功能
+
+Chrome/Edge 可检测受支持的 HLS 视频，选择画质、续传并合并片段。不支持加密、DRM 保护和不兼容的直播流。OS 表示遵循操作系统及 VPN 配置的系统路径；VPN 客户端通过物理连接访问服务器。系统和网关分别检查；网关传输不会更改其他应用的系统路由。可设置默认及视频、音频、图片目录和分类扩展名。四种成年快递员形象显示状态，大小 40–200%；袋子表示剩余数据总量。本地 API 可创建和监控下载，访问取决于许可证和配置。
+
+![MultiRoute 4.6.9](../images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+
+[OS / VPN](../images/v4.6.9/multiroute-4.6.9-network-en.png) · [40–200%](../images/v4.6.9/multiroute-4.6.9-appearance-en.png)
+
+![OS / VPN / Gateways](../images/traffic-paths-en.svg)
+<!-- capabilities-4.6.9:end -->
+
 ## 为什么需要 MultiRoute
 
 这一想法源于一个常见的家庭网络问题：有线宽带、移动路由器和备用互联网连接都已具备，但大文件下载仍只使用计算机的默认网关。当这条连接变慢或中断时，其他连接却帮不上忙。

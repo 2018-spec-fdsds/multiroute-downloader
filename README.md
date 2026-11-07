@@ -7,7 +7,6 @@
 </p>
 <!-- product-languages:end -->
 
-<p align="center"><img src="docs/images/v4.6.9/multiroute-4.6.9-courier-walk.gif" width="492" alt="Courier during a download" /></p>
 
 <p align="center"><img src="docs/images/multiroute-hero-4.3.7.svg" width="1320" alt="MultiRoute Downloader — More connections. One download." /></p>
 
@@ -52,6 +51,14 @@ In the 4.6.7 desktop video mode, the **OS** symbol identifies the system path. C
 ### Useful with a single connection, too
 
 Use supported resume, published-checksum comparison, protected DNS, batch queues, schedules, site profiles, uploads and the local API. Start with one gateway; add others when available.
+
+## Video, automation and the new courier
+
+- **Video downloads.** The Chrome/Edge integration can detect supported HLS streams and send video pages to MultiRoute. Select an available quality; supported HLS fragments can be resumed and assembled in playlist order. Encrypted or DRM-protected streams and unsupported live streams cannot be downloaded with this HLS path. [Illustrated guide](docs/hls/HLS-CHROME-EDGE.en.md).
+- **OS / VPN and gateways.** The app checks access through the system connection and selected gateways. The OS indicator shows when a transfer uses the system path; failed path checks are marked in the gateway column. Availability depends on the site and connection.
+- **Folders and file types.** Choose a default save folder and video, audio and image destinations, with editable extensions for each category.
+- **Automation.** The local API lets other applications and scripts create and monitor downloads. The product also provides CLI, MCP and webhook adapters; availability depends on licensing and configuration. [API reference](API.ru.txt).
+- **Courier.** Four adult courier appearances use alternating walking and running cycles, with a selectable 40–200% size. The sack reflects the combined remaining data; an error animation and delivery animation show changes in transfer state.
 
 ## Download and install
 
@@ -156,7 +163,7 @@ Choose from nine appearances: Graphite, Nordic, Streams Studio, Neon, Community,
 
 ## A courier that follows your downloads
 
-The optional desktop courier turns download progress into a visible load. Choose the man or woman in Appearance settings and set the size from 40% to 100%. The bag shows the combined known remaining data of active downloads and shrinks as bytes arrive. Movement follows their combined download speed; at zero speed the courier stands still. Small loads are carried on the shoulder, larger loads are dragged and very large loads show more effort.
+The optional desktop courier turns download progress into a visible load. Choose the man or woman in Appearance settings and set the size from 40% to 200%. The bag shows the combined known remaining data of active downloads and shrinks as bytes arrive. Movement follows their combined download speed; at zero speed the courier stands still. Small loads are carried on the shoulder, larger loads are dragged and very large loads show more effort.
 
 Use the Avatar button to show or hide the courier. Drag it to move it, double-click with the left mouse button to show the application, or right-click for its options. This is a visual companion: files remain in their selected folders.
 
