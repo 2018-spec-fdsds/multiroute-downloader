@@ -98,18 +98,18 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 4.6.9 工作区以文件为中心：独立的名称与大小列、各文件进度、总速度和各网关速度、速度图表及文件详情。Free 包含 Graphite 和 System 外观；Rose 等其他样式需要相应的 Pro 功能。
 
-![MultiRoute Downloader 4.3.7 — 下载队列与网关速度](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — 下载队列与网关速度](../images/v4.3.7/downloads-en-ae5b55131583.png)  *早期版本示例*
 
 *当前 Windows 界面，使用独立演示配置截取。示例文件、进度、速度及已启用 Pro 功能的视图用于说明各项控件，并非性能测量结果。*
 
 <details>
 <summary><strong>网络设置与速度历史记录</strong></summary>
 
-![应用地址与受保护的 DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![应用地址与受保护的 DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)  *早期版本示例*
 
-![网关选择与速度检查](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![网关选择与速度检查](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *早期版本示例*
 
-![MultiRoute Downloader 4.3.7 — 下载速度历史记录](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — 下载速度历史记录](../images/v4.3.7/speed-graph-a85815544945.png)  *早期版本示例*
 
 </details>
 
@@ -120,23 +120,23 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -153,8 +153,8 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 
@@ -162,8 +162,8 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 
@@ -171,8 +171,8 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 
@@ -182,12 +182,12 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>应用设置</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="应用设置" /></a></td>
-<td width="50%" valign="top"><strong>外观、快递员与声音</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="外观、快递员与声音" /></a></td>
+<td width="50%" valign="top"><strong>应用设置</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="应用设置" /></a></td>
+<td width="50%" valign="top"><strong>外观、快递员与声音</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="外观、快递员与声音" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>应用地址与受保护的 DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="应用地址与受保护的 DNS" /></a></td>
-<td width="50%" valign="top"><strong>网关选择与速度检查</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="网关选择与速度检查" /></a></td>
+<td width="50%" valign="top"><strong>应用地址与受保护的 DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="应用地址与受保护的 DNS" /></a></td>
+<td width="50%" valign="top"><strong>网关选择与速度检查</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="网关选择与速度检查" /></a></td>
 </tr>
 </table>
 
@@ -196,8 +196,8 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>创建下载任务</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="创建下载任务" /></a></td>
-<td width="50%" valign="top"><strong>上传工作区</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="上传工作区" /></a></td>
+<td width="50%" valign="top"><strong>创建下载任务</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="创建下载任务" /></a></td>
+<td width="50%" valign="top"><strong>上传工作区</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="上传工作区" /></a></td>
 </tr>
 </table>
 

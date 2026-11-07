@@ -99,18 +99,18 @@ Windows Setup dùng tiếng Anh và tạo lối tắt trên màn hình nền. Np
 
 Không gian làm việc 4.6.9 lấy tệp làm trung tâm: cột tên và kích thước riêng biệt, tiến độ từng tệp, tốc độ tổng và từng cổng mạng, biểu đồ tốc độ cùng thông tin chi tiết về tệp. Graphite và System có trong Free; các kiểu giao diện bổ sung như Rose cần khả năng Pro tương ứng.
 
-![MultiRoute Downloader 4.3.7 — hàng đợi tải xuống và tốc độ cổng mạng](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — hàng đợi tải xuống và tốc độ cổng mạng](../images/v4.3.7/downloads-en-ae5b55131583.png)  *Ví dụ từ phiên bản trước*
 
 *Giao diện hiện hành trên Windows, được chụp với hồ sơ minh họa riêng biệt. Tệp, tiến độ, tốc độ mẫu và các màn hình có tính năng Pro minh họa các điều khiển, không phải số đo hiệu năng.*
 
 <details>
 <summary><strong>Thiết lập mạng và lịch sử tốc độ</strong></summary>
 
-![Địa chỉ ứng dụng và DNS được bảo vệ](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![Địa chỉ ứng dụng và DNS được bảo vệ](../images/v4.3.7/network-dns-e29dfdba1007.png)  *Ví dụ từ phiên bản trước*
 
-![Chọn cổng mạng và kiểm tra tốc độ](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![Chọn cổng mạng và kiểm tra tốc độ](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *Ví dụ từ phiên bản trước*
 
-![MultiRoute Downloader 4.3.7 — lịch sử tốc độ tải xuống](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — lịch sử tốc độ tải xuống](../images/v4.3.7/speed-graph-a85815544945.png)  *Ví dụ từ phiên bản trước*
 
 </details>
 
@@ -121,23 +121,23 @@ Chọn trong chín kiểu giao diện: Graphite, Nordic, Streams Studio, Neon, C
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -154,8 +154,8 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -163,8 +163,8 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -172,8 +172,8 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -183,12 +183,12 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Thiết lập ứng dụng</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Thiết lập ứng dụng" /></a></td>
-<td width="50%" valign="top"><strong>Giao diện, người giao hàng và âm thanh</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Giao diện, người giao hàng và âm thanh" /></a></td>
+<td width="50%" valign="top"><strong>Thiết lập ứng dụng</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Thiết lập ứng dụng" /></a></td>
+<td width="50%" valign="top"><strong>Giao diện, người giao hàng và âm thanh</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Giao diện, người giao hàng và âm thanh" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Địa chỉ ứng dụng và DNS được bảo vệ</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Địa chỉ ứng dụng và DNS được bảo vệ" /></a></td>
-<td width="50%" valign="top"><strong>Chọn cổng mạng và kiểm tra tốc độ</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Chọn cổng mạng và kiểm tra tốc độ" /></a></td>
+<td width="50%" valign="top"><strong>Địa chỉ ứng dụng và DNS được bảo vệ</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Địa chỉ ứng dụng và DNS được bảo vệ" /></a></td>
+<td width="50%" valign="top"><strong>Chọn cổng mạng và kiểm tra tốc độ</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Chọn cổng mạng và kiểm tra tốc độ" /></a></td>
 </tr>
 </table>
 
@@ -197,8 +197,8 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Tạo lượt tải xuống</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Tạo lượt tải xuống" /></a></td>
-<td width="50%" valign="top"><strong>Không gian tải lên</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Không gian tải lên" /></a></td>
+<td width="50%" valign="top"><strong>Tạo lượt tải xuống</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Tạo lượt tải xuống" /></a></td>
+<td width="50%" valign="top"><strong>Không gian tải lên</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Không gian tải lên" /></a></td>
 </tr>
 </table>
 

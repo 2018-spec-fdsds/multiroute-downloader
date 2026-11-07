@@ -98,18 +98,18 @@ Si corregge una differenza nel modo di cattura, non ogni causa di gateway irragg
 
 Lo spazio di lavoro di 4.6.9 mette i tuoi file al centro: colonne separate per nome e dimensione, avanzamento individuale, velocità totale e per gateway, un grafico della velocità e dettagli dei file. Graphite e System sono inclusi in Free; stili aggiuntivi come Rose richiedono la corrispondente funzione Pro.
 
-![MultiRoute Downloader 4.3.7 — coda di download e velocità dei gateway](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — coda di download e velocità dei gateway](../images/v4.3.7/downloads-en-ae5b55131583.png)  *Esempio di una versione precedente*
 
 *Interfaccia Windows attuale, acquisita con un profilo dimostrativo isolato. File di esempio, avanzamento, velocità e viste abilitate con Pro illustrano i controlli e non sono misurazioni delle prestazioni.*
 
 <details>
 <summary><strong>Impostazioni di rete e cronologia della velocità</strong></summary>
 
-![Indirizzo dell’applicazione e DNS protetto](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![Indirizzo dell’applicazione e DNS protetto](../images/v4.3.7/network-dns-e29dfdba1007.png)  *Esempio di una versione precedente*
 
-![Selezione dei gateway e test di velocità](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![Selezione dei gateway e test di velocità](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *Esempio di una versione precedente*
 
-![MultiRoute Downloader 4.3.7 — cronologia della velocità di download](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — cronologia della velocità di download](../images/v4.3.7/speed-graph-a85815544945.png)  *Esempio di una versione precedente*
 
 </details>
 
@@ -120,23 +120,23 @@ Scegli tra nove aspetti: Graphite, Nordic, Streams Studio, Neon, Community, Chat
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -153,8 +153,8 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -162,8 +162,8 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -171,8 +171,8 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -182,12 +182,12 @@ Imposta la cartella di download, i profili dei siti e la lingua, poi regola l’
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Impostazioni dell’applicazione</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Impostazioni dell’applicazione" /></a></td>
-<td width="50%" valign="top"><strong>Aspetto, corriere e suoni</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Aspetto, corriere e suoni" /></a></td>
+<td width="50%" valign="top"><strong>Impostazioni dell’applicazione</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Impostazioni dell’applicazione" /></a></td>
+<td width="50%" valign="top"><strong>Aspetto, corriere e suoni</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Aspetto, corriere e suoni" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Indirizzo dell’applicazione e DNS protetto</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Indirizzo dell’applicazione e DNS protetto" /></a></td>
-<td width="50%" valign="top"><strong>Selezione dei gateway e test di velocità</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Selezione dei gateway e test di velocità" /></a></td>
+<td width="50%" valign="top"><strong>Indirizzo dell’applicazione e DNS protetto</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Indirizzo dell’applicazione e DNS protetto" /></a></td>
+<td width="50%" valign="top"><strong>Selezione dei gateway e test di velocità</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Selezione dei gateway e test di velocità" /></a></td>
 </tr>
 </table>
 
@@ -196,8 +196,8 @@ Imposta la cartella di download, i profili dei siti e la lingua, poi regola l’
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Crea un download</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Crea un download" /></a></td>
-<td width="50%" valign="top"><strong>Spazio di lavoro per i caricamenti</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Spazio di lavoro per i caricamenti" /></a></td>
+<td width="50%" valign="top"><strong>Crea un download</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Crea un download" /></a></td>
+<td width="50%" valign="top"><strong>Spazio di lavoro per i caricamenti</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Spazio di lavoro per i caricamenti" /></a></td>
 </tr>
 </table>
 

@@ -109,7 +109,7 @@ Windows Setup работает на английском и создаёт яр�
 <details>
 <summary><strong>Справочник ошибок с поиском — 25 тем на двенадцати языках</strong></summary>
 
-![MultiRoute Downloader — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
+![MultiRoute Downloader — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)  *Пример оформления из предыдущей версии*
 
 </details>
 
@@ -128,7 +128,7 @@ Windows Setup работает на английском и создаёт яр�
 
 ![Выбор шлюзов и проверка скорости](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![MultiRoute Downloader — история скорости загрузки](docs/images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader — история скорости загрузки](docs/images/v4.3.7/speed-graph-a85815544945.png)  *Пример оформления из предыдущей версии*
 
 </details>
 
@@ -140,22 +140,22 @@ Windows Setup работает на английском и создаёт яр�
 <table>
 <tr>
 <td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.3.7/downloads-streams-ru-ca2a8876ed8f.png"><img src="docs/images/v4.3.7/downloads-streams-ru-ca2a8876ed8f.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.3.7/downloads-streams-ru-ca2a8876ed8f.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/downloads-streams-ru-ca2a8876ed8f.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.3.7/skin-community-9763964c8f12.png"><img src="docs/images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="docs/images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.3.7/skin-community-9763964c8f12.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="docs/images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="docs/images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.3.7/skin-system-c148099984c6.png"><img src="docs/images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.3.7/skin-system-c148099984c6.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -172,8 +172,8 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -181,8 +181,8 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -190,8 +190,8 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -201,7 +201,7 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Настройки приложения</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Настройки приложения" /></a></td>
+<td width="50%" valign="top"><strong>Настройки приложения</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Настройки приложения" /></a></td>
 <td width="50%" valign="top"><strong>Оформление, курьер и звуки</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png" width="420" alt="Оформление, курьер и звуки" /></a></td>
 </tr>
 <tr>
@@ -215,8 +215,8 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Создание загрузки</strong><br /><a href="docs/images/v4.3.7/new-download-dcb720c7769d.png"><img src="docs/images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Создание загрузки" /></a></td>
-<td width="50%" valign="top"><strong>Окно отправки файлов</strong><br /><a href="docs/images/v4.3.7/uploads-31c63833de2e.png"><img src="docs/images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Окно отправки файлов" /></a></td>
+<td width="50%" valign="top"><strong>Создание загрузки</strong><br /><a href="docs/images/v4.3.7/new-download-dcb720c7769d.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Создание загрузки" /></a></td>
+<td width="50%" valign="top"><strong>Окно отправки файлов</strong><br /><a href="docs/images/v4.3.7/uploads-31c63833de2e.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Окно отправки файлов" /></a></td>
 </tr>
 </table>
 

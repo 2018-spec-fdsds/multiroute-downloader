@@ -100,18 +100,18 @@ Se corrige una diferencia del modo de captura, no todas las causas de una puerta
 
 El espacio de trabajo de 4.6.9 pone tus archivos en el centro: columnas separadas de nombre y tamaño, progreso individual, velocidad total y por puerta de enlace, una gráfica de velocidad y detalles de los archivos. Graphite y System están incluidos en Free; los estilos adicionales, como Rose, requieren la función Pro correspondiente.
 
-![MultiRoute Downloader 4.3.7 — cola de descargas y velocidades de las puertas de enlace](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — cola de descargas y velocidades de las puertas de enlace](../images/v4.3.7/downloads-en-ae5b55131583.png)  *Ejemplo de una versión anterior*
 
 *Interfaz actual de Windows, capturada con un perfil de demostración aislado. Los archivos de ejemplo, el progreso, las velocidades y las vistas habilitadas con Pro ilustran los controles y no son mediciones de rendimiento.*
 
 <details>
 <summary><strong>Ajustes de red e historial de velocidad</strong></summary>
 
-![Dirección de la aplicación y DNS protegido](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![Dirección de la aplicación y DNS protegido](../images/v4.3.7/network-dns-e29dfdba1007.png)  *Ejemplo de una versión anterior*
 
-![Selección de puertas de enlace y pruebas de velocidad](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![Selección de puertas de enlace y pruebas de velocidad](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *Ejemplo de una versión anterior*
 
-![MultiRoute Downloader 4.3.7 — historial de velocidad de descarga](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — historial de velocidad de descarga](../images/v4.3.7/speed-graph-a85815544945.png)  *Ejemplo de una versión anterior*
 
 </details>
 
@@ -122,23 +122,23 @@ Elige entre nueve apariencias: Graphite, Nordic, Streams Studio, Neon, Community
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -155,8 +155,8 @@ Al terminar una descarga, el mensajero deja la carga entregada y se desvanece. S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 
@@ -164,8 +164,8 @@ Al terminar una descarga, el mensajero deja la carga entregada y se desvanece. S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 
@@ -173,8 +173,8 @@ Al terminar una descarga, el mensajero deja la carga entregada y se desvanece. S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 
@@ -184,12 +184,12 @@ Configura la carpeta de descarga, los perfiles de sitios y el idioma; después a
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Ajustes de la aplicación</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Ajustes de la aplicación" /></a></td>
-<td width="50%" valign="top"><strong>Apariencia, mensajero y sonidos</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Apariencia, mensajero y sonidos" /></a></td>
+<td width="50%" valign="top"><strong>Ajustes de la aplicación</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Ajustes de la aplicación" /></a></td>
+<td width="50%" valign="top"><strong>Apariencia, mensajero y sonidos</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="Apariencia, mensajero y sonidos" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Dirección de la aplicación y DNS protegido</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Dirección de la aplicación y DNS protegido" /></a></td>
-<td width="50%" valign="top"><strong>Selección de puertas de enlace y pruebas de velocidad</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Selección de puertas de enlace y pruebas de velocidad" /></a></td>
+<td width="50%" valign="top"><strong>Dirección de la aplicación y DNS protegido</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="Dirección de la aplicación y DNS protegido" /></a></td>
+<td width="50%" valign="top"><strong>Selección de puertas de enlace y pruebas de velocidad</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="Selección de puertas de enlace y pruebas de velocidad" /></a></td>
 </tr>
 </table>
 
@@ -198,8 +198,8 @@ Configura la carpeta de descarga, los perfiles de sitios y el idioma; después a
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Crear una descarga</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Crear una descarga" /></a></td>
-<td width="50%" valign="top"><strong>Espacio de trabajo de subidas</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Espacio de trabajo de subidas" /></a></td>
+<td width="50%" valign="top"><strong>Crear una descarga</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Crear una descarga" /></a></td>
+<td width="50%" valign="top"><strong>Espacio de trabajo de subidas</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Espacio de trabajo de subidas" /></a></td>
 </tr>
 </table>
 

@@ -110,7 +110,7 @@ This addresses one capture-mode mismatch, not every cause of an unreachable gate
 <details>
 <summary><strong>Searchable error guide — 25 topics in twelve languages</strong></summary>
 
-![MultiRoute Downloader — Searchable error guide — 25 topics in twelve languages](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)
+![MultiRoute Downloader — Searchable error guide — 25 topics in twelve languages](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)  *Earlier version — appearance example*
 
 </details>
 
@@ -129,7 +129,7 @@ The workspace puts your files at the center: separate name and size columns, ind
 
 ![Gateway selection and speed checks](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
 
-![MultiRoute Downloader — download speed history](docs/images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader — download speed history](docs/images/v4.3.7/speed-graph-a85815544945.png)  *Earlier version — appearance example*
 
 </details>
 
@@ -141,22 +141,22 @@ Choose from nine appearances: Graphite, Nordic, Streams Studio, Neon, Community,
 <table>
 <tr>
 <td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="docs/images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.3.7/skin-streams-b2f3be388bda.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.3.7/skin-community-9763964c8f12.png"><img src="docs/images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="docs/images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.3.7/skin-community-9763964c8f12.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="docs/images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="docs/images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.3.7/skin-system-c148099984c6.png"><img src="docs/images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.3.7/skin-system-c148099984c6.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -173,8 +173,8 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -182,8 +182,8 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -191,8 +191,8 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -202,7 +202,7 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Application settings</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Application settings" /></a></td>
+<td width="50%" valign="top"><strong>Application settings</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Application settings" /></a></td>
 <td width="50%" valign="top"><strong>Appearance, courier and sounds</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png" width="420" alt="Appearance, courier and sounds" /></a></td>
 </tr>
 <tr>
@@ -216,8 +216,8 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Create a download</strong><br /><a href="docs/images/v4.3.7/new-download-dcb720c7769d.png"><img src="docs/images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Create a download" /></a></td>
-<td width="50%" valign="top"><strong>Upload workspace</strong><br /><a href="docs/images/v4.3.7/uploads-31c63833de2e.png"><img src="docs/images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Upload workspace" /></a></td>
+<td width="50%" valign="top"><strong>Create a download</strong><br /><a href="docs/images/v4.3.7/new-download-dcb720c7769d.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Create a download" /></a></td>
+<td width="50%" valign="top"><strong>Upload workspace</strong><br /><a href="docs/images/v4.3.7/uploads-31c63833de2e.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Upload workspace" /></a></td>
 </tr>
 </table>
 

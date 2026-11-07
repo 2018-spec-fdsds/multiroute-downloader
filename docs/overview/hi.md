@@ -99,18 +99,18 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 4.6.9 का कार्यक्षेत्र आपकी फ़ाइलों को केंद्र में रखता है: नाम और आकार के अलग कॉलम, हर फ़ाइल की प्रगति, कुल और हर गेटवे की गति, गति का ग्राफ़ और फ़ाइल का विवरण। Graphite और System, Free में शामिल हैं; Rose जैसी अतिरिक्त शैलियों के लिए संबंधित Pro सुविधा चाहिए।
 
-![MultiRoute Downloader 4.3.7 — डाउनलोड कतार और गेटवे की गति](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — डाउनलोड कतार और गेटवे की गति](../images/v4.3.7/downloads-en-ae5b55131583.png)  *पिछले संस्करण का उदाहरण*
 
 *Windows पर ऐप का मौजूदा इंटरफ़ेस, जिसे अलग डेमो प्रोफ़ाइल में कैप्चर किया गया है। दिखाई गई फ़ाइलें, प्रगति, गति और Pro सुविधाओं से उपलब्ध स्क्रीन केवल नियंत्रणों को समझाने के उदाहरण हैं; ये प्रदर्शन के माप नहीं हैं।*
 
 <details>
 <summary><strong>नेटवर्क सेटिंग और गति का इतिहास</strong></summary>
 
-![ऐप का पता और सुरक्षित DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![ऐप का पता और सुरक्षित DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)  *पिछले संस्करण का उदाहरण*
 
-![गेटवे का चयन और गति की जाँच](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![गेटवे का चयन और गति की जाँच](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *पिछले संस्करण का उदाहरण*
 
-![MultiRoute Downloader 4.3.7 — डाउनलोड गति का इतिहास](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — डाउनलोड गति का इतिहास](../images/v4.3.7/speed-graph-a85815544945.png)  *पिछले संस्करण का उदाहरण*
 
 </details>
 
@@ -121,23 +121,23 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -154,8 +154,8 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -163,8 +163,8 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -172,8 +172,8 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -183,12 +183,12 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>ऐप की सेटिंग</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="ऐप की सेटिंग" /></a></td>
-<td width="50%" valign="top"><strong>रूप-रंग, कुरियर और ध्वनियाँ</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="रूप-रंग, कुरियर और ध्वनियाँ" /></a></td>
+<td width="50%" valign="top"><strong>ऐप की सेटिंग</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="ऐप की सेटिंग" /></a></td>
+<td width="50%" valign="top"><strong>रूप-रंग, कुरियर और ध्वनियाँ</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="रूप-रंग, कुरियर और ध्वनियाँ" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>ऐप का पता और सुरक्षित DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="ऐप का पता और सुरक्षित DNS" /></a></td>
-<td width="50%" valign="top"><strong>गेटवे का चयन और गति की जाँच</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="गेटवे का चयन और गति की जाँच" /></a></td>
+<td width="50%" valign="top"><strong>ऐप का पता और सुरक्षित DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="ऐप का पता और सुरक्षित DNS" /></a></td>
+<td width="50%" valign="top"><strong>गेटवे का चयन और गति की जाँच</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="गेटवे का चयन और गति की जाँच" /></a></td>
 </tr>
 </table>
 
@@ -197,8 +197,8 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>डाउनलोड बनाएँ</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="डाउनलोड बनाएँ" /></a></td>
-<td width="50%" valign="top"><strong>अपलोड कार्यक्षेत्र</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="अपलोड कार्यक्षेत्र" /></a></td>
+<td width="50%" valign="top"><strong>डाउनलोड बनाएँ</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="डाउनलोड बनाएँ" /></a></td>
+<td width="50%" valign="top"><strong>अपलोड कार्यक्षेत्र</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="अपलोड कार्यक्षेत्र" /></a></td>
 </tr>
 </table>
 

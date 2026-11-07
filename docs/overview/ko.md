@@ -98,18 +98,18 @@ Windows 설치 프로그램은 영어로 표시되며 바탕 화면 바로 가�
 
 4.6.9 작업 공간은 파일을 중심으로 구성됩니다. 이름과 크기를 별도 열로 표시하고, 파일별 진행 상황, 전체 및 게이트웨이별 속도, 속도 그래프와 파일 상세 정보를 제공합니다. Free에는 Graphite와 System 외관이 포함됩니다. Rose 같은 추가 스타일에는 해당 Pro 기능이 필요합니다.
 
-![MultiRoute Downloader 4.3.7 — 다운로드 대기열과 게이트웨이 속도](../images/v4.3.7/downloads-en-ae5b55131583.png)
+![MultiRoute Downloader 4.3.7 — 다운로드 대기열과 게이트웨이 속도](../images/v4.3.7/downloads-en-ae5b55131583.png)  *이전 버전 예시*
 
 *별도의 데모 프로필에서 캡처한 현재 Windows 화면입니다. 예제 파일, 진행 상황, 속도와 Pro 기능을 활성화한 화면은 조작 방법을 설명하기 위한 것이며 성능 측정값이 아닙니다.*
 
 <details>
 <summary><strong>네트워크 설정과 속도 기록</strong></summary>
 
-![앱 주소와 보호된 DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)
+![앱 주소와 보호된 DNS](../images/v4.3.7/network-dns-e29dfdba1007.png)  *이전 버전 예시*
 
-![게이트웨이 선택과 속도 확인](../images/v4.3.7/network-gateways-aee0a7897f48.png)
+![게이트웨이 선택과 속도 확인](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *이전 버전 예시*
 
-![MultiRoute Downloader 4.3.7 — 다운로드 속도 기록](../images/v4.3.7/speed-graph-a85815544945.png)
+![MultiRoute Downloader 4.3.7 — 다운로드 속도 기록](../images/v4.3.7/speed-graph-a85815544945.png)  *이전 버전 예시*
 
 </details>
 
@@ -120,23 +120,23 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -153,8 +153,8 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -162,8 +162,8 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -171,8 +171,8 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -182,12 +182,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>앱 설정</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="앱 설정" /></a></td>
-<td width="50%" valign="top"><strong>모양, 배달원과 소리</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="모양, 배달원과 소리" /></a></td>
+<td width="50%" valign="top"><strong>앱 설정</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="앱 설정" /></a></td>
+<td width="50%" valign="top"><strong>모양, 배달원과 소리</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="모양, 배달원과 소리" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>앱 주소와 보호된 DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="앱 주소와 보호된 DNS" /></a></td>
-<td width="50%" valign="top"><strong>게이트웨이 선택과 속도 확인</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="게이트웨이 선택과 속도 확인" /></a></td>
+<td width="50%" valign="top"><strong>앱 주소와 보호된 DNS</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="앱 주소와 보호된 DNS" /></a></td>
+<td width="50%" valign="top"><strong>게이트웨이 선택과 속도 확인</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="게이트웨이 선택과 속도 확인" /></a></td>
 </tr>
 </table>
 
@@ -196,8 +196,8 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>다운로드 만들기</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="다운로드 만들기" /></a></td>
-<td width="50%" valign="top"><strong>업로드 작업 공간</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="업로드 작업 공간" /></a></td>
+<td width="50%" valign="top"><strong>다운로드 만들기</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="다운로드 만들기" /></a></td>
+<td width="50%" valign="top"><strong>업로드 작업 공간</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="업로드 작업 공간" /></a></td>
 </tr>
 </table>
 
