@@ -150,30 +150,42 @@ Dùng nút Nhân vật để hiện hoặc ẩn người giao hàng. Kéo để 
 
 Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ liệu đã giao xuống rồi mờ dần. Nếu việc tải vẫn tiếp tục, nhân vật quay lại với lượng dữ liệu còn lại.
 
-### Khối lượng còn lại nhỏ · 768 MB
+### Khối lượng còn lại nhỏ
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
-### Khối lượng còn lại vừa · 7 GB
+### Khối lượng còn lại vừa
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
-### Khối lượng còn lại lớn · 18 GB
+### Khối lượng còn lại lớn
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Ví dụ từ phiên bản trước</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 

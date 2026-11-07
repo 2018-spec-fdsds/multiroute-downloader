@@ -149,30 +149,42 @@ Usa il pulsante Avatar per mostrare o nascondere il corriere. Trascinalo per spo
 
 Quando un download termina, il corriere posa il carico consegnato e scompare gradualmente. Se il lavoro continua, ritorna con i dati rimanenti.
 
-### Carico residuo piccolo · 768 MB
+### Carico residuo piccolo
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
-### Carico residuo medio · 7 GB
+### Carico residuo medio
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
-### Carico residuo grande · 18 GB
+### Carico residuo grande
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Esempio di una versione precedente</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 

@@ -152,30 +152,42 @@
 
 عند اكتمال تنزيل، يضع عامل التوصيل الحمولة المسلّمة ويتلاشى تدريجيًا. وإذا استمر العمل، يعود بالبيانات المتبقية.
 
-### حمولة متبقية صغيرة · 768 MB
+### حمولة متبقية صغيرة
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 
-### حمولة متبقية متوسطة · 7 GB
+### حمولة متبقية متوسطة
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 
-### حمولة متبقية كبيرة · 18 GB
+### حمولة متبقية كبيرة
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 

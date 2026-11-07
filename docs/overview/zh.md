@@ -149,30 +149,42 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 下载完成后，快递员放下已送达的包裹并逐渐消失。如果仍有下载任务，他会带着剩余数据返回。
 
-### 少量剩余数据 · 768 MB
+### 少量剩余数据
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="女性快递员" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性快递员 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 
-### 中等剩余数据量 · 7 GB
+### 中等剩余数据量
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="女性快递员" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性快递员 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 
-### 大量剩余数据 · 18 GB
+### 大量剩余数据
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="男性快递员" /></a></td>
-<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>早期版本示例</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="女性快递员" /></a></td>
+<td width="50%" valign="top"><strong>男性快递员</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="女性快递员" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性快递员 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="男性快递员" /></a></td>
+<td width="50%" valign="top"><strong>女性快递员 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="女性快递员" /></a></td>
 </tr>
 </table>
 

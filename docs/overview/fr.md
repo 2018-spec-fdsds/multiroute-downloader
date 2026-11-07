@@ -151,30 +151,42 @@ Utilisez le bouton Avatar pour afficher ou masquer le coursier. Faites-le glisse
 
 À la fin d’un téléchargement, le coursier dépose la charge livrée et disparaît progressivement. Si des téléchargements continuent, il revient avec les données restantes.
 
-### Petit volume restant · 768 MB
+### Petit volume restant
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="Coursière" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 
-### Volume restant moyen · 7 GB
+### Volume restant moyen
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 
-### Grand volume restant · 18 GB
+### Grand volume restant
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Exemple d’une version précédente</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 

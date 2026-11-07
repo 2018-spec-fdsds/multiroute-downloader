@@ -169,30 +169,42 @@ Use the Avatar button to show or hide the courier. Drag it to move it, double-cl
 
 When a download finishes, the courier puts down the delivered load and fades. If work continues, it returns with the remaining data.
 
-### Small remaining load · 768 MB
+### Small remaining load
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-256mib-walk.png"><img src="docs/images/v4.6.9/man-256mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-256mib-walk.png"><img src="docs/images/v4.6.9/woman-256mib-walk.png" width="420" alt="Female courier" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-256mib-walk.png"><img src="docs/images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-256mib-walk.png"><img src="docs/images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
-### Medium remaining load · 7 GB
+### Medium remaining load
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-2048mib-walk.png"><img src="docs/images/v4.6.9/man-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-2048mib-walk.png"><img src="docs/images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
-### Large remaining load · 18 GB
+### Large remaining load
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-12288mib-walk.png"><img src="docs/images/v4.6.9/man-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-12288mib-walk.png"><img src="docs/images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 

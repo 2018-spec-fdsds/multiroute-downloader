@@ -149,30 +149,42 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 다운로드가 끝나면 배달원이 전달한 짐을 내려놓고 서서히 사라집니다. 다운로드가 계속되면 남은 데이터를 가지고 돌아옵니다.
 
-### 남은 데이터 적음 · 768 MB
+### 남은 데이터 적음
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
-### 남은 데이터 보통 · 7 GB
+### 남은 데이터 보통
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
-### 남은 데이터 많음 · 18 GB
+### 남은 데이터 많음
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>이전 버전 예시</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 

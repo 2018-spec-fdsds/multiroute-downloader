@@ -151,30 +151,42 @@ Usa el botón Avatar para mostrar u ocultar al mensajero. Arrástralo para mover
 
 Al terminar una descarga, el mensajero deja la carga entregada y se desvanece. Si quedan descargas activas, regresa con los datos restantes.
 
-### Carga restante pequeña · 768 MB
+### Carga restante pequeña
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="Mensajera" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Mensajero 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 
-### Carga restante media · 7 GB
+### Carga restante media
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Mensajera" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Mensajero 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 
-### Carga restante grande · 18 GB
+### Carga restante grande
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Mensajero" /></a></td>
-<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Ejemplo de una versión anterior</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Mensajera" /></a></td>
+<td width="50%" valign="top"><strong>Mensajero</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Mensajera" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Mensajero 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Mensajero" /></a></td>
+<td width="50%" valign="top"><strong>Mensajera 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Mensajera" /></a></td>
 </tr>
 </table>
 

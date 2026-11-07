@@ -151,30 +151,42 @@ Mit der Schaltfläche Avatar zeigen oder verbergen Sie den Kurier. Ziehen Sie ih
 
 Nach Abschluss legt der Kurier die gelieferte Last ab und blendet sich aus. Laufen Downloads weiter, kehrt er mit den verbleibenden Daten zurück.
 
-### Kleine Restdatenmenge · 768 MB
+### Kleine Restdatenmenge
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Kurier" /></a></td>
-<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Kurierin" /></a></td>
+<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="Kurierin" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Kurier 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Kurierin" /></a></td>
 </tr>
 </table>
 
-### Mittlere Restdatenmenge · 7 GB
+### Mittlere Restdatenmenge
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Kurier" /></a></td>
-<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Kurierin" /></a></td>
+<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Kurierin" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Kurier 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Kurierin" /></a></td>
 </tr>
 </table>
 
-### Große Restdatenmenge · 18 GB
+### Große Restdatenmenge
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Kurier" /></a></td>
-<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Beispiel aus einer früheren Version</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Kurierin" /></a></td>
+<td width="50%" valign="top"><strong>Kurier</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Kurierin" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Kurier 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Kurier" /></a></td>
+<td width="50%" valign="top"><strong>Kurierin 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Kurierin" /></a></td>
 </tr>
 </table>
 

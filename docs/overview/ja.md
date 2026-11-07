@@ -149,30 +149,42 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 ダウンロードが完了すると、配達員は届けた荷物を置いて徐々に消えます。ダウンロードが続いていれば、残りのデータを持って戻ります。
 
-### 残りの荷物が少ない · 768 MB
+### 残りの荷物が少ない
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 
-### 残りの荷物が中程度 · 7 GB
+### 残りの荷物が中程度
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 
-### 残りの荷物が多い · 18 GB
+### 残りの荷物が多い
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>以前のバージョンの例</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 

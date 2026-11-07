@@ -168,30 +168,42 @@ Windows Setup работает на английском и создаёт яр�
 
 После завершения курьер кладёт доставленный груз и плавно исчезает. Если загрузки продолжаются, он возвращается с оставшимся объёмом.
 
-### Небольшой остаток · 768 МБ
+### Небольшой остаток
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.9/man-256mib-walk.png"><img src="docs/images/v4.6.9/man-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.9/woman-256mib-walk.png"><img src="docs/images/v4.6.9/woman-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.9/male_brown-256mib-walk.png"><img src="docs/images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.9/female_brown-256mib-walk.png"><img src="docs/images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
-### Средний остаток · 7 ГБ
+### Средний остаток
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.9/man-2048mib-walk.png"><img src="docs/images/v4.6.9/man-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.9/woman-2048mib-walk.png"><img src="docs/images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.9/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.9/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
-### Большой остаток · 18 ГБ
+### Большой остаток
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>Пример оформления из предыдущей версии</small><br /><img src="docs/images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.9/man-12288mib-walk.png"><img src="docs/images/v4.6.9/man-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.9/woman-12288mib-walk.png"><img src="docs/images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.9/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.9/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 

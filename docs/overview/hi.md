@@ -150,30 +150,42 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 डाउनलोड पूरा होने पर कूरियर पहुँचाया गया बोझ नीचे रखता है और धीरे-धीरे गायब हो जाता है। अगर डाउनलोड जारी हैं, तो वह बाकी डेटा के साथ लौटता है।
 
-### कम शेष भार · 768 MB
+### कम शेष भार
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-shoulder-eeeb879d0240.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-shoulder-5682615d5576.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
-### मध्यम शेष भार · 7 GB
+### मध्यम शेष भार
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-drag-a3dc0a3ed22c.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-drag-48d8ee0fa4d1.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
-### अधिक शेष भार · 18 GB
+### अधिक शेष भार
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.3.7/avatar-man-heavy-649f17608748.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-man-heavy-649f17608748.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png"><small>पिछले संस्करण का उदाहरण</small><br /><img src="../images/v4.3.7/avatar-woman-heavy-d445fdb37867.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
