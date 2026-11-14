@@ -7,13 +7,15 @@
 </p>
 <!-- product-languages:end -->
 
+**4.6.10:** Couriers move more slowly across a wider area, with fewer direction changes. Walking and horizontal movement share the same slowed animation clock.
+
 
 <p align="center"><img src="docs/images/multiroute-hero-4.3.7.svg" width="1320" alt="MultiRoute Downloader — More connections. One download." /></p>
 
 <p align="center"><strong>Download large files with the connections you already have.</strong><br />Combine independent broadband and mobile gateways for large downloads, preserve resumable progress and check the finished file.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>Download 4.6.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.10"><strong>Download 4.6.10</strong></a> ·
   <a href="downloads/README.md">Current downloads</a> ·
   <a href="docs/en.md">User guide</a> ·
   <a href="docs/support.md">Support the project</a> ·
@@ -62,19 +64,19 @@ Use supported resume, published-checksum comparison, protected DNS, batch queues
 
 ## Download and install
 
-**Current version: 4.6.9.** Native installers include private Java 21 and the platform network component. Open the application from its normal icon.
+**Current version: 4.6.10.** Native installers include private Java 21 and the platform network component. Open the application from its normal icon.
 
 | Your computer | Single-file installer |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-x86_64.pkg) |
 
-[Chrome / Edge integration](docs/en.md#chrome-and-edge-integration) · [Checksums and report](downloads/v4.6.9/README.md) · [Download details](downloads/README.md)
+[Chrome / Edge integration](docs/en.md#chrome-and-edge-integration) · [Checksums and report](downloads/v4.6.10/README.md) · [Download details](downloads/README.md)
 
 Windows Setup uses English and creates a desktop shortcut. Npcap is checked separately and its official installer is offered when needed; macOS uses system libpcap. See your language guide for installation and security confirmations. Public native installers cover Windows and macOS; a Linux 4.x installer is not included here.
 
-**Free / Pro in 4.6.9:** Free uses up to **2 gateways**, **3 simultaneous downloads** and creates **3 site profiles**, with Graphite/System appearance. The corresponding Pro capabilities allow up to **8 gateways**, **32 simultaneous downloads**, additional profiles, priorities, gateway history/reports, batch operations, the external API and extra styles. Free does not deliberately throttle download speed. [Full capability details](docs/licensing.en.md).
+**Free / Pro in 4.6.10:** Free uses up to **2 gateways**, **3 simultaneous downloads** and creates **3 site profiles**, with Graphite/System appearance. The corresponding Pro capabilities allow up to **8 gateways**, **32 simultaneous downloads**, additional profiles, priorities, gateway history/reports, batch operations, the external API and extra styles. Free does not deliberately throttle download speed. [Full capability details](docs/licensing.en.md).
 
 
 
@@ -110,7 +112,7 @@ This addresses one capture-mode mismatch, not every cause of an unreachable gate
 <details>
 <summary><strong>Searchable error guide — 25 topics in twelve languages</strong></summary>
 
-![MultiRoute Downloader — Searchable error guide — 25 topics in twelve languages](docs/images/v4.3.7/error-guide-d9ecfd74a5f2.png)  *Earlier version — appearance example*
+![MultiRoute Downloader — Searchable error guide — 25 topics in twelve languages](docs/images/v4.6.10/multiroute-4.6.10-error-guide-en.png)
 
 </details>
 
@@ -118,18 +120,18 @@ This addresses one capture-mode mismatch, not every cause of an unreachable gate
 
 The workspace puts your files at the center: separate name and size columns, individual progress, total and per-gateway speed, a speed graph and file details. Graphite and System are included in Free; additional styles such as Rose require the corresponding Pro capability.
 
-![MultiRoute Downloader — download queue and gateway speeds](docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+![MultiRoute Downloader — download queue and gateway speeds](docs/images/v4.6.10/multiroute-4.6.10-downloads-en.png)
 
 *Current Windows interface, captured in an isolated demonstration profile. Example files, progress, speeds and Pro-enabled views illustrate the controls and are not performance measurements.*
 
 <details>
 <summary><strong>Network settings and speed history</strong></summary>
 
-![Application address and protected DNS](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
+![Application address and protected DNS](docs/images/v4.6.10/multiroute-4.6.10-network-en.png)
 
-![Gateway selection and speed checks](docs/images/v4.6.9/multiroute-4.6.9-network-en.png)
+![Gateway selection and speed checks](docs/images/v4.6.10/multiroute-4.6.10-network-en.png)
 
-![MultiRoute Downloader — download speed history](docs/images/v4.3.7/speed-graph-a85815544945.png)  *Earlier version — appearance example*
+![MultiRoute Downloader — download speed history](docs/images/v4.6.10/multiroute-4.6.10-speed-graph-en.png)
 
 </details>
 
@@ -140,23 +142,23 @@ Choose from nine appearances: Graphite, Nordic, Streams Studio, Neon, Community,
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-downloads-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.3.7/skin-streams-b2f3be388bda.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-streams-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-neon-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.3.7/skin-community-9763964c8f12.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.3.7/skin-chat-221a28cc76f4.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-community-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-chat-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.3.7/skin-studio-094e14ba38ea.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.3.7/skin-rose-02646e7f35bf.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-studio-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-clean-rose-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.3.7/skin-system-c148099984c6.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-skin-system-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -173,12 +175,12 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-256mib-walk.png"><img src="docs/images/v4.6.9/man-256mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-256mib-walk.png"><img src="docs/images/v4.6.9/woman-256mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.10/man-256mib-walk.png"><img src="docs/images/v4.6.10/man-256mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.10/woman-256mib-walk.png"><img src="docs/images/v4.6.10/woman-256mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-256mib-walk.png"><img src="docs/images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-256mib-walk.png"><img src="docs/images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.10/male_brown-256mib-walk.png"><img src="docs/images/v4.6.10/male_brown-256mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.10/female_brown-256mib-walk.png"><img src="docs/images/v4.6.10/female_brown-256mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -186,12 +188,12 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-2048mib-walk.png"><img src="docs/images/v4.6.9/man-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-2048mib-walk.png"><img src="docs/images/v4.6.9/woman-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.10/man-2048mib-walk.png"><img src="docs/images/v4.6.10/man-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.10/woman-2048mib-walk.png"><img src="docs/images/v4.6.10/woman-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.10/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.10/male_brown-2048mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.10/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.10/female_brown-2048mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -199,12 +201,12 @@ When a download finishes, the courier puts down the delivered load and fades. If
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.9/man-12288mib-walk.png"><img src="docs/images/v4.6.9/man-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.9/woman-12288mib-walk.png"><img src="docs/images/v4.6.9/woman-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier</strong><br /><a href="docs/images/v4.6.10/man-12288mib-walk.png"><img src="docs/images/v4.6.10/man-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier</strong><br /><a href="docs/images/v4.6.10/woman-12288mib-walk.png"><img src="docs/images/v4.6.10/woman-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.9/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
-<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.9/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
+<td width="50%" valign="top"><strong>Male courier 2</strong><br /><a href="docs/images/v4.6.10/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.10/male_brown-12288mib-walk.png" width="420" alt="Male courier" /></a></td>
+<td width="50%" valign="top"><strong>Female courier 2</strong><br /><a href="docs/images/v4.6.10/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.10/female_brown-12288mib-walk.png" width="420" alt="Female courier" /></a></td>
 </tr>
 </table>
 
@@ -214,12 +216,12 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Application settings</strong><br /><a href="docs/images/v4.3.7/settings-8abcb12a782d.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="Application settings" /></a></td>
-<td width="50%" valign="top"><strong>Appearance, courier and sounds</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-appearance-en.png" width="420" alt="Appearance, courier and sounds" /></a></td>
+<td width="50%" valign="top"><strong>Application settings</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-settings-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-settings-en.png" width="420" alt="Application settings" /></a></td>
+<td width="50%" valign="top"><strong>Appearance, courier and sounds</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-appearance-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-appearance-en.png" width="420" alt="Appearance, courier and sounds" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Application address and protected DNS</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Application address and protected DNS" /></a></td>
-<td width="50%" valign="top"><strong>Gateway selection and speed checks</strong><br /><a href="docs/images/v4.6.9/multiroute-4.6.9-network-en.png"><img src="docs/images/v4.6.9/multiroute-4.6.9-network-en.png" width="420" alt="Gateway selection and speed checks" /></a></td>
+<td width="50%" valign="top"><strong>Application address and protected DNS</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-network-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-network-en.png" width="420" alt="Application address and protected DNS" /></a></td>
+<td width="50%" valign="top"><strong>Gateway selection and speed checks</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-network-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-network-en.png" width="420" alt="Gateway selection and speed checks" /></a></td>
 </tr>
 </table>
 
@@ -228,8 +230,8 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Create a download</strong><br /><a href="docs/images/v4.3.7/new-download-dcb720c7769d.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="Create a download" /></a></td>
-<td width="50%" valign="top"><strong>Upload workspace</strong><br /><a href="docs/images/v4.3.7/uploads-31c63833de2e.png"><small>Earlier version — appearance example</small><br /><img src="docs/images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="Upload workspace" /></a></td>
+<td width="50%" valign="top"><strong>Create a download</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-new-download-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-new-download-en.png" width="420" alt="Create a download" /></a></td>
+<td width="50%" valign="top"><strong>Upload workspace</strong><br /><a href="docs/images/v4.6.10/multiroute-4.6.10-uploads-en.png"><img src="docs/images/v4.6.10/multiroute-4.6.10-uploads-en.png" width="420" alt="Upload workspace" /></a></td>
 </tr>
 </table>
 
@@ -322,4 +324,4 @@ Created by **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. Free use i
 
 [Licence](LICENSE.txt) · [Licence summary](LICENSING.md) · [Third-party notices](THIRD-PARTY-NOTICES.txt)
 
-This distribution area contains the current 4.6.9 installers and user documentation.
+This distribution area contains the current 4.6.10 installers and user documentation.

@@ -7,6 +7,8 @@
 </p>
 <!-- product-languages:end -->
 
+**4.6.10:** يتحرك السعاة ببطء أكبر ضمن مساحة أوسع ويغيرون الاتجاه بوتيرة أقل، مع إبطاء الخطوات والحركة معاً.
+
 <div dir="rtl">
 
 <p align="center"><img src="../images/overview/ar/hero.svg" width="1320" alt="MultiRoute Downloader — اتصالات أكثر. تنزيل واحد." /></p>
@@ -14,24 +16,24 @@
 <p align="center"><strong>نزّل الملفات الكبيرة بالاتصالات المتاحة لديك.</strong><br />اجمع بوابات النطاق العريض والاتصال المحمول المستقلة لتنزيل الملفات الكبيرة، واحفظ التقدم القابل للاستئناف، وتحقق من الملف المكتمل.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.9"><strong>تنزيل 4.6.9</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.10"><strong>تنزيل 4.6.10</strong></a> ·
   <a href="../../downloads/README.md">التنزيلات الحالية</a> ·
   <a href="../ar.md">دليل المستخدم</a> ·
   <a href="../../API.ru.txt">مرجع API</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.9:start -->
-## مزيد من إمكانات 4.6.9
+<!-- capabilities-4.6.10:start -->
+## مزيد من إمكانات 4.6.10
 
 يكتشف Chrome/Edge فيديو HLS المدعوم مع اختيار الجودة واستئناف الأجزاء وتجميعها. لا يشمل التدفقات المشفرة أو المحمية بـ DRM أو البث المباشر غير المدعوم. يشير OS إلى مسار النظام وفق إعدادات OS/VPN؛ يصل عميل VPN إلى خادمه عبر الاتصال الفعلي. يُفحص النظام والبوابات بشكل منفصل؛ لا يغيّر نقل البوابات مسارات التطبيقات الأخرى. حدد المجلد الافتراضي ومجلدات الفيديو والصوت والصور وامتداداتها. تعرض أربع شخصيات توصيل بالغة الحالة بحجم 40–200٪؛ تمثل الحقيبة إجمالي البيانات المتبقية. تتيح API المحلية إنشاء التنزيلات ومتابعتها بحسب الترخيص والإعدادات.
 
-![MultiRoute 4.6.9](../images/v4.6.9/multiroute-4.6.9-downloads-en.png)
+![MultiRoute 4.6.10](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
 
-[OS / VPN](../images/v4.6.9/multiroute-4.6.9-network-en.png) · [40–200%](../images/v4.6.9/multiroute-4.6.9-appearance-en.png)
+[OS / VPN](../images/v4.6.10/multiroute-4.6.10-network-en.png) · [40–200%](../images/v4.6.10/multiroute-4.6.10-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.9:end -->
+<!-- capabilities-4.6.10:end -->
 
 ## لماذا أُنشئ MultiRoute
 
@@ -54,22 +56,22 @@
 
 ## التنزيل والتثبيت
 
-**الإصدار الحالي: 4.6.9.** تتضمن حزم التثبيت الأصلية بيئة Java 21 خاصة بالتطبيق ومكوّن الشبكة الخاص بالمنصة. افتح التطبيق من أيقونته المعتادة.
+**الإصدار الحالي: 4.6.10.** تتضمن حزم التثبيت الأصلية بيئة Java 21 خاصة بالتطبيق ومكوّن الشبكة الخاص بالمنصة. افتح التطبيق من أيقونته المعتادة.
 
 | حاسوبك | حزمة تثبيت في ملف واحد |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.9/MultiRoute-Downloader-4.6.9-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-x86_64.pkg) |
 
-[التكامل مع Chrome / Edge](../ar.md#chrome-and-edge-integration) · [قيم التحقق والتقرير](../../downloads/v4.6.9/README.md) · [تفاصيل التنزيل](../../downloads/README.md)
+[التكامل مع Chrome / Edge](../ar.md#chrome-and-edge-integration) · [قيم التحقق والتقرير](../../downloads/v4.6.10/README.md) · [تفاصيل التنزيل](../../downloads/README.md)
 
 يعمل Windows Setup باللغة الإنجليزية وينشئ اختصارًا على سطح المكتب. يُفحص Npcap بشكل منفصل، ويُعرض مثبّته الرسمي عند الحاجة؛ ويستخدم macOS مكتبة libpcap الخاصة بالنظام. راجع الدليل بلغتك لمعرفة خطوات التثبيت وتأكيدات الأمان. تتوفر حزم التثبيت الأصلية العامة لنظامي Windows وmacOS؛ ولا تتضمن هذه الصفحة مثبّت Linux 4.x.
 
-**Free / Pro في 4.6.9:** يتيح Free استخدام ما يصل إلى **بوابتين (2)**، و**3 تنزيلات متزامنة**، وإنشاء **3 ملفات تعريف للمواقع**، مع مظهري Graphite/System. وتتيح إمكانات Pro المقابلة استخدام ما يصل إلى **8 بوابات**، و**32 تنزيلًا متزامنًا**، وملفات تعريف إضافية، وأولويات، وسجل البوابات وتقاريرها، وعمليات مجمعة، وواجهة API خارجية، وأنماط مظهر إضافية. لا يحدّ Free سرعة التنزيل عمدًا. [التفاصيل الكاملة للإمكانات](../licensing.en.md).
+**Free / Pro في 4.6.10:** يتيح Free استخدام ما يصل إلى **بوابتين (2)**، و**3 تنزيلات متزامنة**، وإنشاء **3 ملفات تعريف للمواقع**، مع مظهري Graphite/System. وتتيح إمكانات Pro المقابلة استخدام ما يصل إلى **8 بوابات**، و**32 تنزيلًا متزامنًا**، وملفات تعريف إضافية، وأولويات، وسجل البوابات وتقاريرها، وعمليات مجمعة، وواجهة API خارجية، وأنماط مظهر إضافية. لا يحدّ Free سرعة التنزيل عمدًا. [التفاصيل الكاملة للإمكانات](../licensing.en.md).
 
 
-## الجديد في 4.6.9
+## الجديد في 4.6.10
 
 - **ردود بوابات Mac مع عنوان يدوي.** صُحح إعداد الالتقاط في POSIX ليستخدم العنوان اليدوي للتطبيق وDHCP وضع استقبال الردود الموجهة إلى MAC الخاص بالتطبيق، كما كان في Windows. نجاح ping النظام يختبر اتصال الكمبيوتر نفسه ولا يثبت استقبال الردود على العنوان الافتراضي للتطبيق.
 
@@ -99,20 +101,20 @@
 
 ## تابع عمليات النقل بوضوح
 
-تضع مساحة العمل في 4.6.9 ملفاتك في صلب الاهتمام: عمودان منفصلان للاسم والحجم، وتقدم لكل ملف، والسرعة الإجمالية وسرعة كل بوابة، ورسم بياني للسرعة، وتفاصيل الملفات. يتضمن Free مظهري Graphite وSystem؛ وتتطلب الأنماط الإضافية مثل Rose إمكانية Pro المقابلة.
+تضع مساحة العمل في 4.6.10 ملفاتك في صلب الاهتمام: عمودان منفصلان للاسم والحجم، وتقدم لكل ملف، والسرعة الإجمالية وسرعة كل بوابة، ورسم بياني للسرعة، وتفاصيل الملفات. يتضمن Free مظهري Graphite وSystem؛ وتتطلب الأنماط الإضافية مثل Rose إمكانية Pro المقابلة.
 
-![MultiRoute Downloader 4.3.7 — قائمة انتظار التنزيل وسرعات البوابات](../images/v4.3.7/downloads-en-ae5b55131583.png)  *مثال من إصدار سابق*
+![MultiRoute Downloader 4.3.7 — قائمة انتظار التنزيل وسرعات البوابات](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
 
 *واجهة التطبيق الحالية على Windows، ملتقطة بملف تعريف تجريبي معزول. توضح الملفات والتقدم والسرعات المعروضة على سبيل المثال، والشاشات التي تتيحها إمكانات Pro، عناصر التحكم ولا تمثل قياسات للأداء.*
 
 <details>
 <summary><strong>إعدادات الشبكة وسجل السرعة</strong></summary>
 
-![عنوان التطبيق وDNS المحمي](../images/v4.3.7/network-dns-e29dfdba1007.png)  *مثال من إصدار سابق*
+![عنوان التطبيق وDNS المحمي](../images/v4.6.10/multiroute-4.6.10-network-en.png)
 
-![اختيار البوابات واختبارات السرعة](../images/v4.3.7/network-gateways-aee0a7897f48.png)  *مثال من إصدار سابق*
+![اختيار البوابات واختبارات السرعة](../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — سجل سرعة التنزيل](../images/v4.3.7/speed-graph-a85815544945.png)  *مثال من إصدار سابق*
+![MultiRoute Downloader 4.3.7 — سجل سرعة التنزيل](../images/v4.6.10/multiroute-4.6.10-speed-graph-en.png)
 
 </details>
 
@@ -123,23 +125,23 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.3.7/downloads-en-ae5b55131583.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/downloads-en-ae5b55131583.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.3.7/skin-nordic-a4e8d79666e0.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-nordic-a4e8d79666e0.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-downloads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.3.7/skin-streams-b2f3be388bda.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-streams-b2f3be388bda.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-neon-6b0c1d2da5f8.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.3.7/skin-community-9763964c8f12.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-community-9763964c8f12.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.3.7/skin-chat-221a28cc76f4.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-chat-221a28cc76f4.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.3.7/skin-studio-094e14ba38ea.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-studio-094e14ba38ea.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.3.7/skin-rose-02646e7f35bf.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-rose-02646e7f35bf.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.3.7/skin-system-c148099984c6.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/skin-system-c148099984c6.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -156,12 +158,12 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-256mib-walk.png"><img src="../images/v4.6.9/man-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-256mib-walk.png"><img src="../images/v4.6.9/woman-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.10/man-256mib-walk.png"><img src="../images/v4.6.10/man-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.10/woman-256mib-walk.png"><img src="../images/v4.6.10/woman-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-256mib-walk.png"><img src="../images/v4.6.9/male_brown-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-256mib-walk.png"><img src="../images/v4.6.9/female_brown-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.10/male_brown-256mib-walk.png"><img src="../images/v4.6.10/male_brown-256mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.10/female_brown-256mib-walk.png"><img src="../images/v4.6.10/female_brown-256mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 
@@ -169,12 +171,12 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-2048mib-walk.png"><img src="../images/v4.6.9/man-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-2048mib-walk.png"><img src="../images/v4.6.9/woman-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.10/man-2048mib-walk.png"><img src="../images/v4.6.10/man-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.10/woman-2048mib-walk.png"><img src="../images/v4.6.10/woman-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-2048mib-walk.png"><img src="../images/v4.6.9/male_brown-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-2048mib-walk.png"><img src="../images/v4.6.9/female_brown-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.10/male_brown-2048mib-walk.png"><img src="../images/v4.6.10/male_brown-2048mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.10/female_brown-2048mib-walk.png"><img src="../images/v4.6.10/female_brown-2048mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 
@@ -182,12 +184,12 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.9/man-12288mib-walk.png"><img src="../images/v4.6.9/man-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.9/woman-12288mib-walk.png"><img src="../images/v4.6.9/woman-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل</strong><br /><a href="../images/v4.6.10/man-12288mib-walk.png"><img src="../images/v4.6.10/man-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل</strong><br /><a href="../images/v4.6.10/woman-12288mib-walk.png"><img src="../images/v4.6.10/woman-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.9/male_brown-12288mib-walk.png"><img src="../images/v4.6.9/male_brown-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
-<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.9/female_brown-12288mib-walk.png"><img src="../images/v4.6.9/female_brown-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوب توصيل 2</strong><br /><a href="../images/v4.6.10/male_brown-12288mib-walk.png"><img src="../images/v4.6.10/male_brown-12288mib-walk.png" width="420" alt="مندوب توصيل" /></a></td>
+<td width="50%" valign="top"><strong>مندوبة توصيل 2</strong><br /><a href="../images/v4.6.10/female_brown-12288mib-walk.png"><img src="../images/v4.6.10/female_brown-12288mib-walk.png" width="420" alt="مندوبة توصيل" /></a></td>
 </tr>
 </table>
 
@@ -197,12 +199,12 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>إعدادات التطبيق</strong><br /><a href="../images/v4.3.7/settings-8abcb12a782d.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/settings-8abcb12a782d.png" width="420" alt="إعدادات التطبيق" /></a></td>
-<td width="50%" valign="top"><strong>المظهر والمندوب والأصوات</strong><br /><a href="../images/v4.3.7/appearance-cebf121d5de7.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/appearance-cebf121d5de7.png" width="420" alt="المظهر والمندوب والأصوات" /></a></td>
+<td width="50%" valign="top"><strong>إعدادات التطبيق</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-settings-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-settings-en.png" width="420" alt="إعدادات التطبيق" /></a></td>
+<td width="50%" valign="top"><strong>المظهر والمندوب والأصوات</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-appearance-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-appearance-en.png" width="420" alt="المظهر والمندوب والأصوات" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>عنوان التطبيق وDNS المحمي</strong><br /><a href="../images/v4.3.7/network-dns-e29dfdba1007.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/network-dns-e29dfdba1007.png" width="420" alt="عنوان التطبيق وDNS المحمي" /></a></td>
-<td width="50%" valign="top"><strong>اختيار البوابات واختبارات السرعة</strong><br /><a href="../images/v4.3.7/network-gateways-aee0a7897f48.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/network-gateways-aee0a7897f48.png" width="420" alt="اختيار البوابات واختبارات السرعة" /></a></td>
+<td width="50%" valign="top"><strong>عنوان التطبيق وDNS المحمي</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-en.png" width="420" alt="عنوان التطبيق وDNS المحمي" /></a></td>
+<td width="50%" valign="top"><strong>اختيار البوابات واختبارات السرعة</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png" width="420" alt="اختيار البوابات واختبارات السرعة" /></a></td>
 </tr>
 </table>
 
@@ -211,8 +213,8 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>إنشاء تنزيل</strong><br /><a href="../images/v4.3.7/new-download-dcb720c7769d.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/new-download-dcb720c7769d.png" width="420" alt="إنشاء تنزيل" /></a></td>
-<td width="50%" valign="top"><strong>مساحة عمل الرفع</strong><br /><a href="../images/v4.3.7/uploads-31c63833de2e.png"><small>مثال من إصدار سابق</small><br /><img src="../images/v4.3.7/uploads-31c63833de2e.png" width="420" alt="مساحة عمل الرفع" /></a></td>
+<td width="50%" valign="top"><strong>إنشاء تنزيل</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-new-download-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-new-download-en.png" width="420" alt="إنشاء تنزيل" /></a></td>
+<td width="50%" valign="top"><strong>مساحة عمل الرفع</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-uploads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-uploads-en.png" width="420" alt="مساحة عمل الرفع" /></a></td>
 </tr>
 </table>
 
@@ -294,7 +296,7 @@
 
 يستخدم التطبيق عنوان IPv4 محليًا خاصًا به وعنوان MAC خاصًا بالتطبيق، لتعمل البوابات المحددة باستقلال عن البوابة الافتراضية لنظام التشغيل، دون تغيير مسارات النظام أو عنوان MAC للمحوّل الفعلي. استخدم عنوانًا شاغرًا في الشبكة الفرعية الفعلية نفسها. أبقِ العنوان اليدوي خارج نطاق تخصيص DHCP التلقائي، أو احجزه/استثنه على خوادم DHCP في شبكة LAN؛ ثم استخدم **Check and apply** (التحقق والتطبيق) في إعدادات الشبكة. [اختيار العنوان والتحقق منه](../ar.md#application-virtual-ip).
 
-اجتازت حزم Windows الحالية للإصدار 4.6.9 فحص الترقية والتشغيل المحلي؛ واجتازت حزم macOS اختبارات المكوّنات الأصلية وبيئة تشغيل Java على أجهزة CI المستهدفة. ولا تزال عمليات النقل عبر بوابات LAN/DHCP على أجهزة Mac الفعلية تحتاج إلى تحقق على العتاد. [تقرير التحقق](../../NATIVE-INSTALLER-TESTS.json).
+اجتازت حزم Windows الحالية للإصدار 4.6.10 فحص الترقية والتشغيل المحلي؛ واجتازت حزم macOS اختبارات المكوّنات الأصلية وبيئة تشغيل Java على أجهزة CI المستهدفة. ولا تزال عمليات النقل عبر بوابات LAN/DHCP على أجهزة Mac الفعلية تحتاج إلى تحقق على العتاد. [تقرير التحقق](../../NATIVE-INSTALLER-TESTS.json).
 
 ## المالك والترخيص
 
@@ -302,6 +304,6 @@
 
 [الترخيص](../../LICENSE.txt) · [ملخص الترخيص](../../LICENSING.md) · [إشعارات الجهات الخارجية](../../THIRD-PARTY-NOTICES.txt)
 
-تضم منطقة التوزيع هذه حزم تثبيت الإصدار الحالي 4.6.9 ووثائق المستخدم.
+تضم منطقة التوزيع هذه حزم تثبيت الإصدار الحالي 4.6.10 ووثائق المستخدم.
 
 </div>
