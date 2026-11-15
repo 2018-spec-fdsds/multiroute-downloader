@@ -21,6 +21,8 @@
 </p>
 
 <!-- capabilities-4.6.11:start -->
+**HLS-Video:** [Chrome / Edge mit Bildschirmfotos](../hls/HLS-CHROME-EDGE.de.md) · [12 Sprachen](../hls/README.md)
+
 ## Weitere Möglichkeiten in 4.6.11
 
 Chrome/Edge erkennt unterstützte HLS-Videos; Qualität wählen, Fragmente fortsetzen und zusammenfügen. Verschlüsselte, DRM-geschützte und nicht unterstützte Live-Streams sind ausgeschlossen. OS bezeichnet den Systempfad gemäß OS-/VPN-Konfiguration; der VPN-Client erreicht seinen Server über die physische Verbindung. Systempfad und Gateways werden getrennt geprüft; Gateway-Transfers ändern die Systemrouten anderer Apps nicht. Standardordner und Video-, Audio- und Bildordner bieten anpassbare Erweiterungen. Vier erwachsene Kurierfiguren zeigen den Status, Größe 40–200 %; der Sack zeigt die insgesamt verbleibenden Daten. Die lokale API erstellt und überwacht Downloads abhängig von Lizenz und Konfiguration.

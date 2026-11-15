@@ -25,7 +25,7 @@
 
 **On macOS:** [Install, first start and permissions](docs/macos/en.md) · [Русский](docs/macos/ru.md) · [12 languages](docs/macos/README.md)
 
-**HLS video (4.5+):** [Illustrated Chrome / Edge walkthrough](docs/hls/HLS-CHROME-EDGE.en.md) · [Try the GitHub test stream](docs/examples/hls/README.md)
+**HLS video (4.5+):** [Illustrated Chrome / Edge walkthrough](docs/hls/HLS-CHROME-EDGE.en.md) · [Try the GitHub test stream](docs/examples/hls/README.md) · [12 languages](docs/hls/README.md)
 
 ## Why MultiRoute exists
 

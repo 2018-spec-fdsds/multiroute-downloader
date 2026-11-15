@@ -22,6 +22,8 @@
 </p>
 
 <!-- capabilities-4.6.11:start -->
+**Video HLS:** [Hướng dẫn Chrome / Edge kèm ảnh chụp màn hình](../hls/HLS-CHROME-EDGE.vi.md) · [12 ngôn ngữ](../hls/README.md)
+
 ## Các khả năng khác trong 4.6.11
 
 Chrome/Edge phát hiện video HLS được hỗ trợ: chọn chất lượng, tải tiếp và ghép các đoạn. Không áp dụng cho luồng mã hóa, có DRM hoặc phát trực tiếp không được hỗ trợ. OS chỉ đường hệ thống theo cấu hình OS/VPN; máy khách VPN tới máy chủ qua kết nối vật lý. Hệ thống và cổng được kiểm tra riêng; cổng không đổi tuyến của ứng dụng khác. Chọn thư mục mặc định, video, âm thanh, hình ảnh và phần mở rộng. Bốn nhân vật giao hàng trưởng thành thể hiện trạng thái, kích thước 40–200%; túi thể hiện tổng dữ liệu còn lại. API cục bộ tạo và theo dõi lượt tải tùy giấy phép và cấu hình.

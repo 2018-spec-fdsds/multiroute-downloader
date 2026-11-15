@@ -21,6 +21,8 @@
 </p>
 
 <!-- capabilities-4.6.11:start -->
+**Vidéo HLS:** [Guide Chrome / Edge avec captures d’écran](../hls/HLS-CHROME-EDGE.fr.md) · [12 langues](../hls/README.md)
+
 ## Autres possibilités en 4.6.11
 
 Chrome/Edge détecte les vidéos HLS compatibles : qualité disponible, reprise et assemblage des fragments. Les flux chiffrés, avec DRM et les directs non pris en charge sont exclus. OS désigne le chemin système selon OS/VPN ; le client VPN rejoint son serveur par la connexion physique. Système et passerelles sont testés séparément ; les passerelles ne changent pas les routes des autres applications. Configurez les dossiers par défaut, vidéo, audio et images avec des extensions modifiables. Quatre coursiers adultes indiquent l’état, taille 40–200 % ; le sac représente le volume total restant. L’API locale crée et suit les téléchargements selon la licence et la configuration.

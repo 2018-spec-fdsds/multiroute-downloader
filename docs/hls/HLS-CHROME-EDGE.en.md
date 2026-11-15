@@ -1,8 +1,14 @@
 # Download HLS video with MultiRoute, Chrome and Edge
 
-[Русский](HLS-CHROME-EDGE.ru.md)
+<!-- hls-guide-languages:start -->
+<p align="center" dir="ltr">
+<strong>English</strong> · <a href="HLS-CHROME-EDGE.ru.md">Русский</a> · <a href="HLS-CHROME-EDGE.de.md">Deutsch</a> · <a href="HLS-CHROME-EDGE.es.md">Español</a> · <a href="HLS-CHROME-EDGE.fr.md">Français</a> · <a href="HLS-CHROME-EDGE.zh.md">中文</a><br />
+<a href="HLS-CHROME-EDGE.ko.md">한국어</a> · <a href="HLS-CHROME-EDGE.ar.md">العربية</a> · <a href="HLS-CHROME-EDGE.it.md">Italiano</a> · <a href="HLS-CHROME-EDGE.ja.md">日本語</a> · <a href="HLS-CHROME-EDGE.hi.md">हिन्दी</a> · <a href="HLS-CHROME-EDGE.vi.md">Tiếng Việt</a>
+</p>
+<!-- hls-guide-languages:end -->
 
-> Requires **MultiRoute Downloader 4.5.2 or later** and an extension with HLS discovery. App illustrations use 4.5.2. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+
+> Requires **MultiRoute Downloader 4.5.2 or later** and an extension with HLS discovery. App and extension illustrations use 4.6.11. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 HLS video is a playlist plus many small media fragments. MultiRoute discovers the playlist through an opt-in browser extension, lets you select an available quality, downloads fragments through your selected gateways and assembles a supported video file. The web page address and the playlist address are usually different.
 
@@ -20,7 +26,7 @@ HLS video is a playlist plus many small media fragments. MultiRoute discovers th
 2. Check **Allow Chrome / Edge extension to send links**, then confirm with **OK**. The translated wording follows the application language.
 3. In this dialog, click **Open extension folder**. Keep the folder available for the next step.
 
-![Enable browser integration and open the extension folder](../images/hls/01-integration-settings-en.png)
+![Enable browser integration and open the extension folder](../images/hls-4.6.11/01-integration-settings-en.png)
 
 The bridge listens on the application's local API port, normally **8765**. It accepts this project's extension origin. It does not need a public API address or a router port-forwarding rule. There is no separate native-messaging-host installer in this workflow: the native desktop app stays running and the extension talks to its loopback bridge.
 
@@ -45,9 +51,9 @@ In the browser's folder picker press **⌘⇧G**, paste that path and select the
 
 Pin **MultiRoute Downloader** from the browser's Extensions menu if you want its button always visible. Install it separately in each browser/profile you use. Organization-managed browsers may restrict local extensions; follow the administrator's policy.
 
-![Load the extension in Chrome](../images/hls/02-chrome-extension-en.png)
+![Load the extension in Chrome](../images/hls-4.6.11/02-chrome-extension-en.png)
 
-![Open Edge extensions and find Developer mode](../images/hls/03-edge-extensions-en.png)
+![Open Edge extensions and find Developer mode](../images/hls-4.6.11/03-edge-extension-en.png)
 
 These are the standard local installation procedures documented by [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) and [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading).
 
@@ -62,17 +68,17 @@ Old Chrome error records can remain after a fix. If `Cannot create item with dup
 ## 3. Discover the video playlist
 
 1. Open the page containing the video in a normal HTTP/HTTPS tab.
-2. Click the MultiRoute extension button.
+2. Right-click the MultiRoute extension icon and choose **Extension tools**. In 4.6.11, a normal left-click opens the application's floating panel; HLS discovery is in the extension's tools window.
 3. Under **Video streams (HLS)**, click **Detect in this tab**.
 4. Accept the optional website-access permission if you want detection. The browser may mention access to many websites: a player's fragments can come from a different video/CDN hostname. Detection in the extension is still limited to tabs that you explicitly enabled.
 5. Close the popup and **play the video**. Detection observes future playlist responses; it cannot retroactively discover a playlist loaded before you enabled it.
-6. Open the popup again. Click **Refresh list** if needed. The list also refreshes while the popup is open.
+6. Reopen **Extension tools**. Click **Refresh list** if needed. The list also refreshes while the tools window is open.
 7. Find the relevant stream and click **Download this stream**.
 
 
 If the browser permission dialog closes the extension popup, reopen it after granting access. If detection is still off, click **Detect in this tab** again, then play the video.
 
-![Detect HLS in the current tab and send a stream](../images/hls/04-detect-hls-popup-en.png)
+![Detect HLS in the current tab and send a stream](../images/hls-4.6.11/04-detect-hls-popup-en.png)
 
 If the page already loaded the playlist, reload it, reopen the popup, check whether detection is still enabled and enable it again if necessary, then play the video. **Navigating to a different page disables detection for that tab.** Closing the tab also clears its discovery state. Do not assume permission approval enables all tabs automatically.
 
@@ -88,15 +94,15 @@ After **Download this stream**, switch to the desktop app. MultiRoute uses its c
 - Selecting a lower quality generally reduces the amount to download. MultiRoute does not upscale or transcode the video.
 - The saved extension follows the supported container: `.ts` for MPEG-TS or `.mp4` for fMP4. Do not rename a TS download to `.mp4` expecting conversion.
 
-![Select an available HLS quality](../images/hls/05-hls-quality-en.png)
+![Select an available HLS quality](../images/hls-4.6.11/05-hls-quality-en.png)
 
-If you already have a direct `.m3u8` link, you can paste it into MultiRoute instead. The extension's detected-stream button also identifies HLS responses whose URL does not end in `.m3u8`. Sending an ordinary HTML watch-page address with **Send to MultiRoute** does not make the desktop app extract its video player.
+If you already have a direct `.m3u8` link, you can paste it into MultiRoute instead. The extension's detected-stream button also identifies HLS responses whose URL does not end in `.m3u8`. For HLS, use the playlist URL. Sending an HTML page does not by itself identify its m3u8; supported video pages use a separate page-download workflow.
 
 ## 5. Follow, pause, resume and inspect
 
 The job appears in **Downloads**. Use **Pause** and **Resume** for the selected job. MultiRoute persists completed fragments and checks saved fragment records before reuse; final assembly follows playlist order rather than gateway completion order.
 
-![HLS progress, gateways and job actions](../images/hls/06-hls-download-en.png)
+![HLS progress, gateways and job actions](../images/hls-4.6.11/06-hls-download-en.png)
 
 For an individual explanation, right-click the job and open its download log. Inspect fragment download/reuse and error records there; the general application log is not the only place to investigate. Logs are also useful after completion.
 
@@ -135,7 +141,7 @@ https://raw.githubusercontent.com/2018-spec-fdsds/multiroute-downloader/main/doc
 
 This is a playlist URL, not a GitHub HTML page. Viewing master.m3u8 in GitHub does not play video or test browser discovery. The tiny example may finish before you can pause; test interruption/resume on longer content you are allowed to download.
 
-Extension screenshots use a local copy of this same stream, hence `127.0.0.1` in the list. Your video shows its own host. MultiRoute workspace screenshots use demonstration jobs, not private download history. The browser illustrations in this English guide use English. The Edge screenshot shows where to enable Developer mode before choosing Load unpacked. The test media is available under [CC0](../examples/hls/README.md#license--лицензия), without changing the application license.
+Extension screenshots use a local copy of this same stream, hence `127.0.0.1` in the list. Your video shows its own host. MultiRoute workspace screenshots use demonstration jobs, not private download history. The illustrations use the language of this guide. The Edge screenshot shows where to enable Developer mode; Load unpacked appears after enabling it. The test media is available under [CC0](../examples/hls/README.md#license--лицензия), without changing the application license.
 
 ## Verification scope
 
