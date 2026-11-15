@@ -47,7 +47,7 @@ Pin **MultiRoute Downloader** from the browser's Extensions menu if you want its
 
 ![Load the extension in Chrome](../images/hls/02-chrome-extension-en.png)
 
-![Load the extension in Edge](../images/hls/03-edge-extension-en.png)
+![Open Edge extensions and find Developer mode](../images/hls/03-edge-extensions-en.png)
 
 These are the standard local installation procedures documented by [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) and [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading).
 
@@ -135,7 +135,7 @@ https://raw.githubusercontent.com/2018-spec-fdsds/multiroute-downloader/main/doc
 
 This is a playlist URL, not a GitHub HTML page. Viewing master.m3u8 in GitHub does not play video or test browser discovery. The tiny example may finish before you can pause; test interruption/resume on longer content you are allowed to download.
 
-Extension screenshots use a local copy of this same stream, hence `127.0.0.1` in the list. Your video shows its own host. MultiRoute workspace screenshots use demonstration jobs, not private download history. Browser labels depend on browser language; the Edge illustration uses Russian. The test media is available under [CC0](../examples/hls/README.md#license--лицензия), without changing the application license.
+Extension screenshots use a local copy of this same stream, hence `127.0.0.1` in the list. Your video shows its own host. MultiRoute workspace screenshots use demonstration jobs, not private download history. The browser illustrations in this English guide use English. The Edge screenshot shows where to enable Developer mode before choosing Load unpacked. The test media is available under [CC0](../examples/hls/README.md#license--лицензия), without changing the application license.
 
 ## Verification scope
 
