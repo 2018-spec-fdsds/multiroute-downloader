@@ -1,0 +1,41 @@
+name: Upload verified 4.6.11 macOS installers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: 2018-spec-fdsds/multiroute-downloader
+    steps:
+      - name: Download and verify pinned compiled artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run view 43705384369 --json conclusion,headSha --jq 'select(.conclusion == "success" and .headSha == "346feefd3d5244dcb9c97f1cb041f7aee2816835")' > verified-run.json
+          test -s verified-run.json
+          gh run download 43705384369 --name multiroute-binary-macos-arm64 --dir arm64 &
+          arm_pid=$!
+          gh run download 43705384369 --name multiroute-binary-macos-x86_64 --dir intel &
+          intel_pid=$!
+          wait "$arm_pid"
+          wait "$intel_pid"
+          printf '%s\n' \
+            '889a73e1cebbf72e2c35e3db7942d302ef2c784b95b9e5f75a03be6f2c6b0dc1  arm64/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg' \
+            'db7e1f67680df0886be6ecb025edcb2f3c2217743e4f04f918b6d291e20509ed  intel/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg' | sha256sum --check
+      - name: Upload only verified installers into the existing draft
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/$GH_REPO/releases/445972782 --jq '.tag_name + ":" + (.draft|tostring)')" = 'v4.6.11:true'
+          gh release upload v4.6.11 \
+            arm64/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg \
+            intel/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg
+          gh api repos/$GH_REPO/releases/445972782 --jq '.assets[] | select(.name|endswith(".pkg")) | {name,size,state,digest}'
