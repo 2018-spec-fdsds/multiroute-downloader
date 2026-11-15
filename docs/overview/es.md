@@ -53,6 +53,27 @@ La mejora real depende de que los enlaces sean independientes, de los límites d
 
 Utiliza la reanudación compatible, la comparación con sumas de verificación publicadas, el DNS protegido, las colas por lotes, los horarios, los perfiles de sitios, las subidas y la API local. Empieza con una puerta de enlace y añade otras cuando estén disponibles.
 
+## De las necesidades diarias al control práctico
+
+| Quieres… | MultiRoute ofrece |
+| --- | --- |
+| **Aprovechar las conexiones disponibles** | Una cola compartida de segmentos HTTP, de 1 a 8 perfiles de puertas de enlace editables y selección en directo de una, varias o todas las puertas de enlace. |
+| **Conservar y comprobar archivos grandes** | Reanudación compatible, partes guardadas, ensamblado automático y comprobaciones con referencias del editor mediante MD5, SHA-256 o SHA-512. |
+| **Proteger las consultas DNS** | DoH/DoT cifrado, proveedores predefinidos o personalizados y DNSSEC local, sin cambiar los ajustes DNS ni las rutas del sistema operativo. |
+| **Organizar varias descargas** | Listas de enlaces, prioridades, franjas horarias diarias, inicios diferidos, límites de velocidad y de tareas, estadísticas por puerta de enlace, gráficas e historial con fechas. |
+| **Reutilizar sitios habituales** | Perfiles guardados, exploración de carpetas remotas, subidas por FTP/FTPS/SFTP y vistas previas de archivos comprimidos. |
+| **Adaptar la aplicación a tu forma de trabajar** | Envío de enlaces desde el navegador, API local, doce idiomas, temas claro/oscuro/del sistema, pegado con el teclado, diálogos del sistema para carpetas, indicador de velocidad en la bandeja del sistema e inicio opcional al iniciar sesión. |
+
+| Transferencia | Opciones compatibles |
+| --- | --- |
+| **Descarga** | HTTP/HTTPS, FTP, FTPS explícito, SFTP, WebDAV, Metalink, BitTorrent y enlaces magnet; enlaces de Hugging Face y selección de archivos de repositorios. |
+| **Subida** | FTP, FTPS explícito y SFTP, con perfiles de sitios y verificación SHA-256 mediante lectura posterior. |
+| **Vista previa de archivos comprimidos** | Listado del contenido de ZIP, TAR, 7Z y RAR antes de la descarga completa, cuando hay rangos de bytes y cabeceras compatibles disponibles. |
+
+### Saber qué se ha verificado
+
+Las comprobaciones de archivos comparan los datos ensamblados con una referencia fiable cuando está disponible; un hash local por sí solo no acredita la identidad del editor. DoH/DoT cifra el transporte DNS; DNSSEC valida por separado los datos DNS firmados. Estas comprobaciones no demuestran que el contenido descargado sea inocuo.
+
 ## Descarga e instalación
 
 **Versión actual: 4.6.11.** Los instaladores nativos incluyen un entorno Java 21 propio y el componente de red de la plataforma. Abre la aplicación desde su icono habitual.
@@ -220,27 +241,6 @@ Configura la carpeta de descarga, los perfiles de sitios y el idioma; después a
 </table>
 
 </details>
-
-## De las necesidades diarias al control práctico
-
-| Quieres… | MultiRoute ofrece |
-| --- | --- |
-| **Aprovechar las conexiones disponibles** | Una cola compartida de segmentos HTTP, de 1 a 8 perfiles de puertas de enlace editables y selección en directo de una, varias o todas las puertas de enlace. |
-| **Conservar y comprobar archivos grandes** | Reanudación compatible, partes guardadas, ensamblado automático y comprobaciones con referencias del editor mediante MD5, SHA-256 o SHA-512. |
-| **Proteger las consultas DNS** | DoH/DoT cifrado, proveedores predefinidos o personalizados y DNSSEC local, sin cambiar los ajustes DNS ni las rutas del sistema operativo. |
-| **Organizar varias descargas** | Listas de enlaces, prioridades, franjas horarias diarias, inicios diferidos, límites de velocidad y de tareas, estadísticas por puerta de enlace, gráficas e historial con fechas. |
-| **Reutilizar sitios habituales** | Perfiles guardados, exploración de carpetas remotas, subidas por FTP/FTPS/SFTP y vistas previas de archivos comprimidos. |
-| **Adaptar la aplicación a tu forma de trabajar** | Envío de enlaces desde el navegador, API local, doce idiomas, temas claro/oscuro/del sistema, pegado con el teclado, diálogos del sistema para carpetas, indicador de velocidad en la bandeja del sistema e inicio opcional al iniciar sesión. |
-
-| Transferencia | Opciones compatibles |
-| --- | --- |
-| **Descarga** | HTTP/HTTPS, FTP, FTPS explícito, SFTP, WebDAV, Metalink, BitTorrent y enlaces magnet; enlaces de Hugging Face y selección de archivos de repositorios. |
-| **Subida** | FTP, FTPS explícito y SFTP, con perfiles de sitios y verificación SHA-256 mediante lectura posterior. |
-| **Vista previa de archivos comprimidos** | Listado del contenido de ZIP, TAR, 7Z y RAR antes de la descarga completa, cuando hay rangos de bytes y cabeceras compatibles disponibles. |
-
-### Saber qué se ha verificado
-
-Las comprobaciones de archivos comparan los datos ensamblados con una referencia fiable cuando está disponible; un hash local por sí solo no acredita la identidad del editor. DoH/DoT cifra el transporte DNS; DNSSEC valida por separado los datos DNS firmados. Estas comprobaciones no demuestran que el contenido descargado sea inocuo.
 
 ## Una API para tus aplicaciones y tu flujo de desarrollo con IA
 

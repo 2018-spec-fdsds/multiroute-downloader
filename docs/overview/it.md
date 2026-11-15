@@ -53,6 +53,27 @@ I vantaggi effettivi dipendono dall’indipendenza delle connessioni, dai limiti
 
 Usa la ripresa dove supportata, il confronto con checksum pubblicati, il DNS protetto, le code in blocco, le pianificazioni, i profili dei siti, i caricamenti e l’API locale. Inizia con un gateway e aggiungine altri quando sono disponibili.
 
+## Dalle esigenze quotidiane al controllo pratico
+
+| Vuoi… | MultiRoute offre |
+| --- | --- |
+| **Usare le connessioni disponibili** | Una coda condivisa di segmenti HTTP, da 1 a 8 profili gateway modificabili e selezione in tempo reale di uno, più o tutti i gateway. |
+| **Conservare e verificare file di grandi dimensioni** | Ripresa dove supportata, parti salvate, assemblaggio automatico e controlli con riferimenti dell’editore tramite MD5, SHA-256 o SHA-512. |
+| **Proteggere le richieste DNS** | DoH/DoT cifrato, fornitori predefiniti o personalizzati e DNSSEC locale, senza modificare impostazioni DNS o route del sistema operativo. |
+| **Organizzare più download** | Elenchi di link, priorità, fasce orarie giornaliere, avvii ritardati, limiti di velocità e attività, statistiche per gateway, grafici e cronologia con date. |
+| **Riutilizzare i siti abituali** | Profili salvati, esplorazione di cartelle remote, caricamenti FTP/FTPS/SFTP e anteprime degli archivi. |
+| **Adattare l’applicazione al tuo modo di lavorare** | Invio di link dal browser, API locale, dodici lingue, temi chiaro/scuro/di sistema, incolla da tastiera, finestre di sistema per la scelta delle cartelle, indicatore di velocità nell’area di notifica e avvio facoltativo all’accesso. |
+
+| Trasferimento | Opzioni supportate |
+| --- | --- |
+| **Download** | HTTP/HTTPS, FTP, FTPS esplicito, SFTP, WebDAV, Metalink, BitTorrent e link magnet; link Hugging Face e selezione dei file nei repository. |
+| **Caricamento** | FTP, FTPS esplicito e SFTP, con profili dei siti e verifica SHA-256 tramite rilettura. |
+| **Anteprima degli archivi** | Elenco dei contenuti di ZIP, TAR, 7Z e RAR prima del download completo, quando sono disponibili intervalli di byte e intestazioni supportate. |
+
+### Sapere che cosa è stato verificato
+
+I controlli dei file confrontano i dati assemblati con un riferimento attendibile, quando disponibile; un hash locale da solo non prova l’identità dell’editore. DoH/DoT cifra il trasporto DNS; DNSSEC convalida separatamente i dati DNS firmati. Questi controlli non dimostrano che i contenuti scaricati siano innocui.
+
 ## Download e installazione
 
 **Versione attuale: 4.6.11.** Gli installer nativi includono un ambiente Java 21 dedicato e il componente di rete della piattaforma. Apri l’applicazione dalla sua normale icona.
@@ -218,27 +239,6 @@ Imposta la cartella di download, i profili dei siti e la lingua, poi regola l’
 </table>
 
 </details>
-
-## Dalle esigenze quotidiane al controllo pratico
-
-| Vuoi… | MultiRoute offre |
-| --- | --- |
-| **Usare le connessioni disponibili** | Una coda condivisa di segmenti HTTP, da 1 a 8 profili gateway modificabili e selezione in tempo reale di uno, più o tutti i gateway. |
-| **Conservare e verificare file di grandi dimensioni** | Ripresa dove supportata, parti salvate, assemblaggio automatico e controlli con riferimenti dell’editore tramite MD5, SHA-256 o SHA-512. |
-| **Proteggere le richieste DNS** | DoH/DoT cifrato, fornitori predefiniti o personalizzati e DNSSEC locale, senza modificare impostazioni DNS o route del sistema operativo. |
-| **Organizzare più download** | Elenchi di link, priorità, fasce orarie giornaliere, avvii ritardati, limiti di velocità e attività, statistiche per gateway, grafici e cronologia con date. |
-| **Riutilizzare i siti abituali** | Profili salvati, esplorazione di cartelle remote, caricamenti FTP/FTPS/SFTP e anteprime degli archivi. |
-| **Adattare l’applicazione al tuo modo di lavorare** | Invio di link dal browser, API locale, dodici lingue, temi chiaro/scuro/di sistema, incolla da tastiera, finestre di sistema per la scelta delle cartelle, indicatore di velocità nell’area di notifica e avvio facoltativo all’accesso. |
-
-| Trasferimento | Opzioni supportate |
-| --- | --- |
-| **Download** | HTTP/HTTPS, FTP, FTPS esplicito, SFTP, WebDAV, Metalink, BitTorrent e link magnet; link Hugging Face e selezione dei file nei repository. |
-| **Caricamento** | FTP, FTPS esplicito e SFTP, con profili dei siti e verifica SHA-256 tramite rilettura. |
-| **Anteprima degli archivi** | Elenco dei contenuti di ZIP, TAR, 7Z e RAR prima del download completo, quando sono disponibili intervalli di byte e intestazioni supportate. |
-
-### Sapere che cosa è stato verificato
-
-I controlli dei file confrontano i dati assemblati con un riferimento attendibile, quando disponibile; un hash locale da solo non prova l’identità dell’editore. DoH/DoT cifra il trasporto DNS; DNSSEC convalida separatamente i dati DNS firmati. Questi controlli non dimostrano che i contenuti scaricati siano innocui.
 
 ## Un’API per le tue applicazioni e lo sviluppo assistito dall’IA
 

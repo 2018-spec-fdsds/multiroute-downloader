@@ -62,6 +62,27 @@ Use supported resume, published-checksum comparison, protected DNS, batch queues
 - **Automation.** The local API lets other applications and scripts create and monitor downloads. The product also provides CLI, MCP and webhook adapters; availability depends on licensing and configuration. [API reference](API.ru.txt).
 - **Courier.** Four adult courier appearances use alternating walking and running cycles, with a selectable 40–200% size. The sack reflects the combined remaining data; an error animation and delivery animation show changes in transfer state.
 
+## From everyday need to practical control
+
+| You want to… | MultiRoute provides |
+| --- | --- |
+| **Use available connections** | A shared HTTP segment queue, 1–8 editable gateway profiles and live selection of one, several or all gateways. |
+| **Keep and check large files** | Supported resume, saved parts, automatic assembly and publisher-reference checks using MD5, SHA-256 or SHA-512. |
+| **Protect DNS requests** | Encrypted DoH/DoT, presets or custom providers and local DNSSEC, without changing OS DNS settings or routes. |
+| **Organize multiple downloads** | Bulk links, priorities, daily windows, delayed starts, speed/job limits, per-gateway statistics, graphs and dated history. |
+| **Reuse familiar sites** | Saved profiles, remote folder browsing, FTP/FTPS/SFTP uploads and archive previews. |
+| **Fit your workflow** | Browser link delivery, a local API, twelve languages, light/dark/system themes, keyboard paste, system folder dialogs, a speed tray and optional start at sign-in. |
+
+| Transfer | Supported options |
+| --- | --- |
+| **Download** | HTTP/HTTPS, FTP, explicit FTPS, SFTP, WebDAV, Metalink, BitTorrent and magnet; Hugging Face links and repository file selection. |
+| **Upload** | FTP, explicit FTPS and SFTP, with site profiles and SHA-256 readback verification. |
+| **Archive preview** | ZIP, TAR, 7Z and RAR listings before the full download, when byte ranges and supported headers are available. |
+
+### Know what was verified
+
+File checks compare assembled data with a trusted reference when available; a local hash alone does not establish publisher identity. DoH/DoT encrypt DNS transport; DNSSEC separately validates signed DNS data. These checks do not establish that downloaded content is harmless.
+
 ## Download and install
 
 **Current version: 4.6.11.** Native installers include private Java 21 and the platform network component. Open the application from its normal icon.
@@ -236,27 +257,6 @@ Set the download folder, site profiles and language, then adjust appearance, cou
 </table>
 
 </details>
-
-## From everyday need to practical control
-
-| You want to… | MultiRoute provides |
-| --- | --- |
-| **Use available connections** | A shared HTTP segment queue, 1–8 editable gateway profiles and live selection of one, several or all gateways. |
-| **Keep and check large files** | Supported resume, saved parts, automatic assembly and publisher-reference checks using MD5, SHA-256 or SHA-512. |
-| **Protect DNS requests** | Encrypted DoH/DoT, presets or custom providers and local DNSSEC, without changing OS DNS settings or routes. |
-| **Organize multiple downloads** | Bulk links, priorities, daily windows, delayed starts, speed/job limits, per-gateway statistics, graphs and dated history. |
-| **Reuse familiar sites** | Saved profiles, remote folder browsing, FTP/FTPS/SFTP uploads and archive previews. |
-| **Fit your workflow** | Browser link delivery, a local API, twelve languages, light/dark/system themes, keyboard paste, system folder dialogs, a speed tray and optional start at sign-in. |
-
-| Transfer | Supported options |
-| --- | --- |
-| **Download** | HTTP/HTTPS, FTP, explicit FTPS, SFTP, WebDAV, Metalink, BitTorrent and magnet; Hugging Face links and repository file selection. |
-| **Upload** | FTP, explicit FTPS and SFTP, with site profiles and SHA-256 readback verification. |
-| **Archive preview** | ZIP, TAR, 7Z and RAR listings before the full download, when byte ranges and supported headers are available. |
-
-### Know what was verified
-
-File checks compare assembled data with a trusted reference when available; a local hash alone does not establish publisher identity. DoH/DoT encrypt DNS transport; DNSSEC separately validates signed DNS data. These checks do not establish that downloaded content is harmless.
 
 ## An API for your applications and AI coding workflow
 

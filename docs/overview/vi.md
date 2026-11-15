@@ -54,6 +54,27 @@ Mức cải thiện thực tế phụ thuộc vào các đường truyền độ
 
 Dùng tính năng tiếp tục tải khi được hỗ trợ, so sánh mã kiểm tra đã công bố, DNS được bảo vệ, hàng đợi theo lô, lịch chạy, hồ sơ trang, tải lên và API cục bộ. Bắt đầu với một cổng mạng; thêm các cổng khác khi có.
 
+## Từ nhu cầu hằng ngày đến khả năng điều khiển thiết thực
+
+| Bạn muốn… | MultiRoute cung cấp |
+| --- | --- |
+| **Tận dụng các kết nối sẵn có** | Hàng đợi phân đoạn HTTP dùng chung, 1–8 hồ sơ cổng mạng có thể chỉnh sửa và khả năng chọn trực tiếp một, nhiều hoặc tất cả cổng mạng khi ứng dụng đang hoạt động. |
+| **Lưu và kiểm tra tệp lớn** | Tiếp tục tải khi được hỗ trợ, lưu các phần đã tải, tự động ghép tệp và kiểm tra theo giá trị tham chiếu của bên phát hành bằng MD5, SHA-256 hoặc SHA-512. |
+| **Bảo vệ truy vấn DNS** | DoH/DoT được mã hóa, nhà cung cấp đặt sẵn hoặc tùy chọn và DNSSEC cục bộ, không thay đổi thiết lập DNS hay định tuyến của hệ điều hành. |
+| **Sắp xếp nhiều lượt tải** | Thêm nhiều liên kết, mức ưu tiên, khung giờ hằng ngày, bắt đầu trễ, giới hạn tốc độ/số tác vụ, thống kê từng cổng mạng, biểu đồ và lịch sử theo ngày. |
+| **Dùng lại các trang quen thuộc** | Hồ sơ đã lưu, duyệt thư mục từ xa, tải lên qua FTP/FTPS/SFTP và xem trước nội dung tệp nén. |
+| **Phù hợp với quy trình làm việc** | Gửi liên kết từ trình duyệt, API cục bộ, mười hai ngôn ngữ, giao diện sáng/tối/theo hệ thống, dán bằng bàn phím, hộp thoại thư mục của hệ thống, chỉ báo tốc độ ở khay hệ thống và tùy chọn khởi động khi đăng nhập. |
+
+| Truyền tệp | Các tùy chọn được hỗ trợ |
+| --- | --- |
+| **Tải xuống** | HTTP/HTTPS, FTP, explicit FTPS, SFTP, WebDAV, Metalink, BitTorrent và magnet; liên kết Hugging Face và chọn tệp trong kho lưu trữ. |
+| **Tải lên** | FTP, explicit FTPS và SFTP, với hồ sơ trang và xác minh SHA-256 bằng cách đọc lại tệp từ xa. |
+| **Xem trước tệp nén** | Danh sách nội dung ZIP, TAR, 7Z và RAR trước khi tải toàn bộ, khi nguồn hỗ trợ phạm vi byte và các tiêu đề cần thiết. |
+
+### Hiểu rõ nội dung đã được xác minh
+
+Việc kiểm tra tệp so sánh dữ liệu đã ghép với một giá trị tham chiếu đáng tin cậy khi có; chỉ riêng mã băm cục bộ không chứng minh danh tính bên phát hành. DoH/DoT mã hóa đường truyền DNS; DNSSEC xác thực riêng dữ liệu DNS có chữ ký. Những kiểm tra này không chứng minh rằng nội dung tải xuống là vô hại.
+
 ## Tải xuống và cài đặt
 
 **Phiên bản hiện hành: 4.6.11.** Trình cài đặt gốc bao gồm Java 21 riêng cho ứng dụng và thành phần mạng của nền tảng. Mở ứng dụng bằng biểu tượng thông thường.
@@ -219,27 +240,6 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 </table>
 
 </details>
-
-## Từ nhu cầu hằng ngày đến khả năng điều khiển thiết thực
-
-| Bạn muốn… | MultiRoute cung cấp |
-| --- | --- |
-| **Tận dụng các kết nối sẵn có** | Hàng đợi phân đoạn HTTP dùng chung, 1–8 hồ sơ cổng mạng có thể chỉnh sửa và khả năng chọn trực tiếp một, nhiều hoặc tất cả cổng mạng khi ứng dụng đang hoạt động. |
-| **Lưu và kiểm tra tệp lớn** | Tiếp tục tải khi được hỗ trợ, lưu các phần đã tải, tự động ghép tệp và kiểm tra theo giá trị tham chiếu của bên phát hành bằng MD5, SHA-256 hoặc SHA-512. |
-| **Bảo vệ truy vấn DNS** | DoH/DoT được mã hóa, nhà cung cấp đặt sẵn hoặc tùy chọn và DNSSEC cục bộ, không thay đổi thiết lập DNS hay định tuyến của hệ điều hành. |
-| **Sắp xếp nhiều lượt tải** | Thêm nhiều liên kết, mức ưu tiên, khung giờ hằng ngày, bắt đầu trễ, giới hạn tốc độ/số tác vụ, thống kê từng cổng mạng, biểu đồ và lịch sử theo ngày. |
-| **Dùng lại các trang quen thuộc** | Hồ sơ đã lưu, duyệt thư mục từ xa, tải lên qua FTP/FTPS/SFTP và xem trước nội dung tệp nén. |
-| **Phù hợp với quy trình làm việc** | Gửi liên kết từ trình duyệt, API cục bộ, mười hai ngôn ngữ, giao diện sáng/tối/theo hệ thống, dán bằng bàn phím, hộp thoại thư mục của hệ thống, chỉ báo tốc độ ở khay hệ thống và tùy chọn khởi động khi đăng nhập. |
-
-| Truyền tệp | Các tùy chọn được hỗ trợ |
-| --- | --- |
-| **Tải xuống** | HTTP/HTTPS, FTP, explicit FTPS, SFTP, WebDAV, Metalink, BitTorrent và magnet; liên kết Hugging Face và chọn tệp trong kho lưu trữ. |
-| **Tải lên** | FTP, explicit FTPS và SFTP, với hồ sơ trang và xác minh SHA-256 bằng cách đọc lại tệp từ xa. |
-| **Xem trước tệp nén** | Danh sách nội dung ZIP, TAR, 7Z và RAR trước khi tải toàn bộ, khi nguồn hỗ trợ phạm vi byte và các tiêu đề cần thiết. |
-
-### Hiểu rõ nội dung đã được xác minh
-
-Việc kiểm tra tệp so sánh dữ liệu đã ghép với một giá trị tham chiếu đáng tin cậy khi có; chỉ riêng mã băm cục bộ không chứng minh danh tính bên phát hành. DoH/DoT mã hóa đường truyền DNS; DNSSEC xác thực riêng dữ liệu DNS có chữ ký. Những kiểm tra này không chứng minh rằng nội dung tải xuống là vô hại.
 
 ## API cho ứng dụng và quy trình lập trình với AI của bạn
 

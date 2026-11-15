@@ -53,6 +53,27 @@ Der tatsächliche Gewinn hängt von unabhängigen Internetanschlüssen, den Gren
 
 Nutzen Sie unterstütztes Fortsetzen, den Vergleich veröffentlichter Prüfsummen, geschütztes DNS, Stapelwarteschlangen, Zeitpläne, Website-Profile, Uploads und die lokale API. Beginnen Sie mit einem Gateway und ergänzen Sie weitere, sobald sie verfügbar sind.
 
+## Vom täglichen Bedarf zur praktischen Steuerung
+
+| Sie möchten … | Das bietet MultiRoute |
+| --- | --- |
+| **Verfügbare Verbindungen nutzen** | Eine gemeinsame HTTP-Segmentwarteschlange, 1–8 bearbeitbare Gateway-Profile und die laufende Auswahl eines, mehrerer oder aller Gateways. |
+| **Große Dateien behalten und prüfen** | Unterstütztes Fortsetzen, gespeicherte Teile, automatisches Zusammensetzen und Abgleich mit Referenzwerten des Herausgebers per MD5, SHA-256 oder SHA-512. |
+| **DNS-Anfragen schützen** | Verschlüsseltes DoH/DoT, voreingestellte oder eigene Anbieter und lokales DNSSEC, ohne DNS-Einstellungen oder Routen des Betriebssystems zu ändern. |
+| **Mehrere Downloads organisieren** | Linklisten, Prioritäten, tägliche Zeitfenster, verzögerter Start, Geschwindigkeits- und Auftragslimits, Statistiken je Gateway, Diagramme und Verlauf mit Datum. |
+| **Vertraute Websites wiederverwenden** | Gespeicherte Profile, Durchsuchen entfernter Ordner, FTP-/FTPS-/SFTP-Uploads und Archivvorschauen. |
+| **Die Anwendung in Ihren Arbeitsablauf einpassen** | Linkübergabe aus dem Browser, lokale API, zwölf Sprachen, helle/dunkle/System-Designs, Einfügen per Tastatur, Systemdialoge zur Ordnerauswahl, Geschwindigkeitsanzeige im Infobereich und optionaler Start bei der Anmeldung. |
+
+| Übertragung | Unterstützte Optionen |
+| --- | --- |
+| **Download** | HTTP/HTTPS, FTP, explizites FTPS, SFTP, WebDAV, Metalink, BitTorrent und Magnet-Links; Hugging-Face-Links und Dateiauswahl aus Repositories. |
+| **Upload** | FTP, explizites FTPS und SFTP, mit Website-Profilen und SHA-256-Prüfung durch erneutes Lesen. |
+| **Archivvorschau** | Inhaltslisten von ZIP, TAR, 7Z und RAR vor dem vollständigen Download, sofern Byte-Bereiche und unterstützte Header verfügbar sind. |
+
+### Wissen, was geprüft wurde
+
+Dateiprüfungen vergleichen die zusammengesetzten Daten mit einer vertrauenswürdigen Referenz, sofern verfügbar; ein lokaler Hash allein bestätigt nicht die Identität des Herausgebers. DoH/DoT verschlüsseln den DNS-Transport; DNSSEC validiert davon getrennt signierte DNS-Daten. Diese Prüfungen belegen nicht, dass heruntergeladene Inhalte ungefährlich sind.
+
 ## Herunterladen und installieren
 
 **Aktuelle Version: 4.6.11.** Native Installationspakete enthalten eine eigene Java-21-Laufzeit und die Netzwerkkomponente der jeweiligen Plattform. Öffnen Sie die Anwendung über ihr normales Symbol.
@@ -220,27 +241,6 @@ Legen Sie Downloadordner, Website-Profile und Sprache fest und passen Sie anschl
 </table>
 
 </details>
-
-## Vom täglichen Bedarf zur praktischen Steuerung
-
-| Sie möchten … | Das bietet MultiRoute |
-| --- | --- |
-| **Verfügbare Verbindungen nutzen** | Eine gemeinsame HTTP-Segmentwarteschlange, 1–8 bearbeitbare Gateway-Profile und die laufende Auswahl eines, mehrerer oder aller Gateways. |
-| **Große Dateien behalten und prüfen** | Unterstütztes Fortsetzen, gespeicherte Teile, automatisches Zusammensetzen und Abgleich mit Referenzwerten des Herausgebers per MD5, SHA-256 oder SHA-512. |
-| **DNS-Anfragen schützen** | Verschlüsseltes DoH/DoT, voreingestellte oder eigene Anbieter und lokales DNSSEC, ohne DNS-Einstellungen oder Routen des Betriebssystems zu ändern. |
-| **Mehrere Downloads organisieren** | Linklisten, Prioritäten, tägliche Zeitfenster, verzögerter Start, Geschwindigkeits- und Auftragslimits, Statistiken je Gateway, Diagramme und Verlauf mit Datum. |
-| **Vertraute Websites wiederverwenden** | Gespeicherte Profile, Durchsuchen entfernter Ordner, FTP-/FTPS-/SFTP-Uploads und Archivvorschauen. |
-| **Die Anwendung in Ihren Arbeitsablauf einpassen** | Linkübergabe aus dem Browser, lokale API, zwölf Sprachen, helle/dunkle/System-Designs, Einfügen per Tastatur, Systemdialoge zur Ordnerauswahl, Geschwindigkeitsanzeige im Infobereich und optionaler Start bei der Anmeldung. |
-
-| Übertragung | Unterstützte Optionen |
-| --- | --- |
-| **Download** | HTTP/HTTPS, FTP, explizites FTPS, SFTP, WebDAV, Metalink, BitTorrent und Magnet-Links; Hugging-Face-Links und Dateiauswahl aus Repositories. |
-| **Upload** | FTP, explizites FTPS und SFTP, mit Website-Profilen und SHA-256-Prüfung durch erneutes Lesen. |
-| **Archivvorschau** | Inhaltslisten von ZIP, TAR, 7Z und RAR vor dem vollständigen Download, sofern Byte-Bereiche und unterstützte Header verfügbar sind. |
-
-### Wissen, was geprüft wurde
-
-Dateiprüfungen vergleichen die zusammengesetzten Daten mit einer vertrauenswürdigen Referenz, sofern verfügbar; ein lokaler Hash allein bestätigt nicht die Identität des Herausgebers. DoH/DoT verschlüsseln den DNS-Transport; DNSSEC validiert davon getrennt signierte DNS-Daten. Diese Prüfungen belegen nicht, dass heruntergeladene Inhalte ungefährlich sind.
 
 ## Eine API für Ihre Anwendungen und die KI-gestützte Entwicklung
 

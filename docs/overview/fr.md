@@ -53,6 +53,27 @@ Les gains réels dépendent de l’indépendance des accès, des limites de la s
 
 Profitez de la reprise lorsqu’elle est prise en charge, de la comparaison avec des sommes de contrôle publiées, du DNS protégé, des files par lots, des horaires, des profils de sites, des envois et de l’API locale. Commencez avec une passerelle, puis ajoutez-en d’autres lorsqu’elles sont disponibles.
 
+## Des besoins quotidiens à un contrôle concret
+
+| Vous souhaitez… | MultiRoute propose |
+| --- | --- |
+| **Utiliser les connexions disponibles** | Une file partagée de segments HTTP, 1 à 8 profils de passerelles modifiables et la sélection en direct d’une, de plusieurs ou de toutes les passerelles. |
+| **Conserver et vérifier de gros fichiers** | Reprise lorsqu’elle est prise en charge, parties sauvegardées, assemblage automatique et comparaison avec les références de l’éditeur au moyen de MD5, SHA-256 ou SHA-512. |
+| **Protéger les requêtes DNS** | DoH/DoT chiffré, fournisseurs prédéfinis ou personnalisés et DNSSEC local, sans modifier les paramètres DNS ni les routes du système d’exploitation. |
+| **Organiser plusieurs téléchargements** | Listes de liens, priorités, plages horaires quotidiennes, démarrages différés, limites de débit et de tâches, statistiques par passerelle, graphiques et historique daté. |
+| **Réutiliser vos sites habituels** | Profils enregistrés, navigation dans les dossiers distants, envois FTP/FTPS/SFTP et aperçu des archives. |
+| **Adapter l’application à votre façon de travailler** | Transmission de liens depuis le navigateur, API locale, douze langues, thèmes clair/sombre/système, collage au clavier, boîtes de dialogue système pour les dossiers, indicateur de débit dans la zone de notification et lancement facultatif à l’ouverture de session. |
+
+| Transfert | Options prises en charge |
+| --- | --- |
+| **Téléchargement** | HTTP/HTTPS, FTP, FTPS explicite, SFTP, WebDAV, Metalink, BitTorrent et liens magnet ; liens Hugging Face et sélection de fichiers dans les dépôts. |
+| **Envoi** | FTP, FTPS explicite et SFTP, avec profils de sites et vérification SHA-256 par relecture. |
+| **Aperçu des archives** | Liste du contenu des archives ZIP, TAR, 7Z et RAR avant le téléchargement complet, lorsque les plages d’octets et les en-têtes pris en charge sont disponibles. |
+
+### Comprendre ce qui a été vérifié
+
+Les contrôles de fichiers comparent les données assemblées à une référence fiable lorsqu’elle est disponible ; un hachage local ne suffit pas à établir l’identité de l’éditeur. DoH/DoT chiffre le transport DNS ; DNSSEC valide séparément les données DNS signées. Ces contrôles ne prouvent pas que le contenu téléchargé est inoffensif.
+
 ## Téléchargement et installation
 
 **Version actuelle : 4.6.11.** Les installateurs natifs incluent leur propre environnement Java 21 et le composant réseau de la plateforme. Ouvrez l’application depuis son icône habituelle.
@@ -220,27 +241,6 @@ Définissez le dossier de téléchargement, les profils de sites et la langue, p
 </table>
 
 </details>
-
-## Des besoins quotidiens à un contrôle concret
-
-| Vous souhaitez… | MultiRoute propose |
-| --- | --- |
-| **Utiliser les connexions disponibles** | Une file partagée de segments HTTP, 1 à 8 profils de passerelles modifiables et la sélection en direct d’une, de plusieurs ou de toutes les passerelles. |
-| **Conserver et vérifier de gros fichiers** | Reprise lorsqu’elle est prise en charge, parties sauvegardées, assemblage automatique et comparaison avec les références de l’éditeur au moyen de MD5, SHA-256 ou SHA-512. |
-| **Protéger les requêtes DNS** | DoH/DoT chiffré, fournisseurs prédéfinis ou personnalisés et DNSSEC local, sans modifier les paramètres DNS ni les routes du système d’exploitation. |
-| **Organiser plusieurs téléchargements** | Listes de liens, priorités, plages horaires quotidiennes, démarrages différés, limites de débit et de tâches, statistiques par passerelle, graphiques et historique daté. |
-| **Réutiliser vos sites habituels** | Profils enregistrés, navigation dans les dossiers distants, envois FTP/FTPS/SFTP et aperçu des archives. |
-| **Adapter l’application à votre façon de travailler** | Transmission de liens depuis le navigateur, API locale, douze langues, thèmes clair/sombre/système, collage au clavier, boîtes de dialogue système pour les dossiers, indicateur de débit dans la zone de notification et lancement facultatif à l’ouverture de session. |
-
-| Transfert | Options prises en charge |
-| --- | --- |
-| **Téléchargement** | HTTP/HTTPS, FTP, FTPS explicite, SFTP, WebDAV, Metalink, BitTorrent et liens magnet ; liens Hugging Face et sélection de fichiers dans les dépôts. |
-| **Envoi** | FTP, FTPS explicite et SFTP, avec profils de sites et vérification SHA-256 par relecture. |
-| **Aperçu des archives** | Liste du contenu des archives ZIP, TAR, 7Z et RAR avant le téléchargement complet, lorsque les plages d’octets et les en-têtes pris en charge sont disponibles. |
-
-### Comprendre ce qui a été vérifié
-
-Les contrôles de fichiers comparent les données assemblées à une référence fiable lorsqu’elle est disponible ; un hachage local ne suffit pas à établir l’identité de l’éditeur. DoH/DoT chiffre le transport DNS ; DNSSEC valide séparément les données DNS signées. Ces contrôles ne prouvent pas que le contenu téléchargé est inoffensif.
 
 ## Une API pour vos applications et votre développement assisté par IA
 
