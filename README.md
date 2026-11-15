@@ -322,7 +322,7 @@ The Windows 4.6.11 installer payload and metadata have been verified. macOS pack
 
 If MultiRoute is useful to you, you can [support its development voluntarily](docs/support.md).
 
-<p align="center"><a href="docs/support.md"><img src="docs/images/support-qr.png" width="130" alt="Support MultiRoute — QR code" /></a><br /><strong>USDT · Ethereum (ERC-20)</strong></p>
+<p align="center"><a href="docs/support.md"><img src="docs/images/support-qr.png" width="130" alt="Support MultiRoute — QR code" /></a></p>
 
 ## Owner and licence
 
