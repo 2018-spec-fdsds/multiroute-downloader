@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "version": "4.6.11",
+  "jar_sha256": "2c25297eafc0ae3d3d2536310b5fdb4b6fd0793f5716c0c85f8a6d0a107a9b00",
+  "windows": {
+    "installer_sha256": "a1de94980fff494792332485423b3c5365cbc8c6d90a2e9e9b1a8a9cd76f730d",
+    "installer_bytes": 302459904,
+    "embedded_jar_sha256": "2c25297eafc0ae3d3d2536310b5fdb4b6fd0793f5716c0c85f8a6d0a107a9b00",
+    "cabinet_files_verified": 500,
+    "installer_language": "en-US (1033)",
+    "desktop_shortcut": true
+  },
+  "macos": [
+    {
+      "architecture": "arm64",
+      "package_name": "MultiRoute-Downloader-4.6.11-macOS-arm64.pkg",
+      "package_bytes": 300942046,
+      "package_sha256": "889a73e1cebbf72e2c35e3db7942d302ef2c784b95b9e5f75a03be6f2c6b0dc1",
+      "targeted_checks": 927,
+      "native_launcher_verified": true,
+      "physical_LAN_or_DHCP_hardware_tested": false
+    },
+    {
+      "architecture": "x86_64",
+      "package_name": "MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg",
+      "package_bytes": 294658772,
+      "package_sha256": "db7e1f67680df0886be6ecb025edcb2f3c2217743e4f04f918b6d291e20509ed",
+      "targeted_checks": 927,
+      "native_launcher_verified": true,
+      "physical_LAN_or_DHCP_hardware_tested": false
+    }
+  ],
+  "screenshots": {
+    "count": 30,
+    "interface_language": "English",
+    "courier_images": "static",
+    "synthetic_demo_data": true
+  },
+  "application_source_published": false,
+  "gateway_limits": {
+    "shared_download_upload_budget": true,
+    "live_changes": true,
+    "high_rate_idle_overflow_regression_passed": true,
+    "zero_unlimited": true,
+    "ui_max_mbit_per_second": 10000,
+    "native_swing_ui_checks": 56,
+    "upload_checks": 12,
+    "tcp_relay_and_webseed_budget_verified": true
+  },
+  "courier": {
+    "single_running_silhouette": true,
+    "walking_interpolation_preserved": true,
+    "continuous_phase_verified": true
+  }
+}

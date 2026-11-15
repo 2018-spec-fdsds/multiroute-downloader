@@ -6,31 +6,31 @@
 </p>
 <!-- product-languages:end -->
 
-**4.6.10:** Les coursiers se déplacent plus lentement sur une zone plus large et changent moins souvent de direction. Les pas et le déplacement sont ralentis ensemble.
+**4.6.11:** Réglez dans Réseau la vitesse maximale de chaque passerelle en Mbit/s. Le plafond est partagé entre téléchargements et envois simultanés ; 0 signifie illimité. Il s’applique immédiatement et reste enregistré après redémarrage. Les coursiers en course affichent une seule silhouette nette.
 
 <p align="center"><img src="../images/overview/fr/hero.svg" width="1320" alt="MultiRoute Downloader — Plus de connexions. Un seul téléchargement." /></p>
 
 <p align="center"><strong>Téléchargez de gros fichiers avec les connexions dont vous disposez déjà.</strong><br />Combinez des passerelles haut débit et mobiles indépendantes pour les gros téléchargements, conservez la progression des transferts pouvant être repris et vérifiez le fichier terminé.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.10"><strong>Télécharger 4.6.10</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>Télécharger 4.6.11</strong></a> ·
   <a href="../../downloads/README.md">Téléchargements actuels</a> ·
   <a href="../fr.md">Guide d’utilisation</a> ·
   <a href="../../API.ru.txt">Référence de l’API</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.10:start -->
-## Autres possibilités en 4.6.10
+<!-- capabilities-4.6.11:start -->
+## Autres possibilités en 4.6.11
 
 Chrome/Edge détecte les vidéos HLS compatibles : qualité disponible, reprise et assemblage des fragments. Les flux chiffrés, avec DRM et les directs non pris en charge sont exclus. OS désigne le chemin système selon OS/VPN ; le client VPN rejoint son serveur par la connexion physique. Système et passerelles sont testés séparément ; les passerelles ne changent pas les routes des autres applications. Configurez les dossiers par défaut, vidéo, audio et images avec des extensions modifiables. Quatre coursiers adultes indiquent l’état, taille 40–200 % ; le sac représente le volume total restant. L’API locale crée et suit les téléchargements selon la licence et la configuration.
 
-![MultiRoute 4.6.10](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
+![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
 
-[OS / VPN](../images/v4.6.10/multiroute-4.6.10-network-en.png) · [40–200%](../images/v4.6.10/multiroute-4.6.10-appearance-en.png)
+[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.10:end -->
+<!-- capabilities-4.6.11:end -->
 
 ## Pourquoi MultiRoute existe
 
@@ -53,24 +53,24 @@ Profitez de la reprise lorsqu’elle est prise en charge, de la comparaison avec
 
 ## Téléchargement et installation
 
-**Version actuelle : 4.6.10.** Les installateurs natifs incluent leur propre environnement Java 21 et le composant réseau de la plateforme. Ouvrez l’application depuis son icône habituelle.
+**Version actuelle : 4.6.11.** Les installateurs natifs incluent leur propre environnement Java 21 et le composant réseau de la plateforme. Ouvrez l’application depuis son icône habituelle.
 
 | Votre ordinateur | Installateur en un seul fichier |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
 
-[Intégration Chrome / Edge](../fr.md#chrome-and-edge-integration) · [Sommes de contrôle et rapport](../../downloads/v4.6.10/README.md) · [Détails des téléchargements](../../downloads/README.md)
+[Intégration Chrome / Edge](../fr.md#chrome-and-edge-integration) · [Sommes de contrôle et rapport](../../downloads/v4.6.11/README.md) · [Détails des téléchargements](../../downloads/README.md)
 
 L’installateur Windows est en anglais et crée un raccourci sur le bureau. Npcap est vérifié séparément et son installateur officiel est proposé si nécessaire ; macOS utilise libpcap du système. Consultez le guide dans votre langue pour l’installation et les confirmations de sécurité. Les installateurs natifs publics couvrent Windows et macOS ; aucun installateur Linux 4.x n’est fourni ici.
 
-**Free / Pro dans 4.6.10 :** Free permet d’utiliser jusqu’à **2 passerelles**, **3 téléchargements simultanés** et de créer **3 profils de sites**, avec les apparences Graphite/Système. Les fonctions Pro correspondantes autorisent jusqu’à **8 passerelles**, **32 téléchargements simultanés**, des profils supplémentaires, les priorités, l’historique et les rapports des passerelles, les opérations par lots, l’API externe et des styles supplémentaires. Free ne bride pas volontairement la vitesse de téléchargement. [Détail complet des fonctions](../licensing.en.md).
+**Free / Pro dans 4.6.11 :** Free permet d’utiliser jusqu’à **2 passerelles**, **3 téléchargements simultanés** et de créer **3 profils de sites**, avec les apparences Graphite/Système. Les fonctions Pro correspondantes autorisent jusqu’à **8 passerelles**, **32 téléchargements simultanés**, des profils supplémentaires, les priorités, l’historique et les rapports des passerelles, les opérations par lots, l’API externe et des styles supplémentaires. Free ne bride pas volontairement la vitesse de téléchargement. [Détail complet des fonctions](../licensing.en.md).
 
 
 
 
-## Nouveautés de 4.6.10
+## Nouveautés de 4.6.11
 
 - **Réponses des passerelles Mac avec une adresse manuelle.** La capture POSIX est corrigée pour que l’adresse manuelle de l’application et DHCP utilisent tous deux un mode recevant les réponses à sa propre MAC, comme sous Windows. Un ping système réussi vérifie la connexion de l’ordinateur, pas la réception à l’adresse virtuelle de l’application.
 
@@ -100,20 +100,20 @@ Cela corrige une différence de mode de capture, pas toutes les causes de passer
 
 ## Vos transferts en un coup d’œil
 
-L’espace de travail de 4.6.10 place vos fichiers au centre : colonnes distinctes pour le nom et la taille, progression individuelle, débit total et par passerelle, graphique de débit et détails des fichiers. Graphite et System sont inclus dans Free ; les styles supplémentaires, comme Rose, nécessitent la fonction Pro correspondante.
+L’espace de travail de 4.6.11 place vos fichiers au centre : colonnes distinctes pour le nom et la taille, progression individuelle, débit total et par passerelle, graphique de débit et détails des fichiers. Graphite et System sont inclus dans Free ; les styles supplémentaires, comme Rose, nécessitent la fonction Pro correspondante.
 
-![MultiRoute Downloader 4.3.7 — file de téléchargements et débits des passerelles](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
+![MultiRoute Downloader 4.3.7 — file de téléchargements et débits des passerelles](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
 
 *Interface Windows actuelle, capturée dans un profil de démonstration isolé. Les fichiers d’exemple, la progression, les débits et les vues activées avec Pro illustrent les commandes et ne constituent pas des mesures de performance.*
 
 <details>
 <summary><strong>Paramètres réseau et historique des débits</strong></summary>
 
-![Adresse de l’application et DNS protégé](../images/v4.6.10/multiroute-4.6.10-network-en.png)
+![Adresse de l’application et DNS protégé](../images/v4.6.11/multiroute-4.6.11-network-en.png)
 
-![Sélection des passerelles et tests de débit](../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png)
+![Sélection des passerelles et tests de débit](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — historique du débit de téléchargement](../images/v4.6.10/multiroute-4.6.10-speed-graph-en.png)
+![MultiRoute Downloader 4.3.7 — historique du débit de téléchargement](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
 
 </details>
 
@@ -124,23 +124,23 @@ Choisissez parmi neuf apparences : Graphite, Nordic, Streams Studio, Neon, Commu
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-downloads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -157,12 +157,12 @@ Utilisez le bouton Avatar pour afficher ou masquer le coursier. Faites-le glisse
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.10/man-256mib-walk.png"><img src="../images/v4.6.10/man-256mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.10/woman-256mib-walk.png"><img src="../images/v4.6.10/woman-256mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.10/male_brown-256mib-walk.png"><img src="../images/v4.6.10/male_brown-256mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.10/female_brown-256mib-walk.png"><img src="../images/v4.6.10/female_brown-256mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 
@@ -170,12 +170,12 @@ Utilisez le bouton Avatar pour afficher ou masquer le coursier. Faites-le glisse
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.10/man-2048mib-walk.png"><img src="../images/v4.6.10/man-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.10/woman-2048mib-walk.png"><img src="../images/v4.6.10/woman-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.10/male_brown-2048mib-walk.png"><img src="../images/v4.6.10/male_brown-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.10/female_brown-2048mib-walk.png"><img src="../images/v4.6.10/female_brown-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 
@@ -183,12 +183,12 @@ Utilisez le bouton Avatar pour afficher ou masquer le coursier. Faites-le glisse
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.10/man-12288mib-walk.png"><img src="../images/v4.6.10/man-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.10/woman-12288mib-walk.png"><img src="../images/v4.6.10/woman-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.10/male_brown-12288mib-walk.png"><img src="../images/v4.6.10/male_brown-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
-<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.10/female_brown-12288mib-walk.png"><img src="../images/v4.6.10/female_brown-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
+<td width="50%" valign="top"><strong>Coursier 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="Coursier" /></a></td>
+<td width="50%" valign="top"><strong>Coursière 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="Coursière" /></a></td>
 </tr>
 </table>
 
@@ -198,12 +198,12 @@ Définissez le dossier de téléchargement, les profils de sites et la langue, p
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Paramètres de l’application</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-settings-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-settings-en.png" width="420" alt="Paramètres de l’application" /></a></td>
-<td width="50%" valign="top"><strong>Apparence, coursier et sons</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-appearance-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-appearance-en.png" width="420" alt="Apparence, coursier et sons" /></a></td>
+<td width="50%" valign="top"><strong>Paramètres de l’application</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="Paramètres de l’application" /></a></td>
+<td width="50%" valign="top"><strong>Apparence, coursier et sons</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="Apparence, coursier et sons" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Adresse de l’application et DNS protégé</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-en.png" width="420" alt="Adresse de l’application et DNS protégé" /></a></td>
-<td width="50%" valign="top"><strong>Sélection des passerelles et tests de débit</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png" width="420" alt="Sélection des passerelles et tests de débit" /></a></td>
+<td width="50%" valign="top"><strong>Adresse de l’application et DNS protégé</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="Adresse de l’application et DNS protégé" /></a></td>
+<td width="50%" valign="top"><strong>Sélection des passerelles et tests de débit</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="Sélection des passerelles et tests de débit" /></a></td>
 </tr>
 </table>
 
@@ -212,8 +212,8 @@ Définissez le dossier de téléchargement, les profils de sites et la langue, p
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Créer un téléchargement</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-new-download-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-new-download-en.png" width="420" alt="Créer un téléchargement" /></a></td>
-<td width="50%" valign="top"><strong>Espace d’envoi</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-uploads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-uploads-en.png" width="420" alt="Espace d’envoi" /></a></td>
+<td width="50%" valign="top"><strong>Créer un téléchargement</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="Créer un téléchargement" /></a></td>
+<td width="50%" valign="top"><strong>Espace d’envoi</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="Espace d’envoi" /></a></td>
 </tr>
 </table>
 
@@ -291,7 +291,7 @@ Le pilotage général par l’API externe nécessite la fonction Pro corresponda
 
 L’application utilise sa propre adresse IPv4 locale et sa propre adresse MAC applicative afin que les passerelles choisies fonctionnent indépendamment de la passerelle par défaut du système d’exploitation, sans modifier les routes système ni l’adresse MAC de l’adaptateur physique. Utilisez une adresse libre dans le sous-réseau réellement utilisé. Gardez toute adresse manuelle en dehors de l’attribution automatique DHCP, ou réservez-la/excluez-la sur les serveurs DHCP du réseau local ; utilisez ensuite **Vérifier et appliquer** dans les paramètres réseau. [Choix de l’adresse et vérifications](../fr.md#application-virtual-ip).
 
-Les paquets Windows 4.6.10 actuels ont passé un contrôle local de mise à niveau et de démarrage ; les paquets macOS ont passé les contrôles des composants natifs et de l’environnement Java sur les exécuteurs CI ciblés. Les transferts par passerelles sur un réseau LAN/DHCP avec un Mac physique doivent encore être validés sur le matériel. [Rapport de vérification](../../NATIVE-INSTALLER-TESTS.json).
+Le contenu et les métadonnées des installateurs Windows 4.6.11 ont été vérifiés ; les paquets macOS ont passé les contrôles des composants natifs et de l’environnement Java sur les exécuteurs CI ciblés. Les transferts par passerelles sur un réseau LAN/DHCP avec un Mac physique doivent encore être validés sur le matériel. [Rapport de vérification](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Auteur et licence
 
@@ -299,4 +299,4 @@ Créé par **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. L’utilis
 
 [Licence](../../LICENSE.txt) · [Résumé de la licence](../../LICENSING.md) · [Mentions relatives aux tiers](../../THIRD-PARTY-NOTICES.txt)
 
-Cet espace de distribution contient les installateurs actuels de la version 4.6.10 et la documentation utilisateur.
+Cet espace de distribution contient les installateurs actuels de la version 4.6.11 et la documentation utilisateur.

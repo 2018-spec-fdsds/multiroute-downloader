@@ -6,31 +6,31 @@
 </p>
 <!-- product-languages:end -->
 
-**4.6.10:** 配達員がより広い範囲をゆっくり移動し、方向転換の頻度を減らしました。歩幅のアニメーションと水平移動を同時に遅くしています。
+**4.6.11:** ネットワーク設定でゲートウェイごとの最大速度を Mbit/s で指定できます。同時ダウンロードとアップロードで上限を共有し、0 は無制限です。設定は即時に適用され、再起動後も保持されます。走る配達員の身体の重なりを解消しました。
 
 <p align="center"><img src="../images/overview/ja/hero.svg" width="1320" alt="MultiRoute Downloader — 複数の接続で、ひとつのダウンロード。" /></p>
 
 <p align="center"><strong>いまあるインターネット接続で、大きなファイルをダウンロード。</strong><br />独立した固定回線とモバイル回線のゲートウェイを組み合わせて大きなファイルをダウンロードし、再開に対応した転送の進行状況を保持して、完成したファイルを検証します。</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.10"><strong>4.6.10 をダウンロード</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>4.6.11 をダウンロード</strong></a> ·
   <a href="../../downloads/README.md">現在のダウンロード</a> ·
   <a href="../ja.md">ユーザーガイド</a> ·
   <a href="../../API.ru.txt">API リファレンス</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.10:start -->
-## 4.6.10 で利用できる追加機能
+<!-- capabilities-4.6.11:start -->
+## 4.6.11 で利用できる追加機能
 
 Chrome/Edge は対応する HLS 動画を検出し、画質選択、断片の再開・結合に対応します。暗号化、DRM 保護、非対応のライブ配信は対象外です。OS は OS/VPN 設定に従うシステム経路で、VPN クライアントは物理接続を通じてサーバーへ接続します。システムとゲートウェイを個別に確認し、ゲートウェイ転送は他のアプリのシステム経路を変更しません。既定と動画・音声・画像のフォルダーや拡張子を設定できます。成人の配達員4種類が状態を表示し、サイズは40–200%、袋は残りのデータ総量を表します。ローカル API でダウンロードを作成・監視でき、アクセスはライセンスと設定に依存します。
 
-![MultiRoute 4.6.10](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
+![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
 
-[OS / VPN](../images/v4.6.10/multiroute-4.6.10-network-en.png) · [40–200%](../images/v4.6.10/multiroute-4.6.10-appearance-en.png)
+[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.10:end -->
+<!-- capabilities-4.6.11:end -->
 
 ## MultiRoute が必要な理由
 
@@ -53,22 +53,22 @@ MultiRoute は、これらの独立した回線をひとつのダウンロード
 
 ## ダウンロードとインストール
 
-**現在のバージョン：4.6.10。** ネイティブインストーラーには、アプリ専用の Java 21 とプラットフォームのネットワークコンポーネントが含まれています。通常のアプリアイコンから起動してください。
+**現在のバージョン：4.6.11。** ネイティブインストーラーには、アプリ専用の Java 21 とプラットフォームのネットワークコンポーネントが含まれています。通常のアプリアイコンから起動してください。
 
 | お使いのコンピューター | 単一ファイルのインストーラー |
 | --- | --- |
-| **Windows 11 · x64** | [Windows セットアップ EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.10/MultiRoute-Downloader-4.6.10-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows セットアップ EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
 
-[Chrome / Edge 連携](../ja.md#chrome-and-edge-integration) · [チェックサムとレポート](../../downloads/v4.6.10/README.md) · [ダウンロードの詳細](../../downloads/README.md)
+[Chrome / Edge 連携](../ja.md#chrome-and-edge-integration) · [チェックサムとレポート](../../downloads/v4.6.11/README.md) · [ダウンロードの詳細](../../downloads/README.md)
 
 Windows セットアップは英語で表示され、デスクトップにショートカットを作成します。Npcap は別途確認され、必要に応じて公式インストーラーが案内されます。macOS はシステムの libpcap を使用します。インストールとセキュリティ確認の手順は、各言語のガイドを参照してください。公開ネイティブインストーラーは Windows と macOS 向けで、ここには Linux 4.x インストーラーは含まれていません。
 
-**4.6.10 の Free / Pro：** Free は最大 **2 つのゲートウェイ**、**3 件の同時ダウンロード**に対応し、**3 つのサイトプロファイル**を作成できます。外観は Graphite（グラファイト）/System（システム設定）を利用できます。対応する Pro 機能では、最大 **8 つのゲートウェイ**、**32 件の同時ダウンロード**、追加のプロファイル、優先度、ゲートウェイの履歴/レポート、一括操作、外部 API、追加の外観スタイルを利用できます。Free がダウンロード速度を意図的に制限することはありません。[機能の詳細](../licensing.en.md)。
+**4.6.11 の Free / Pro：** Free は最大 **2 つのゲートウェイ**、**3 件の同時ダウンロード**に対応し、**3 つのサイトプロファイル**を作成できます。外観は Graphite（グラファイト）/System（システム設定）を利用できます。対応する Pro 機能では、最大 **8 つのゲートウェイ**、**32 件の同時ダウンロード**、追加のプロファイル、優先度、ゲートウェイの履歴/レポート、一括操作、外部 API、追加の外観スタイルを利用できます。Free がダウンロード速度を意図的に制限することはありません。[機能の詳細](../licensing.en.md)。
 
 
-## 4.6.10 の新機能
+## 4.6.11 の新機能
 
 - **Mac の手動アドレスでのゲートウェイ応答.** POSIX のキャプチャ設定を修正し、手動のアプリアドレスと DHCP の両方でアプリ独自の MAC 宛ての応答を受信できるモードを使います。既存の Windows 動作と同じです。システム ping の成功はコンピューター自身の接続確認であり、アプリの仮想アドレスへの応答受信を証明しません。
 
@@ -98,20 +98,20 @@ Windows セットアップは英語で表示され、デスクトップにショ
 
 ## 転送の状況をわかりやすく
 
-4.6.10 のワークスペースはファイルが中心です。名前とサイズの独立した列、ファイルごとの進行状況、全体とゲートウェイ別の速度、速度グラフ、ファイルの詳細を表示します。Free には Graphite と System の外観が含まれます。Rose などの追加スタイルには、対応する Pro 機能が必要です。
+4.6.11 のワークスペースはファイルが中心です。名前とサイズの独立した列、ファイルごとの進行状況、全体とゲートウェイ別の速度、速度グラフ、ファイルの詳細を表示します。Free には Graphite と System の外観が含まれます。Rose などの追加スタイルには、対応する Pro 機能が必要です。
 
-![MultiRoute Downloader 4.3.7 — ダウンロードキューとゲートウェイの速度](../images/v4.6.10/multiroute-4.6.10-downloads-en.png)
+![MultiRoute Downloader 4.3.7 — ダウンロードキューとゲートウェイの速度](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
 
 *独立したデモプロファイルで撮影した、現在の Windows 画面です。ファイル、進行状況、速度、Pro 機能を有効にした表示は操作説明用の例であり、性能の測定結果ではありません。*
 
 <details>
 <summary><strong>ネットワーク設定と速度の履歴</strong></summary>
 
-![アプリのアドレスと保護された DNS](../images/v4.6.10/multiroute-4.6.10-network-en.png)
+![アプリのアドレスと保護された DNS](../images/v4.6.11/multiroute-4.6.11-network-en.png)
 
-![ゲートウェイの選択と速度確認](../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png)
+![ゲートウェイの選択と速度確認](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — ダウンロード速度の履歴](../images/v4.6.10/multiroute-4.6.10-speed-graph-en.png)
+![MultiRoute Downloader 4.3.7 — ダウンロード速度の履歴](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
 
 </details>
 
@@ -122,23 +122,23 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-downloads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -155,12 +155,12 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.10/man-256mib-walk.png"><img src="../images/v4.6.10/man-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.10/woman-256mib-walk.png"><img src="../images/v4.6.10/woman-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.10/male_brown-256mib-walk.png"><img src="../images/v4.6.10/male_brown-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.10/female_brown-256mib-walk.png"><img src="../images/v4.6.10/female_brown-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 
@@ -168,12 +168,12 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.10/man-2048mib-walk.png"><img src="../images/v4.6.10/man-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.10/woman-2048mib-walk.png"><img src="../images/v4.6.10/woman-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.10/male_brown-2048mib-walk.png"><img src="../images/v4.6.10/male_brown-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.10/female_brown-2048mib-walk.png"><img src="../images/v4.6.10/female_brown-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 
@@ -181,12 +181,12 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.10/man-12288mib-walk.png"><img src="../images/v4.6.10/man-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.10/woman-12288mib-walk.png"><img src="../images/v4.6.10/woman-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.10/male_brown-12288mib-walk.png"><img src="../images/v4.6.10/male_brown-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
-<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.10/female_brown-12288mib-walk.png"><img src="../images/v4.6.10/female_brown-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>男性の配達員 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="男性の配達員" /></a></td>
+<td width="50%" valign="top"><strong>女性の配達員 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="女性の配達員" /></a></td>
 </tr>
 </table>
 
@@ -196,12 +196,12 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>アプリの設定</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-settings-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-settings-en.png" width="420" alt="アプリの設定" /></a></td>
-<td width="50%" valign="top"><strong>外観、配達員、サウンド</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-appearance-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-appearance-en.png" width="420" alt="外観、配達員、サウンド" /></a></td>
+<td width="50%" valign="top"><strong>アプリの設定</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="アプリの設定" /></a></td>
+<td width="50%" valign="top"><strong>外観、配達員、サウンド</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="外観、配達員、サウンド" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>アプリのアドレスと保護された DNS</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-en.png" width="420" alt="アプリのアドレスと保護された DNS" /></a></td>
-<td width="50%" valign="top"><strong>ゲートウェイの選択と速度確認</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-network-gateways-en.png" width="420" alt="ゲートウェイの選択と速度確認" /></a></td>
+<td width="50%" valign="top"><strong>アプリのアドレスと保護された DNS</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="アプリのアドレスと保護された DNS" /></a></td>
+<td width="50%" valign="top"><strong>ゲートウェイの選択と速度確認</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="ゲートウェイの選択と速度確認" /></a></td>
 </tr>
 </table>
 
@@ -210,8 +210,8 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>ダウンロードを作成</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-new-download-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-new-download-en.png" width="420" alt="ダウンロードを作成" /></a></td>
-<td width="50%" valign="top"><strong>アップロードのワークスペース</strong><br /><a href="../images/v4.6.10/multiroute-4.6.10-uploads-en.png"><img src="../images/v4.6.10/multiroute-4.6.10-uploads-en.png" width="420" alt="アップロードのワークスペース" /></a></td>
+<td width="50%" valign="top"><strong>ダウンロードを作成</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="ダウンロードを作成" /></a></td>
+<td width="50%" valign="top"><strong>アップロードのワークスペース</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="アップロードのワークスペース" /></a></td>
 </tr>
 </table>
 
@@ -289,7 +289,7 @@ API はローカルの **`http://127.0.0.1:8765/api/v1`** で動作します。�
 
 アプリは独自のローカル IPv4 アドレスとアプリ用 MAC を使用します。これにより、OS のルートや物理アダプターの MAC を変更せず、選択したゲートウェイを OS のデフォルトゲートウェイから独立して動作させます。実際に接続している同じサブネット内の空きアドレスを使用してください。手動アドレスは DHCP の自動割り当て範囲から外すか、LAN の DHCP サーバーで予約/除外し、ネットワーク設定で **Check and apply（確認して適用）** を実行します。[アドレスの選択と確認](../ja.md#application-virtual-ip)。
 
-現在の 4.6.10 Windows パッケージは、ローカルでのアップグレード/起動確認を通過しています。macOS パッケージは、対象の CI ランナーでネイティブコンポーネントと Java ランタイムの検査を通過しています。実機 Mac の LAN/DHCP ゲートウェイ経由の転送には、引き続きハードウェア検証が必要です。[検証レポート](../../NATIVE-INSTALLER-TESTS.json)。
+Windows 4.6.11 インストーラーの内容とメタデータを検証済みです。macOS パッケージは、対象の CI ランナーでネイティブコンポーネントと Java ランタイムの検査を通過しています。実機 Mac の LAN/DHCP ゲートウェイ経由の転送には、引き続きハードウェア検証が必要です。[検証レポート](../../NATIVE-INSTALLER-TESTS.json)。
 
 ## 所有者とライセンス
 
@@ -297,4 +297,4 @@ API はローカルの **`http://127.0.0.1:8765/api/v1`** で動作します。�
 
 [ライセンス](../../LICENSE.txt) · [ライセンスの概要](../../LICENSING.md) · [サードパーティーの告知](../../THIRD-PARTY-NOTICES.txt)
 
-この配布エリアには、現在の 4.6.10 インストーラーとユーザードキュメントが含まれています。
+この配布エリアには、現在の 4.6.11 インストーラーとユーザードキュメントが含まれています。
