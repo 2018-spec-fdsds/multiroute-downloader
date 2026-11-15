@@ -242,6 +242,12 @@ I controlli dei file confrontano i dati assemblati con un riferimento attendibil
 
 Script, applicazioni di terze parti e agenti di programmazione basati sull’IA possono chiedere a MultiRoute di recuperare pesi dei modelli, dataset, librerie, risorse e artefatti di progetto necessari allo sviluppo. Il chiamante riceve lo stato di avanzamento, il completamento e i risultati dei checksum, e può controllare la coda mentre MultiRoute gestisce gateway, nuovi tentativi e ripresa dove supportata.
 
+### Configura una volta e usa come impostazione predefinita
+
+Definisci la regola una sola volta nelle istruzioni del progetto: Claude Code — `CLAUDE.md`; Codex e agenti compatibili — `AGENTS.md`; per gli altri agenti, istruzioni permanenti. In seguito l’agente affida i download a MultiRoute per impostazione predefinita, conserva l’`id`, segue il completamento e verifica il checksum. Lo strumento dell’agente deve poter accedere all’API locale. Un modello nel cloud può operare tramite un esecutore locale; una chat remota non ottiene automaticamente accesso a `localhost`.
+
+[Guida per agenti IA (inglese)](../ai-agents.en.md) · [Modello di istruzioni del progetto](../examples/ai-agent-instructions.md)
+
 L’API viene eseguita localmente su **`http://127.0.0.1:8765/api/v1`**. Per esempio, invia questo JSON a **`POST /api/v1/jobs`** con `Content-Type: application/json`:
 
 ```json

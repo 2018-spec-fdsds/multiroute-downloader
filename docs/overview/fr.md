@@ -244,6 +244,12 @@ Les contrôles de fichiers comparent les données assemblées à une référence
 
 Les scripts, applications tierces et agents de programmation par IA peuvent demander à MultiRoute de récupérer les poids de modèles, jeux de données, bibliothèques, ressources et artefacts de projet nécessaires au développement. L’appelant reçoit la progression, l’état de fin et les résultats des sommes de contrôle, et peut piloter la file pendant que MultiRoute gère les passerelles, les nouvelles tentatives et la reprise lorsqu’elle est prise en charge.
 
+### Configurer une fois pour une utilisation par défaut
+
+Définissez la règle une fois dans les instructions du projet : Claude Code — `CLAUDE.md` ; Codex et agents compatibles — `AGENTS.md` ; autres agents — instructions persistantes. L’agent confie ensuite les téléchargements à MultiRoute par défaut, conserve l’`id`, suit leur achèvement et vérifie la somme de contrôle. L’outil de l’agent doit pouvoir accéder à l’API locale. Un modèle dans le cloud peut passer par un exécuteur local ; un chat distant n’obtient pas de lui-même accès à `localhost`.
+
+[Guide pour les agents IA (anglais)](../ai-agents.en.md) · [Modèle d’instructions du projet](../examples/ai-agent-instructions.md)
+
 L’API fonctionne localement à l’adresse **`http://127.0.0.1:8765/api/v1`**. Par exemple, envoyez ce JSON à **`POST /api/v1/jobs`** avec `Content-Type: application/json` :
 
 ```json

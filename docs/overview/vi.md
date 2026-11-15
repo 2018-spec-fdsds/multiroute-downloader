@@ -243,6 +243,12 @@ Việc kiểm tra tệp so sánh dữ liệu đã ghép với một giá trị t
 
 Tập lệnh, ứng dụng bên thứ ba và tác nhân lập trình AI có thể yêu cầu MultiRoute tải trọng số mô hình, tập dữ liệu, thư viện, tài nguyên và sản phẩm đầu ra của dự án cần cho việc phát triển. Bên gọi nhận được tiến độ, trạng thái hoàn tất và kết quả mã kiểm tra, đồng thời có thể điều khiển hàng đợi trong khi MultiRoute xử lý cổng mạng, thử lại và tiếp tục tải khi được hỗ trợ.
 
+### Thiết lập một lần, dùng theo mặc định
+
+Đặt quy tắc một lần trong hướng dẫn dự án: Claude Code — `CLAUDE.md`; Codex và tác nhân tương thích — `AGENTS.md`; các tác nhân khác — hướng dẫn thường trực. Sau đó, tác nhân mặc định giao việc tải xuống cho MultiRoute, lưu `id`, theo dõi đến khi hoàn tất và xác minh mã kiểm tra. Công cụ của tác nhân phải truy cập được API cục bộ. Mô hình đám mây có thể làm việc qua trình thực thi cục bộ, nhưng cuộc trò chuyện từ xa không tự có quyền truy cập `localhost`.
+
+[Hướng dẫn cho tác nhân AI (tiếng Anh)](../ai-agents.en.md) · [Mẫu hướng dẫn dự án](../examples/ai-agent-instructions.md)
+
 API chạy cục bộ tại **`http://127.0.0.1:8765/api/v1`**. Ví dụ, gửi JSON sau đến **`POST /api/v1/jobs`** với `Content-Type: application/json`:
 
 ```json

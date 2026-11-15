@@ -244,6 +244,12 @@ Dateiprüfungen vergleichen die zusammengesetzten Daten mit einer vertrauenswür
 
 Skripte, Drittanbieteranwendungen und KI-Coding-Agenten können MultiRoute auffordern, Modellgewichte, Datensätze, Bibliotheken, Medien und Projektartefakte für die Entwicklung abzurufen. Der Aufrufer erhält Angaben zu Fortschritt, Abschluss und Prüfsummen und kann die Warteschlange steuern, während MultiRoute Gateways, Wiederholungsversuche und unterstütztes Fortsetzen übernimmt.
 
+### Einmal einrichten, standardmäßig verwenden
+
+Legen Sie die Regel einmal in den Projektanweisungen fest: Claude Code — `CLAUDE.md`; Codex und kompatible Agenten — `AGENTS.md`; andere Agenten — dauerhafte Anweisungen. Danach übergibt der Agent Downloads standardmäßig an MultiRoute, bewahrt die `id` auf, überwacht den Abschluss und prüft die Prüfsumme. Das Werkzeug des Agenten muss die lokale API erreichen können. Ein Cloud-Modell kann über einen lokalen Executor arbeiten; ein entfernter Chat erhält dadurch keinen eigenen Zugriff auf `localhost`.
+
+[Anleitung für KI-Agenten (Englisch)](../ai-agents.en.md) · [Vorlage für Projektanweisungen](../examples/ai-agent-instructions.md)
+
 Die API läuft lokal unter **`http://127.0.0.1:8765/api/v1`**. Senden Sie beispielsweise dieses JSON mit `Content-Type: application/json` an **`POST /api/v1/jobs`**:
 
 ```json

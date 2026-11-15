@@ -242,6 +242,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 스크립트, 타사 애플리케이션과 AI 코딩 에이전트는 MultiRoute에 개발에 필요한 모델 가중치, 데이터 세트, 라이브러리, 리소스와 프로젝트 산출물을 가져오도록 요청할 수 있습니다. 호출자는 진행 상황, 완료 여부와 체크섬 결과를 받고 대기열을 제어할 수 있으며, MultiRoute가 게이트웨이, 재시도와 지원되는 이어받기를 처리합니다.
 
+### 한 번 설정하고 기본으로 사용하기
+
+프로젝트 지침에 규칙을 한 번 설정하세요. Claude Code는 `CLAUDE.md`, Codex와 호환 에이전트는 `AGENTS.md`, 그 외 에이전트는 지속적으로 적용되는 지침을 사용합니다. 이후 에이전트는 기본적으로 다운로드를 MultiRoute에 맡기고, `id`를 보관하며, 완료될 때까지 추적하고 체크섬을 검증합니다. 에이전트의 도구가 로컬 API에 접근할 수 있어야 합니다. 클라우드 모델은 로컬 실행기를 통해 작업할 수 있지만, 원격 채팅 자체가 `localhost` 접근 권한을 얻는 것은 아닙니다.
+
+[AI 에이전트 가이드(영어)](../ai-agents.en.md) · [프로젝트 지침 템플릿](../examples/ai-agent-instructions.md)
+
 API는 로컬의 **`http://127.0.0.1:8765/api/v1`** 에서 실행됩니다. 예를 들어 `Content-Type: application/json`으로 다음 JSON을 **`POST /api/v1/jobs`** 에 전송합니다.
 
 ```json

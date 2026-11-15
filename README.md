@@ -262,6 +262,12 @@ File checks compare assembled data with a trusted reference when available; a lo
 
 Scripts, third-party applications and AI coding agents can ask MultiRoute to fetch model weights, datasets, libraries, assets and project artifacts needed for development. The caller receives progress, completion and checksum results, and can control the queue while MultiRoute handles gateways, retries and supported resume.
 
+### Set it once in project instructions
+
+Add MultiRoute as the default downloader in **Claude Code's `CLAUDE.md`**, **Codex's `AGENTS.md`**, or another agent's persistent project instructions. The agent can then create downloads for required project assets, retain job IDs, follow completion and check available publisher checksums without repeating the API setup in every prompt. A cloud model works when its tool runs locally; a remote chat needs a connected bridge to your computer.
+
+**[One-time setup for AI agents](docs/ai-agents.en.md)** · **[Copy the project instruction block](docs/examples/ai-agent-instructions.md)** · [Русский](docs/ai-agents.ru.md)
+
 The API runs locally at **`http://127.0.0.1:8765/api/v1`**. For example, send this JSON to **`POST /api/v1/jobs`** with `Content-Type: application/json`:
 
 ```json
