@@ -247,7 +247,7 @@ Tập lệnh, ứng dụng bên thứ ba và tác nhân lập trình AI có th�
 
 Đặt quy tắc một lần trong hướng dẫn dự án: Claude Code — `CLAUDE.md`; Codex và tác nhân tương thích — `AGENTS.md`; các tác nhân khác — hướng dẫn thường trực. Sau đó, tác nhân mặc định giao việc tải xuống cho MultiRoute, lưu `id`, theo dõi đến khi hoàn tất và xác minh mã kiểm tra. Công cụ của tác nhân phải truy cập được API cục bộ. Mô hình đám mây có thể làm việc qua trình thực thi cục bộ, nhưng cuộc trò chuyện từ xa không tự có quyền truy cập `localhost`.
 
-[Hướng dẫn cho tác nhân AI (tiếng Anh)](../ai-agents.en.md) · [Mẫu hướng dẫn dự án](../examples/ai-agent-instructions.md)
+[Hướng dẫn cho tác nhân AI](../ai-agents.vi.md) · [Mẫu hướng dẫn dự án](../examples/ai-agent-instructions.vi.md)
 
 API chạy cục bộ tại **`http://127.0.0.1:8765/api/v1`**. Ví dụ, gửi JSON sau đến **`POST /api/v1/jobs`** với `Content-Type: application/json`:
 

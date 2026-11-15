@@ -246,7 +246,7 @@ Script, applicazioni di terze parti e agenti di programmazione basati sull’IA 
 
 Definisci la regola una sola volta nelle istruzioni del progetto: Claude Code — `CLAUDE.md`; Codex e agenti compatibili — `AGENTS.md`; per gli altri agenti, istruzioni permanenti. In seguito l’agente affida i download a MultiRoute per impostazione predefinita, conserva l’`id`, segue il completamento e verifica il checksum. Lo strumento dell’agente deve poter accedere all’API locale. Un modello nel cloud può operare tramite un esecutore locale; una chat remota non ottiene automaticamente accesso a `localhost`.
 
-[Guida per agenti IA (inglese)](../ai-agents.en.md) · [Modello di istruzioni del progetto](../examples/ai-agent-instructions.md)
+[Guida per agenti IA](../ai-agents.it.md) · [Modello di istruzioni del progetto](../examples/ai-agent-instructions.it.md)
 
 L’API viene eseguita localmente su **`http://127.0.0.1:8765/api/v1`**. Per esempio, invia questo JSON a **`POST /api/v1/jobs`** con `Content-Type: application/json`:
 

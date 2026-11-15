@@ -1,5 +1,12 @@
 # MultiRoute project instruction — copy into your agent's rules
 
+<!-- ai-agent-languages:start -->
+<p align="center" dir="ltr">
+<strong>English</strong> · <a href="ai-agent-instructions.ru.md">Русский</a> · <a href="ai-agent-instructions.de.md">Deutsch</a> · <a href="ai-agent-instructions.es.md">Español</a> · <a href="ai-agent-instructions.fr.md">Français</a> · <a href="ai-agent-instructions.zh.md">中文</a><br />
+<a href="ai-agent-instructions.ko.md">한국어</a> · <a href="ai-agent-instructions.ar.md">العربية</a> · <a href="ai-agent-instructions.it.md">Italiano</a> · <a href="ai-agent-instructions.ja.md">日本語</a> · <a href="ai-agent-instructions.hi.md">हिन्दी</a> · <a href="ai-agent-instructions.vi.md">Tiếng Việt</a>
+</p>
+<!-- ai-agent-languages:end -->
+
 Use this block in your existing `AGENTS.md`, `CLAUDE.md`, or equivalent persistent project instructions. Append it; keep the project's other rules. Replace the destination and routes once. For setup and examples, see [English](../ai-agents.en.md) or [Русский](../ai-agents.ru.md).
 
 ```markdown

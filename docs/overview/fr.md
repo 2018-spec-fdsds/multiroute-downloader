@@ -248,7 +248,7 @@ Les scripts, applications tierces et agents de programmation par IA peuvent dema
 
 Définissez la règle une fois dans les instructions du projet : Claude Code — `CLAUDE.md` ; Codex et agents compatibles — `AGENTS.md` ; autres agents — instructions persistantes. L’agent confie ensuite les téléchargements à MultiRoute par défaut, conserve l’`id`, suit leur achèvement et vérifie la somme de contrôle. L’outil de l’agent doit pouvoir accéder à l’API locale. Un modèle dans le cloud peut passer par un exécuteur local ; un chat distant n’obtient pas de lui-même accès à `localhost`.
 
-[Guide pour les agents IA (anglais)](../ai-agents.en.md) · [Modèle d’instructions du projet](../examples/ai-agent-instructions.md)
+[Guide pour les agents IA](../ai-agents.fr.md) · [Modèle d’instructions du projet](../examples/ai-agent-instructions.fr.md)
 
 L’API fonctionne localement à l’adresse **`http://127.0.0.1:8765/api/v1`**. Par exemple, envoyez ce JSON à **`POST /api/v1/jobs`** avec `Content-Type: application/json` :
 

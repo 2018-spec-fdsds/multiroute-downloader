@@ -1,5 +1,12 @@
 # MultiRoute для ИИ-агентов — настройте один раз, скачивайте по умолчанию
 
+<!-- ai-agent-languages:start -->
+<p align="center" dir="ltr">
+<a href="ai-agents.en.md">English</a> · <strong>Русский</strong> · <a href="ai-agents.de.md">Deutsch</a> · <a href="ai-agents.es.md">Español</a> · <a href="ai-agents.fr.md">Français</a> · <a href="ai-agents.zh.md">中文</a><br />
+<a href="ai-agents.ko.md">한국어</a> · <a href="ai-agents.ar.md">العربية</a> · <a href="ai-agents.it.md">Italiano</a> · <a href="ai-agents.ja.md">日本語</a> · <a href="ai-agents.hi.md">हिन्दी</a> · <a href="ai-agents.vi.md">Tiếng Việt</a>
+</p>
+<!-- ai-agent-languages:end -->
+
 [English](ai-agents.en.md) · [Приложение](../README.ru.md) · [Описание API](../API.ru.txt) · [OpenAPI](../openapi.yaml)
 
 Добавьте одно правило проекта и один раз подключите инструмент. После этого Claude Code, Codex и другие агенты с инструментами смогут передавать MultiRoute загрузку моделей, датасетов, архивов и ресурсов проекта, сохранять ID заданий, следить за прогрессом и проверять завершение. Достаточно попросить: **«Скачай нужную проекту модель в папку ресурсов».** Выбор загрузчика и адрес API не придётся повторять для каждого файла.
@@ -16,7 +23,7 @@
 
 ## 2. Добавьте постоянное правило агенту
 
-Скопируйте **[готовый блок инструкции](examples/ai-agent-instructions.md)** в существующие правила проекта. Один раз замените папку и маршруты, сохранив остальные правила. Английский блок общий для разных клиентов и моделей; пояснения ниже — на русском.
+Скопируйте **[готовый блок инструкции на русском](examples/ai-agent-instructions.ru.md)** в существующие правила проекта. Один раз замените папку и маршруты, сохранив остальные правила. Инструкция и шаблон доступны на всех 12 языках через переключатель вверху страницы.
 
 | Агент / среда | Куда добавить правило | Как подключить |
 | --- | --- | --- |
@@ -38,7 +45,7 @@
 $api = 'http://127.0.0.1:8765/api/v1'
 Invoke-RestMethod "$api/health"
 $policy = Invoke-RestMethod "$api/license/policy"
-if (-not $policy.features.automation_api) { throw 'MultiRoute automation_api is required' }
+if (-not $policy.features.automation_api) { throw 'Требуется право MultiRoute automation_api' }
 
 $request = @{
     url = 'https://example.org/model.gguf'
@@ -46,13 +53,13 @@ $request = @{
     filename = 'model.gguf'
     routes = @(@{ type = 'direct'; enabled = $true })
     idempotency_key = 'myproject-model-v1'
-    # Add expected_sha256 only when you have the publisher's trusted 64-character hex hash.
+    # Добавьте expected_sha256, только если есть доверенная сумма издателя: 64 шестнадцатеричных символа.
 } | ConvertTo-Json -Depth 6
 $job = Invoke-RestMethod -Method Post -Uri "$api/jobs" `
     -ContentType 'application/json; charset=utf-8' `
     -Body ([Text.Encoding]::UTF8.GetBytes($request))
 $job | Select-Object id, filename, status
-# Keep $job.id. Query it again while it is queued/running/retrying/verifying:
+# Сохраните $job.id. Повторяйте запрос статуса при queued/running/retrying/verifying:
 Invoke-RestMethod "$api/jobs/$($job.id)" |
     Select-Object id, filename, directory, status, progress_bytes, size, integrity_status, checksum_checking, sha256, error
 ```
@@ -74,11 +81,11 @@ Invoke-RestMethod "$api/jobs/$($job.id)" |
 ```sh
 curl --fail-with-body --noproxy '*' 'http://127.0.0.1:8765/api/v1/health'
 curl --fail-with-body --noproxy '*' 'http://127.0.0.1:8765/api/v1/license/policy'
-# After confirming features.automation_api is true:
+# После проверки, что features.automation_api равно true:
 curl --fail-with-body --noproxy '*' \
   -H 'Content-Type: application/json; charset=utf-8' \
   --data-binary @download.json 'http://127.0.0.1:8765/api/v1/jobs'
-# Replace the example id with the id from the response:
+# Замените пример id идентификатором из ответа:
 curl --fail-with-body --noproxy '*' 'http://127.0.0.1:8765/api/v1/jobs/012345abcdef'
 ```
 

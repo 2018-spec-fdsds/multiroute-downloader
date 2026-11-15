@@ -246,7 +246,7 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 프로젝트 지침에 규칙을 한 번 설정하세요. Claude Code는 `CLAUDE.md`, Codex와 호환 에이전트는 `AGENTS.md`, 그 외 에이전트는 지속적으로 적용되는 지침을 사용합니다. 이후 에이전트는 기본적으로 다운로드를 MultiRoute에 맡기고, `id`를 보관하며, 완료될 때까지 추적하고 체크섬을 검증합니다. 에이전트의 도구가 로컬 API에 접근할 수 있어야 합니다. 클라우드 모델은 로컬 실행기를 통해 작업할 수 있지만, 원격 채팅 자체가 `localhost` 접근 권한을 얻는 것은 아닙니다.
 
-[AI 에이전트 가이드(영어)](../ai-agents.en.md) · [프로젝트 지침 템플릿](../examples/ai-agent-instructions.md)
+[AI 에이전트 가이드](../ai-agents.ko.md) · [프로젝트 지침 템플릿](../examples/ai-agent-instructions.ko.md)
 
 API는 로컬의 **`http://127.0.0.1:8765/api/v1`** 에서 실행됩니다. 예를 들어 `Content-Type: application/json`으로 다음 JSON을 **`POST /api/v1/jobs`** 에 전송합니다.
 

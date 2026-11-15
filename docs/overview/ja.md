@@ -246,7 +246,7 @@ Graphite、Nordic、Streams Studio、Neon、Community、Chat、Studio、Rose、S
 
 プロジェクトのルールに一度設定します。Claude Code は `CLAUDE.md`、Codex と互換エージェントは `AGENTS.md`、その他のエージェントは永続的な指示を使用します。以後、エージェントは既定でダウンロードを MultiRoute に渡し、`id` を保存し、完了まで監視してチェックサムを検証します。エージェントのツールからローカル API にアクセスできる必要があります。クラウドモデルはローカル実行環境を介して動作できますが、リモートチャット自体が `localhost` にアクセスできるようになるわけではありません。
 
-[AI エージェント向けガイド（英語）](../ai-agents.en.md) · [プロジェクト指示のテンプレート](../examples/ai-agent-instructions.md)
+[AI エージェント向けガイド](../ai-agents.ja.md) · [プロジェクト指示のテンプレート](../examples/ai-agent-instructions.ja.md)
 
 API はローカルの **`http://127.0.0.1:8765/api/v1`** で動作します。たとえば、`Content-Type: application/json` を指定して、次の JSON を **`POST /api/v1/jobs`** に送信します。
 

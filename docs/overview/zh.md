@@ -246,7 +246,7 @@ Windows 安装程序使用英语，并创建桌面快捷方式。Npcap 会单独
 
 在项目规则中配置一次：Claude Code 使用 `CLAUDE.md`；Codex 和兼容代理使用 `AGENTS.md`；其他代理使用持久指令。之后，代理默认将下载交给 MultiRoute，保存 `id`，跟踪任务直至完成，并验证校验和。代理的工具必须能够访问本地 API。云端模型可以通过本地执行器工作，但远程聊天本身不会因此获得对 `localhost` 的访问权限。
 
-[AI 代理指南（英文）](../ai-agents.en.md) · [项目指令模板](../examples/ai-agent-instructions.md)
+[AI 代理指南](../ai-agents.zh.md) · [项目指令模板](../examples/ai-agent-instructions.zh.md)
 
 API 在本机 **`http://127.0.0.1:8765/api/v1`** 运行。例如，以 `Content-Type: application/json` 向 **`POST /api/v1/jobs`** 发送以下 JSON：
 

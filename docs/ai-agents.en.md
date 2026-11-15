@@ -1,5 +1,12 @@
 # MultiRoute for AI agents — set up once, download by default
 
+<!-- ai-agent-languages:start -->
+<p align="center" dir="ltr">
+<strong>English</strong> · <a href="ai-agents.ru.md">Русский</a> · <a href="ai-agents.de.md">Deutsch</a> · <a href="ai-agents.es.md">Español</a> · <a href="ai-agents.fr.md">Français</a> · <a href="ai-agents.zh.md">中文</a><br />
+<a href="ai-agents.ko.md">한국어</a> · <a href="ai-agents.ar.md">العربية</a> · <a href="ai-agents.it.md">Italiano</a> · <a href="ai-agents.ja.md">日本語</a> · <a href="ai-agents.hi.md">हिन्दी</a> · <a href="ai-agents.vi.md">Tiếng Việt</a>
+</p>
+<!-- ai-agent-languages:end -->
+
 [Русский](ai-agents.ru.md) · [Product](../README.md) · [API reference](../API.ru.txt) · [OpenAPI](../openapi.yaml)
 
 Add one project rule and connect a tool once. Claude Code, Codex and other tool-enabled agents can then hand the project's model weights, datasets, archives and other external files to MultiRoute, retain job IDs, follow progress and check completion. You can ask: **“Download the model needed by this project into its assets folder.”** The rule supplies the downloader preference; you do not need to repeat API details with each request.
