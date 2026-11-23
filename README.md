@@ -7,6 +7,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Before using gateways, open Network settings, select a free virtual IP address for the application, click Check and apply, and wait for confirmation that the address has been assigned. Then test the gateways. Entering the address alone is not enough.**
+
 **4.6.11:** Set a maximum speed in Mbit/s for each gateway in Network settings. The shared limit applies to concurrent downloads and uploads; 0 means unlimited. Settings apply immediately and persist after restart. Running couriers now show one clear silhouette instead of blended bodies.
 
 

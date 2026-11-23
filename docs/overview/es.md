@@ -6,6 +6,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Antes de utilizar las puertas de enlace, abra los ajustes de red, seleccione una dirección IP virtual libre para la aplicación, pulse «Comprobar y aplicar» y espere la confirmación de que se ha asignado la dirección. Después compruebe las puertas de enlace. No basta con introducir la dirección.**
+
 **4.6.11:** Configure en Red la velocidad máxima de cada puerta de enlace en Mbit/s. El límite se comparte entre descargas y subidas simultáneas; 0 significa sin límite. Se aplica al instante y se conserva al reiniciar. Los mensajeros que corren muestran una silueta clara sin cuerpos superpuestos.
 
 <p align="center"><img src="../images/overview/es/hero.svg" width="1320" alt="MultiRoute Downloader — Más conexiones. Una descarga." /></p>

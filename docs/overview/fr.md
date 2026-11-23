@@ -6,6 +6,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Avant d’utiliser les passerelles, ouvrez les paramètres réseau, choisissez une adresse IP virtuelle libre pour l’application, cliquez sur « Vérifier et appliquer » et attendez la confirmation de l’attribution de l’adresse. Testez ensuite les passerelles. Saisir l’adresse ne suffit pas.**
+
 **4.6.11:** Réglez dans Réseau la vitesse maximale de chaque passerelle en Mbit/s. Le plafond est partagé entre téléchargements et envois simultanés ; 0 signifie illimité. Il s’applique immédiatement et reste enregistré après redémarrage. Les coursiers en course affichent une seule silhouette nette.
 
 <p align="center"><img src="../images/overview/fr/hero.svg" width="1320" alt="MultiRoute Downloader — Plus de connexions. Un seul téléchargement." /></p>

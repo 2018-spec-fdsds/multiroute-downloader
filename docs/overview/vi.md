@@ -7,6 +7,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Trước khi dùng các cổng mạng, mở Thiết lập mạng, chọn một địa chỉ IP ảo còn trống cho ứng dụng, bấm «Kiểm tra và áp dụng» và đợi xác nhận địa chỉ đã được gán. Sau đó kiểm tra các cổng mạng. Chỉ nhập địa chỉ là chưa đủ.**
+
 **4.6.11:** Đặt tốc độ tối đa theo Mbit/s cho từng cổng mạng trong cài đặt Mạng. Tải xuống và tải lên đồng thời dùng chung giới hạn; 0 là không giới hạn. Thiết lập có hiệu lực ngay và được giữ sau khi khởi động lại. Nhân vật chạy hiển thị một hình rõ nét, không còn thân người chồng nhau.
 
 <p align="center"><img src="../images/overview/vi/hero.svg" width="1320" alt="MultiRoute Downloader — Nhiều kết nối. Một lượt tải." /></p>

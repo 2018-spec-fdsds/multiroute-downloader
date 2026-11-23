@@ -6,6 +6,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Öffnen Sie vor der Verwendung der Gateways die Netzwerkeinstellungen, wählen Sie eine freie virtuelle IP-Adresse für die Anwendung, klicken Sie auf „Prüfen und anwenden“ und warten Sie auf die Bestätigung der Adresszuweisung. Testen Sie anschließend die Gateways. Die Adresse nur einzugeben reicht nicht aus.**
+
 **4.6.11:** In den Netzwerkeinstellungen lässt sich die maximale Geschwindigkeit jedes Gateways in Mbit/s festlegen. Das gemeinsame Limit gilt für gleichzeitige Downloads und Uploads; 0 bedeutet unbegrenzt. Änderungen gelten sofort und bleiben nach dem Neustart erhalten. Laufende Kuriere zeigen jetzt eine klare Silhouette ohne überlagerte Körper.
 
 <p align="center"><img src="../images/overview/de/hero.svg" width="1320" alt="MultiRoute Downloader — Mehr Verbindungen. Ein Download." /></p>

@@ -6,6 +6,8 @@
 </p>
 <!-- product-languages:end -->
 
+**Prima di utilizzare i gateway, apri le impostazioni di rete, scegli un indirizzo IP virtuale libero per l’applicazione, fai clic su «Verifica e applica» e attendi la conferma dell’assegnazione dell’indirizzo. Poi verifica i gateway. Inserire soltanto l’indirizzo non basta.**
+
 **4.6.11:** Nelle impostazioni di rete si può fissare la velocità massima di ogni gateway in Mbit/s. Il limite è condiviso da download e upload simultanei; 0 significa illimitato. Si applica subito e resta dopo il riavvio. I corrieri in corsa mostrano una sola figura nitida senza corpi sovrapposti.
 
 <p align="center"><img src="../images/overview/it/hero.svg" width="1320" alt="MultiRoute Downloader — Più connessioni. Un solo download." /></p>
