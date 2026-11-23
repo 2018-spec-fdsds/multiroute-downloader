@@ -8,7 +8,7 @@
 <!-- hls-guide-languages:end -->
 
 
-> Requires **MultiRoute Downloader 4.5.2 or later** and an extension with HLS discovery. App and extension illustrations use 4.6.11. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+> Requires **MultiRoute Downloader 4.5.2 or later** and an extension with HLS discovery. App and extension illustrations use 4.6.12. This guide does not add HLS to older installers; check your app version and the packages on the [Releases page](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 HLS video is a playlist plus many small media fragments. MultiRoute discovers the playlist through an opt-in browser extension, lets you select an available quality, downloads fragments through your selected gateways and assembles a supported video file. The web page address and the playlist address are usually different.
 
@@ -26,7 +26,7 @@ HLS video is a playlist plus many small media fragments. MultiRoute discovers th
 2. Check **Allow Chrome / Edge extension to send links**, then confirm with **OK**. The translated wording follows the application language.
 3. In this dialog, click **Open extension folder**. Keep the folder available for the next step.
 
-![Enable browser integration and open the extension folder](../images/hls-4.6.11/01-integration-settings-en.png)
+![Enable browser integration and open the extension folder](../images/hls-4.6.12/01-integration-settings-en.png)
 
 The bridge listens on the application's local API port, normally **8765**. It accepts this project's extension origin. It does not need a public API address or a router port-forwarding rule. There is no separate native-messaging-host installer in this workflow: the native desktop app stays running and the extension talks to its loopback bridge.
 
@@ -51,9 +51,9 @@ In the browser's folder picker press **⌘⇧G**, paste that path and select the
 
 Pin **MultiRoute Downloader** from the browser's Extensions menu if you want its button always visible. Install it separately in each browser/profile you use. Organization-managed browsers may restrict local extensions; follow the administrator's policy.
 
-![Load the extension in Chrome](../images/hls-4.6.11/02-chrome-extension-en.png)
+![Load the extension in Chrome](../images/hls-4.6.12/02-chrome-extension-en.png)
 
-![Open Edge extensions and find Developer mode](../images/hls-4.6.11/03-edge-extension-en.png)
+![Open Edge extensions and find Developer mode](../images/hls-4.6.12/03-edge-extension-en.png)
 
 These are the standard local installation procedures documented by [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) and [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading).
 
@@ -68,7 +68,7 @@ Old Chrome error records can remain after a fix. If `Cannot create item with dup
 ## 3. Discover the video playlist
 
 1. Open the page containing the video in a normal HTTP/HTTPS tab.
-2. Right-click the MultiRoute extension icon and choose **Extension tools**. In 4.6.11, a normal left-click opens the application's floating panel; HLS discovery is in the extension's tools window.
+2. Right-click the MultiRoute extension icon and choose **Extension tools**. In 4.6.12, a normal left-click opens the application's floating panel; HLS discovery is in the extension's tools window.
 3. Under **Video streams (HLS)**, click **Detect in this tab**.
 4. Accept the optional website-access permission if you want detection. The browser may mention access to many websites: a player's fragments can come from a different video/CDN hostname. Detection in the extension is still limited to tabs that you explicitly enabled.
 5. Close the popup and **play the video**. Detection observes future playlist responses; it cannot retroactively discover a playlist loaded before you enabled it.
@@ -78,7 +78,7 @@ Old Chrome error records can remain after a fix. If `Cannot create item with dup
 
 If the browser permission dialog closes the extension popup, reopen it after granting access. If detection is still off, click **Detect in this tab** again, then play the video.
 
-![Detect HLS in the current tab and send a stream](../images/hls-4.6.11/04-detect-hls-popup-en.png)
+![Detect HLS in the current tab and send a stream](../images/hls-4.6.12/04-detect-hls-popup-en.png)
 
 If the page already loaded the playlist, reload it, reopen the popup, check whether detection is still enabled and enable it again if necessary, then play the video. **Navigating to a different page disables detection for that tab.** Closing the tab also clears its discovery state. Do not assume permission approval enables all tabs automatically.
 
@@ -94,7 +94,7 @@ After **Download this stream**, switch to the desktop app. MultiRoute uses its c
 - Selecting a lower quality generally reduces the amount to download. MultiRoute does not upscale or transcode the video.
 - The saved extension follows the supported container: `.ts` for MPEG-TS or `.mp4` for fMP4. Do not rename a TS download to `.mp4` expecting conversion.
 
-![Select an available HLS quality](../images/hls-4.6.11/05-hls-quality-en.png)
+![Select an available HLS quality](../images/hls-4.6.12/05-hls-quality-en.png)
 
 If you already have a direct `.m3u8` link, you can paste it into MultiRoute instead. The extension's detected-stream button also identifies HLS responses whose URL does not end in `.m3u8`. For HLS, use the playlist URL. Sending an HTML page does not by itself identify its m3u8; supported video pages use a separate page-download workflow.
 
@@ -102,7 +102,7 @@ If you already have a direct `.m3u8` link, you can paste it into MultiRoute inst
 
 The job appears in **Downloads**. Use **Pause** and **Resume** for the selected job. MultiRoute persists completed fragments and checks saved fragment records before reuse; final assembly follows playlist order rather than gateway completion order.
 
-![HLS progress, gateways and job actions](../images/hls-4.6.11/06-hls-download-en.png)
+![HLS progress, gateways and job actions](../images/hls-4.6.12/06-hls-download-en.png)
 
 For an individual explanation, right-click the job and open its download log. Inspect fragment download/reuse and error records there; the general application log is not the only place to investigate. Logs are also useful after completion.
 

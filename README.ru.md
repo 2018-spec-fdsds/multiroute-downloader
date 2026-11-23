@@ -9,7 +9,7 @@
 
 **Перед использованием шлюзов откройте Настройки сети, выберите свободный виртуальный IP-адрес приложения, нажмите «Проверить и применить» и дождитесь подтверждения назначения адреса. Затем проверьте шлюзы. Одного ввода адреса недостаточно.**
 
-**4.6.11:** В настройках сети можно задать максимальную скорость каждого шлюза в Мбит/с. Лимит общий для одновременных загрузок и отправок; 0 — без ограничения. Настройка применяется сразу и сохраняется после перезапуска. Бегущий курьер теперь отображается одним чётким силуэтом без наложения разных фигур.
+**4.6.12:** Тест скорости автоматически перебирает резервные файлы Selectel, OVH и Hetzner через тот же выбранный шлюз. Лимиты данных и времени передачи общие для всех попыток. Отсутствие исходного файла больше не помечает шлюз недоступным; интерфейс показывает сервер теста и использование резервного файла. HTTP 404 сохраняется как ошибка источника при подготовке загрузки.
 
 
 <p align="center"><img src="docs/images/overview/ru/hero.svg" width="1320" alt="MultiRoute Downloader — несколько подключений, одна загрузка" /></p>
@@ -17,7 +17,7 @@
 <p align="center"><strong>Скачивайте большие файлы через доступные вам подключения.</strong><br />Объединяйте независимые проводные и мобильные шлюзы для больших загрузок, сохраняйте прогресс и проверяйте готовый файл.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>Скачать 4.6.11</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.12"><strong>Скачать 4.6.12</strong></a> ·
   <a href="downloads/README.md">Актуальные загрузки</a> ·
   <a href="docs/ru.md">Инструкция</a> ·
   <a href="API.ru.txt">Работа с API</a> ·
@@ -86,19 +86,19 @@ MultiRoute объединяет эти независимые подключен
 
 ## Скачать и установить
 
-**Текущая версия — 4.6.11.** Native-установщики включают отдельную Java 21 и сетевой компонент платформы. Приложение открывается обычным значком.
+**Текущая версия — 4.6.12.** Native-установщики включают отдельную Java 21 и сетевой компонент платформы. Приложение открывается обычным значком.
 
 | Ваш компьютер | Установщик одним файлом |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [PKG для Apple Silicon](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [PKG для Intel](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [PKG для Apple Silicon](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [PKG для Intel](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg) |
 
-[Интеграция Chrome / Edge](docs/ru.md#chrome-and-edge-integration) · [Контрольные суммы и отчёт](downloads/v4.6.11/README.md) · [Подробнее о скачивании](downloads/README.md)
+[Интеграция Chrome / Edge](docs/ru.md#chrome-and-edge-integration) · [Контрольные суммы и отчёт](downloads/v4.6.12/README.md) · [Подробнее о скачивании](downloads/README.md)
 
 Windows Setup работает на английском и создаёт ярлык на рабочем столе. Npcap проверяется отдельно: при необходимости предлагается официальный установщик. macOS использует системную libpcap. Установку и подтверждения безопасности описывает инструкция на вашем языке. Готовые native-установщики здесь предназначены для Windows и macOS; установщика Linux 4.x в этом разделе пока нет.
 
-**Free / Pro в 4.6.11:** Free использует до **2 шлюзов**, **3 одновременных загрузок** и позволяет создавать **3 профиля сайтов**, с оформлением Graphite/System. Соответствующие права Pro открывают до **8 шлюзов**, **32 загрузок**, дополнительные профили, приоритеты, историю/отчёты по шлюзам, пакетные операции, внешний API и дополнительные оформления. Искусственного ограничения скорости в Free нет. [Подробности возможностей](docs/licensing.ru.md).
+**Free / Pro в 4.6.12:** Free использует до **2 шлюзов**, **3 одновременных загрузок** и позволяет создавать **3 профиля сайтов**, с оформлением Graphite/System. Соответствующие права Pro открывают до **8 шлюзов**, **32 загрузок**, дополнительные профили, приоритеты, историю/отчёты по шлюзам, пакетные операции, внешний API и дополнительные оформления. Искусственного ограничения скорости в Free нет. [Подробности возможностей](docs/licensing.ru.md).
 
 
 
@@ -134,7 +134,7 @@ Windows Setup работает на английском и создаёт яр�
 <details>
 <summary><strong>Справочник ошибок с поиском — 25 тем на двенадцати языках</strong></summary>
 
-![MultiRoute Downloader — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.6.11/multiroute-4.6.11-error-guide-en.png)
+![MultiRoute Downloader — Справочник ошибок с поиском — 25 тем на двенадцати языках](docs/images/v4.6.12/multiroute-4.6.12-error-guide-en.png)
 
 </details>
 
@@ -142,18 +142,18 @@ Windows Setup работает на английском и создаёт яр�
 
 В рабочем пространстве главное место отдано файлам: отдельные колонки имени и размера, прогресс каждого задания, общая и поканальные скорости, график и свойства файла. Graphite и System доступны в Free; дополнительным оформлениям, включая Rose, нужно соответствующее право Pro.
 
-![MultiRoute Downloader — очередь загрузок и скорости шлюзов](docs/images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute Downloader — очередь загрузок и скорости шлюзов](docs/images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
 *Окна текущего приложения Windows, снятые с изолированным демонстрационным профилем. Файлы, прогресс, скорости и возможности Pro показаны для знакомства с интерфейсом, а не для измерения производительности.*
 
 <details>
 <summary><strong>Настройки сети и история скорости</strong></summary>
 
-![Адрес приложения и защищённый DNS](docs/images/v4.6.11/multiroute-4.6.11-network-en.png)
+![Адрес приложения и защищённый DNS](docs/images/v4.6.12/multiroute-4.6.12-network-en.png)
 
-![Выбор шлюзов и проверка скорости](docs/images/v4.6.11/multiroute-4.6.11-network-en.png)
+![Выбор шлюзов и проверка скорости](docs/images/v4.6.12/multiroute-4.6.12-network-gateways-en.png)
 
-![MultiRoute Downloader — история скорости загрузки](docs/images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
+![MultiRoute Downloader — история скорости загрузки](docs/images/v4.6.12/multiroute-4.6.12-speed-graph-en.png)
 
 </details>
 
@@ -164,23 +164,23 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-neon-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-community-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-chat-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-studio-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-clean-rose-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-skin-system-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -197,12 +197,12 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.11/man-256mib-walk.png"><img src="docs/images/v4.6.11/man-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.11/woman-256mib-walk.png"><img src="docs/images/v4.6.11/woman-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.12/man-256mib-walk.png"><img src="docs/images/v4.6.12/man-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.12/woman-256mib-walk.png"><img src="docs/images/v4.6.12/woman-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.11/male_brown-256mib-walk.png"><img src="docs/images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.11/female_brown-256mib-walk.png"><img src="docs/images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.12/male_brown-256mib-walk.png"><img src="docs/images/v4.6.12/male_brown-256mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.12/female_brown-256mib-walk.png"><img src="docs/images/v4.6.12/female_brown-256mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -210,12 +210,12 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.11/man-2048mib-walk.png"><img src="docs/images/v4.6.11/man-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.11/woman-2048mib-walk.png"><img src="docs/images/v4.6.11/woman-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.12/man-2048mib-walk.png"><img src="docs/images/v4.6.12/man-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.12/woman-2048mib-walk.png"><img src="docs/images/v4.6.12/woman-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.11/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.11/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.12/male_brown-2048mib-walk.png"><img src="docs/images/v4.6.12/male_brown-2048mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.12/female_brown-2048mib-walk.png"><img src="docs/images/v4.6.12/female_brown-2048mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -223,12 +223,12 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.11/man-12288mib-walk.png"><img src="docs/images/v4.6.11/man-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.11/woman-12288mib-walk.png"><img src="docs/images/v4.6.11/woman-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина</strong><br /><a href="docs/images/v4.6.12/man-12288mib-walk.png"><img src="docs/images/v4.6.12/man-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина</strong><br /><a href="docs/images/v4.6.12/woman-12288mib-walk.png"><img src="docs/images/v4.6.12/woman-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.11/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
-<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.11/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-мужчина 2</strong><br /><a href="docs/images/v4.6.12/male_brown-12288mib-walk.png"><img src="docs/images/v4.6.12/male_brown-12288mib-walk.png" width="420" alt="Курьер-мужчина" /></a></td>
+<td width="50%" valign="top"><strong>Курьер-женщина 2</strong><br /><a href="docs/images/v4.6.12/female_brown-12288mib-walk.png"><img src="docs/images/v4.6.12/female_brown-12288mib-walk.png" width="420" alt="Курьер-женщина" /></a></td>
 </tr>
 </table>
 
@@ -238,12 +238,12 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Настройки приложения</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="Настройки приложения" /></a></td>
-<td width="50%" valign="top"><strong>Оформление, курьер и звуки</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="Оформление, курьер и звуки" /></a></td>
+<td width="50%" valign="top"><strong>Настройки приложения</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-settings-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-settings-en.png" width="420" alt="Настройки приложения" /></a></td>
+<td width="50%" valign="top"><strong>Оформление, курьер и звуки</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-appearance-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-appearance-en.png" width="420" alt="Оформление, курьер и звуки" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Адрес приложения и защищённый DNS</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="Адрес приложения и защищённый DNS" /></a></td>
-<td width="50%" valign="top"><strong>Выбор шлюзов и проверка скорости</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="Выбор шлюзов и проверка скорости" /></a></td>
+<td width="50%" valign="top"><strong>Адрес приложения и защищённый DNS</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-network-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-network-en.png" width="420" alt="Адрес приложения и защищённый DNS" /></a></td>
+<td width="50%" valign="top"><strong>Выбор шлюзов и проверка скорости</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-network-gateways-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-network-gateways-en.png" width="420" alt="Выбор шлюзов и проверка скорости" /></a></td>
 </tr>
 </table>
 
@@ -252,8 +252,8 @@ Windows Setup работает на английском и создаёт яр�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Создание загрузки</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="Создание загрузки" /></a></td>
-<td width="50%" valign="top"><strong>Окно отправки файлов</strong><br /><a href="docs/images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="docs/images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="Окно отправки файлов" /></a></td>
+<td width="50%" valign="top"><strong>Создание загрузки</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-new-download-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-new-download-en.png" width="420" alt="Создание загрузки" /></a></td>
+<td width="50%" valign="top"><strong>Окно отправки файлов</strong><br /><a href="docs/images/v4.6.12/multiroute-4.6.12-uploads-en.png"><img src="docs/images/v4.6.12/multiroute-4.6.12-uploads-en.png" width="420" alt="Окно отправки файлов" /></a></td>
 </tr>
 </table>
 
@@ -316,7 +316,7 @@ Windows Setup работает на английском и создаёт яр�
 
 Собственный локальный IPv4-адрес и MAC приложения позволяют использовать выбранные шлюзы независимо от основного шлюза ОС, без изменения системных маршрутов и MAC физической сетевой карты. Выбирайте свободный адрес в той же реальной подсети. Ручной адрес должен быть вне автоматического DHCP-пула либо зарезервирован/исключён на DHCP-серверах сети. Затем нажмите **Проверить и применить** в настройках сети. [Выбор и проверка адреса](docs/ru.md#application-virtual-ip).
 
-Проверены состав и метаданные установщика Windows 4.6.11; пакеты macOS прошли нативные проверки и проверку Java на целевых Mac-серверах. DHCP-аренду и передачу через шлюзы в физической LAN Mac ещё нужно проверить на оборудовании. [Отчёт проверки](NATIVE-INSTALLER-TESTS.json).
+Проверены состав и метаданные установщика Windows 4.6.12; пакеты macOS прошли нативные проверки и проверку Java на целевых Mac-серверах. DHCP-аренду и передачу через шлюзы в физической LAN Mac ещё нужно проверить на оборудовании. [Отчёт проверки](NATIVE-INSTALLER-TESTS.json).
 
 ## Автор и лицензия
 
@@ -324,6 +324,6 @@ Windows Setup работает на английском и создаёт яр�
 
 [Лицензия](LICENSE.txt) · [Краткое описание условий](LICENSING.md) · [Сторонние компоненты](THIRD-PARTY-NOTICES.txt)
 
-Этот раздел содержит актуальные установщики 4.6.11 и пользовательскую документацию.
+Этот раздел содержит актуальные установщики 4.6.12 и пользовательскую документацию.
 
 [Support the project](docs/support.md) · Voluntary support via QR code.

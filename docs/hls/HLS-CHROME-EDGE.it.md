@@ -7,7 +7,7 @@
 </p>
 <!-- hls-guide-languages:end -->
 
-> Sono necessari **MultiRoute Downloader 4.5.2 o successivo** e un’estensione con rilevamento HLS. Le illustrazioni mostrano la versione 4.6.11. Questa guida non aggiunge HLS ai vecchi programmi di installazione; controllare la versione dell’applicazione e i pacchetti nella [pagina delle versioni](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+> Sono necessari **MultiRoute Downloader 4.5.2 o successivo** e un’estensione con rilevamento HLS. Le illustrazioni mostrano la versione 4.6.12. Questa guida non aggiunge HLS ai vecchi programmi di installazione; controllare la versione dell’applicazione e i pacchetti nella [pagina delle versioni](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 Un video HLS è composto da una playlist e molti piccoli frammenti multimediali. MultiRoute individua la playlist tramite un’estensione del browser attivata esplicitamente dall’utente, consente di selezionare una qualità disponibile, scarica i frammenti attraverso i gateway selezionati e assembla un file video supportato. L’indirizzo della pagina web e quello della playlist sono normalmente diversi.
 
@@ -25,7 +25,7 @@ Un video HLS è composto da una playlist e molti piccoli frammenti multimediali.
 2. Selezionare **Consenti all’estensione Chrome / Edge di inviare collegamenti**, quindi confermare con **OK**. La dicitura esatta dipende dalla lingua dell’applicazione.
 3. In questa finestra, fare clic su **Apri cartella dell’estensione**. Tenere la cartella disponibile per il passaggio successivo.
 
-![Attivare l’integrazione del browser e aprire la cartella dell’estensione](../images/hls-4.6.11/01-integration-settings-it.png)
+![Attivare l’integrazione del browser e aprire la cartella dell’estensione](../images/hls-4.6.12/01-integration-settings-it.png)
 
 Il bridge è in ascolto sulla porta API locale dell’applicazione, normalmente **8765**. Accetta l’origine dell’estensione di questo progetto. Non richiede un indirizzo API pubblico né una regola di port forwarding sul router. Questo flusso non prevede un programma di installazione separato per un host di messaggistica nativa: l’applicazione desktop nativa rimane in esecuzione e l’estensione comunica con il suo bridge di loopback.
 
@@ -50,15 +50,15 @@ Nel selettore di cartelle del browser premere **⌘⇧G**, incollare questo perc
 
 Fissare **MultiRoute Downloader** dal menu Estensioni del browser se si desidera che il suo pulsante sia sempre visibile. Installarla separatamente in ogni browser/profilo utilizzato. I browser gestiti da un’organizzazione possono limitare le estensioni locali; rispettare i criteri dell’amministratore.
 
-![Caricare l’estensione in Chrome](../images/hls-4.6.11/02-chrome-extension-it.png)
+![Caricare l’estensione in Chrome](../images/hls-4.6.12/02-chrome-extension-it.png)
 
-![Aprire le estensioni di Edge e individuare la modalità sviluppatore](../images/hls-4.6.11/03-edge-extension-it.png)
+![Aprire le estensioni di Edge e individuare la modalità sviluppatore](../images/hls-4.6.12/03-edge-extension-it.png)
 
 La schermata di Edge mostra **Modalità sviluppatore** ancora disattivata. Attivarla per visualizzare **Carica decompressa**. Queste sono le normali procedure di installazione locale documentate da [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) e [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading).
 
 ### Già installata? Ricaricare l’estensione stessa
 
-Dopo aver aggiornato l’applicazione, aprire `chrome://extensions/` o `edge://extensions/`. Individuare la **scheda di MultiRoute Downloader** e fare clic sul comando **↻ / Ricarica**. In Chrome, attivare la modalità sviluppatore se l’icona è nascosta. Verificare che la versione dell’estensione sia **4.5.2 o successiva**, tornare alla pagina del video e aprire nuovamente l’estensione. Le illustrazioni attuali mostrano la versione 4.6.11.
+Dopo aver aggiornato l’applicazione, aprire `chrome://extensions/` o `edge://extensions/`. Individuare la **scheda di MultiRoute Downloader** e fare clic sul comando **↻ / Ricarica**. In Chrome, attivare la modalità sviluppatore se l’icona è nascosta. Verificare che la versione dell’estensione sia **4.5.2 o successiva**, tornare alla pagina del video e aprire nuovamente l’estensione. Le illustrazioni attuali mostrano la versione 4.6.12.
 
 **Aggiorna elenco nella finestra dell’estensione** aggiorna i metadati dei flussi; non carica i file aggiornati dell’estensione. Se la versione rimane vecchia, controllare la cartella dell’estensione installata. La cartella standard di Windows è `%LOCALAPPDATA%\MultiRoute Downloader App\app\browser-extension`; aprire la cartella della propria installazione dalle impostazioni di MultiRoute.
 
@@ -67,7 +67,7 @@ I vecchi errori registrati da Chrome possono rimanere dopo una correzione. Se co
 ## 3. Individuare la playlist del video
 
 1. Aprire la pagina contenente il video in una normale scheda HTTP/HTTPS.
-2. Fare clic destro sull’icona dell’estensione MultiRoute e scegliere **Strumenti dell’estensione**. Nella versione 4.6.11, un normale clic sinistro apre il pannello mobile dell’applicazione; il rilevamento HLS si trova nella finestra degli strumenti dell’estensione.
+2. Fare clic destro sull’icona dell’estensione MultiRoute e scegliere **Strumenti dell’estensione**. Nella versione 4.6.12, un normale clic sinistro apre il pannello mobile dell’applicazione; il rilevamento HLS si trova nella finestra degli strumenti dell’estensione.
 3. In **Flussi video (HLS)**, fare clic su **Rileva in questa scheda**.
 4. Accettare l’autorizzazione facoltativa di accesso ai siti se si desidera utilizzare il rilevamento. Il browser può menzionare l’accesso a molti siti: i frammenti di un lettore possono provenire da un altro nome host video/CDN. Il rilevamento dell’estensione rimane limitato alle schede attivate esplicitamente.
 5. Chiudere la finestra degli strumenti e **avviare il video**. Il rilevamento osserva le risposte future contenenti playlist; non può individuare retroattivamente una playlist caricata prima dell’attivazione.
@@ -76,7 +76,7 @@ I vecchi errori registrati da Chrome possono rimanere dopo una correzione. Se co
 
 Se la finestra delle autorizzazioni del browser chiude quella dell’estensione, riaprirla dopo aver concesso l’accesso. Se il rilevamento è ancora disattivato, fare nuovamente clic su **Rileva in questa scheda**, quindi avviare il video.
 
-![Rilevare HLS nella scheda corrente e inviare un flusso](../images/hls-4.6.11/04-detect-hls-popup-it.png)
+![Rilevare HLS nella scheda corrente e inviare un flusso](../images/hls-4.6.12/04-detect-hls-popup-it.png)
 
 Se la pagina ha già caricato la playlist, ricaricarla, riaprire gli strumenti, verificare che il rilevamento sia ancora attivo e riattivarlo se necessario, quindi avviare il video. **La navigazione verso un’altra pagina disattiva il rilevamento per quella scheda.** Anche la chiusura della scheda cancella il relativo stato di individuazione. Non presumere che concedere l’autorizzazione attivi automaticamente tutte le schede.
 
@@ -92,7 +92,7 @@ Dopo **Scarica questo flusso**, passare all’applicazione desktop. MultiRoute u
 - Selezionare una qualità inferiore generalmente riduce la quantità da scaricare. MultiRoute non aumenta la risoluzione e non transcodifica il video.
 - L’estensione del file salvato segue il contenitore supportato: `.ts` per MPEG-TS o `.mp4` per fMP4. Rinominare un download TS in `.mp4` non lo converte.
 
-![Selezionare una qualità HLS disponibile](../images/hls-4.6.11/05-hls-quality-it.png)
+![Selezionare una qualità HLS disponibile](../images/hls-4.6.12/05-hls-quality-it.png)
 
 Se si dispone già di un collegamento diretto `.m3u8`, è possibile incollarlo in MultiRoute. Il pulsante dei flussi rilevati identifica anche risposte HLS il cui URL non termina con `.m3u8`. Per HLS usare l’URL della playlist. Inviare un indirizzo di pagina HTML con **Invia a MultiRoute** non identifica da solo il relativo m3u8; le pagine video supportate vengono elaborate mediante un flusso separato per scaricare pagine video.
 
@@ -100,7 +100,7 @@ Se si dispone già di un collegamento diretto `.m3u8`, è possibile incollarlo i
 
 L’attività compare in **Download**. Usare **Pausa** e **Riprendi** per l’attività selezionata. MultiRoute conserva i frammenti completati e controlla i record dei frammenti salvati prima del riutilizzo; l’assemblaggio finale segue l’ordine della playlist, non quello di completamento dei gateway.
 
-![Avanzamento HLS, gateway e azioni dell’attività](../images/hls-4.6.11/06-hls-download-it.png)
+![Avanzamento HLS, gateway e azioni dell’attività](../images/hls-4.6.12/06-hls-download-it.png)
 
 Per ottenere una spiegazione specifica, fare clic destro sull’attività e aprire il relativo registro di download. Esaminare qui i record di download/riutilizzo dei frammenti e gli errori; il registro generale dell’applicazione non è l’unico punto da consultare. I registri sono utili anche dopo il completamento.
 

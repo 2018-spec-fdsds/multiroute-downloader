@@ -9,33 +9,33 @@
 
 **गेटवे इस्तेमाल करने से पहले नेटवर्क सेटिंग खोलें, ऐप के लिए कोई खाली वर्चुअल IP पता चुनें, «जाँचें और लागू करें» दबाएँ और पता आवंटित होने की पुष्टि की प्रतीक्षा करें। इसके बाद गेटवे जाँचें। केवल पता दर्ज करना पर्याप्त नहीं है।**
 
-**4.6.11:** नेटवर्क सेटिंग में हर गेटवे की अधिकतम गति Mbit/s में तय करें। एक साथ डाउनलोड और अपलोड यह सीमा साझा करते हैं; 0 का अर्थ असीमित है। सेटिंग तुरंत लागू होती है और पुनः शुरू करने के बाद भी रहती है। दौड़ते कूरियर में अब दो शरीरों का धुँधला मेल नहीं दिखता।
+**4.6.12:** गति परीक्षण उसी चुने हुए गेटवे से Selectel, OVH और Hetzner की वैकल्पिक फ़ाइलें अपने आप आज़माता है। सभी प्रयास डेटा और स्थानांतरण समय की साझा सीमा में रहते हैं। मूल फ़ाइल न मिलने पर गेटवे को अनुपलब्ध नहीं दिखाया जाता; इंटरफ़ेस परीक्षण सर्वर और वैकल्पिक फ़ाइल की सूचना दिखाता है। डाउनलोड की तैयारी में HTTP 404 स्रोत की त्रुटि बना रहता है।
 
 <p align="center"><img src="../images/overview/hi/hero.svg" width="1320" alt="MultiRoute Downloader — ज़्यादा कनेक्शन। एक डाउनलोड।" /></p>
 
 <p align="center"><strong>अपने मौजूदा कनेक्शन से बड़ी फ़ाइलें डाउनलोड करें।</strong><br />बड़ी फ़ाइलें डाउनलोड करने के लिए स्वतंत्र ब्रॉडबैंड और मोबाइल गेटवे जोड़ें, फिर से शुरू किए जा सकने वाले डाउनलोड की प्रगति सहेजें और पूरी हुई फ़ाइल जाँचें।</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>4.6.11 डाउनलोड करें</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.12"><strong>4.6.12 डाउनलोड करें</strong></a> ·
   <a href="../../downloads/README.md">मौजूदा डाउनलोड</a> ·
   <a href="../hi.md">उपयोगकर्ता मार्गदर्शिका</a> ·
   <a href="../../API.ru.txt">API संदर्भ</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.11:start -->
+<!-- capabilities-4.6.12:start -->
 **HLS वीडियो:** [स्क्रीनशॉट सहित Chrome / Edge मार्गदर्शिका](../hls/HLS-CHROME-EDGE.hi.md) · [12 भाषाएँ](../hls/README.md)
 
-## 4.6.11 में और सुविधाएँ
+## 4.6.12 में और सुविधाएँ
 
 Chrome/Edge समर्थित HLS वीडियो पहचानता है; गुणवत्ता चुनें और खंडों को फिर शुरू करके जोड़ें। एन्क्रिप्टेड, DRM-संरक्षित और असमर्थित लाइव स्ट्रीम शामिल नहीं हैं। OS सिस्टम मार्ग है जो OS/VPN सेटिंग का अनुसरण करता है; VPN क्लाइंट भौतिक कनेक्शन से सर्वर तक पहुँचता है। सिस्टम और गेटवे अलग जाँचे जाते हैं; गेटवे दूसरे ऐप के सिस्टम मार्ग नहीं बदलते। डिफ़ॉल्ट और वीडियो, ऑडियो, चित्र फ़ोल्डर और एक्सटेंशन चुनें। चार वयस्क कूरियर रूप स्थिति दिखाते हैं, आकार 40–200% है और थैला कुल शेष डेटा दिखाता है। स्थानीय API डाउनलोड बनाती और देखती है; पहुँच लाइसेंस और कॉन्फ़िगरेशन पर निर्भर है।
 
-![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute 4.6.12](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
-[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
+[OS / VPN](../images/v4.6.12/multiroute-4.6.12-network-en.png) · [40–200%](../images/v4.6.12/multiroute-4.6.12-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.11:end -->
+<!-- capabilities-4.6.12:end -->
 
 ## MultiRoute क्यों बनाया गया
 
@@ -79,22 +79,22 @@ MultiRoute इन स्वतंत्र कनेक्शन को डा�
 
 ## डाउनलोड और इंस्टॉल करें
 
-**मौजूदा संस्करण: 4.6.11।** नेटिव इंस्टॉलर में ऐप के लिए अलग Java 21 और प्लेटफ़ॉर्म का नेटवर्क घटक शामिल है। ऐप को उसके सामान्य आइकन से खोलें।
+**मौजूदा संस्करण: 4.6.12।** नेटिव इंस्टॉलर में ऐप के लिए अलग Java 21 और प्लेटफ़ॉर्म का नेटवर्क घटक शामिल है। ऐप को उसके सामान्य आइकन से खोलें।
 
 | आपका कंप्यूटर | एक फ़ाइल वाला इंस्टॉलर |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg) |
 
-[Chrome / Edge एकीकरण](../hi.md#chrome-and-edge-integration) · [चेकसम और रिपोर्ट](../../downloads/v4.6.11/README.md) · [डाउनलोड का विवरण](../../downloads/README.md)
+[Chrome / Edge एकीकरण](../hi.md#chrome-and-edge-integration) · [चेकसम और रिपोर्ट](../../downloads/v4.6.12/README.md) · [डाउनलोड का विवरण](../../downloads/README.md)
 
 Windows Setup अंग्रेज़ी में है और डेस्कटॉप शॉर्टकट बनाता है। Npcap की जाँच अलग से होती है और ज़रूरत पड़ने पर उसका आधिकारिक इंस्टॉलर दिया जाता है; macOS सिस्टम के libpcap का इस्तेमाल करता है। इंस्टॉलेशन और सुरक्षा संबंधी पुष्टियों के लिए अपनी भाषा की मार्गदर्शिका देखें। सार्वजनिक नेटिव इंस्टॉलर Windows और macOS के लिए उपलब्ध हैं; यहाँ Linux 4.x का इंस्टॉलर शामिल नहीं है।
 
-**4.6.11 में Free / Pro:** Free में अधिकतम **2 गेटवे**, **3 एक साथ डाउनलोड** और **3 साइट प्रोफ़ाइल** बनाने की सुविधा है, साथ में Graphite/System रूप-रंग मिलता है। संबंधित Pro सुविधाएँ अधिकतम **8 गेटवे**, **32 एक साथ डाउनलोड**, अतिरिक्त प्रोफ़ाइल, प्राथमिकताएँ, गेटवे इतिहास/रिपोर्ट, सामूहिक कार्रवाइयाँ, बाहरी API और अतिरिक्त शैलियाँ देती हैं। Free जानबूझकर डाउनलोड की गति सीमित नहीं करता। [सुविधाओं का पूरा विवरण](../licensing.en.md)।
+**4.6.12 में Free / Pro:** Free में अधिकतम **2 गेटवे**, **3 एक साथ डाउनलोड** और **3 साइट प्रोफ़ाइल** बनाने की सुविधा है, साथ में Graphite/System रूप-रंग मिलता है। संबंधित Pro सुविधाएँ अधिकतम **8 गेटवे**, **32 एक साथ डाउनलोड**, अतिरिक्त प्रोफ़ाइल, प्राथमिकताएँ, गेटवे इतिहास/रिपोर्ट, सामूहिक कार्रवाइयाँ, बाहरी API और अतिरिक्त शैलियाँ देती हैं। Free जानबूझकर डाउनलोड की गति सीमित नहीं करता। [सुविधाओं का पूरा विवरण](../licensing.en.md)।
 
 
-## 4.6.11 में नया
+## 4.6.12 में नया
 
 - **Mac के मैनुअल पते पर गेटवे उत्तर.** POSIX कैप्चर सुधारा गया है ताकि मैनुअल ऐप पता और DHCP दोनों ऐप के अपने MAC पर आने वाले उत्तर प्राप्त करने का मोड इस्तेमाल करें, जैसा Windows में पहले से होता है। सफल सिस्टम ping केवल कंप्यूटर का अपना कनेक्शन जाँचता है, ऐप के वर्चुअल पते पर उत्तर मिलने का प्रमाण नहीं है।
 
@@ -124,20 +124,20 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 ## अपने ट्रांसफ़र साफ़ तौर पर देखें
 
-4.6.11 का कार्यक्षेत्र आपकी फ़ाइलों को केंद्र में रखता है: नाम और आकार के अलग कॉलम, हर फ़ाइल की प्रगति, कुल और हर गेटवे की गति, गति का ग्राफ़ और फ़ाइल का विवरण। Graphite और System, Free में शामिल हैं; Rose जैसी अतिरिक्त शैलियों के लिए संबंधित Pro सुविधा चाहिए।
+4.6.12 का कार्यक्षेत्र आपकी फ़ाइलों को केंद्र में रखता है: नाम और आकार के अलग कॉलम, हर फ़ाइल की प्रगति, कुल और हर गेटवे की गति, गति का ग्राफ़ और फ़ाइल का विवरण। Graphite और System, Free में शामिल हैं; Rose जैसी अतिरिक्त शैलियों के लिए संबंधित Pro सुविधा चाहिए।
 
-![MultiRoute Downloader 4.3.7 — डाउनलोड कतार और गेटवे की गति](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute Downloader 4.6.12 — डाउनलोड कतार और गेटवे की गति](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
 *Windows पर ऐप का मौजूदा इंटरफ़ेस, जिसे अलग डेमो प्रोफ़ाइल में कैप्चर किया गया है। दिखाई गई फ़ाइलें, प्रगति, गति और Pro सुविधाओं से उपलब्ध स्क्रीन केवल नियंत्रणों को समझाने के उदाहरण हैं; ये प्रदर्शन के माप नहीं हैं।*
 
 <details>
 <summary><strong>नेटवर्क सेटिंग और गति का इतिहास</strong></summary>
 
-![ऐप का पता और सुरक्षित DNS](../images/v4.6.11/multiroute-4.6.11-network-en.png)
+![ऐप का पता और सुरक्षित DNS](../images/v4.6.12/multiroute-4.6.12-network-en.png)
 
-![गेटवे का चयन और गति की जाँच](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
+![गेटवे का चयन और गति की जाँच](../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — डाउनलोड गति का इतिहास](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
+![MultiRoute Downloader 4.6.12 — डाउनलोड गति का इतिहास](../images/v4.6.12/multiroute-4.6.12-speed-graph-en.png)
 
 </details>
 
@@ -148,23 +148,23 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -181,12 +181,12 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.12/man-256mib-walk.png"><img src="../images/v4.6.12/man-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.12/woman-256mib-walk.png"><img src="../images/v4.6.12/woman-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.12/male_brown-256mib-walk.png"><img src="../images/v4.6.12/male_brown-256mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.12/female_brown-256mib-walk.png"><img src="../images/v4.6.12/female_brown-256mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -194,12 +194,12 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.12/man-2048mib-walk.png"><img src="../images/v4.6.12/man-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.12/woman-2048mib-walk.png"><img src="../images/v4.6.12/woman-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.12/male_brown-2048mib-walk.png"><img src="../images/v4.6.12/male_brown-2048mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.12/female_brown-2048mib-walk.png"><img src="../images/v4.6.12/female_brown-2048mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -207,12 +207,12 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर</strong><br /><a href="../images/v4.6.12/man-12288mib-walk.png"><img src="../images/v4.6.12/man-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर</strong><br /><a href="../images/v4.6.12/woman-12288mib-walk.png"><img src="../images/v4.6.12/woman-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
-<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>पुरुष कुरियर 2</strong><br /><a href="../images/v4.6.12/male_brown-12288mib-walk.png"><img src="../images/v4.6.12/male_brown-12288mib-walk.png" width="420" alt="पुरुष कुरियर" /></a></td>
+<td width="50%" valign="top"><strong>महिला कुरियर 2</strong><br /><a href="../images/v4.6.12/female_brown-12288mib-walk.png"><img src="../images/v4.6.12/female_brown-12288mib-walk.png" width="420" alt="महिला कुरियर" /></a></td>
 </tr>
 </table>
 
@@ -222,12 +222,12 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>ऐप की सेटिंग</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="ऐप की सेटिंग" /></a></td>
-<td width="50%" valign="top"><strong>रूप-रंग, कुरियर और ध्वनियाँ</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="रूप-रंग, कुरियर और ध्वनियाँ" /></a></td>
+<td width="50%" valign="top"><strong>ऐप की सेटिंग</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-settings-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-settings-en.png" width="420" alt="ऐप की सेटिंग" /></a></td>
+<td width="50%" valign="top"><strong>रूप-रंग, कुरियर और ध्वनियाँ</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-appearance-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-appearance-en.png" width="420" alt="रूप-रंग, कुरियर और ध्वनियाँ" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>ऐप का पता और सुरक्षित DNS</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="ऐप का पता और सुरक्षित DNS" /></a></td>
-<td width="50%" valign="top"><strong>गेटवे का चयन और गति की जाँच</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="गेटवे का चयन और गति की जाँच" /></a></td>
+<td width="50%" valign="top"><strong>ऐप का पता और सुरक्षित DNS</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-en.png" width="420" alt="ऐप का पता और सुरक्षित DNS" /></a></td>
+<td width="50%" valign="top"><strong>गेटवे का चयन और गति की जाँच</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png" width="420" alt="गेटवे का चयन और गति की जाँच" /></a></td>
 </tr>
 </table>
 
@@ -236,8 +236,8 @@ Windows Setup अंग्रेज़ी में है और डेस्�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>डाउनलोड बनाएँ</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="डाउनलोड बनाएँ" /></a></td>
-<td width="50%" valign="top"><strong>अपलोड कार्यक्षेत्र</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="अपलोड कार्यक्षेत्र" /></a></td>
+<td width="50%" valign="top"><strong>डाउनलोड बनाएँ</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-new-download-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-new-download-en.png" width="420" alt="डाउनलोड बनाएँ" /></a></td>
+<td width="50%" valign="top"><strong>अपलोड कार्यक्षेत्र</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-uploads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-uploads-en.png" width="420" alt="अपलोड कार्यक्षेत्र" /></a></td>
 </tr>
 </table>
 
@@ -300,7 +300,7 @@ API स्थानीय रूप से **`http://127.0.0.1:8765/api/v1`** �
 
 ऐप अपना अलग स्थानीय IPv4 पता और ऐप का MAC इस्तेमाल करता है, ताकि चुने हुए गेटवे OS के डिफ़ॉल्ट गेटवे से स्वतंत्र रूप से काम कर सकें, बिना OS रूट या भौतिक अडैप्टर का MAC बदले। उसी वास्तविक सबनेट में कोई खाली पता चुनें। मैनुअल पता स्वचालित DHCP आवंटन से बाहर रखें या LAN के DHCP सर्वर पर उसे रिज़र्व/आवंटन से बाहर करें; फिर नेटवर्क सेटिंग में **Check and apply** (जाँचें और लागू करें) इस्तेमाल करें। [पता चुनना और जाँचना](../hi.md#application-virtual-ip)।
 
-Windows 4.6.11 इंस्टॉलर की सामग्री और मेटाडेटा सत्यापित किए गए हैं; macOS पैकेज लक्षित CI रनर पर नेटिव और Java रनटाइम की जाँच में सफल रहे। वास्तविक Mac पर LAN/DHCP गेटवे से ट्रांसफ़र के लिए अभी हार्डवेयर सत्यापन चाहिए। [सत्यापन रिपोर्ट](../../NATIVE-INSTALLER-TESTS.json)।
+Windows 4.6.12 इंस्टॉलर की सामग्री और मेटाडेटा सत्यापित किए गए हैं; macOS पैकेज लक्षित CI रनर पर नेटिव और Java रनटाइम की जाँच में सफल रहे। वास्तविक Mac पर LAN/DHCP गेटवे से ट्रांसफ़र के लिए अभी हार्डवेयर सत्यापन चाहिए। [सत्यापन रिपोर्ट](../../NATIVE-INSTALLER-TESTS.json)।
 
 ## स्वामी और लाइसेंस
 
@@ -308,4 +308,4 @@ Windows 4.6.11 इंस्टॉलर की सामग्री और म�
 
 [लाइसेंस](../../LICENSE.txt) · [लाइसेंस का सारांश](../../LICENSING.md) · [तीसरे पक्ष की सूचनाएँ](../../THIRD-PARTY-NOTICES.txt)
 
-इस वितरण क्षेत्र में मौजूदा 4.6.11 इंस्टॉलर और उपयोगकर्ता दस्तावेज़ हैं।
+इस वितरण क्षेत्र में मौजूदा 4.6.12 इंस्टॉलर और उपयोगकर्ता दस्तावेज़ हैं।

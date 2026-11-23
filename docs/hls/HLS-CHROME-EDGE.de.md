@@ -7,7 +7,7 @@
 </p>
 <!-- hls-guide-languages:end -->
 
-> Erforderlich sind **MultiRoute Downloader 4.5.2 oder neuer** und eine Erweiterung mit HLS-Erkennung. Die Abbildungen zeigen Version 4.6.11. Diese Anleitung ergänzt ältere Installationspakete nicht um HLS; prüfen Sie Ihre App-Version und die Pakete auf der [Releases-Seite](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+> Erforderlich sind **MultiRoute Downloader 4.5.2 oder neuer** und eine Erweiterung mit HLS-Erkennung. Die Abbildungen zeigen Version 4.6.12. Diese Anleitung ergänzt ältere Installationspakete nicht um HLS; prüfen Sie Ihre App-Version und die Pakete auf der [Releases-Seite](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 Ein HLS-Video besteht aus einer Wiedergabeliste und vielen kleinen Medienfragmenten. MultiRoute erkennt die Wiedergabeliste über eine ausdrücklich aktivierte Browsererweiterung, bietet die verfügbaren Qualitätsstufen an, lädt Fragmente über Ihre ausgewählten Gateways und setzt daraus eine unterstützte Videodatei zusammen. Die Adresse der Webseite und die der Wiedergabeliste sind normalerweise verschieden.
 
@@ -25,7 +25,7 @@ Ein HLS-Video besteht aus einer Wiedergabeliste und vielen kleinen Medienfragmen
 2. Aktivieren Sie **Chrome-/Edge-Erweiterung das Senden von Links erlauben** und bestätigen Sie mit **OK**. Der genaue Wortlaut richtet sich nach der Anwendungssprache.
 3. Klicken Sie hier auf **Erweiterungsordner öffnen**. Halten Sie den Ordner für den nächsten Schritt bereit.
 
-![Browserintegration aktivieren und Erweiterungsordner öffnen](../images/hls-4.6.11/01-integration-settings-de.png)
+![Browserintegration aktivieren und Erweiterungsordner öffnen](../images/hls-4.6.12/01-integration-settings-de.png)
 
 Die Verbindung lauscht am lokalen API-Port der Anwendung, normalerweise **8765**. Sie akzeptiert den Erweiterungsursprung dieses Projekts. Eine öffentliche API-Adresse oder eine Portweiterleitung am Router ist nicht erforderlich. In diesem Ablauf gibt es keinen separaten Installer für einen Native-Messaging-Host: Die native Desktop-Anwendung bleibt geöffnet, und die Erweiterung kommuniziert mit ihrer Loopback-Verbindung.
 
@@ -50,15 +50,15 @@ Drücken Sie in der Ordnerauswahl des Browsers **⌘⇧G**, fügen Sie den Pfad 
 
 Heften Sie **MultiRoute Downloader** im Erweiterungsmenü des Browsers an, wenn die Schaltfläche immer sichtbar sein soll. Installieren Sie die Erweiterung in jedem verwendeten Browser/Profil separat. Von Organisationen verwaltete Browser können lokale Erweiterungen einschränken; beachten Sie die Vorgaben der Administration.
 
-![Erweiterung in Chrome laden](../images/hls-4.6.11/02-chrome-extension-de.png)
+![Erweiterung in Chrome laden](../images/hls-4.6.12/02-chrome-extension-de.png)
 
-![Edge-Erweiterungen öffnen und Entwicklermodus finden](../images/hls-4.6.11/03-edge-extension-de.png)
+![Edge-Erweiterungen öffnen und Entwicklermodus finden](../images/hls-4.6.12/03-edge-extension-de.png)
 
 Die Edge-Abbildung zeigt den noch ausgeschalteten **Entwicklermodus**. Schalten Sie ihn ein; danach erscheint **Entpackte Erweiterung laden**. Dies sind die von [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) und [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading) dokumentierten Standardverfahren zur lokalen Installation.
 
 ### Bereits installiert? Erweiterung selbst neu laden
 
-Öffnen Sie nach einem Anwendungsupdate `chrome://extensions/` oder `edge://extensions/`. Suchen Sie die **Karte von MultiRoute Downloader** und klicken Sie auf **↻ / Neu laden**. Aktivieren Sie in Chrome den Entwicklermodus, falls das Symbol ausgeblendet ist. Prüfen Sie, dass die Erweiterung **4.5.2 oder neuer** ist, kehren Sie zur Videoseite zurück und öffnen Sie die Erweiterung erneut. Die aktuellen Abbildungen zeigen 4.6.11.
+Öffnen Sie nach einem Anwendungsupdate `chrome://extensions/` oder `edge://extensions/`. Suchen Sie die **Karte von MultiRoute Downloader** und klicken Sie auf **↻ / Neu laden**. Aktivieren Sie in Chrome den Entwicklermodus, falls das Symbol ausgeblendet ist. Prüfen Sie, dass die Erweiterung **4.5.2 oder neuer** ist, kehren Sie zur Videoseite zurück und öffnen Sie die Erweiterung erneut. Die aktuellen Abbildungen zeigen 4.6.12.
 
 **Liste aktualisieren im Popup** aktualisiert Stream-Metadaten; aktualisierte Erweiterungsdateien werden dadurch nicht geladen. Bleibt die Version alt, prüfen Sie den installierten Erweiterungsordner. Unter Windows lautet der Standardordner `%LOCALAPPDATA%\MultiRoute Downloader App\app\browser-extension`; öffnen Sie den Ordner Ihrer Installation über die MultiRoute-Einstellungen.
 
@@ -76,7 +76,7 @@ Alte Chrome-Fehlereinträge können nach einer Korrektur erhalten bleiben. Ersch
 
 Falls der Berechtigungsdialog das Erweiterungspopup schließt, öffnen Sie es nach der Freigabe erneut. Ist die Erkennung weiterhin aus, klicken Sie noch einmal auf **In diesem Tab erkennen** und starten Sie das Video.
 
-![HLS im aktuellen Tab erkennen und einen Stream senden](../images/hls-4.6.11/04-detect-hls-popup-de.png)
+![HLS im aktuellen Tab erkennen und einen Stream senden](../images/hls-4.6.12/04-detect-hls-popup-de.png)
 
 Wenn die Seite die Wiedergabeliste schon geladen hat, laden Sie die Seite neu, öffnen Sie das Popup, prüfen Sie den Erkennungszustand und aktivieren Sie ihn bei Bedarf erneut; starten Sie dann das Video. **Der Wechsel zu einer anderen Seite schaltet die Erkennung für diesen Tab aus.** Auch das Schließen des Tabs löscht seinen Erkennungszustand. Die Berechtigungsfreigabe aktiviert nicht automatisch alle Tabs.
 
@@ -92,7 +92,7 @@ Wechseln Sie nach **Diesen Stream laden** zur Desktop-Anwendung. MultiRoute verw
 - Eine niedrigere Qualität verringert in der Regel die Downloadmenge. MultiRoute skaliert Videos nicht hoch und transkodiert sie nicht.
 - Die Dateiendung richtet sich nach dem unterstützten Container: `.ts` für MPEG-TS oder `.mp4` für fMP4. Eine Umbenennung eines TS-Downloads in `.mp4` konvertiert ihn nicht.
 
-![Verfügbare HLS-Qualität auswählen](../images/hls-4.6.11/05-hls-quality-de.png)
+![Verfügbare HLS-Qualität auswählen](../images/hls-4.6.12/05-hls-quality-de.png)
 
 Wenn Sie bereits einen direkten `.m3u8`-Link haben, können Sie ihn stattdessen in MultiRoute einfügen. Die Schaltfläche für erkannte Streams erkennt auch HLS-Antworten, deren URL nicht mit `.m3u8` endet. Verwenden Sie für HLS die URL der Wiedergabeliste. Das Senden einer HTML-Seitenadresse mit **An MultiRoute senden** ermittelt allein noch nicht deren m3u8; unterstützte Videoseiten werden über einen separaten Ablauf zum Herunterladen von Videoseiten verarbeitet.
 
@@ -100,7 +100,7 @@ Wenn Sie bereits einen direkten `.m3u8`-Link haben, können Sie ihn stattdessen 
 
 Der Auftrag erscheint unter **Downloads**. Verwenden Sie **Pause** und **Fortsetzen** für den ausgewählten Auftrag. MultiRoute speichert fertige Fragmente dauerhaft und prüft ihre gespeicherten Datensätze vor der Wiederverwendung; die abschließende Zusammensetzung folgt der Reihenfolge der Wiedergabeliste, nicht der Fertigstellungsreihenfolge der Gateways.
 
-![HLS-Fortschritt, Gateways und Auftragsaktionen](../images/hls-4.6.11/06-hls-download-de.png)
+![HLS-Fortschritt, Gateways und Auftragsaktionen](../images/hls-4.6.12/06-hls-download-de.png)
 
 Für eine Erklärung zum einzelnen Auftrag klicken Sie ihn mit rechts an und öffnen Sie sein Downloadprotokoll. Prüfen Sie dort Fragmentdownloads, Wiederverwendung und Fehler; das allgemeine Anwendungsprotokoll ist nicht die einzige Untersuchungsquelle. Protokolle helfen auch nach dem Abschluss.
 

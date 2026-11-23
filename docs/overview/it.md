@@ -8,33 +8,33 @@
 
 **Prima di utilizzare i gateway, apri le impostazioni di rete, scegli un indirizzo IP virtuale libero per l’applicazione, fai clic su «Verifica e applica» e attendi la conferma dell’assegnazione dell’indirizzo. Poi verifica i gateway. Inserire soltanto l’indirizzo non basta.**
 
-**4.6.11:** Nelle impostazioni di rete si può fissare la velocità massima di ogni gateway in Mbit/s. Il limite è condiviso da download e upload simultanei; 0 significa illimitato. Si applica subito e resta dopo il riavvio. I corrieri in corsa mostrano una sola figura nitida senza corpi sovrapposti.
+**4.6.12:** I test di velocità provano automaticamente file di riserva di Selectel, OVH e Hetzner tramite lo stesso gateway selezionato. Tutti i tentativi condividono i limiti di dati e tempo di trasferimento. Un file sorgente assente non rende più il gateway non disponibile; l’interfaccia mostra il server di test e l’avviso del file di riserva. HTTP 404 resta un errore della sorgente durante la preparazione.
 
 <p align="center"><img src="../images/overview/it/hero.svg" width="1320" alt="MultiRoute Downloader — Più connessioni. Un solo download." /></p>
 
 <p align="center"><strong>Scarica file di grandi dimensioni con le connessioni che hai già.</strong><br />Combina gateway indipendenti a banda larga e mobili per scaricare file di grandi dimensioni, conserva l’avanzamento dei trasferimenti riprendibili e verifica il file completato.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>Scarica 4.6.11</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.12"><strong>Scarica 4.6.12</strong></a> ·
   <a href="../../downloads/README.md">Download attuali</a> ·
   <a href="../it.md">Guida utente</a> ·
   <a href="../../API.ru.txt">Riferimento API</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.11:start -->
+<!-- capabilities-4.6.12:start -->
 **Video HLS:** [Guida Chrome / Edge con schermate](../hls/HLS-CHROME-EDGE.it.md) · [12 lingue](../hls/README.md)
 
-## Altre possibilità in 4.6.11
+## Altre possibilità in 4.6.12
 
 Chrome/Edge rileva video HLS supportati: scelta della qualità, ripresa e assemblaggio dei frammenti. Sono esclusi flussi cifrati, con DRM e dirette non supportate. OS indica il percorso di sistema secondo OS/VPN; il client VPN raggiunge il server tramite la connessione fisica. Sistema e gateway vengono verificati separatamente; i gateway non modificano le rotte delle altre applicazioni. Imposta cartelle predefinite, video, audio e immagini con estensioni modificabili. Quattro corrieri adulti mostrano lo stato, dimensioni 40–200%; il sacco rappresenta i dati totali rimanenti. L’API locale crea e monitora download secondo licenza e configurazione.
 
-![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute 4.6.12](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
-[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
+[OS / VPN](../images/v4.6.12/multiroute-4.6.12-network-en.png) · [40–200%](../images/v4.6.12/multiroute-4.6.12-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.11:end -->
+<!-- capabilities-4.6.12:end -->
 
 ## Perché esiste MultiRoute
 
@@ -78,22 +78,22 @@ I controlli dei file confrontano i dati assemblati con un riferimento attendibil
 
 ## Download e installazione
 
-**Versione attuale: 4.6.11.** Gli installer nativi includono un ambiente Java 21 dedicato e il componente di rete della piattaforma. Apri l’applicazione dalla sua normale icona.
+**Versione attuale: 4.6.12.** Gli installer nativi includono un ambiente Java 21 dedicato e il componente di rete della piattaforma. Apri l’applicazione dalla sua normale icona.
 
 | Il tuo computer | Installer in un solo file |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg) |
 
-[Integrazione con Chrome / Edge](../it.md#chrome-and-edge-integration) · [Checksum e rapporto](../../downloads/v4.6.11/README.md) · [Dettagli dei download](../../downloads/README.md)
+[Integrazione con Chrome / Edge](../it.md#chrome-and-edge-integration) · [Checksum e rapporto](../../downloads/v4.6.12/README.md) · [Dettagli dei download](../../downloads/README.md)
 
 L’installer Windows è in inglese e crea un collegamento sul desktop. Npcap viene verificato separatamente e, se necessario, viene proposto il suo installer ufficiale; macOS usa libpcap di sistema. Consulta la guida nella tua lingua per l’installazione e le conferme di sicurezza. Gli installer nativi pubblici coprono Windows e macOS; qui non è incluso un installer Linux 4.x.
 
-**Free / Pro nella versione 4.6.11:** Free permette di usare fino a **2 gateway**, **3 download simultanei** e di creare **3 profili di siti**, con aspetto Graphite/Sistema. Le corrispondenti funzioni Pro consentono fino a **8 gateway**, **32 download simultanei**, profili aggiuntivi, priorità, cronologia e rapporti dei gateway, operazioni in blocco, l’API esterna e stili aggiuntivi. Free non limita deliberatamente la velocità di download. [Dettagli completi delle funzioni](../licensing.en.md).
+**Free / Pro nella versione 4.6.12:** Free permette di usare fino a **2 gateway**, **3 download simultanei** e di creare **3 profili di siti**, con aspetto Graphite/Sistema. Le corrispondenti funzioni Pro consentono fino a **8 gateway**, **32 download simultanei**, profili aggiuntivi, priorità, cronologia e rapporti dei gateway, operazioni in blocco, l’API esterna e stili aggiuntivi. Free non limita deliberatamente la velocità di download. [Dettagli completi delle funzioni](../licensing.en.md).
 
 
-## Novità di 4.6.11
+## Novità di 4.6.12
 
 - **Risposte dei gateway Mac con indirizzo manuale.** La cattura POSIX viene corretta affinché indirizzo manuale dell’app e DHCP ricevano entrambi le risposte al MAC proprio dell’app, come già su Windows. Un ping di sistema riuscito verifica il collegamento del computer, non la ricezione sull’indirizzo virtuale dell’app.
 
@@ -123,20 +123,20 @@ Si corregge una differenza nel modo di cattura, non ogni causa di gateway irragg
 
 ## I tuoi trasferimenti, ben visibili
 
-Lo spazio di lavoro di 4.6.11 mette i tuoi file al centro: colonne separate per nome e dimensione, avanzamento individuale, velocità totale e per gateway, un grafico della velocità e dettagli dei file. Graphite e System sono inclusi in Free; stili aggiuntivi come Rose richiedono la corrispondente funzione Pro.
+Lo spazio di lavoro di 4.6.12 mette i tuoi file al centro: colonne separate per nome e dimensione, avanzamento individuale, velocità totale e per gateway, un grafico della velocità e dettagli dei file. Graphite e System sono inclusi in Free; stili aggiuntivi come Rose richiedono la corrispondente funzione Pro.
 
-![MultiRoute Downloader 4.3.7 — coda di download e velocità dei gateway](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute Downloader 4.6.12 — coda di download e velocità dei gateway](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
 *Interfaccia Windows attuale, acquisita con un profilo dimostrativo isolato. File di esempio, avanzamento, velocità e viste abilitate con Pro illustrano i controlli e non sono misurazioni delle prestazioni.*
 
 <details>
 <summary><strong>Impostazioni di rete e cronologia della velocità</strong></summary>
 
-![Indirizzo dell’applicazione e DNS protetto](../images/v4.6.11/multiroute-4.6.11-network-en.png)
+![Indirizzo dell’applicazione e DNS protetto](../images/v4.6.12/multiroute-4.6.12-network-en.png)
 
-![Selezione dei gateway e test di velocità](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
+![Selezione dei gateway e test di velocità](../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — cronologia della velocità di download](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
+![MultiRoute Downloader 4.6.12 — cronologia della velocità di download](../images/v4.6.12/multiroute-4.6.12-speed-graph-en.png)
 
 </details>
 
@@ -147,23 +147,23 @@ Scegli tra nove aspetti: Graphite, Nordic, Streams Studio, Neon, Community, Chat
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -180,12 +180,12 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.12/man-256mib-walk.png"><img src="../images/v4.6.12/man-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.12/woman-256mib-walk.png"><img src="../images/v4.6.12/woman-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.12/male_brown-256mib-walk.png"><img src="../images/v4.6.12/male_brown-256mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.12/female_brown-256mib-walk.png"><img src="../images/v4.6.12/female_brown-256mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -193,12 +193,12 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.12/man-2048mib-walk.png"><img src="../images/v4.6.12/man-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.12/woman-2048mib-walk.png"><img src="../images/v4.6.12/woman-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.12/male_brown-2048mib-walk.png"><img src="../images/v4.6.12/male_brown-2048mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.12/female_brown-2048mib-walk.png"><img src="../images/v4.6.12/female_brown-2048mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -206,12 +206,12 @@ Quando un download termina, il corriere posa il carico consegnato e scompare gra
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo</strong><br /><a href="../images/v4.6.12/man-12288mib-walk.png"><img src="../images/v4.6.12/man-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna</strong><br /><a href="../images/v4.6.12/woman-12288mib-walk.png"><img src="../images/v4.6.12/woman-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
-<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
+<td width="50%" valign="top"><strong>Corriere uomo 2</strong><br /><a href="../images/v4.6.12/male_brown-12288mib-walk.png"><img src="../images/v4.6.12/male_brown-12288mib-walk.png" width="420" alt="Corriere uomo" /></a></td>
+<td width="50%" valign="top"><strong>Corriere donna 2</strong><br /><a href="../images/v4.6.12/female_brown-12288mib-walk.png"><img src="../images/v4.6.12/female_brown-12288mib-walk.png" width="420" alt="Corriere donna" /></a></td>
 </tr>
 </table>
 
@@ -221,12 +221,12 @@ Imposta la cartella di download, i profili dei siti e la lingua, poi regola l’
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Impostazioni dell’applicazione</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="Impostazioni dell’applicazione" /></a></td>
-<td width="50%" valign="top"><strong>Aspetto, corriere e suoni</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="Aspetto, corriere e suoni" /></a></td>
+<td width="50%" valign="top"><strong>Impostazioni dell’applicazione</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-settings-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-settings-en.png" width="420" alt="Impostazioni dell’applicazione" /></a></td>
+<td width="50%" valign="top"><strong>Aspetto, corriere e suoni</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-appearance-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-appearance-en.png" width="420" alt="Aspetto, corriere e suoni" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Indirizzo dell’applicazione e DNS protetto</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="Indirizzo dell’applicazione e DNS protetto" /></a></td>
-<td width="50%" valign="top"><strong>Selezione dei gateway e test di velocità</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="Selezione dei gateway e test di velocità" /></a></td>
+<td width="50%" valign="top"><strong>Indirizzo dell’applicazione e DNS protetto</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-en.png" width="420" alt="Indirizzo dell’applicazione e DNS protetto" /></a></td>
+<td width="50%" valign="top"><strong>Selezione dei gateway e test di velocità</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png" width="420" alt="Selezione dei gateway e test di velocità" /></a></td>
 </tr>
 </table>
 
@@ -235,8 +235,8 @@ Imposta la cartella di download, i profili dei siti e la lingua, poi regola l’
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Crea un download</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="Crea un download" /></a></td>
-<td width="50%" valign="top"><strong>Spazio di lavoro per i caricamenti</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="Spazio di lavoro per i caricamenti" /></a></td>
+<td width="50%" valign="top"><strong>Crea un download</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-new-download-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-new-download-en.png" width="420" alt="Crea un download" /></a></td>
+<td width="50%" valign="top"><strong>Spazio di lavoro per i caricamenti</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-uploads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-uploads-en.png" width="420" alt="Spazio di lavoro per i caricamenti" /></a></td>
 </tr>
 </table>
 
@@ -299,7 +299,7 @@ La gestione generale tramite l’API esterna richiede la corrispondente funzione
 
 L’applicazione usa un proprio indirizzo IPv4 locale e un proprio indirizzo MAC applicativo, così i gateway selezionati possono funzionare indipendentemente dal gateway predefinito del sistema operativo, senza modificare le route del sistema né il MAC dell’adattatore fisico. Usa un indirizzo libero nella stessa sottorete effettivamente in uso. Mantieni un indirizzo manuale al di fuori dell’assegnazione DHCP automatica, oppure riservalo/escludilo sui server DHCP della LAN; quindi usa **Verifica e applica** nelle impostazioni di rete. [Scelta e verifica dell’indirizzo](../it.md#application-virtual-ip).
 
-Sono stati verificati il contenuto e i metadati degli installer Windows 4.6.11; i pacchetti macOS hanno superato i controlli dei componenti nativi e dell’ambiente Java sui runner CI di destinazione. I trasferimenti tramite gateway su LAN/DHCP con Mac fisici richiedono ancora una convalida sull’hardware. [Rapporto di verifica](../../NATIVE-INSTALLER-TESTS.json).
+Sono stati verificati il contenuto e i metadati degli installer Windows 4.6.12; i pacchetti macOS hanno superato i controlli dei componenti nativi e dell’ambiente Java sui runner CI di destinazione. I trasferimenti tramite gateway su LAN/DHCP con Mac fisici richiedono ancora una convalida sull’hardware. [Rapporto di verifica](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Autore e licenza
 
@@ -307,4 +307,4 @@ Creato da **[2018-spec-fdsds](https://github.com/2018-spec-fdsds)**. L’uso gra
 
 [Licenza](../../LICENSE.txt) · [Sintesi della licenza](../../LICENSING.md) · [Avvisi sulle terze parti](../../THIRD-PARTY-NOTICES.txt)
 
-Questa area di distribuzione contiene gli installer attuali della versione 4.6.11 e la documentazione utente.
+Questa area di distribuzione contiene gli installer attuali della versione 4.6.12 e la documentazione utente.

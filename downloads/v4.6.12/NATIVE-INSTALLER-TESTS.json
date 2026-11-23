@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "version": "4.6.12",
+  "jar_sha256": "ab66094b9a934378944242c45cac4a86456d5ad13b5dee9b0eb704cf3eede292",
+  "windows": {
+    "installer_sha256": "cddb4a7b16827bcf648bec5292eb0499442e6c82d355a4cdee853f4a7b0cfb1d",
+    "installer_bytes": 313225728,
+    "embedded_jar_sha256": "ab66094b9a934378944242c45cac4a86456d5ad13b5dee9b0eb704cf3eede292",
+    "cabinet_files_verified": 860,
+    "approved_docs_stage_files_verified": 466,
+    "utf8_text_files_verified": 165,
+    "installer_language": "en-US (1033)",
+    "desktop_shortcut": true,
+    "extension_version": "4.6.12"
+  },
+  "macos": [
+    {
+      "architecture": "arm64",
+      "package_name": "MultiRoute-Downloader-4.6.12-macOS-arm64.pkg",
+      "package_bytes": 315338821,
+      "package_sha256": "d0937ca5817920afc2ae90cf66ad3ddd4b015c9f8f4a6d2bec1cb64494300426",
+      "targeted_checks": 999,
+      "native_launcher_verified": true,
+      "physical_LAN_or_DHCP_hardware_tested": false
+    },
+    {
+      "architecture": "x86_64",
+      "package_name": "MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg",
+      "package_bytes": 309059333,
+      "package_sha256": "c4a9bc441634ca4a13dda2f1a8e7e5adb0bcfbb8a0012d1b4b2e468044999406",
+      "targeted_checks": 999,
+      "native_launcher_verified": true,
+      "physical_LAN_or_DHCP_hardware_tested": false
+    }
+  ],
+  "speed_test": {
+    "backup_providers": [
+      "Selectel",
+      "OVH",
+      "Hetzner"
+    ],
+    "shared_payload_byte_limit": 16777216,
+    "shared_transfer_time_limit_ms": 5000,
+    "candidate_metadata_limit_ms": 3000,
+    "overall_limit_ms": 14000,
+    "same_selected_route": true,
+    "fallback_suite_checks": 57,
+    "ui_and_twelve_language_checks": 220,
+    "source_404_suite_checks": 14,
+    "source_url_unchanged": true,
+    "gateway_status_preserved_on_source_error": true,
+    "actual_installed_gateway_fallback_verified": true
+  },
+  "local_update": {
+    "version": "4.6.12",
+    "jobs_preserved": 382,
+    "download_file_contents_read_or_modified": false
+  },
+  "screenshots": {
+    "current_english_images": 30,
+    "hls_languages": 12,
+    "hls_images": 72,
+    "hls_chrome_images_refreshed": 12,
+    "unchanged_hls_forms_reverified": 60,
+    "courier_images": "static",
+    "synthetic_demo_data": true
+  },
+  "application_source_published": false,
+  "private_issuer_material_published": false,
+  "local_native_upgrade": {
+    "status": "PASS_NATIVE_LOCAL_UPGRADE",
+    "version": "4.6.12",
+    "jobs_preserved": 382
+  }
+}

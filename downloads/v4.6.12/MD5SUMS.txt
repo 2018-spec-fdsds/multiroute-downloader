@@ -1,0 +1,3 @@
+d2e31dd270b2648eacdf2d508df4b2bc  MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe
+08eed8949808f40210181f4f200f5e44  MultiRoute-Downloader-4.6.12-macOS-arm64.pkg
+ed5a4d12e696785f987e134dc8b44b82  MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg

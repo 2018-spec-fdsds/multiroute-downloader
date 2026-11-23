@@ -9,33 +9,33 @@
 
 **Trước khi dùng các cổng mạng, mở Thiết lập mạng, chọn một địa chỉ IP ảo còn trống cho ứng dụng, bấm «Kiểm tra và áp dụng» và đợi xác nhận địa chỉ đã được gán. Sau đó kiểm tra các cổng mạng. Chỉ nhập địa chỉ là chưa đủ.**
 
-**4.6.11:** Đặt tốc độ tối đa theo Mbit/s cho từng cổng mạng trong cài đặt Mạng. Tải xuống và tải lên đồng thời dùng chung giới hạn; 0 là không giới hạn. Thiết lập có hiệu lực ngay và được giữ sau khi khởi động lại. Nhân vật chạy hiển thị một hình rõ nét, không còn thân người chồng nhau.
+**4.6.12:** Kiểm tra tốc độ tự động thử các tệp dự phòng của Selectel, OVH và Hetzner qua cùng cổng mạng đã chọn. Mọi lần thử dùng chung giới hạn dữ liệu và thời gian truyền. Tệp nguồn bị thiếu không còn khiến cổng mạng bị đánh dấu không khả dụng; giao diện hiển thị máy chủ thử và thông báo dùng tệp dự phòng. HTTP 404 vẫn được giữ là lỗi nguồn khi chuẩn bị tải.
 
 <p align="center"><img src="../images/overview/vi/hero.svg" width="1320" alt="MultiRoute Downloader — Nhiều kết nối. Một lượt tải." /></p>
 
 <p align="center"><strong>Tải tệp lớn bằng những kết nối bạn đã có.</strong><br />Kết hợp các cổng mạng băng rộng và di động độc lập để tải tệp lớn, giữ lại tiến độ khi được hỗ trợ tiếp tục tải và kiểm tra tệp đã hoàn tất.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>Tải 4.6.11</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.12"><strong>Tải 4.6.12</strong></a> ·
   <a href="../../downloads/README.md">Bản tải xuống hiện hành</a> ·
   <a href="../vi.md">Hướng dẫn sử dụng</a> ·
   <a href="../../API.ru.txt">Tài liệu API</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.11:start -->
+<!-- capabilities-4.6.12:start -->
 **Video HLS:** [Hướng dẫn Chrome / Edge kèm ảnh chụp màn hình](../hls/HLS-CHROME-EDGE.vi.md) · [12 ngôn ngữ](../hls/README.md)
 
-## Các khả năng khác trong 4.6.11
+## Các khả năng khác trong 4.6.12
 
 Chrome/Edge phát hiện video HLS được hỗ trợ: chọn chất lượng, tải tiếp và ghép các đoạn. Không áp dụng cho luồng mã hóa, có DRM hoặc phát trực tiếp không được hỗ trợ. OS chỉ đường hệ thống theo cấu hình OS/VPN; máy khách VPN tới máy chủ qua kết nối vật lý. Hệ thống và cổng được kiểm tra riêng; cổng không đổi tuyến của ứng dụng khác. Chọn thư mục mặc định, video, âm thanh, hình ảnh và phần mở rộng. Bốn nhân vật giao hàng trưởng thành thể hiện trạng thái, kích thước 40–200%; túi thể hiện tổng dữ liệu còn lại. API cục bộ tạo và theo dõi lượt tải tùy giấy phép và cấu hình.
 
-![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute 4.6.12](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
-[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
+[OS / VPN](../images/v4.6.12/multiroute-4.6.12-network-en.png) · [40–200%](../images/v4.6.12/multiroute-4.6.12-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.11:end -->
+<!-- capabilities-4.6.12:end -->
 
 ## Vì sao có MultiRoute
 
@@ -79,22 +79,22 @@ Việc kiểm tra tệp so sánh dữ liệu đã ghép với một giá trị t
 
 ## Tải xuống và cài đặt
 
-**Phiên bản hiện hành: 4.6.11.** Trình cài đặt gốc bao gồm Java 21 riêng cho ứng dụng và thành phần mạng của nền tảng. Mở ứng dụng bằng biểu tượng thông thường.
+**Phiên bản hiện hành: 4.6.12.** Trình cài đặt gốc bao gồm Java 21 riêng cho ứng dụng và thành phần mạng của nền tảng. Mở ứng dụng bằng biểu tượng thông thường.
 
 | Máy tính của bạn | Trình cài đặt một tệp |
 | --- | --- |
-| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows Setup EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg) |
 
-[Tích hợp Chrome / Edge](../vi.md#chrome-and-edge-integration) · [Mã kiểm tra và báo cáo](../../downloads/v4.6.11/README.md) · [Chi tiết bản tải xuống](../../downloads/README.md)
+[Tích hợp Chrome / Edge](../vi.md#chrome-and-edge-integration) · [Mã kiểm tra và báo cáo](../../downloads/v4.6.12/README.md) · [Chi tiết bản tải xuống](../../downloads/README.md)
 
 Windows Setup dùng tiếng Anh và tạo lối tắt trên màn hình nền. Npcap được kiểm tra riêng và trình cài đặt chính thức sẽ được đề xuất khi cần; macOS dùng libpcap của hệ thống. Xem hướng dẫn bằng ngôn ngữ của bạn để biết cách cài đặt và xác nhận bảo mật. Trình cài đặt gốc công khai hỗ trợ Windows và macOS; ở đây không có trình cài đặt Linux 4.x.
 
-**Free / Pro trong 4.6.11:** Free dùng tối đa **2 cổng mạng**, **3 lượt tải đồng thời** và tạo **3 hồ sơ trang**, với giao diện Graphite/System. Các khả năng Pro tương ứng cho phép tối đa **8 cổng mạng**, **32 lượt tải đồng thời**, thêm hồ sơ, mức ưu tiên, lịch sử/báo cáo cổng mạng, thao tác theo lô, API bên ngoài và các kiểu giao diện bổ sung. Free không cố ý giới hạn tốc độ tải xuống. [Chi tiết đầy đủ về các khả năng](../licensing.en.md).
+**Free / Pro trong 4.6.12:** Free dùng tối đa **2 cổng mạng**, **3 lượt tải đồng thời** và tạo **3 hồ sơ trang**, với giao diện Graphite/System. Các khả năng Pro tương ứng cho phép tối đa **8 cổng mạng**, **32 lượt tải đồng thời**, thêm hồ sơ, mức ưu tiên, lịch sử/báo cáo cổng mạng, thao tác theo lô, API bên ngoài và các kiểu giao diện bổ sung. Free không cố ý giới hạn tốc độ tải xuống. [Chi tiết đầy đủ về các khả năng](../licensing.en.md).
 
 
-## Điểm mới trong 4.6.11
+## Điểm mới trong 4.6.12
 
 - **Phản hồi cổng mạng Mac với địa chỉ thủ công.** Thiết lập bắt gói POSIX được sửa để địa chỉ thủ công của ứng dụng và DHCP đều nhận phản hồi gửi đến MAC riêng của ứng dụng, giống hành vi Windows hiện có. Ping hệ thống thành công chỉ kiểm tra kết nối của máy tính, không chứng minh địa chỉ ảo của ứng dụng nhận được phản hồi.
 
@@ -124,20 +124,20 @@ Windows Setup dùng tiếng Anh và tạo lối tắt trên màn hình nền. Np
 
 ## Theo dõi rõ ràng các lượt truyền
 
-Không gian làm việc 4.6.11 lấy tệp làm trung tâm: cột tên và kích thước riêng biệt, tiến độ từng tệp, tốc độ tổng và từng cổng mạng, biểu đồ tốc độ cùng thông tin chi tiết về tệp. Graphite và System có trong Free; các kiểu giao diện bổ sung như Rose cần khả năng Pro tương ứng.
+Không gian làm việc 4.6.12 lấy tệp làm trung tâm: cột tên và kích thước riêng biệt, tiến độ từng tệp, tốc độ tổng và từng cổng mạng, biểu đồ tốc độ cùng thông tin chi tiết về tệp. Graphite và System có trong Free; các kiểu giao diện bổ sung như Rose cần khả năng Pro tương ứng.
 
-![MultiRoute Downloader 4.3.7 — hàng đợi tải xuống và tốc độ cổng mạng](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute Downloader 4.6.12 — hàng đợi tải xuống và tốc độ cổng mạng](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
 *Giao diện hiện hành trên Windows, được chụp với hồ sơ minh họa riêng biệt. Tệp, tiến độ, tốc độ mẫu và các màn hình có tính năng Pro minh họa các điều khiển, không phải số đo hiệu năng.*
 
 <details>
 <summary><strong>Thiết lập mạng và lịch sử tốc độ</strong></summary>
 
-![Địa chỉ ứng dụng và DNS được bảo vệ](../images/v4.6.11/multiroute-4.6.11-network-en.png)
+![Địa chỉ ứng dụng và DNS được bảo vệ](../images/v4.6.12/multiroute-4.6.12-network-en.png)
 
-![Chọn cổng mạng và kiểm tra tốc độ](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
+![Chọn cổng mạng và kiểm tra tốc độ](../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — lịch sử tốc độ tải xuống](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
+![MultiRoute Downloader 4.6.12 — lịch sử tốc độ tải xuống](../images/v4.6.12/multiroute-4.6.12-speed-graph-en.png)
 
 </details>
 
@@ -148,23 +148,23 @@ Chọn trong chín kiểu giao diện: Graphite, Nordic, Streams Studio, Neon, C
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -181,12 +181,12 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.12/man-256mib-walk.png"><img src="../images/v4.6.12/man-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.12/woman-256mib-walk.png"><img src="../images/v4.6.12/woman-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.12/male_brown-256mib-walk.png"><img src="../images/v4.6.12/male_brown-256mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.12/female_brown-256mib-walk.png"><img src="../images/v4.6.12/female_brown-256mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -194,12 +194,12 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.12/man-2048mib-walk.png"><img src="../images/v4.6.12/man-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.12/woman-2048mib-walk.png"><img src="../images/v4.6.12/woman-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.12/male_brown-2048mib-walk.png"><img src="../images/v4.6.12/male_brown-2048mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.12/female_brown-2048mib-walk.png"><img src="../images/v4.6.12/female_brown-2048mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -207,12 +207,12 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam</strong><br /><a href="../images/v4.6.12/man-12288mib-walk.png"><img src="../images/v4.6.12/man-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ</strong><br /><a href="../images/v4.6.12/woman-12288mib-walk.png"><img src="../images/v4.6.12/woman-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
-<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nam 2</strong><br /><a href="../images/v4.6.12/male_brown-12288mib-walk.png"><img src="../images/v4.6.12/male_brown-12288mib-walk.png" width="420" alt="Người giao hàng nam" /></a></td>
+<td width="50%" valign="top"><strong>Người giao hàng nữ 2</strong><br /><a href="../images/v4.6.12/female_brown-12288mib-walk.png"><img src="../images/v4.6.12/female_brown-12288mib-walk.png" width="420" alt="Người giao hàng nữ" /></a></td>
 </tr>
 </table>
 
@@ -222,12 +222,12 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Thiết lập ứng dụng</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="Thiết lập ứng dụng" /></a></td>
-<td width="50%" valign="top"><strong>Giao diện, người giao hàng và âm thanh</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="Giao diện, người giao hàng và âm thanh" /></a></td>
+<td width="50%" valign="top"><strong>Thiết lập ứng dụng</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-settings-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-settings-en.png" width="420" alt="Thiết lập ứng dụng" /></a></td>
+<td width="50%" valign="top"><strong>Giao diện, người giao hàng và âm thanh</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-appearance-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-appearance-en.png" width="420" alt="Giao diện, người giao hàng và âm thanh" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Địa chỉ ứng dụng và DNS được bảo vệ</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="Địa chỉ ứng dụng và DNS được bảo vệ" /></a></td>
-<td width="50%" valign="top"><strong>Chọn cổng mạng và kiểm tra tốc độ</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="Chọn cổng mạng và kiểm tra tốc độ" /></a></td>
+<td width="50%" valign="top"><strong>Địa chỉ ứng dụng và DNS được bảo vệ</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-en.png" width="420" alt="Địa chỉ ứng dụng và DNS được bảo vệ" /></a></td>
+<td width="50%" valign="top"><strong>Chọn cổng mạng và kiểm tra tốc độ</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png" width="420" alt="Chọn cổng mạng và kiểm tra tốc độ" /></a></td>
 </tr>
 </table>
 
@@ -236,8 +236,8 @@ Khi một lượt tải hoàn tất, người giao hàng đặt phần dữ li�
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Tạo lượt tải xuống</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="Tạo lượt tải xuống" /></a></td>
-<td width="50%" valign="top"><strong>Không gian tải lên</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="Không gian tải lên" /></a></td>
+<td width="50%" valign="top"><strong>Tạo lượt tải xuống</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-new-download-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-new-download-en.png" width="420" alt="Tạo lượt tải xuống" /></a></td>
+<td width="50%" valign="top"><strong>Không gian tải lên</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-uploads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-uploads-en.png" width="420" alt="Không gian tải lên" /></a></td>
 </tr>
 </table>
 
@@ -300,7 +300,7 @@ Quản lý tổng quát qua API bên ngoài cần khả năng Pro tương ứng;
 
 Ứng dụng dùng địa chỉ IPv4 cục bộ riêng và MAC của ứng dụng để các cổng mạng đã chọn hoạt động độc lập với cổng mạng mặc định của hệ điều hành, không thay đổi định tuyến của hệ điều hành hoặc MAC của bộ điều hợp vật lý. Dùng một địa chỉ còn trống trong đúng mạng con thực tế. Giữ địa chỉ đặt thủ công ngoài phạm vi cấp phát DHCP tự động, hoặc dành riêng/loại trừ địa chỉ đó trên các máy chủ DHCP trong LAN; sau đó dùng **Check and apply** (Kiểm tra và áp dụng) trong Thiết lập mạng. [Chọn và kiểm tra địa chỉ](../vi.md#application-virtual-ip).
 
-Nội dung và siêu dữ liệu của bộ cài Windows 4.6.11 đã được xác minh; các gói macOS đã vượt qua kiểm tra thành phần gốc và môi trường chạy Java trên các máy chạy CI mục tiêu. Truyền dữ liệu qua cổng mạng LAN/DHCP trên Mac thật vẫn cần xác minh bằng phần cứng. [Báo cáo xác minh](../../NATIVE-INSTALLER-TESTS.json).
+Nội dung và siêu dữ liệu của bộ cài Windows 4.6.12 đã được xác minh; các gói macOS đã vượt qua kiểm tra thành phần gốc và môi trường chạy Java trên các máy chạy CI mục tiêu. Truyền dữ liệu qua cổng mạng LAN/DHCP trên Mac thật vẫn cần xác minh bằng phần cứng. [Báo cáo xác minh](../../NATIVE-INSTALLER-TESTS.json).
 
 ## Chủ sở hữu và giấy phép
 
@@ -308,4 +308,4 @@ Nội dung và siêu dữ liệu của bộ cài Windows 4.6.11 đã được x�
 
 [Giấy phép](../../LICENSE.txt) · [Tóm tắt giấy phép](../../LICENSING.md) · [Thông báo của bên thứ ba](../../THIRD-PARTY-NOTICES.txt)
 
-Khu vực phân phối này chứa trình cài đặt 4.6.11 hiện hành và tài liệu sử dụng.
+Khu vực phân phối này chứa trình cài đặt 4.6.12 hiện hành và tài liệu sử dụng.

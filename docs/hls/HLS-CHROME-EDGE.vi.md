@@ -8,7 +8,7 @@
 <!-- hls-guide-languages:end -->
 
 
-> Cần **MultiRoute Downloader 4.5.2 trở lên** cùng tiện ích có chức năng phát hiện HLS. Hình minh họa ứng dụng dùng bản **4.6.11**. Hướng dẫn này không bổ sung HLS cho các bộ cài cũ; hãy kiểm tra phiên bản ứng dụng và các gói trên [trang phát hành](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
+> Cần **MultiRoute Downloader 4.5.2 trở lên** cùng tiện ích có chức năng phát hiện HLS. Hình minh họa ứng dụng dùng bản **4.6.12**. Hướng dẫn này không bổ sung HLS cho các bộ cài cũ; hãy kiểm tra phiên bản ứng dụng và các gói trên [trang phát hành](https://github.com/2018-spec-fdsds/multiroute-downloader/releases).
 
 Video HLS gồm một danh sách phát và nhiều đoạn dữ liệu phương tiện nhỏ. MultiRoute phát hiện danh sách qua tiện ích trình duyệt khi bạn chủ động bật chức năng này, cho phép chọn chất lượng sẵn có, tải các đoạn qua những cổng mạng đã chọn rồi ghép thành tệp video thuộc định dạng được hỗ trợ. Địa chỉ trang web thường khác với địa chỉ danh sách phát.
 
@@ -26,7 +26,7 @@ Video HLS gồm một danh sách phát và nhiều đoạn dữ liệu phương 
 2. Đánh dấu **Cho phép tiện ích Chrome / Edge gửi liên kết**, sau đó nhấn **OK**. Câu chữ thực tế thay đổi theo ngôn ngữ ứng dụng.
 3. Trong hộp thoại đó, nhấn **Mở thư mục tiện ích**. Giữ thư mục sẵn để dùng ở bước tiếp theo.
 
-![Bật tích hợp trình duyệt và mở thư mục tiện ích](../images/hls-4.6.11/01-integration-settings-vi.png)
+![Bật tích hợp trình duyệt và mở thư mục tiện ích](../images/hls-4.6.12/01-integration-settings-vi.png)
 
 Cầu nối lắng nghe trên cổng API cục bộ của ứng dụng, thường là **8765**, và chấp nhận origin của tiện ích thuộc dự án này. Không cần địa chỉ API công cộng hay quy tắc chuyển tiếp cổng trên bộ định tuyến. Quy trình này không có bộ cài native-messaging-host riêng: ứng dụng máy tính tiếp tục chạy và tiện ích giao tiếp với cầu nối loopback của nó.
 
@@ -51,9 +51,9 @@ Trong hộp chọn thư mục của trình duyệt, nhấn **⌘⇧G**, dán đ�
 
 Ghim **MultiRoute Downloader** từ menu Tiện ích của trình duyệt nếu muốn nút luôn hiện. Cài riêng trong từng trình duyệt/hồ sơ bạn sử dụng. Trình duyệt do tổ chức quản lý có thể hạn chế tiện ích cục bộ; hãy tuân theo chính sách quản trị viên.
 
-![Nạp tiện ích trong Chrome](../images/hls-4.6.11/02-chrome-extension-vi.png)
+![Nạp tiện ích trong Chrome](../images/hls-4.6.12/02-chrome-extension-vi.png)
 
-![Trang tiện ích Edge và vị trí chế độ nhà phát triển](../images/hls-4.6.11/03-edge-extension-vi.png)
+![Trang tiện ích Edge và vị trí chế độ nhà phát triển](../images/hls-4.6.12/03-edge-extension-vi.png)
 
 Đây là các quy trình cài cục bộ tiêu chuẩn được [Chrome](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) và [Microsoft Edge](https://learn.microsoft.com/en-us/microsoft-edge/extensions/getting-started/extension-sideloading) hướng dẫn. Hình Edge chụp khi chế độ nhà phát triển còn tắt; bật chế độ đó để nút tải tiện ích đã giải nén xuất hiện.
 
@@ -68,7 +68,7 @@ Chrome có thể giữ lại bản ghi lỗi cũ sau khi lỗi đã được s�
 ## 3. Phát hiện danh sách phát video
 
 1. Mở trang chứa video trong một thẻ HTTP/HTTPS thông thường.
-2. Nhấp chuột phải vào biểu tượng tiện ích MultiRoute và chọn **Công cụ tiện ích**. Trong 4.6.11, nhấp trái thông thường mở bảng nổi của ứng dụng; chức năng phát hiện HLS nằm trong cửa sổ công cụ tiện ích.
+2. Nhấp chuột phải vào biểu tượng tiện ích MultiRoute và chọn **Công cụ tiện ích**. Trong 4.6.12, nhấp trái thông thường mở bảng nổi của ứng dụng; chức năng phát hiện HLS nằm trong cửa sổ công cụ tiện ích.
 3. Trong **Luồng video(HLS)**, nhấn **Tìm trong thẻ này**.
 4. Chấp nhận quyền truy cập website tùy chọn nếu muốn phát hiện luồng. Trình duyệt có thể nhắc đến quyền truy cập nhiều website vì các đoạn của trình phát có thể đến từ máy chủ video/CDN khác. Tuy nhiên, tiện ích chỉ phát hiện trong những thẻ bạn đã bật rõ ràng.
 5. Đóng cửa sổ công cụ rồi **phát video**. Chức năng này theo dõi các phản hồi danh sách phát trong tương lai; không thể phát hiện ngược một danh sách đã được nạp trước khi bạn bật nó.
@@ -77,7 +77,7 @@ Chrome có thể giữ lại bản ghi lỗi cũ sau khi lỗi đã được s�
 
 Nếu hộp thoại xin quyền của trình duyệt đóng cửa sổ công cụ, hãy mở lại sau khi cấp quyền. Nếu phát hiện vẫn tắt, nhấn **Tìm trong thẻ này** lần nữa rồi phát video.
 
-![Công cụ tiện ích: phát hiện HLS và gửi luồng](../images/hls-4.6.11/04-detect-hls-popup-vi.png)
+![Công cụ tiện ích: phát hiện HLS và gửi luồng](../images/hls-4.6.12/04-detect-hls-popup-vi.png)
 
 Nếu trang đã nạp danh sách phát, hãy tải lại trang, mở lại công cụ, kiểm tra chức năng phát hiện còn bật hay không và bật lại nếu cần, sau đó phát video. **Điều hướng sang trang khác sẽ tắt phát hiện cho thẻ đó.** Đóng thẻ cũng xóa trạng thái phát hiện. Đừng cho rằng việc cấp quyền sẽ tự bật tất cả các thẻ.
 
@@ -93,7 +93,7 @@ Sau khi nhấn **Tải luồng này**, chuyển sang ứng dụng máy tính. Mu
 - Chọn chất lượng thấp hơn thường giảm lượng dữ liệu cần tải. MultiRoute không nâng độ phân giải hay chuyển mã video.
 - Phần mở rộng tệp theo loại vùng chứa được hỗ trợ: `.ts` với MPEG-TS hoặc `.mp4` với fMP4. Đổi tên tệp TS thành `.mp4` không thực hiện chuyển đổi.
 
-![Chọn một chất lượng HLS sẵn có](../images/hls-4.6.11/05-hls-quality-vi.png)
+![Chọn một chất lượng HLS sẵn có](../images/hls-4.6.12/05-hls-quality-vi.png)
 
 Nếu đã có liên kết `.m3u8` trực tiếp, bạn có thể dán vào MultiRoute. Nút tải luồng đã phát hiện cũng nhận diện phản hồi HLS có URL không kết thúc bằng `.m3u8`. HLS là danh sách phát; bản thân địa chỉ trang xem HTML không xác định liên kết m3u8. Việc xử lý những trang video được hỗ trợ thuộc một quy trình riêng, khác với phát hiện HLS này.
 
@@ -101,7 +101,7 @@ Nếu đã có liên kết `.m3u8` trực tiếp, bạn có thể dán vào Mult
 
 Tác vụ xuất hiện trong **Tải xuống**. Dùng **Tạm dừng** và **Tiếp tục** cho tác vụ được chọn. MultiRoute lưu các đoạn đã hoàn tất và kiểm tra bản ghi đoạn trước khi dùng lại; bước ghép cuối tuân theo thứ tự danh sách phát thay vì thứ tự hoàn thành trên các cổng mạng.
 
-![Tiến độ HLS, các cổng mạng và thao tác tác vụ](../images/hls-4.6.11/06-hls-download-vi.png)
+![Tiến độ HLS, các cổng mạng và thao tác tác vụ](../images/hls-4.6.12/06-hls-download-vi.png)
 
 Để xem chi tiết riêng, nhấp chuột phải vào tác vụ và mở nhật ký tải xuống của nó. Kiểm tra các bản ghi tải/tái sử dụng đoạn và lỗi tại đó; nhật ký ứng dụng chung không phải nơi duy nhất để điều tra. Nhật ký cũng hữu ích sau khi tải xong.
 

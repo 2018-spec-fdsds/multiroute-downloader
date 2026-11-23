@@ -1,0 +1,438 @@
+{
+  "version": "4.6.12",
+  "jar": "github/multiroute-resume/MultiRoute-Downloader.jar",
+  "jar_sha256": "ab66094b9a934378944242c45cac4a86456d5ad13b5dee9b0eb704cf3eede292",
+  "all_assets_fresh": true,
+  "old_stills_reused": false,
+  "image_count": 30,
+  "interface_language": "English",
+  "network_operations": 0,
+  "user_profile_read": false,
+  "clipboard_read": false,
+  "production_modified": false,
+  "public_repository_modified": false,
+  "rendering": "Actual current production JAR Swing components printed to BufferedImage using isolated synthetic profiles; no desktop screenshots.",
+  "synthetic_limit": {
+    "gateway": "192.168.1.1",
+    "gateway_limit_bps": 1562500,
+    "expected_display": "12.5 Mbit/s",
+    "real_user_limits_used": false
+  },
+  "harnesses": [
+    {
+      "file": "work/release4612/screens/PublicScreens4612.java",
+      "sha256": "5d36f1c37a84c6dec885e492f13f4dd59a54b326f7bec90a7d8a7fb0a9592d63"
+    },
+    {
+      "file": "work/release4612/screens/FullWindowShowcase4612.java",
+      "sha256": "c56a5e03c8e1387db633a8192de01397085f18cad2a72356706848f0660dc606"
+    }
+  ],
+  "courier_stills": {
+    "count": 12,
+    "static": true,
+    "method": "Actual current DownloadAvatar in actual DesktopUI avatarHost; synthetic running transfers 256 MiB, 2 GiB, 12 GiB; one walk pose, 650 ms decoder warmup.",
+    "source_jar_sha256": "ab66094b9a934378944242c45cac4a86456d5ad13b5dee9b0eb704cf3eede292"
+  },
+  "gallery_scenarios": [
+    {
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false,
+      "scene": "clean-chat-en"
+    },
+    {
+      "version": "4.6.12",
+      "os_network_changed": false,
+      "scene": "clean-community-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true
+    },
+    {
+      "scene": "clean-graphite-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false
+    },
+    {
+      "illustrative_data_only": true,
+      "status": "PASS",
+      "production_classes_unmodified": true,
+      "user_profile_accessed": false,
+      "network_callbacks": 0,
+      "scene": "clean-neon-en",
+      "os_network_changed": false,
+      "version": "4.6.12"
+    },
+    {
+      "os_network_changed": false,
+      "scene": "clean-nordic-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12"
+    },
+    {
+      "os_network_changed": false,
+      "scene": "clean-rose-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12"
+    },
+    {
+      "user_profile_accessed": false,
+      "network_callbacks": 0,
+      "scene": "clean-streams-en",
+      "os_network_changed": false,
+      "version": "4.6.12",
+      "illustrative_data_only": true,
+      "status": "PASS",
+      "production_classes_unmodified": true
+    },
+    {
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false,
+      "scene": "clean-studio-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false
+    },
+    {
+      "scene": "error-guide-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false
+    },
+    {
+      "illustrative_data_only": true,
+      "status": "PASS",
+      "production_classes_unmodified": true,
+      "user_profile_accessed": false,
+      "network_callbacks": 0,
+      "scene": "network-gateways-en",
+      "os_network_changed": false,
+      "version": "4.6.12"
+    },
+    {
+      "status": "PASS",
+      "production_classes_unmodified": true,
+      "user_profile_accessed": false,
+      "network_callbacks": 0,
+      "scene": "new-download-en",
+      "os_network_changed": false,
+      "version": "4.6.12",
+      "illustrative_data_only": true
+    },
+    {
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false,
+      "scene": "settings-en"
+    },
+    {
+      "version": "4.6.12",
+      "os_network_changed": false,
+      "scene": "skin-system-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true
+    },
+    {
+      "scene": "speed-graph-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false
+    },
+    {
+      "scene": "uploads-en",
+      "network_callbacks": 0,
+      "user_profile_accessed": false,
+      "production_classes_unmodified": true,
+      "status": "PASS",
+      "illustrative_data_only": true,
+      "version": "4.6.12",
+      "os_network_changed": false
+    }
+  ],
+  "images": [
+    {
+      "file": "female_brown-12288mib-walk.png",
+      "sha256": "f87e5fa9c8242540b42e88a998f032a46a01dfe11058768981535c746e0453b2",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "female_brown-2048mib-walk.png",
+      "sha256": "7e10a40aa20d9ed69cd8cccd09a506400b99b906fb35ff200036719d9c106237",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "female_brown-256mib-walk.png",
+      "sha256": "8ad7e939faccc470d65b8d10360238a60fe48265bd6db60ec7dfad00681c3251",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "male_brown-12288mib-walk.png",
+      "sha256": "b45ec7c3953c44eb6067c993bde7d77122db799e2497fe005f3afaeb1f606eae",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "male_brown-2048mib-walk.png",
+      "sha256": "46b1ccfa66297d7c9b82cc5bce9961da53df3d7177d966bb1d30163ddfe1d304",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "male_brown-256mib-walk.png",
+      "sha256": "f2157861a8de923a962a8012d34e586ea71ee522df4572ee1fbdd7c0b8eb837f",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "man-12288mib-walk.png",
+      "sha256": "7e23a19f225cd9095b6058a3c5de172a06d70a22e03005080822d4e086d67447",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "man-2048mib-walk.png",
+      "sha256": "c52784ef99339e12a4471b9bc51db55b9452878e6d82c1ed0cbcf0ba8c8cd1dc",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "man-256mib-walk.png",
+      "sha256": "82efc88b2b140bb5b5bf9e179fb82e672c20b92703733ed1ae9c4170d2303596",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-appearance-en.png",
+      "sha256": "05d9d64f7dffe1f5dc8aa25a765147aec4c1ac5ba682bba9bc80e57497af0500",
+      "dimensions": [
+        648,
+        605
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-chat-en.png",
+      "sha256": "0450154718ee2692093ed4eca8fcc59d7680490e5dff7f5156babd34ebcd5d93",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-community-en.png",
+      "sha256": "4c2d06c7cac23ceb0295610920d62bdf8b9347a5f940087b32ecae5fd4f93551",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-graphite-en.png",
+      "sha256": "dd3f654cb9276e806122e2a17678ce5a7a9c059db8e1cde1fb326ae5f8c4d486",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-neon-en.png",
+      "sha256": "c814a8a4917356f919c8c796d003ba62125eebefc795c36b68c5accf3365533c",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-nordic-en.png",
+      "sha256": "b72fa14c89c97a48f1b6f3d3c8cad74c03c37cd20b087ec8623858b6fe8a9161",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-rose-en.png",
+      "sha256": "f798694af7eb5e8017a99951c0965ce1a4d330a30a1225195ceb768c9e30108b",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-streams-en.png",
+      "sha256": "305bd38b393e000a314b12608f9c4fb4a963cab00fb439431fe1f886e5a52ee1",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-clean-studio-en.png",
+      "sha256": "3f0b545a616e9b16ae9f1f2658a6fe398291fe96300a07ca4dd9d81b5b5ef96b",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-downloads-en.png",
+      "sha256": "a3b9607a7e40c5d48839db8db166c515e6c3e10ee37a5b1f655dab402c359316",
+      "dimensions": [
+        1588,
+        995
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-error-guide-en.png",
+      "sha256": "25d690cec57d6ec6a433af9bb5e01bee73d9a36c0235f0a1e423ee07063b35de",
+      "dimensions": [
+        1038,
+        635
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-network-en.png",
+      "sha256": "7dce6609b91e2f2187eebc2b4466025e35091ebb5a4f6924554b35b73ef2d076",
+      "dimensions": [
+        1588,
+        1230
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-network-gateways-en.png",
+      "sha256": "2974b0f17ba12e7fd22a88edf0801abf0819afae8f52cd038c2b39fdd5aed88a",
+      "dimensions": [
+        1588,
+        1230
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-new-download-en.png",
+      "sha256": "6ee36bf9f57c69188ada58cc07ca18ebbc7c2736a109aa53ad081a1708cec116",
+      "dimensions": [
+        748,
+        645
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-settings-en.png",
+      "sha256": "261ddaa6c312c9f542f0d4802ebc48834dbd7d61f88b28e26c9d34d8f0affb15",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-skin-system-en.png",
+      "sha256": "1dff851e23e9396391e24a47a5685f302355912d0e6985cff6fafcfdd211739e",
+      "dimensions": [
+        1588,
+        965
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-speed-graph-en.png",
+      "sha256": "e877f8aede2c496a6c0e1d6f915d739676b20e2f447cfaa9cc34e57acee35b0c",
+      "dimensions": [
+        838,
+        295
+      ]
+    },
+    {
+      "file": "multiroute-4.6.12-uploads-en.png",
+      "sha256": "bff853eda826eef0785282b10c82916bf7af03efed145bef091eb79a724a5628",
+      "dimensions": [
+        1588,
+        955
+      ]
+    },
+    {
+      "file": "woman-12288mib-walk.png",
+      "sha256": "0d05a546d5118db36e8798c5b7dc178433049d8a81a61dd2d92de17a7009894f",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "woman-2048mib-walk.png",
+      "sha256": "4586939e18d0a1e9d5ecc576590926ef5db9f391b90beffce3b7304044610bf5",
+      "dimensions": [
+        800,
+        160
+      ]
+    },
+    {
+      "file": "woman-256mib-walk.png",
+      "sha256": "59e7037b35b17d445bd6cc6a4e1ae60b728c5b93efef157e5ad92ba8cb3a6146",
+      "dimensions": [
+        800,
+        160
+      ]
+    }
+  ],
+  "visual_review": "PASS: all 18 actual application UI assets and 12 static courier stills reviewed on contact sheets; final network gateway image reviewed full size showing all four rows, 12.5 Mbit/s owned limit and current fallback note.",
+  "network_note_visible": true,
+  "network_note": {
+    "file": "multiroute-4.6.12-network-gateways-en.png",
+    "visible_text": "Speed test only: up to 16 MiB or 5 seconds of data transfer across all attempts. If a source is unavailable, backup test files are used. These limits do not apply to file downloads.",
+    "actual_jar_note_verified": true
+  }
+}

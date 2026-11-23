@@ -1,6 +1,6 @@
 # HLS video — guides and screenshots in 12 languages
 
-Choose your language. Each illustrated guide includes six screenshots of MultiRoute, Chrome, Edge and the extension in that language, captured for MultiRoute 4.6.11.
+Choose your language. Each illustrated guide includes six screenshots of MultiRoute, Chrome, Edge and the extension in that language, verified for MultiRoute 4.6.12.
 
 | Language | Illustrated guide |
 | --- | --- |

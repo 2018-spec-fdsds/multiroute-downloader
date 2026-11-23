@@ -8,33 +8,33 @@
 
 **게이트웨이를 사용하기 전에 네트워크 설정을 열고 앱에 사용할 비어 있는 가상 IP 주소를 선택한 다음 ‘확인 및 적용’을 누르고 주소가 할당되었다는 확인을 기다리세요. 그런 다음 게이트웨이를 테스트하세요. 주소를 입력하는 것만으로는 충분하지 않습니다.**
 
-**4.6.11:** 네트워크 설정에서 게이트웨이별 최대 속도를 Mbit/s로 지정합니다. 동시 다운로드와 업로드가 한도를 공유하며 0은 무제한입니다. 즉시 적용되고 재시작 후에도 유지됩니다. 달리는 배달원은 겹친 몸 없이 하나의 선명한 모습으로 표시됩니다.
+**4.6.12:** 속도 테스트는 선택한 동일한 게이트웨이를 통해 Selectel, OVH, Hetzner의 예비 파일을 순서대로 시도합니다. 모든 시도가 데이터와 전송 시간 한도를 공유합니다. 원본 파일이 없어도 게이트웨이를 사용할 수 없음으로 표시하지 않으며 테스트 서버와 예비 파일 사용 안내를 보여 줍니다. 다운로드 준비 중 HTTP 404는 원본 오류로 유지됩니다.
 
 <p align="center"><img src="../images/overview/ko/hero.svg" width="1320" alt="MultiRoute Downloader — 여러 연결로 하나의 다운로드를." /></p>
 
 <p align="center"><strong>이미 보유한 인터넷 연결로 대용량 파일을 다운로드하세요.</strong><br />독립적인 유선 인터넷과 모바일 게이트웨이를 함께 활용해 대용량 파일을 다운로드하고, 지원되는 이어받기 진행 상황을 보존하며, 완료된 파일을 검증하세요.</p>
 
 <p align="center">
-  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.11"><strong>4.6.11 다운로드</strong></a> ·
+  <a href="https://github.com/2018-spec-fdsds/multiroute-downloader/releases/tag/v4.6.12"><strong>4.6.12 다운로드</strong></a> ·
   <a href="../../downloads/README.md">현재 다운로드</a> ·
   <a href="../ko.md">사용자 가이드</a> ·
   <a href="../../API.ru.txt">API 참조</a> ·
   <a href="../../README.ru.md">Русский</a>
 </p>
 
-<!-- capabilities-4.6.11:start -->
+<!-- capabilities-4.6.12:start -->
 **HLS 동영상:** [스크린샷이 포함된 Chrome / Edge 가이드](../hls/HLS-CHROME-EDGE.ko.md) · [12개 언어](../hls/README.md)
 
-## 4.6.11의 추가 기능
+## 4.6.12의 추가 기능
 
 Chrome/Edge는 지원되는 HLS 동영상을 감지하며 화질 선택, 조각 이어받기 및 결합을 지원합니다. 암호화, DRM 및 지원되지 않는 라이브 스트림은 제외됩니다. OS는 OS/VPN 설정을 따르는 시스템 경로이며 VPN 클라이언트는 물리 연결로 서버에 접속합니다. 시스템과 게이트웨이는 별도로 검사하며 게이트웨이 전송은 다른 앱의 시스템 경로를 변경하지 않습니다. 기본 및 동영상·오디오·이미지 폴더와 확장자를 설정합니다. 성인 배달원 네 종류가 상태를 표시하며 크기는 40–200%이고 자루는 전체 남은 데이터량을 나타냅니다. 로컬 API로 다운로드를 생성하고 확인하며 접근은 라이선스와 설정에 따라 달라집니다.
 
-![MultiRoute 4.6.11](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute 4.6.12](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
-[OS / VPN](../images/v4.6.11/multiroute-4.6.11-network-en.png) · [40–200%](../images/v4.6.11/multiroute-4.6.11-appearance-en.png)
+[OS / VPN](../images/v4.6.12/multiroute-4.6.12-network-en.png) · [40–200%](../images/v4.6.12/multiroute-4.6.12-appearance-en.png)
 
 ![OS / VPN / Gateways](../images/traffic-paths-en.svg)
-<!-- capabilities-4.6.11:end -->
+<!-- capabilities-4.6.12:end -->
 
 ## MultiRoute가 필요한 이유
 
@@ -78,22 +78,22 @@ MultiRoute는 이러한 독립적인 회선을 하나의 다운로드 작업 공
 
 ## 다운로드 및 설치
 
-**현재 버전: 4.6.11.** 네이티브 설치 프로그램에는 앱 전용 Java 21과 플랫폼별 네트워크 구성 요소가 포함되어 있습니다. 일반 앱 아이콘으로 실행하세요.
+**현재 버전: 4.6.12.** 네이티브 설치 프로그램에는 앱 전용 Java 21과 플랫폼별 네트워크 구성 요소가 포함되어 있습니다. 일반 앱 아이콘으로 실행하세요.
 
 | 컴퓨터 | 단일 파일 설치 프로그램 |
 | --- | --- |
-| **Windows 11 · x64** | [Windows 설치 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-Windows-x64-Setup.exe) |
-| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-arm64.pkg) |
-| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.11/MultiRoute-Downloader-4.6.11-macOS-x86_64.pkg) |
+| **Windows 11 · x64** | [Windows 설치 EXE](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-Windows-x64-Setup.exe) |
+| **Mac · Apple Silicon · macOS 26+** | [Apple Silicon PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-arm64.pkg) |
+| **Mac · Intel · macOS 15+** | [Intel PKG](https://github.com/2018-spec-fdsds/multiroute-downloader/releases/download/v4.6.12/MultiRoute-Downloader-4.6.12-macOS-x86_64.pkg) |
 
-[Chrome / Edge 연동](../ko.md#chrome-and-edge-integration) · [체크섬 및 보고서](../../downloads/v4.6.11/README.md) · [다운로드 상세 정보](../../downloads/README.md)
+[Chrome / Edge 연동](../ko.md#chrome-and-edge-integration) · [체크섬 및 보고서](../../downloads/v4.6.12/README.md) · [다운로드 상세 정보](../../downloads/README.md)
 
 Windows 설치 프로그램은 영어로 표시되며 바탕 화면 바로 가기를 만듭니다. Npcap은 별도로 확인하고 필요하면 공식 설치 프로그램을 안내합니다. macOS는 시스템 libpcap을 사용합니다. 설치 방법과 보안 확인 절차는 해당 언어의 가이드를 참조하세요. 공개 네이티브 설치 프로그램은 Windows와 macOS용이며, 여기에는 Linux 4.x 설치 프로그램이 포함되어 있지 않습니다.
 
-**4.6.11의 Free / Pro:** Free는 최대 **게이트웨이 2개**, **동시 다운로드 3개**를 사용하고 **사이트 프로필 3개**를 만들 수 있으며, Graphite(흑연색)/System(시스템 설정) 외관을 제공합니다. 해당 Pro 기능은 최대 **게이트웨이 8개**, **동시 다운로드 32개**, 추가 프로필, 우선순위, 게이트웨이 기록/보고서, 일괄 작업, 외부 API와 추가 스타일을 지원합니다. Free는 다운로드 속도를 의도적으로 제한하지 않습니다. [전체 기능 상세 정보](../licensing.en.md).
+**4.6.12의 Free / Pro:** Free는 최대 **게이트웨이 2개**, **동시 다운로드 3개**를 사용하고 **사이트 프로필 3개**를 만들 수 있으며, Graphite(흑연색)/System(시스템 설정) 외관을 제공합니다. 해당 Pro 기능은 최대 **게이트웨이 8개**, **동시 다운로드 32개**, 추가 프로필, 우선순위, 게이트웨이 기록/보고서, 일괄 작업, 외부 API와 추가 스타일을 지원합니다. Free는 다운로드 속도를 의도적으로 제한하지 않습니다. [전체 기능 상세 정보](../licensing.en.md).
 
 
-## 4.6.11의 새로운 기능
+## 4.6.12의 새로운 기능
 
 - **Mac 수동 주소의 게이트웨이 응답.** POSIX 캡처 설정을 수정하여 수동 앱 주소와 DHCP 모두 앱 자체 MAC으로 오는 응답을 받도록 했습니다. 기존 Windows 동작과 같습니다. 시스템 ping 성공은 컴퓨터의 연결만 확인하며 앱 가상 주소의 게이트웨이 응답 수신을 증명하지 않습니다.
 
@@ -123,20 +123,20 @@ Windows 설치 프로그램은 영어로 표시되며 바탕 화면 바로 가�
 
 ## 전송 상황을 한눈에 확인하세요
 
-4.6.11 작업 공간은 파일을 중심으로 구성됩니다. 이름과 크기를 별도 열로 표시하고, 파일별 진행 상황, 전체 및 게이트웨이별 속도, 속도 그래프와 파일 상세 정보를 제공합니다. Free에는 Graphite와 System 외관이 포함됩니다. Rose 같은 추가 스타일에는 해당 Pro 기능이 필요합니다.
+4.6.12 작업 공간은 파일을 중심으로 구성됩니다. 이름과 크기를 별도 열로 표시하고, 파일별 진행 상황, 전체 및 게이트웨이별 속도, 속도 그래프와 파일 상세 정보를 제공합니다. Free에는 Graphite와 System 외관이 포함됩니다. Rose 같은 추가 스타일에는 해당 Pro 기능이 필요합니다.
 
-![MultiRoute Downloader 4.3.7 — 다운로드 대기열과 게이트웨이 속도](../images/v4.6.11/multiroute-4.6.11-downloads-en.png)
+![MultiRoute Downloader 4.6.12 — 다운로드 대기열과 게이트웨이 속도](../images/v4.6.12/multiroute-4.6.12-downloads-en.png)
 
 *별도의 데모 프로필에서 캡처한 현재 Windows 화면입니다. 예제 파일, 진행 상황, 속도와 Pro 기능을 활성화한 화면은 조작 방법을 설명하기 위한 것이며 성능 측정값이 아닙니다.*
 
 <details>
 <summary><strong>네트워크 설정과 속도 기록</strong></summary>
 
-![앱 주소와 보호된 DNS](../images/v4.6.11/multiroute-4.6.11-network-en.png)
+![앱 주소와 보호된 DNS](../images/v4.6.12/multiroute-4.6.12-network-en.png)
 
-![게이트웨이 선택과 속도 확인](../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png)
+![게이트웨이 선택과 속도 확인](../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png)
 
-![MultiRoute Downloader 4.3.7 — 다운로드 속도 기록](../images/v4.6.11/multiroute-4.6.11-speed-graph-en.png)
+![MultiRoute Downloader 4.6.12 — 다운로드 속도 기록](../images/v4.6.12/multiroute-4.6.12-speed-graph-en.png)
 
 </details>
 
@@ -147,23 +147,23 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-downloads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-downloads-en.png" width="420" alt="Graphite" /></a></td>
-<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
+<td width="50%" valign="top"><strong>Graphite</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-downloads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-downloads-en.png" width="420" alt="Graphite" /></a></td>
+<td width="50%" valign="top"><strong>Nordic</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-nordic-en.png" width="420" alt="Nordic" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
-<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-neon-en.png" width="420" alt="Neon" /></a></td>
+<td width="50%" valign="top"><strong>Streams Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-streams-en.png" width="420" alt="Streams Studio" /></a></td>
+<td width="50%" valign="top"><strong>Neon</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-neon-en.png" width="420" alt="Neon" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-community-en.png" width="420" alt="Community" /></a></td>
-<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-chat-en.png" width="420" alt="Chat" /></a></td>
+<td width="50%" valign="top"><strong>Community</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-community-en.png" width="420" alt="Community" /></a></td>
+<td width="50%" valign="top"><strong>Chat</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-chat-en.png" width="420" alt="Chat" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-studio-en.png" width="420" alt="Studio" /></a></td>
-<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-clean-rose-en.png" width="420" alt="Rose" /></a></td>
+<td width="50%" valign="top"><strong>Studio</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-studio-en.png" width="420" alt="Studio" /></a></td>
+<td width="50%" valign="top"><strong>Rose</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-clean-rose-en.png" width="420" alt="Rose" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-skin-system-en.png" width="420" alt="System" /></a></td>
+<td width="50%" valign="top"><strong>System</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-skin-system-en.png" width="420" alt="System" /></a></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -180,12 +180,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.11/man-256mib-walk.png"><img src="../images/v4.6.11/man-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.11/woman-256mib-walk.png"><img src="../images/v4.6.11/woman-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.12/man-256mib-walk.png"><img src="../images/v4.6.12/man-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.12/woman-256mib-walk.png"><img src="../images/v4.6.12/woman-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.11/male_brown-256mib-walk.png"><img src="../images/v4.6.11/male_brown-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.11/female_brown-256mib-walk.png"><img src="../images/v4.6.11/female_brown-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.12/male_brown-256mib-walk.png"><img src="../images/v4.6.12/male_brown-256mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.12/female_brown-256mib-walk.png"><img src="../images/v4.6.12/female_brown-256mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -193,12 +193,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.11/man-2048mib-walk.png"><img src="../images/v4.6.11/man-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.11/woman-2048mib-walk.png"><img src="../images/v4.6.11/woman-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.12/man-2048mib-walk.png"><img src="../images/v4.6.12/man-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.12/woman-2048mib-walk.png"><img src="../images/v4.6.12/woman-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.11/male_brown-2048mib-walk.png"><img src="../images/v4.6.11/male_brown-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.11/female_brown-2048mib-walk.png"><img src="../images/v4.6.11/female_brown-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.12/male_brown-2048mib-walk.png"><img src="../images/v4.6.12/male_brown-2048mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.12/female_brown-2048mib-walk.png"><img src="../images/v4.6.12/female_brown-2048mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -206,12 +206,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.11/man-12288mib-walk.png"><img src="../images/v4.6.11/man-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.11/woman-12288mib-walk.png"><img src="../images/v4.6.11/woman-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원</strong><br /><a href="../images/v4.6.12/man-12288mib-walk.png"><img src="../images/v4.6.12/man-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원</strong><br /><a href="../images/v4.6.12/woman-12288mib-walk.png"><img src="../images/v4.6.12/woman-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.11/male_brown-12288mib-walk.png"><img src="../images/v4.6.11/male_brown-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
-<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.11/female_brown-12288mib-walk.png"><img src="../images/v4.6.11/female_brown-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>남성 배달원 2</strong><br /><a href="../images/v4.6.12/male_brown-12288mib-walk.png"><img src="../images/v4.6.12/male_brown-12288mib-walk.png" width="420" alt="남성 배달원" /></a></td>
+<td width="50%" valign="top"><strong>여성 배달원 2</strong><br /><a href="../images/v4.6.12/female_brown-12288mib-walk.png"><img src="../images/v4.6.12/female_brown-12288mib-walk.png" width="420" alt="여성 배달원" /></a></td>
 </tr>
 </table>
 
@@ -221,12 +221,12 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>앱 설정</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-settings-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-settings-en.png" width="420" alt="앱 설정" /></a></td>
-<td width="50%" valign="top"><strong>모양, 배달원과 소리</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-appearance-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-appearance-en.png" width="420" alt="모양, 배달원과 소리" /></a></td>
+<td width="50%" valign="top"><strong>앱 설정</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-settings-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-settings-en.png" width="420" alt="앱 설정" /></a></td>
+<td width="50%" valign="top"><strong>모양, 배달원과 소리</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-appearance-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-appearance-en.png" width="420" alt="모양, 배달원과 소리" /></a></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><strong>앱 주소와 보호된 DNS</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-en.png" width="420" alt="앱 주소와 보호된 DNS" /></a></td>
-<td width="50%" valign="top"><strong>게이트웨이 선택과 속도 확인</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-network-gateways-en.png" width="420" alt="게이트웨이 선택과 속도 확인" /></a></td>
+<td width="50%" valign="top"><strong>앱 주소와 보호된 DNS</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-en.png" width="420" alt="앱 주소와 보호된 DNS" /></a></td>
+<td width="50%" valign="top"><strong>게이트웨이 선택과 속도 확인</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-network-gateways-en.png" width="420" alt="게이트웨이 선택과 속도 확인" /></a></td>
 </tr>
 </table>
 
@@ -235,8 +235,8 @@ Graphite, Nordic, Streams Studio, Neon, Community, Chat, Studio, Rose, System의
 
 <table>
 <tr>
-<td width="50%" valign="top"><strong>다운로드 만들기</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-new-download-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-new-download-en.png" width="420" alt="다운로드 만들기" /></a></td>
-<td width="50%" valign="top"><strong>업로드 작업 공간</strong><br /><a href="../images/v4.6.11/multiroute-4.6.11-uploads-en.png"><img src="../images/v4.6.11/multiroute-4.6.11-uploads-en.png" width="420" alt="업로드 작업 공간" /></a></td>
+<td width="50%" valign="top"><strong>다운로드 만들기</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-new-download-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-new-download-en.png" width="420" alt="다운로드 만들기" /></a></td>
+<td width="50%" valign="top"><strong>업로드 작업 공간</strong><br /><a href="../images/v4.6.12/multiroute-4.6.12-uploads-en.png"><img src="../images/v4.6.12/multiroute-4.6.12-uploads-en.png" width="420" alt="업로드 작업 공간" /></a></td>
 </tr>
 </table>
 
@@ -299,7 +299,7 @@ API는 로컬의 **`http://127.0.0.1:8765/api/v1`** 에서 실행됩니다. 예�
 
 앱은 자체 로컬 IPv4 주소와 앱 MAC을 사용합니다. 따라서 선택한 게이트웨이가 OS 기본 게이트웨이와 독립적으로 작동하며, OS 경로나 물리 어댑터의 MAC을 변경하지 않습니다. 실제로 연결된 동일 서브넷에서 비어 있는 주소를 사용하세요. 수동 주소를 DHCP 자동 할당 범위 밖에 두거나 LAN DHCP 서버에서 예약/제외한 뒤, 네트워크 설정에서 **Check and apply(확인 및 적용)** 를 사용하세요. [주소 선택 및 확인](../ko.md#application-virtual-ip).
 
-Windows 4.6.11 설치 프로그램의 내용과 메타데이터를 검증했습니다. macOS 패키지는 대상 CI 실행기에서 네이티브 구성 요소 및 Java 런타임 검사를 통과했습니다. 실제 Mac에서 LAN/DHCP 게이트웨이를 통한 전송은 아직 하드웨어 검증이 필요합니다. [검증 보고서](../../NATIVE-INSTALLER-TESTS.json).
+Windows 4.6.12 설치 프로그램의 내용과 메타데이터를 검증했습니다. macOS 패키지는 대상 CI 실행기에서 네이티브 구성 요소 및 Java 런타임 검사를 통과했습니다. 실제 Mac에서 LAN/DHCP 게이트웨이를 통한 전송은 아직 하드웨어 검증이 필요합니다. [검증 보고서](../../NATIVE-INSTALLER-TESTS.json).
 
 ## 소유자와 라이선스
 
@@ -307,4 +307,4 @@ Windows 4.6.11 설치 프로그램의 내용과 메타데이터를 검증했습�
 
 [라이선스](../../LICENSE.txt) · [라이선스 요약](../../LICENSING.md) · [타사 고지](../../THIRD-PARTY-NOTICES.txt)
 
-이 배포 영역에는 현재 4.6.11 설치 프로그램과 사용자 문서가 포함되어 있습니다.
+이 배포 영역에는 현재 4.6.12 설치 프로그램과 사용자 문서가 포함되어 있습니다.
