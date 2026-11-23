@@ -63,7 +63,7 @@ jobs:
           import hashlib, os, stat, zipfile
           root=Path(os.environ['RUNNER_TEMP'])/'mr4612-inputs'
           path=root/'MultiRoute-4.6.12-MacInputs.zip'
-          assert hashlib.sha256(path.read_bytes()).hexdigest()=='37ad5490975e63498b0f2f04839e93f8e283741604ee7d560a363e5d349c6fb3'
+          assert hashlib.sha256(path.read_bytes()).hexdigest()=='7b4b043ed4b628bf57e73658e1e32c5d56360f31b978f1f4eedc6ec46b6f27ca'
           destination=root/'compiled';destination.mkdir()
           with zipfile.ZipFile(path) as archive:
               entries=archive.infolist();names=[item.filename for item in entries]
